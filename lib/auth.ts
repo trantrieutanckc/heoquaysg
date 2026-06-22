@@ -22,19 +22,24 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
+        try {
+          if (!credentials?.email || !credentials?.password) return null
 
-        const user = await db.user.findUnique({
-          where: { email: credentials.email },
-          select: { id: true, name: true, email: true, image: true, password: true, role: true },
-        })
+          const user = await db.user.findUnique({
+            where: { email: credentials.email },
+            select: { id: true, name: true, email: true, image: true, password: true, role: true },
+          })
 
-        if (!user || !user.password) return null
+          if (!user || !user.password) return null
 
-        const valid = await compare(credentials.password, user.password)
-        if (!valid) return null
+          const valid = await compare(credentials.password, user.password)
+          if (!valid) return null
 
-        return { id: user.id, name: user.name, email: user.email, image: user.image, role: user.role }
+          return { id: user.id, name: user.name, email: user.email, image: user.image, role: user.role }
+        } catch (error) {
+          console.error("[auth] authorize error:", error)
+          return null
+        }
       },
     }),
   ],
@@ -47,29 +52,37 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.picture
         ;(session.user as any).role = token.role
       }
-
       return session
     },
     async jwt({ token, user }) {
-      const dbUser = await db.user.findFirst({
-        where: { email: token.email },
-        select: { id: true, name: true, email: true, image: true, role: true },
-      })
+      try {
+        const dbUser = await db.user.findFirst({
+          where: { email: token.email! },
+          select: { id: true, name: true, email: true, image: true, role: true },
+        })
 
-      if (!dbUser) {
+        if (!dbUser) {
+          if (user) {
+            token.id = user.id
+            ;(token as any).role = (user as any).role
+          }
+          return token
+        }
+
+        return {
+          id: dbUser.id,
+          name: dbUser.name,
+          email: dbUser.email,
+          picture: dbUser.image,
+          role: dbUser.role,
+        }
+      } catch (error) {
+        console.error("[auth] jwt callback error:", error)
         if (user) {
-          token.id = user?.id
+          token.id = user.id
           ;(token as any).role = (user as any).role
         }
         return token
-      }
-
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        picture: dbUser.image,
-        role: dbUser.role,
       }
     },
   },
