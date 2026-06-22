@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
+import { isEditor } from "@/lib/permissions"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { PostCreateButton } from "@/components/post-create-button"
@@ -20,10 +21,10 @@ export default async function DashboardPage() {
     redirect(authOptions?.pages?.signIn || "/login")
   }
 
+  const canCreate = isEditor((user as any).role)
+
   const posts = await db.post.findMany({
-    where: {
-      authorId: user.id,
-    },
+    where: { authorId: user.id },
     select: {
       id: true,
       title: true,
@@ -32,20 +33,16 @@ export default async function DashboardPage() {
       image: true,
       likes: true,
       categories: {
-        select: {
-          category: { select: { id: true, name: true, slug: true } },
-        },
+        select: { category: { select: { id: true, name: true, slug: true } } },
       },
     },
-    orderBy: {
-      updatedAt: "desc",
-    },
+    orderBy: { updatedAt: "desc" },
   })
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Posts" text="Create and manage posts.">
-        <PostCreateButton />
+      <DashboardHeader heading="Posts" text="Quản lý bài viết của bạn.">
+        {canCreate && <PostCreateButton />}
       </DashboardHeader>
       <div>
         {posts?.length ? (
@@ -57,11 +54,13 @@ export default async function DashboardPage() {
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>Chưa có bài viết</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
+              {canCreate
+                ? "Bạn chưa có bài viết nào. Bắt đầu tạo nội dung."
+                : "Chưa có bài viết nào được phân công cho bạn."}
             </EmptyPlaceholder.Description>
-            <PostCreateButton variant="outline" />
+            {canCreate && <PostCreateButton variant="outline" />}
           </EmptyPlaceholder>
         )}
       </div>

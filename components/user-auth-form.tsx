@@ -28,7 +28,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     resolver: zodResolver(userAuthSchema),
   })
   const [isLoading, setIsLoading] = React.useState(false)
-  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false)
   const [showPassword, setShowPassword] = React.useState(false)
   const searchParams = useSearchParams()
 
@@ -68,7 +67,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading || isGoogleLoading}
+              disabled={isLoading}
               {...register("email")}
             />
             {errors?.email && (
@@ -84,7 +83,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 placeholder="••••••••"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
-                disabled={isLoading || isGoogleLoading}
+                disabled={isLoading}
                 {...register("password")}
               />
               <button
@@ -106,38 +105,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             )}
           </div>
 
-          <button className={cn(buttonVariants())} disabled={isLoading || isGoogleLoading}>
+          <button className={cn(buttonVariants())} disabled={isLoading}>
             {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Đăng nhập
           </button>
         </div>
       </form>
-
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">Hoặc đăng nhập với</span>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        className={cn(buttonVariants({ variant: "outline" }))}
-        onClick={() => {
-          setIsGoogleLoading(true)
-          signIn("google")
-        }}
-        disabled={isLoading || isGoogleLoading}
-      >
-        {isGoogleLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}
-        Google
-      </button>
     </div>
   )
 }
