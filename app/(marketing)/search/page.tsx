@@ -15,6 +15,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const posts = q
     ? await db.post.findMany({
         where: {
+          published: true,
           title: { contains: q, mode: "insensitive" },
         },
         include: {
@@ -28,65 +29,65 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       })
     : []
 
-  const postImage = (image: unknown) =>
-    image as { url?: string; alt?: string } | null
+  const postImage = (image: unknown) => image as { url?: string; alt?: string } | null
 
   return (
-    <div className="container max-w-3xl py-6 lg:py-10">
-      <div className="flex flex-col gap-4 mb-8">
-        <h1 className="font-heading text-4xl tracking-tight">Tìm kiếm</h1>
+    <div className="container max-w-3xl px-4 sm:px-6 py-8 lg:py-12">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="font-heading text-3xl sm:text-4xl tracking-tight mb-4">Tìm kiếm</h1>
         <SearchInput defaultValue={q} />
       </div>
 
+      {/* Result count */}
       {q && (
         <p className="text-sm text-muted-foreground mb-6">
           {posts.length > 0
-            ? `Tìm thấy ${posts.length} bài viết cho "${q}"`
-            : `Không tìm thấy bài viết nào cho "${q}"`}
+            ? <><span className="font-semibold text-foreground">{posts.length}</span> kết quả cho &ldquo;<span className="font-semibold text-foreground">{q}</span>&rdquo;</>
+            : <>Không tìm thấy kết quả nào cho &ldquo;<span className="font-semibold text-foreground">{q}</span>&rdquo;</>
+          }
         </p>
       )}
 
+      {/* Results */}
       {posts.length > 0 && (
-        <div className="grid gap-4">
+        <div className="divide-y divide-border rounded-xl border overflow-hidden">
           {posts.map((post) => {
             const img = postImage(post.image)
             return (
               <Link
                 key={post.id}
                 href={`/posts/${post.id}`}
-                className="group flex gap-4 rounded-lg border p-4 transition-shadow hover:shadow-md"
+                className="group flex gap-4 p-4 bg-background hover:bg-muted/40 transition-colors"
               >
                 {img?.url && (
-                  <div className="h-20 w-32 shrink-0 overflow-hidden rounded-md bg-muted">
+                  <div className="h-20 w-28 sm:w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
                     <img
                       src={img.url}
                       alt={img.alt ?? post.title}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                 )}
-                <div className="flex flex-col gap-1 min-w-0">
-                  <h2 className="font-semibold text-lg group-hover:underline truncate">
+                <div className="flex flex-col justify-center gap-1.5 min-w-0">
+                  <h2 className="font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-2">
                     {post.title}
                   </h2>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    {post.author?.name && (
-                      <span className="text-xs text-muted-foreground">
-                        {post.author.name}
-                      </span>
-                    )}
+                  <div className="flex flex-wrap items-center gap-1.5">
                     {post.categories.map(({ category }) => (
                       <span
                         key={category.slug}
-                        className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs"
+                        className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium"
                       >
                         {category.name}
                       </span>
                     ))}
+                    {post.author?.name && (
+                      <span className="text-xs text-muted-foreground">{post.author.name}</span>
+                    )}
+                    <span className="text-xs text-muted-foreground">·</span>
+                    <span className="text-xs text-muted-foreground">{formatDate(post.createdAt.toISOString())}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {formatDate(post.createdAt.toISOString())}
-                  </p>
                 </div>
               </Link>
             )
@@ -94,9 +95,28 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </div>
       )}
 
+      {/* Empty state */}
+      {q && posts.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="mb-4 rounded-full bg-muted p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-muted-foreground">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+          </div>
+          <p className="font-medium mb-1">Không tìm thấy kết quả</p>
+          <p className="text-sm text-muted-foreground">Thử tìm với từ khoá khác</p>
+        </div>
+      )}
+
       {!q && (
-        <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
-          <p>Nhập từ khoá để tìm kiếm bài viết.</p>
+        <div className="flex flex-col items-center justify-center py-20 text-center text-muted-foreground">
+          <div className="mb-4 rounded-full bg-muted p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+          </div>
+          <p className="font-medium mb-1">Tìm kiếm bài viết</p>
+          <p className="text-sm">Nhập từ khoá vào ô tìm kiếm phía trên</p>
         </div>
       )}
     </div>

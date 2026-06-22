@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import type { CategoryTemplate } from "@/lib/templates"
+import { parseBanner } from "@/lib/banner"
+import { BannerDisplay } from "@/components/banner-display"
 
 interface CategoryPageProps {
   params: { slug: string }
@@ -48,20 +50,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const image = category.image as { url?: string; alt?: string; title?: string } | null
   const posts = category.posts.map((pc) => pc.post).filter((p) => p?.published)
   const template = (category.template ?? "standard") as CategoryTemplate
+  const banner = parseBanner(category.banner)
 
   if (template === "hero") {
-    return <HeroTemplate category={category} image={image} posts={posts} />
+    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} />
   }
   if (template === "grid") {
-    return <GridTemplate category={category} image={image} posts={posts} />
+    return <GridTemplate category={category} image={image} posts={posts} banner={banner} />
   }
-  return <StandardTemplate category={category} image={image} posts={posts} />
+  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} />
 }
 
 // ─── Standard template ────────────────────────────────────────────────────────
-function StandardTemplate({ category, image, posts }: any) {
+function StandardTemplate({ category, image, posts, banner }: any) {
   return (
     <div className="container max-w-4xl py-6 lg:py-10">
+      {banner && <div className="mb-6"><BannerDisplay banner={banner} /></div>}
       <div className="flex flex-col items-start gap-6">
         {image?.url && (
           <div className="w-full overflow-hidden rounded-lg">
@@ -105,9 +109,10 @@ function StandardTemplate({ category, image, posts }: any) {
 }
 
 // ─── Grid template ────────────────────────────────────────────────────────────
-function GridTemplate({ category, image, posts }: any) {
+function GridTemplate({ category, image, posts, banner }: any) {
   return (
     <div className="container max-w-5xl py-6 lg:py-10">
+      {banner && <div className="mb-6"><BannerDisplay banner={banner} /></div>}
       <div className="mb-8 space-y-2">
         <h1 className="font-heading text-4xl tracking-tight lg:text-5xl">{category.name}</h1>
         <p className="text-muted-foreground">{posts.length} bài viết</p>
@@ -146,7 +151,7 @@ function GridTemplate({ category, image, posts }: any) {
 }
 
 // ─── Hero template ────────────────────────────────────────────────────────────
-function HeroTemplate({ category, image, posts }: any) {
+function HeroTemplate({ category, image, posts, banner }: any) {
   return (
     <div>
       {/* Hero banner */}
@@ -161,6 +166,9 @@ function HeroTemplate({ category, image, posts }: any) {
           <p className="mt-2 text-white/80 text-lg">{posts.length} bài viết</p>
         </div>
       </div>
+
+      {/* Banner below hero */}
+      {banner && <div className="container max-w-5xl pt-6"><BannerDisplay banner={banner} /></div>}
 
       {/* Posts grid */}
       <div className="container max-w-5xl py-10">

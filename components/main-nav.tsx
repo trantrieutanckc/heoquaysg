@@ -22,28 +22,34 @@ function isActive(href: string, pathname: string) {
 
 export function MainNav({ items, children }: MainNavProps) {
   const pathname = usePathname()
-  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
+  const [showMobileMenu, setShowMobileMenu] = React.useState(false)
+
+  // Close menu on route change
+  React.useEffect(() => {
+    setShowMobileMenu(false)
+  }, [pathname])
 
   return (
-    <div className="flex gap-6 md:gap-10">
-      <Link href="/" className="hidden items-center space-x-2 md:flex">
-        <Icons.logo />
-        <span className="hidden font-bold sm:inline-block">
-          {siteConfig.name}
-        </span>
+    <div className="flex items-center gap-6 md:gap-10">
+      {/* Logo */}
+      <Link href="/" className="flex items-center gap-2 font-bold shrink-0">
+        <Icons.logo className="h-6 w-6" />
+        <span className="hidden sm:inline-block text-base">{siteConfig.name}</span>
       </Link>
+
+      {/* Desktop nav */}
       {items?.length ? (
-        <nav className="hidden gap-6 md:flex">
-          {items?.map((item, index) => (
+        <nav className="hidden md:flex items-center gap-1">
+          {items.map((item, index) => (
             <Link
               key={index}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
                 isActive(item.href, pathname)
-                  ? "text-foreground"
-                  : "text-foreground/60",
-                item.disabled && "cursor-not-allowed opacity-80"
+                  ? "bg-muted text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
               )}
             >
               {item.title}
@@ -51,15 +57,30 @@ export function MainNav({ items, children }: MainNavProps) {
           ))}
         </nav>
       ) : null}
+
+      {/* Mobile hamburger */}
       <button
-        className="flex items-center space-x-2 md:hidden"
+        type="button"
+        className="flex md:hidden items-center justify-center h-9 w-9 rounded-md border bg-background hover:bg-muted transition-colors"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
+        aria-label="Toggle menu"
+        aria-expanded={showMobileMenu}
       >
-        {showMobileMenu ? <Icons.close /> : <Icons.logo />}
-        <span className="font-bold">Menu</span>
+        {showMobileMenu ? (
+          <Icons.close className="h-4 w-4" />
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="4" x2="20" y1="6" y2="6" />
+            <line x1="4" x2="20" y1="12" y2="12" />
+            <line x1="4" x2="20" y1="18" y2="18" />
+          </svg>
+        )}
       </button>
+
       {showMobileMenu && items && (
-        <MobileNav items={items}>{children}</MobileNav>
+        <MobileNav items={items} onClose={() => setShowMobileMenu(false)}>
+          {children}
+        </MobileNav>
       )}
     </div>
   )

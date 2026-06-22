@@ -30,6 +30,8 @@ import {
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
 import { CATEGORY_TEMPLATES, type CategoryTemplate } from "@/lib/templates"
+import { BannerEditor } from "@/components/banner-editor"
+import { type BannerConfig, parseBanner } from "@/lib/banner"
 
 interface CategoryImage {
   url: string
@@ -44,6 +46,7 @@ interface Category {
   order: number
   template: string
   image?: CategoryImage | null
+  banner?: unknown
   seoTitle?: string | null
   seoDescription?: string | null
   seoKeywords?: string | null
@@ -57,6 +60,7 @@ function SortableRow({
   onSeo,
   onEditImage,
   onTemplate,
+  onBanner,
   deleting,
 }: {
   cat: Category
@@ -64,6 +68,7 @@ function SortableRow({
   onSeo: (cat: Category) => void
   onEditImage: (cat: Category) => void
   onTemplate: (cat: Category) => void
+  onBanner: (cat: Category) => void
   deleting: string | null
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -123,6 +128,9 @@ function SortableRow({
       </div>
 
       <div className="flex items-center gap-1 shrink-0">
+        <Button variant="ghost" size="sm" onClick={() => onBanner(cat)} title="Banner" className={parseBanner(cat.banner) ? "text-primary" : ""}>
+          <Icons.media className="h-4 w-4" />
+        </Button>
         <Button variant="ghost" size="sm" onClick={() => onTemplate(cat)} title="Template">
           <Icons.page className="h-4 w-4" />
         </Button>
@@ -183,6 +191,31 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
   const [seoKeywords, setSeoKeywords] = React.useState("")
   const [seoImage, setSeoImage] = React.useState("")
   const [savingSeo, setSavingSeo] = React.useState(false)
+
+  // Banner dialog
+  const [bannerCategory, setBannerCategory] = React.useState<Category | null>(null)
+  const [savingBanner, setSavingBanner] = React.useState(false)
+
+  async function handleBannerSave(config: BannerConfig | null) {
+    if (!bannerCategory) return
+    setSavingBanner(true)
+    const res = await fetch(`/api/categories/${bannerCategory.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ banner: config }),
+    })
+    setSavingBanner(false)
+    if (!res.ok) {
+      toast({ title: "Lỗi", description: "Không thể lưu banner.", variant: "destructive" })
+      return
+    }
+    setCategories((prev) =>
+      prev.map((c) => c.id === bannerCategory.id ? { ...c, banner: config } : c)
+    )
+    toast({ description: "Đã lưu banner." })
+    setBannerCategory(null)
+    router.refresh()
+  }
 
   // Image edit dialog
   const [imageCategory, setImageCategory] = React.useState<Category | null>(null)
@@ -313,12 +346,23 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
                 onSeo={openSeo}
                 onEditImage={openImageEdit}
                 onTemplate={openTemplate}
+                onBanner={setBannerCategory}
                 deleting={deleting}
               />
             ))}
           </div>
         </SortableContext>
       </DndContext>
+
+      {/* Banner dialog */}
+      <BannerEditor
+        open={!!bannerCategory}
+        onOpenChange={(open) => !open && setBannerCategory(null)}
+        title={`Banner — ${bannerCategory?.name}`}
+        value={parseBanner(bannerCategory?.banner)}
+        onSave={handleBannerSave}
+        saving={savingBanner}
+      />
 
       {/* Template dialog */}
       <Dialog open={!!templateCategory} onOpenChange={(open) => !open && setTemplateCategory(null)}>

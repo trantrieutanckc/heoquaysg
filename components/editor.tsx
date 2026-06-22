@@ -29,6 +29,8 @@ import { CategorySelector } from "@/components/category-selector"
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
 import { POST_TEMPLATES } from "@/lib/templates"
+import { BannerEditor } from "@/components/banner-editor"
+import { type BannerConfig, parseBanner } from "@/lib/banner"
 
 interface Category {
   id: string
@@ -37,7 +39,7 @@ interface Category {
 }
 
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string }
+  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string; banner?: unknown }
   categories: Category[]
   postCategoryIds: string[]
 }
@@ -76,6 +78,11 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
   const [imageTitleInput, setImageTitleInput] = React.useState(
     (post.image as { title?: string } | null)?.title || ""
   )
+  const [bannerDialogOpen, setBannerDialogOpen] = React.useState(false)
+  const [bannerConfig, setBannerConfig] = React.useState<BannerConfig | null>(
+    parseBanner(post.banner)
+  )
+  const [savingBanner, setSavingBanner] = React.useState(false)
   const currentImageUrl = (watch("image") as { url?: string } | null)?.url
 
   const initializeEditor = React.useCallback(async () => {
@@ -152,6 +159,19 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
   function handleImageSave() {
     setValue("image", imageUrlInput ? { url: imageUrlInput, alt: imageAltInput, title: imageTitleInput } : null)
     setImageDialogOpen(false)
+  }
+
+  async function handleBannerSave(config: BannerConfig | null) {
+    setSavingBanner(true)
+    await fetch(`/api/posts/${post.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ banner: config }),
+    })
+    setSavingBanner(false)
+    setBannerConfig(config)
+    setBannerDialogOpen(false)
+    toast({ description: "Đã lưu banner." })
   }
 
   async function onSubmit(data: FormData) {
@@ -238,6 +258,14 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
               onClick={() => setTemplateDialogOpen(true)}
             >
               Template
+            </Button>
+            <Button
+              type="button"
+              variant={bannerConfig ? "secondary" : "outline"}
+              size="sm"
+              onClick={() => setBannerDialogOpen(true)}
+            >
+              Banner
             </Button>
             <Button
               type="button"
@@ -402,6 +430,16 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Banner Dialog */}
+      <BannerEditor
+        open={bannerDialogOpen}
+        onOpenChange={setBannerDialogOpen}
+        title="Banner bài viết"
+        value={bannerConfig}
+        onSave={handleBannerSave}
+        saving={savingBanner}
+      />
     </form>
   )
 }

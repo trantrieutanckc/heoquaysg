@@ -14,9 +14,7 @@ interface MarketingLayoutProps {
   children: React.ReactNode
 }
 
-export default async function MarketingLayout({
-  children,
-}: MarketingLayoutProps) {
+export default async function MarketingLayout({ children }: MarketingLayoutProps) {
   let dbMenuItems: { title: string; href: string; disabled?: boolean }[] = []
   let categories: { name: string; slug: string }[] = []
   try {
@@ -38,19 +36,16 @@ export default async function MarketingLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="container z-40 bg-background">
-        <div className="flex h-20 items-center justify-between py-6">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
           <MainNav items={navItems} />
           <nav className="flex items-center gap-2">
             <SearchButton />
             <Link
               href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary", size: "sm" }),
-                "px-4"
-              )}
+              className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 rounded-full")}
             >
-              Login
+              Đăng nhập
             </Link>
           </nav>
         </div>

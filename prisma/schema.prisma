@@ -11,6 +11,7 @@ enum Role {
   CONTRIBUTOR
 }
 
+
 datasource db {
   provider = "postgresql" // Đổi chữ mysql thành postgresql
   url      = env("DATABASE_URL")
@@ -95,6 +96,7 @@ model Post {
   seoKeywords    String?
   seoImage       String?
   template       String         @default("standard")
+  banner         Json?
   author         User           @relation(fields: [authorId], references: [id])
   categories     PostCategory[]
   comments       Comment[]
@@ -125,6 +127,7 @@ model Category {
   seoKeywords    String?
   seoImage       String?
   template       String         @default("standard")
+  banner         Json?
   createdAt DateTime       @default(now()) @map(name: "created_at")
   updatedAt DateTime       @default(now()) @map(name: "updated_at")
   posts     PostCategory[]
