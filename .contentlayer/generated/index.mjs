@@ -1,4 +1,8 @@
-export const allPosts = []
+export const allPages = []
 export const allDocs = []
 export const allGuides = []
-export const allPages = []
+export const allPosts = []
+export const allAuthors = []
+export const allDocuments = []
+export const isType = () => false
+
