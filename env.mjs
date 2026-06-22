@@ -22,7 +22,7 @@ export const env = createEnv({
     STRIPE_PRO_MONTHLY_PLAN_ID: z.string().min(1).optional(),
   },
   client: {
-    NEXT_PUBLIC_APP_URL: z.string().min(1),
+    NEXT_PUBLIC_APP_URL: z.string().min(1).optional(),
   },
   runtimeEnv: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
