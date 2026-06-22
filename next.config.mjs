@@ -1,5 +1,3 @@
-import { withContentlayer } from "next-contentlayer"
-
 import "./env.mjs"
 
 /** @type {import('next').NextConfig} */
@@ -19,9 +17,12 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@prisma/client"],
   },
   webpack: (config) => {
-    config.externals.push({ "markdown-wasm/dist/markdown.node.js": "commonjs markdown-wasm/dist/markdown.node.js" })
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "contentlayer/generated": new URL("./.contentlayer/generated/index.mjs", import.meta.url).pathname,
+    }
     return config
   },
 }
 
-export default withContentlayer(nextConfig)
+export default nextConfig
