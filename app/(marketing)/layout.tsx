@@ -17,15 +17,18 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({
   children,
 }: MarketingLayoutProps) {
-  const [dbMenuItems, categories] = await Promise.all([
-    db.menuItem.findMany({
-      where: { disabled: false },
-      orderBy: { order: "asc" },
-    }),
-    db.category.findMany({
-      orderBy: { order: "asc" },
-    }),
-  ])
+  let dbMenuItems: { title: string; href: string; disabled?: boolean }[] = []
+  let categories: { name: string; slug: string }[] = []
+  try {
+    const [menus, cats] = await Promise.all([
+      db.menuItem.findMany({ where: { disabled: false }, orderBy: { order: "asc" } }),
+      db.category.findMany({ orderBy: { order: "asc" } }),
+    ])
+    dbMenuItems = menus
+    categories = cats
+  } catch {
+    // DB unreachable — fallback to static nav
+  }
 
   const navItems = dbMenuItems.length
     ? dbMenuItems.map((item) => ({ title: item.title, href: item.href }))
