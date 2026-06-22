@@ -79,3 +79,24 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+/* EditorJS inline elements inside prose */
+.prose .cdx-marker {
+  background: rgba(245, 235, 111, 0.35);
+  padding: 1px 0;
+}
+.dark .prose .cdx-marker {
+  background: rgba(245, 235, 111, 0.2);
+}
+.prose .inline-code {
+  background: rgba(250, 239, 240, 0.9);
+  color: #b44437;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: ui-monospace, monospace;
+}
+.dark .prose .inline-code {
+  background: rgba(180, 68, 55, 0.15);
+  color: #f87171;
+}

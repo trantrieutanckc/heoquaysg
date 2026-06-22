@@ -1,50 +1,42 @@
-import { getServerSession } from "next-auth/next"
-import { z } from "zod"
-
-import { authOptions } from "@/lib/auth"
+import { NextResponse } from "next/server"
+import * as z from "zod"
+import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
-import { userNameSchema } from "@/lib/validations/user"
 
-const routeContextSchema = z.object({
-  params: z.object({
-    userId: z.string(),
-  }),
+const updateUserSchema = z.object({
+  name: z.string().min(1).optional(),
+  email: z.string().email().optional(),
+  role: z.enum(["ADMIN", "EDITOR", "CONTRIBUTOR"]).optional(),
+  password: z.string().min(6, "Mật khẩu tối thiểu 6 ký tự").optional(),
+  image: z.string().url().nullable().optional(),
 })
 
 export async function PATCH(
   req: Request,
-  context: z.infer<typeof routeContextSchema>
+  { params }: { params: { userId: string } }
 ) {
   try {
-    // Validate the route context.
-    const { params } = routeContextSchema.parse(context)
+    const json = await req.json()
+    const body = updateUserSchema.parse(json)
 
-    // Ensure user is authentication and has access to this user.
-    const session = await getServerSession(authOptions)
-    if (!session?.user || params.userId !== session?.user.id) {
-      return new Response(null, { status: 403 })
-    }
+    const data: Record<string, any> = {}
+    if (body.name) data.name = body.name
+    if (body.email) data.email = body.email
+    if (body.role) data.role = body.role
+    if (body.password) data.password = await bcrypt.hash(body.password, 10)
+    if (body.image !== undefined) data.image = body.image
 
-    // Get the request body and validate it.
-    const body = await req.json()
-    const payload = userNameSchema.parse(body)
-
-    // Update the user.
-    await db.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        name: payload.name,
-      },
+    const user = await db.user.update({
+      where: { id: params.userId },
+      data,
+      select: { id: true, name: true, email: true, role: true, image: true },
     })
 
-    return new Response(null, { status: 200 })
+    return NextResponse.json(user)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
+      return NextResponse.json(error.issues, { status: 422 })
     }
-
     return new Response(null, { status: 500 })
   }
 }

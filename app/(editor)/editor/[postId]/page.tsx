@@ -8,10 +8,8 @@ import { Editor } from "@/components/editor"
 
 async function getPostForUser(postId: Post["id"], userId: User["id"]) {
   return await db.post.findFirst({
-    where: {
-      id: postId,
-      authorId: userId,
-    },
+    where: { id: postId, authorId: userId },
+    include: { categories: { select: { categoryId: true } } },
   })
 }
 
@@ -20,17 +18,23 @@ interface EditorPageProps {
 }
 
 export default async function EditorPage({ params }: EditorPageProps) {
+
   const user = await getCurrentUser()
 
   if (!user) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
 
-  const post = await getPostForUser(params.postId, user.id)
+  const [post, categories] = await Promise.all([
+    getPostForUser(params.postId, user.id),
+    db.category.findMany({ orderBy: { name: "asc" } }),
+  ])
 
   if (!post) {
     notFound()
   }
+
+  const postCategoryIds = post.categories.map((c) => c.categoryId)
 
   return (
     <Editor
@@ -38,8 +42,15 @@ export default async function EditorPage({ params }: EditorPageProps) {
         id: post.id,
         title: post.title,
         content: post.content,
+        image: post.image,
         published: post.published,
+        seoTitle: post.seoTitle,
+        seoDescription: post.seoDescription,
+        seoKeywords: post.seoKeywords,
+        seoImage: post.seoImage,
       }}
+      categories={categories}
+      postCategoryIds={postCategoryIds}
     />
   )
 }

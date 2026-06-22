@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/session"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
 import { UserNameForm } from "@/components/user-name-form"
+import { UserAvatarForm } from "@/components/user-avatar-form"
 
 export const metadata = {
   title: "Settings",
@@ -25,6 +26,7 @@ export default async function SettingsPage() {
         text="Manage account and website settings."
       />
       <div className="grid gap-10">
+        <UserAvatarForm user={{ id: user.id, name: user.name || "", image: user.image || null }} />
         <UserNameForm user={{ id: user.id, name: user.name || "" }} />
       </div>
     </DashboardShell>

@@ -5,8 +5,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum Role {
+  ADMIN
+  EDITOR
+  CONTRIBUTOR
+}
+
 datasource db {
-  provider = "mysql"
+  provider = "postgresql" // Đổi chữ mysql thành postgresql
   url      = env("DATABASE_URL")
 }
 
@@ -48,6 +54,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  role          Role      @default(CONTRIBUTOR)
+  password      String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
@@ -73,15 +81,76 @@ model VerificationToken {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   Json?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
-  authorId  String
-
-  author User @relation(fields: [authorId], references: [id])
+  id             String         @id @default(cuid())
+  title          String
+  content        Json?
+  published      Boolean        @default(false)
+  createdAt      DateTime       @default(now()) @map(name: "created_at")
+  updatedAt      DateTime       @default(now()) @map(name: "updated_at")
+  authorId       String
+  image          Json?
+  likes          Int            @default(0)
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  seoImage       String?
+  author         User           @relation(fields: [authorId], references: [id])
+  categories     PostCategory[]
+  comments       Comment[]
 
   @@map(name: "posts")
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  content     String
+  authorName  String
+  authorEmail String?
+  postId      String
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+
+  @@map(name: "comments")
+}
+
+model Category {
+  id             String         @id @default(cuid())
+  name           String         @unique
+  slug           String         @unique
+  image          Json?
+  order          Int            @default(0)
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  seoImage       String?
+  createdAt DateTime       @default(now()) @map(name: "created_at")
+  updatedAt DateTime       @default(now()) @map(name: "updated_at")
+  posts     PostCategory[]
+  menuItems MenuItem[]
+
+  @@map(name: "categories")
+}
+
+model MenuItem {
+  id         String    @id @default(cuid())
+  title      String
+  href       String
+  type       String    @default("custom")
+  order      Int       @default(0)
+  disabled   Boolean   @default(false)
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@map(name: "menu_items")
+}
+
+
+model PostCategory {
+  postId     String
+  categoryId String
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([postId, categoryId])
+  @@map(name: "post_categories")
 }

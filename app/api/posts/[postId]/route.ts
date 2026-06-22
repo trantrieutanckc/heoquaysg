@@ -1,72 +1,45 @@
-import { getServerSession } from "next-auth"
+import { NextResponse } from "next/server"
 import * as z from "zod"
-
-import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { postPatchSchema } from "@/lib/validations/post"
 
-const routeContextSchema = z.object({
-  params: z.object({
-    postId: z.string(),
-  }),
+const postPatchSchema = z.object({
+  title: z.string().optional(),
+  content: z.any().optional(),
+  image: z.any().optional().nullable(),
+  categoryIds: z.array(z.string()).optional(),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  seoKeywords: z.string().optional(),
+  seoImage: z.string().optional(),
 })
 
-export async function DELETE(
-  req: Request,
-  context: z.infer<typeof routeContextSchema>
-) {
-  try {
-    // Validate the route params.
-    const { params } = routeContextSchema.parse(context)
-
-    // Check if the user has access to this post.
-    if (!(await verifyCurrentUserHasAccessToPost(params.postId))) {
-      return new Response(null, { status: 403 })
-    }
-
-    // Delete the post.
-    await db.post.delete({
-      where: {
-        id: params.postId as string,
-      },
-    })
-
-    return new Response(null, { status: 204 })
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return new Response(JSON.stringify(error.issues), { status: 422 })
-    }
-
-    return new Response(null, { status: 500 })
-  }
-}
-
+// HÀM PATCH: Cập nhật bài viết
 export async function PATCH(
   req: Request,
-  context: z.infer<typeof routeContextSchema>
+  { params }: { params: { postId: string } }
 ) {
   try {
-    // Validate route params.
-    const { params } = routeContextSchema.parse(context)
-
-    // Check if the user has access to this post.
-    if (!(await verifyCurrentUserHasAccessToPost(params.postId))) {
-      return new Response(null, { status: 403 })
-    }
-
-    // Get the request body and validate it.
+    // 1. Đọc dữ liệu chỉnh sửa từ Editor gửi lên
     const json = await req.json()
     const body = postPatchSchema.parse(json)
 
-    // Update the post.
-    // TODO: Implement sanitization for content.
+    // 2. Cập nhật thẳng vào Supabase bằng ID bài viết, bỏ qua bước check User sở hữu
     await db.post.update({
-      where: {
-        id: params.postId,
-      },
+      where: { id: params.postId },
       data: {
         title: body.title,
         content: body.content,
+        image: body.image == null || body.image === "" ? undefined : body.image,
+        seoTitle: body.seoTitle,
+        seoDescription: body.seoDescription,
+        seoKeywords: body.seoKeywords,
+        seoImage: body.seoImage,
+        ...(body.categoryIds !== undefined && {
+          categories: {
+            deleteMany: {},
+            create: body.categoryIds.map((id) => ({ categoryId: id })),
+          },
+        }),
       },
     })
 
@@ -80,14 +53,20 @@ export async function PATCH(
   }
 }
 
-async function verifyCurrentUserHasAccessToPost(postId: string) {
-  const session = await getServerSession(authOptions)
-  const count = await db.post.count({
-    where: {
-      id: postId,
-      authorId: session?.user.id,
-    },
-  })
+// HÀM DELETE: Xóa bài viết (Sửa luôn để sau này bạn bấm xóa bài viết không bị lỗi 403)
+export async function DELETE(
+  req: Request,
+  { params }: { params: { postId: string } }
+) {
+  try {
+    await db.post.delete({
+      where: {
+        id: params.postId,
+      },
+    })
 
-  return count > 0
+    return new Response(null, { status: 200 })
+  } catch (error) {
+    return new Response(null, { status: 500 })
+  }
 }

@@ -19,6 +19,26 @@ export const dashboardConfig: DashboardConfig = {
       icon: "post",
     },
     {
+      title: "Categories",
+      href: "/dashboard/categories",
+      icon: "page",
+    },
+    {
+      title: "Menu",
+      href: "/dashboard/menu",
+      icon: "page",
+    },
+    {
+      title: "Comments",
+      href: "/dashboard/comments",
+      icon: "page",
+    },
+    {
+      title: "Users",
+      href: "/dashboard/users",
+      icon: "user",
+    },
+    {
       title: "Billing",
       href: "/dashboard/billing",
       icon: "billing",

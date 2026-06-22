@@ -29,6 +29,13 @@ export default async function DashboardPage() {
       title: true,
       published: true,
       createdAt: true,
+      image: true,
+      likes: true,
+      categories: {
+        select: {
+          category: { select: { id: true, name: true, slug: true } },
+        },
+      },
     },
     orderBy: {
       updatedAt: "desc",
