@@ -9,7 +9,11 @@ export const metadata = { title: "Categories" }
 export default async function CategoriesPage() {
   const categories = await db.category.findMany({
     orderBy: { order: "asc" },
-    include: { _count: { select: { posts: true } } },
+    select: {
+      id: true, name: true, slug: true, order: true, image: true, template: true,
+      seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true,
+      _count: { select: { posts: true } },
+    },
   })
 
   return (

@@ -50,6 +50,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         seoDescription: post.seoDescription,
         seoKeywords: post.seoKeywords,
         seoImage: post.seoImage,
+        template: post.template,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

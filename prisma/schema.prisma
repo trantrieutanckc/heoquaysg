@@ -94,6 +94,7 @@ model Post {
   seoDescription String?
   seoKeywords    String?
   seoImage       String?
+  template       String         @default("standard")
   author         User           @relation(fields: [authorId], references: [id])
   categories     PostCategory[]
   comments       Comment[]
@@ -123,6 +124,7 @@ model Category {
   seoDescription String?
   seoKeywords    String?
   seoImage       String?
+  template       String         @default("standard")
   createdAt DateTime       @default(now()) @map(name: "created_at")
   updatedAt DateTime       @default(now()) @map(name: "updated_at")
   posts     PostCategory[]

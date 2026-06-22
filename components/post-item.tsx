@@ -7,14 +7,16 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/post-operations"
 import { PostAddImageButton } from "@/components/post-add-image-button"
+import { PostCategoryButton } from "@/components/post-category-button"
 
 interface PostItemProps {
   post: Pick<Post, "id" | "title" | "published" | "createdAt" | "image" | "likes"> & {
     categories: { category: { id: string; name: string; slug: string } }[]
   }
+  allCategories: { id: string; name: string }[]
 }
 
-export function PostItem({ post }: PostItemProps) {
+export function PostItem({ post, allCategories }: PostItemProps) {
   const image = post.image as { url?: string; alt?: string } | null
 
   return (
@@ -57,6 +59,11 @@ export function PostItem({ post }: PostItemProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <PostCategoryButton
+          postId={post.id}
+          allCategories={allCategories}
+          currentCategoryIds={post.categories.map((c) => c.category.id)}
+        />
         {!image?.url && <PostAddImageButton postId={post.id} />}
         <PostOperations post={{ id: post.id, title: post.title }} />
       </div>

@@ -28,6 +28,7 @@ import { Icons } from "@/components/icons"
 import { CategorySelector } from "@/components/category-selector"
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
+import { POST_TEMPLATES } from "@/lib/templates"
 
 interface Category {
   id: string
@@ -36,7 +37,7 @@ interface Category {
 }
 
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage">
+  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string }
   categories: Category[]
   postCategoryIds: string[]
 }
@@ -59,6 +60,8 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
   const [imageDialogOpen, setImageDialogOpen] = React.useState(false)
   const [imageTab, setImageTab] = React.useState<"upload" | "url">("upload")
   const [seoDialogOpen, setSeoDialogOpen] = React.useState(false)
+  const [templateDialogOpen, setTemplateDialogOpen] = React.useState(false)
+  const [postTemplate, setPostTemplate] = React.useState<string>(post.template ?? "standard")
   const [seoTitle, setSeoTitle] = React.useState((post.seoTitle as string) || "")
   const [seoDescription, setSeoDescription] = React.useState((post.seoDescription as string) || "")
   const [seoKeywords, setSeoKeywords] = React.useState((post.seoKeywords as string) || "")
@@ -170,6 +173,7 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
         seoDescription: seoDescription || undefined,
         seoKeywords: seoKeywords || undefined,
         seoImage: seoImage || undefined,
+        template: postTemplate,
       }),
     })
 
@@ -226,6 +230,14 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
             >
               <Icons.media className="mr-2 h-4 w-4" />
               {currentImageUrl ? "Edit Image" : "Add Image"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setTemplateDialogOpen(true)}
+            >
+              Template
             </Button>
             <Button
               type="button"
@@ -333,6 +345,33 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
           <DialogFooter>
             <Button variant="ghost" onClick={() => setImageDialogOpen(false)}>Huỷ</Button>
             <Button onClick={handleImageSave} disabled={!imageUrlInput}>Xác nhận</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Template Dialog */}
+      <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Chọn template bài viết</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-3 py-2">
+            {POST_TEMPLATES.map((tpl) => (
+              <button
+                key={tpl.value}
+                type="button"
+                onClick={() => setPostTemplate(tpl.value)}
+                className={`flex flex-col gap-0.5 rounded-lg border p-4 text-left transition-colors ${
+                  postTemplate === tpl.value ? "border-primary bg-primary/5" : "hover:bg-muted"
+                }`}
+              >
+                <span className="font-medium">{tpl.label}</span>
+                <span className="text-sm text-muted-foreground">{tpl.description}</span>
+              </button>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setTemplateDialogOpen(false)}>Xong</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

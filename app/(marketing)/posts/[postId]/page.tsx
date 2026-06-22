@@ -8,6 +8,7 @@ import { EditorJsRenderer } from "@/components/editorjs-renderer"
 import { CommentSection } from "@/components/comment-section"
 import { LikeButton } from "@/components/like-button"
 import { ShareButton } from "@/components/share-button"
+import type { PostTemplate } from "@/lib/templates"
 
 interface PostPageProps {
   params: { postId: string }
@@ -61,9 +62,12 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) notFound()
 
   const postImage = post.image as { url?: string; alt?: string; title?: string } | null
+  const template = (post.template ?? "standard") as PostTemplate
+
+  const maxWidth = template === "wide" ? "max-w-5xl" : "max-w-3xl"
 
   return (
-    <article className="container relative max-w-3xl py-6 lg:py-10">
+    <article className={`container relative ${maxWidth} py-6 lg:py-10`}>
       {/* Back button */}
       <Link
         href="javascript:history.back()"
@@ -85,8 +89,8 @@ export default async function PostPage({ params }: PostPageProps) {
           {post.title}
         </h1>
 
-        {/* Categories */}
-        {post.categories.length > 0 && (
+        {/* Categories — ẩn ở minimal */}
+        {template !== "minimal" && post.categories.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-1">
             {post.categories.map(({ category }) => (
               <Link
@@ -100,8 +104,8 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
         )}
 
-        {/* Author */}
-        {post.author && (
+        {/* Author — ẩn ở minimal */}
+        {template !== "minimal" && post.author && (
           <div className="flex items-center gap-2 pt-2">
             {post.author.image ? (
               <img

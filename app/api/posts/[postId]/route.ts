@@ -11,6 +11,7 @@ const postPatchSchema = z.object({
   seoDescription: z.string().optional(),
   seoKeywords: z.string().optional(),
   seoImage: z.string().optional(),
+  template: z.string().optional(),
 })
 
 // HÀM PATCH: Cập nhật bài viết
@@ -34,6 +35,7 @@ export async function PATCH(
         seoDescription: body.seoDescription,
         seoKeywords: body.seoKeywords,
         seoImage: body.seoImage,
+        template: body.template,
         ...(body.categoryIds !== undefined && {
           categories: {
             deleteMany: {},

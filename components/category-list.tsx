@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog"
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
+import { CATEGORY_TEMPLATES, type CategoryTemplate } from "@/lib/templates"
 
 interface CategoryImage {
   url: string
@@ -41,6 +42,7 @@ interface Category {
   name: string
   slug: string
   order: number
+  template: string
   image?: CategoryImage | null
   seoTitle?: string | null
   seoDescription?: string | null
@@ -54,12 +56,14 @@ function SortableRow({
   onDelete,
   onSeo,
   onEditImage,
+  onTemplate,
   deleting,
 }: {
   cat: Category
   onDelete: (id: string) => void
   onSeo: (cat: Category) => void
   onEditImage: (cat: Category) => void
+  onTemplate: (cat: Category) => void
   deleting: string | null
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -119,6 +123,9 @@ function SortableRow({
       </div>
 
       <div className="flex items-center gap-1 shrink-0">
+        <Button variant="ghost" size="sm" onClick={() => onTemplate(cat)} title="Template">
+          <Icons.page className="h-4 w-4" />
+        </Button>
         <Button variant="ghost" size="sm" onClick={() => onSeo(cat)} title="SEO">
           <Icons.search className="h-4 w-4" />
         </Button>
@@ -142,6 +149,32 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
   const router = useRouter()
   const [categories, setCategories] = React.useState(initialCategories)
   const [deleting, setDeleting] = React.useState<string | null>(null)
+
+  // Template dialog
+  const [templateCategory, setTemplateCategory] = React.useState<Category | null>(null)
+  const [selectedTemplate, setSelectedTemplate] = React.useState<CategoryTemplate>("standard")
+  const [savingTemplate, setSavingTemplate] = React.useState(false)
+
+  function openTemplate(cat: Category) {
+    setTemplateCategory(cat)
+    setSelectedTemplate((cat.template ?? "standard") as CategoryTemplate)
+  }
+
+  async function handleTemplateSave() {
+    if (!templateCategory) return
+    setSavingTemplate(true)
+    await fetch(`/api/categories/${templateCategory.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ template: selectedTemplate }),
+    })
+    setSavingTemplate(false)
+    setCategories((prev) =>
+      prev.map((c) => c.id === templateCategory.id ? { ...c, template: selectedTemplate } : c)
+    )
+    setTemplateCategory(null)
+    router.refresh()
+  }
 
   // SEO dialog
   const [seoCategory, setSeoCategory] = React.useState<Category | null>(null)
@@ -279,12 +312,46 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
                 onDelete={handleDelete}
                 onSeo={openSeo}
                 onEditImage={openImageEdit}
+                onTemplate={openTemplate}
                 deleting={deleting}
               />
             ))}
           </div>
         </SortableContext>
       </DndContext>
+
+      {/* Template dialog */}
+      <Dialog open={!!templateCategory} onOpenChange={(open) => !open && setTemplateCategory(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Template — {templateCategory?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-3 py-2">
+            {CATEGORY_TEMPLATES.map((tpl) => (
+              <button
+                key={tpl.value}
+                type="button"
+                onClick={() => setSelectedTemplate(tpl.value)}
+                className={`flex flex-col gap-0.5 rounded-lg border p-4 text-left transition-colors ${
+                  selectedTemplate === tpl.value
+                    ? "border-primary bg-primary/5"
+                    : "hover:bg-muted"
+                }`}
+              >
+                <span className="font-medium">{tpl.label}</span>
+                <span className="text-sm text-muted-foreground">{tpl.description}</span>
+              </button>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setTemplateCategory(null)}>Huỷ</Button>
+            <Button onClick={handleTemplateSave} disabled={savingTemplate}>
+              {savingTemplate && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+              Lưu
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Image edit dialog */}
       <Dialog open={!!imageCategory} onOpenChange={(open) => !open && setImageCategory(null)}>

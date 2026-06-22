@@ -19,7 +19,7 @@ export async function PATCH(
   { params }: { params: { categoryId: string } }
 ) {
   try {
-    const { name, slug, image, order, seoTitle, seoDescription, seoKeywords, seoImage } = await req.json()
+    const { name, slug, image, order, template, seoTitle, seoDescription, seoKeywords, seoImage } = await req.json()
     const category = await db.category.update({
       where: { id: params.categoryId },
       data: {
@@ -27,6 +27,7 @@ export async function PATCH(
         ...(slug !== undefined && { slug }),
         ...(image !== undefined && { image: image ?? undefined }),
         ...(order !== undefined && { order }),
+        ...(template !== undefined && { template }),
         ...(seoTitle !== undefined && { seoTitle }),
         ...(seoDescription !== undefined && { seoDescription }),
         ...(seoKeywords !== undefined && { seoKeywords }),

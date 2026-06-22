@@ -23,21 +23,27 @@ export default async function DashboardPage() {
 
   const canCreate = isEditor((user as any).role)
 
-  const posts = await db.post.findMany({
-    where: { authorId: user.id },
-    select: {
-      id: true,
-      title: true,
-      published: true,
-      createdAt: true,
-      image: true,
-      likes: true,
-      categories: {
-        select: { category: { select: { id: true, name: true, slug: true } } },
+  const [posts, allCategories] = await Promise.all([
+    db.post.findMany({
+      where: { authorId: user.id },
+      select: {
+        id: true,
+        title: true,
+        published: true,
+        createdAt: true,
+        image: true,
+        likes: true,
+        categories: {
+          select: { category: { select: { id: true, name: true, slug: true } } },
+        },
       },
-    },
-    orderBy: { updatedAt: "desc" },
-  })
+      orderBy: { updatedAt: "desc" },
+    }),
+    db.category.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
+  ])
 
   return (
     <DashboardShell>
@@ -48,7 +54,7 @@ export default async function DashboardPage() {
         {posts?.length ? (
           <div className="divide-y divide-border rounded-md border">
             {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+              <PostItem key={post.id} post={post} allCategories={allCategories} />
             ))}
           </div>
         ) : (
