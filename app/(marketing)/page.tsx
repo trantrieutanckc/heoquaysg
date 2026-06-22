@@ -14,7 +14,7 @@ export default async function IndexPage() {
       },
     },
     orderBy: { createdAt: "desc" },
-    take: 20,
+    take: 50,
   })
 
   const featured = posts[0]
@@ -35,11 +35,13 @@ export default async function IndexPage() {
   return (
     <div className="min-h-screen">
 
+      <div className="container max-w-6xl px-4 sm:px-6 pt-10 lg:pt-14">
+
       {/* ── Hero featured post ─────────────────────────────── */}
       {featured && (() => {
         const image = img(featured.image)
         return (
-          <Link href={`/posts/${featured.id}`} className="group block relative w-full overflow-hidden bg-muted" style={{height: "520px"}}>
+          <Link href={`/posts/${featured.id}`} className="group block relative w-full overflow-hidden rounded-2xl bg-muted mb-12" style={{height: "460px"}}>
             {image?.url ? (
               <img
                 src={image.url}
@@ -53,7 +55,7 @@ export default async function IndexPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 lg:p-14">
+            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 lg:p-10">
               <div className="max-w-3xl">
                 {featured.categories.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-3">
@@ -91,8 +93,6 @@ export default async function IndexPage() {
           </Link>
         )
       })()}
-
-      <div className="container max-w-6xl px-4 sm:px-6 py-10 lg:py-14">
 
         {/* ── Secondary posts (2 bài to) ─────────────────────── */}
         {secondary.length > 0 && (
@@ -203,3 +203,4 @@ export default async function IndexPage() {
     </div>
   )
 }
+
