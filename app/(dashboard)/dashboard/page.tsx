@@ -30,6 +30,7 @@ export default async function DashboardPage() {
         id: true,
         title: true,
         published: true,
+        featured: true,
         createdAt: true,
         image: true,
         likes: true,

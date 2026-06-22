@@ -5,21 +5,27 @@ import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 
 export default async function IndexPage() {
-  const posts = await db.post.findMany({
-    where: { published: true },
-    include: {
-      author: { select: { name: true, image: true } },
-      categories: {
-        include: { category: { select: { name: true, slug: true } } },
+  const [featuredPost, posts] = await Promise.all([
+    db.post.findFirst({
+      where: { published: true, featured: true },
+      include: {
+        author: { select: { name: true, image: true } },
+        categories: { include: { category: { select: { name: true, slug: true } } } },
       },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 50,
-  })
+    }),
+    db.post.findMany({
+      where: { published: true },
+      include: {
+        author: { select: { name: true, image: true } },
+        categories: { include: { category: { select: { name: true, slug: true } } } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    }),
+  ])
 
-  const featured = posts[0]
-  const secondary = posts.slice(1, 3)
-  const rest = posts.slice(3)
+  const featured = featuredPost ?? posts[0]
+  const others = posts.filter((p) => p.id !== featured?.id)
 
   const img = (image: unknown) => image as { url?: string; alt?: string } | null
 
@@ -35,7 +41,7 @@ export default async function IndexPage() {
   return (
     <div className="min-h-screen">
 
-      <div className="container max-w-6xl px-4 sm:px-6 pt-10 lg:pt-14">
+      <div className="container max-w-6xl px-4 sm:px-6 pt-10 pb-20 lg:pt-14 lg:pb-28">
 
       {/* ── Hero featured post ─────────────────────────────── */}
       {featured && (() => {
@@ -94,14 +100,15 @@ export default async function IndexPage() {
         )
       })()}
 
-        {/* ── Secondary posts (2 bài to) ─────────────────────── */}
-        {secondary.length > 0 && (
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-6">
+        {/* ── Posts grid ─────────────────────────────────────── */}
+        {others.length > 0 && (
+          <div>
+            <div className="flex items-center gap-3 mb-6">
               <h2 className="font-heading text-xl sm:text-2xl">Bài viết mới nhất</h2>
+              <div className="flex-1 h-px bg-border" />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              {secondary.map((post) => {
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {others.map((post) => {
                 const image = img(post.image)
                 return (
                   <Link
@@ -120,20 +127,16 @@ export default async function IndexPage() {
                         <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
                       )}
                     </div>
-                    <div className="flex flex-col gap-2.5 p-5">
+                    <div className="flex flex-col gap-2.5 p-4">
                       {post.categories.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5">
-                          {post.categories.map(({ category }) => (
-                            <span key={category.slug} className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-semibold">
-                              {category.name}
-                            </span>
-                          ))}
-                        </div>
+                        <span className="text-xs font-semibold text-primary">
+                          {post.categories[0].category.name}
+                        </span>
                       )}
-                      <h2 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                      <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h2>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 border-t">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-2 border-t">
                         {post.author?.image ? (
                           <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />
                         ) : (
@@ -145,53 +148,6 @@ export default async function IndexPage() {
                         <span>·</span>
                         <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
                       </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ── Rest grid ──────────────────────────────────────── */}
-        {rest.length > 0 && (
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <h2 className="font-heading text-xl sm:text-2xl">Khám phá thêm</h2>
-              <div className="flex-1 h-px bg-border" />
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {rest.map((post) => {
-                const image = img(post.image)
-                return (
-                  <Link
-                    key={post.id}
-                    href={`/posts/${post.id}`}
-                    className="group flex gap-4 rounded-xl border bg-card p-4 hover:shadow-md transition-all duration-200 hover:border-primary/30"
-                  >
-                    <div className="h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-muted">
-                      {image?.url ? (
-                        <img
-                          src={image.url}
-                          alt={image.alt ?? post.title}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
-                      )}
-                    </div>
-                    <div className="flex flex-col justify-center gap-1.5 min-w-0">
-                      {post.categories.length > 0 && (
-                        <span className="text-xs font-semibold text-primary truncate">
-                          {post.categories[0].category.name}
-                        </span>
-                      )}
-                      <h2 className="text-sm font-semibold leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h2>
-                      <time dateTime={post.createdAt.toISOString()} className="text-xs text-muted-foreground">
-                        {formatDate(post.createdAt.toISOString())}
-                      </time>
                     </div>
                   </Link>
                 )

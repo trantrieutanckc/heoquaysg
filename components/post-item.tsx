@@ -8,9 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { PostOperations } from "@/components/post-operations"
 import { PostAddImageButton } from "@/components/post-add-image-button"
 import { PostCategoryButton } from "@/components/post-category-button"
+import { FeaturedToggle } from "@/components/featured-toggle"
 
 interface PostItemProps {
-  post: Pick<Post, "id" | "title" | "published" | "createdAt" | "image" | "likes"> & {
+  post: Pick<Post, "id" | "title" | "published" | "featured" | "createdAt" | "image" | "likes"> & {
     categories: { category: { id: string; name: string; slug: string } }[]
   }
   allCategories: { id: string; name: string }[]
@@ -59,6 +60,7 @@ export function PostItem({ post, allCategories }: PostItemProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <FeaturedToggle postId={post.id} featured={post.featured ?? false} />
         <PostCategoryButton
           postId={post.id}
           allCategories={allCategories}
