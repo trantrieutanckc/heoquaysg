@@ -97,7 +97,7 @@ function StandardTemplate({ category, image, posts, banner }: any) {
     <div className="min-h-screen">
       <PageEntrance>
         <div className="border-b bg-muted/30">
-          <div className="container max-w-5xl px-4 sm:px-6 py-12 lg:py-16">
+          <div className="container px-4 sm:px-6 py-12 lg:py-16">
             {image?.url && (
               <div className="mb-6 overflow-hidden rounded-2xl" style={{ maxHeight: 260 }}>
                 <img src={image.url} alt={image.alt ?? category.name} className="h-full w-full object-cover" style={{ maxHeight: 260 }} />
@@ -116,7 +116,7 @@ function StandardTemplate({ category, image, posts, banner }: any) {
         </div>
       </PageEntrance>
 
-      <div className="container max-w-5xl px-4 sm:px-6 py-10 lg:py-14">
+      <div className="container px-4 sm:px-6 py-10 lg:py-14">
         {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
           <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -143,7 +143,7 @@ function GridTemplate({ category, image, posts, banner }: any) {
     <div className="min-h-screen">
       <PageEntrance>
         <div className="border-b bg-muted/30">
-          <div className="container max-w-6xl px-4 sm:px-6 py-12 lg:py-16">
+          <div className="container px-4 sm:px-6 py-12 lg:py-16">
             {image?.url && (
               <div className="mb-6 overflow-hidden rounded-2xl" style={{ maxHeight: 260 }}>
                 <img src={image.url} alt={image.alt ?? category.name} className="h-full w-full object-cover" style={{ maxHeight: 260 }} />
@@ -162,7 +162,7 @@ function GridTemplate({ category, image, posts, banner }: any) {
         </div>
       </PageEntrance>
 
-      <div className="container max-w-6xl px-4 sm:px-6 py-10 lg:py-14">
+      <div className="container px-4 sm:px-6 py-10 lg:py-14">
         {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
           <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -207,7 +207,7 @@ function HeroTemplate({ category, image, posts, banner }: any) {
         </PageEntrance>
       </div>
 
-      <div className="container max-w-6xl px-4 sm:px-6 py-10 lg:py-14 pb-20 lg:pb-28">
+      <div className="container px-4 sm:px-6 py-10 lg:py-14 pb-20 lg:pb-28">
         {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
           <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

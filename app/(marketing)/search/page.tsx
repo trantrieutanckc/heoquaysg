@@ -33,7 +33,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const postImage = (image: unknown) => image as { url?: string; alt?: string } | null
 
   return (
-    <div className="container max-w-3xl px-4 sm:px-6 py-8 lg:py-12">
+    <div className="container px-4 sm:px-6 py-8 lg:py-12">
       <PageEntrance className="mb-8">
         <h1 className="font-heading text-3xl sm:text-4xl tracking-tight mb-4">Tìm kiếm</h1>
         <SearchInput defaultValue={q} />

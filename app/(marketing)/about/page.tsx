@@ -13,7 +13,7 @@ export default function AboutPage() {
       {/* Hero header */}
       <PageEntrance>
         <div className="border-b bg-muted/30">
-          <div className="container max-w-4xl px-4 sm:px-6 py-12 lg:py-16">
+          <div className="container px-4 sm:px-6 py-12 lg:py-16">
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-3">
               Về chúng tôi
             </h1>
@@ -24,7 +24,7 @@ export default function AboutPage() {
         </div>
       </PageEntrance>
 
-      <div className="container max-w-4xl px-4 sm:px-6 py-10 lg:py-14 space-y-14">
+      <div className="container px-4 sm:px-6 py-10 lg:py-14 space-y-14">
 
         {/* Story */}
         <FadeUp>

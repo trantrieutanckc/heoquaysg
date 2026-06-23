@@ -7,13 +7,37 @@ interface EditorContent {
   blocks?: Block[]
 }
 
+export function extractHeadings(content: unknown): { id: string; text: string; level: number }[] {
+  let parsed: EditorContent = {}
+  if (typeof content === "string") {
+    try { parsed = JSON.parse(content) } catch { return [] }
+  } else {
+    parsed = content as EditorContent
+  }
+  const headings: { id: string; text: string; level: number }[] = []
+  let n = 0
+  for (const block of parsed.blocks ?? []) {
+    if (block.type === "header") {
+      headings.push({
+        id: `toc-${n++}`,
+        text: block.data.text?.replace(/<[^>]+>/g, "") ?? "",
+        level: block.data.level ?? 2,
+      })
+    }
+  }
+  return headings
+}
+
+let headingCount = 0
+
 function renderBlock(block: Block, index: number) {
   switch (block.type) {
     case "header": {
       const level = block.data.level ?? 2
       const Tag = `h${level}` as keyof JSX.IntrinsicElements
+      const id = `toc-${headingCount++}`
       return (
-        <Tag key={index} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+        <Tag key={index} id={id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
       )
     }
 
@@ -135,6 +159,7 @@ export function EditorJsRenderer({ content }: { content: unknown }) {
   const blocks = parsed.blocks ?? []
   if (!blocks.length) return null
 
+  headingCount = 0
   return (
     <div className="prose prose-stone dark:prose-invert max-w-none break-words">
       {blocks.map((block, i) => renderBlock(block, i))}

@@ -62,7 +62,7 @@ export default function ContactPage() {
   ]
 
   return (
-    <div className="container max-w-5xl py-6 lg:py-10">
+    <div className="container py-6 lg:py-10">
       <motion.div
         className="flex flex-col items-start gap-4"
         initial={{ opacity: 0, y: 20 }}

@@ -53,7 +53,7 @@ export default async function IndexPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container max-w-6xl px-4 sm:px-6 pt-10 pb-20 lg:pt-14 lg:pb-28 space-y-14">
+      <div className="container px-4 sm:px-6 pt-10 pb-20 lg:pt-14 lg:pb-28 space-y-14">
 
         {/* ── Hero featured post ─────────────────────────────── */}
         {featured && (() => {

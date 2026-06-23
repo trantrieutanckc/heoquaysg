@@ -2,7 +2,8 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
-import { EditorJsRenderer } from "@/components/editorjs-renderer"
+import { EditorJsRenderer, extractHeadings } from "@/components/editorjs-renderer"
+import { TableOfContents } from "@/components/table-of-contents"
 import { CommentSection } from "@/components/comment-section"
 import { LikeButton } from "@/components/like-button"
 import { ShareButton } from "@/components/share-button"
@@ -66,7 +67,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const postImage = post.image as { url?: string; alt?: string; title?: string } | null
   const template = (post.template ?? "standard") as PostTemplate
   const banner = parseBanner(post.banner)
-  const maxWidth = template === "wide" ? "max-w-4xl" : "max-w-2xl"
+  const headings = extractHeadings(post.content)
 
   return (
     <div className="min-h-screen">
@@ -82,7 +83,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </PageEntrance>
       )}
 
-      <div className={`container ${maxWidth} px-4 sm:px-6 py-6 lg:py-10`}>
+      <div className="container px-4 sm:px-6 py-6 lg:py-10">
         <PageEntrance>
           <BackButton className="mb-6 -ml-2" />
         </PageEntrance>
@@ -153,18 +154,23 @@ export default async function PostPage({ params }: PostPageProps) {
           </FadeUp>
         )}
 
-        {/* Content */}
-        <FadeUp delay={0.1}>
-          <div className="prose prose-neutral dark:prose-invert max-w-none
-            prose-headings:font-heading prose-headings:scroll-mt-20
-            prose-h2:text-xl prose-h2:sm:text-2xl
-            prose-p:text-base prose-p:leading-relaxed prose-p:text-foreground/90
-            prose-img:rounded-xl prose-img:shadow-md
-            prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-            prose-blockquote:border-primary prose-blockquote:bg-muted/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1">
-            <EditorJsRenderer content={post.content} />
+        {/* Content + TOC */}
+        <div className="flex gap-10 items-start">
+          <FadeUp delay={0.1} className="min-w-0 flex-1">
+            <div className="prose prose-neutral dark:prose-invert max-w-none
+              prose-headings:font-heading prose-headings:scroll-mt-24
+              prose-h2:text-xl prose-h2:sm:text-2xl
+              prose-p:text-base prose-p:leading-relaxed prose-p:text-foreground/90
+              prose-img:rounded-xl prose-img:shadow-md
+              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+              prose-blockquote:border-primary prose-blockquote:bg-muted/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1">
+              <EditorJsRenderer content={post.content} />
+            </div>
+          </FadeUp>
+          <div className="w-56 shrink-0">
+            <TableOfContents headings={headings} />
           </div>
-        </FadeUp>
+        </div>
 
         <FadeUp className="flex justify-center items-center gap-4 py-10 mt-10 border-t">
           <LikeButton postId={post.id} initialLikes={post.likes} />
