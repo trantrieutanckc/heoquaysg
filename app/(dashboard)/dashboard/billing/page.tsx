@@ -1,11 +1,13 @@
+import { redirect } from "next/navigation"
+import { getCurrentUser } from "@/lib/session"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
 
-export const metadata = {
-  title: "Billing",
-}
+export const metadata = { title: "Billing" }
 
-export default function BillingPage() {
+export default async function BillingPage() {
+  const user = await getCurrentUser()
+  if (!user || (user as any).role !== "ADMIN") redirect("/dashboard")
   return (
     <DashboardShell>
       <DashboardHeader

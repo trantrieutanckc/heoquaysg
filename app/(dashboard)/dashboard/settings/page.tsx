@@ -15,9 +15,8 @@ export const metadata = {
 export default async function SettingsPage() {
   const user = await getCurrentUser()
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
+  if (!user) redirect("/login")
+  if ((user as any).role !== "ADMIN") redirect("/dashboard")
 
   return (
     <DashboardShell>

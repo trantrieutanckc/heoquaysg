@@ -3,8 +3,8 @@ export type Role = "ADMIN" | "EDITOR" | "CONTRIBUTOR"
 // Các trang mỗi role được phép truy cập
 const ROLE_PERMISSIONS: Record<Role, string[]> = {
   ADMIN: ["/dashboard", "/dashboard/categories", "/dashboard/menu", "/dashboard/comments", "/dashboard/users", "/dashboard/billing", "/dashboard/settings"],
-  EDITOR: ["/dashboard", "/dashboard/categories", "/dashboard/menu", "/dashboard/comments"],
-  CONTRIBUTOR: ["/dashboard"],
+  EDITOR: ["/dashboard", "/dashboard/categories", "/dashboard/menu"],
+  CONTRIBUTOR: [],
 }
 
 export function canAccess(role: Role, path: string): boolean {
