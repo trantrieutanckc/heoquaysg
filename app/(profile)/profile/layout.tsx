@@ -4,12 +4,18 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { getCurrentUser } from "@/lib/session"
 import { UserAccountNav } from "@/components/user-account-nav"
-import { Icons } from "@/components/icons"
 import { ModeToggle } from "@/components/mode-toggle"
+import { buttonVariants } from "@/components/ui/button"
+import { Icons } from "@/components/icons"
+import { cn } from "@/lib/utils"
+import { type Role } from "@/lib/permissions"
 
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
+
+  const role = (user as any).role as Role | undefined
+  const canAccessDashboard = role === "ADMIN" || role === "EDITOR"
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -24,6 +30,15 @@ export default async function ProfileLayout({ children }: { children: React.Reac
             <span className="font-heading font-bold text-sm hidden sm:block">Heo Quay SG</span>
           </Link>
           <div className="flex items-center gap-2">
+            {canAccessDashboard && (
+              <Link
+                href="/dashboard"
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-1.5")}
+              >
+                <Icons.chevronLeft className="h-4 w-4" />
+                Dashboard
+              </Link>
+            )}
             <ModeToggle />
             <UserAccountNav user={{ name: user.name, image: user.image, email: user.email }} />
           </div>

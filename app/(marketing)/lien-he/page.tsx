@@ -55,9 +55,9 @@ export default function ContactPage() {
   }
 
   const contactItems = [
-    { icon: "📍", label: "Địa chỉ", content: <p>47 Đường Ẩm Thực, Quận 1, TP. Hồ Chí Minh</p> },
-    { icon: "📞", label: "Điện thoại", content: <a href="tel:0901234567" className="hover:text-foreground transition-colors">0901 234 567</a> },
-    { icon: "📧", label: "Email", content: <a href="mailto:heoquay47@gmail.com" className="hover:text-foreground transition-colors">heoquay47@gmail.com</a> },
+    // { icon: "📍", label: "Địa chỉ", content: <p>47 Đường Ẩm Thực, Quận 1, TP. Hồ Chí Minh</p> },
+    { icon: "📞", label: "Điện thoại", content: <span className="text-muted-foreground">Cập nhật sau</span> },
+    { icon: "📧", label: "Email", content: <span className="text-muted-foreground">Cập nhật sau</span> },
     { icon: "🕐", label: "Giờ mở cửa", content: <p>06:00 – 20:00, tất cả các ngày trong tuần</p> },
   ]
 
@@ -119,12 +119,7 @@ export default function ContactPage() {
             <p className="text-sm text-muted-foreground">
               Gọi trực tiếp để đặt hàng hoặc hỏi về thực đơn. Chúng tôi nhận đặt trước cho tiệc, sự kiện và giao hàng tận nơi.
             </p>
-            <a
-              href="tel:0901234567"
-              className="inline-flex items-center gap-2 mt-2 text-sm font-medium underline underline-offset-4"
-            >
-              Gọi ngay: 0901 234 567
-            </a>
+            <p className="mt-2 text-sm text-muted-foreground">Cập nhật sau</p>
           </motion.div>
         </motion.div>
 

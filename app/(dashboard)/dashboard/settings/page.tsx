@@ -1,33 +1,30 @@
 import { redirect } from "next/navigation"
-
-import { authOptions } from "@/lib/auth"
 import { getCurrentUser } from "@/lib/session"
+import { db } from "@/lib/db"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
-import { UserNameForm } from "@/components/user-name-form"
-import { UserAvatarForm } from "@/components/user-avatar-form"
+import { SiteConfigForm, type SiteConfigData } from "@/components/site-config-form"
 
 export const metadata = {
   title: "Settings",
-  description: "Manage account and website settings.",
+  description: "Cấu hình site.",
 }
 
 export default async function SettingsPage() {
   const user = await getCurrentUser()
-
   if (!user) redirect("/login")
   if ((user as any).role !== "ADMIN") redirect("/dashboard")
+
+  const config = await db.siteConfig.findUnique({ where: { id: "default" } })
+  const data = (config?.data ?? {}) as SiteConfigData
 
   return (
     <DashboardShell>
       <DashboardHeader
         heading="Settings"
-        text="Manage account and website settings."
+        text="Cấu hình thông tin và nội dung hiển thị trên site."
       />
-      <div className="grid gap-10">
-        <UserAvatarForm user={{ id: user.id, name: user.name || "", image: user.image || null }} />
-        <UserNameForm user={{ id: user.id, name: user.name || "" }} />
-      </div>
+      <SiteConfigForm initial={data} />
     </DashboardShell>
   )
 }

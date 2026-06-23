@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { compare, hash } from "bcryptjs"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
+import { strongPasswordSchema } from "@/lib/validations/auth"
 
 export async function PATCH(req: Request) {
   try {
@@ -13,6 +14,11 @@ export async function PATCH(req: Request) {
 
     // Change password flow
     if (currentPassword && newPassword) {
+      const parsed = strongPasswordSchema.safeParse(newPassword)
+      if (!parsed.success) {
+        return NextResponse.json({ message: parsed.error.issues[0]?.message ?? "Mật khẩu không hợp lệ" }, { status: 400 })
+      }
+
       const dbUser = await db.user.findUnique({
         where: { id: user.id },
         select: { password: true },

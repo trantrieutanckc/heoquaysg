@@ -21,7 +21,7 @@ export default async function ProfilePage() {
   const postCount = await db.post.count({ where: { authorId: dbUser.id } })
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <div className="space-y-8">
       <div>
         <h1 className="font-heading text-3xl font-bold">Tài khoản của tôi</h1>
         <p className="text-muted-foreground mt-1">Quản lý thông tin cá nhân của bạn</p>

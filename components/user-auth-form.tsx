@@ -19,6 +19,8 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 type FormData = z.infer<typeof userAuthSchema>
 
+const MAX_ATTEMPTS = 5
+
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
@@ -29,9 +31,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
   const [isLoading, setIsLoading] = React.useState(false)
   const [showPassword, setShowPassword] = React.useState(false)
+  const [failCount, setFailCount] = React.useState(0)
+  const [lockedUntil, setLockedUntil] = React.useState<number | null>(null)
+  const [countdown, setCountdown] = React.useState(0)
   const searchParams = useSearchParams()
 
+  React.useEffect(() => {
+    if (!lockedUntil) return
+    const tick = () => {
+      const secs = Math.ceil((lockedUntil - Date.now()) / 1000)
+      if (secs <= 0) {
+        setLockedUntil(null)
+        setCountdown(0)
+        setFailCount(0)
+      } else {
+        setCountdown(secs)
+      }
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [lockedUntil])
+
+  const isLocked = !!lockedUntil
+
   async function onSubmit(data: FormData) {
+    if (isLocked) return
     setIsLoading(true)
 
     const result = await signIn("credentials", {
@@ -43,10 +68,39 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     setIsLoading(false)
 
+    // Server-side lockout
+    if (result?.error?.startsWith("LOCKED:")) {
+      const mins = parseInt(result.error.split(":")[1]) || 15
+      setLockedUntil(Date.now() + mins * 60 * 1000)
+      toast({
+        title: "Tài khoản tạm khóa",
+        description: `Đăng nhập bị tạm khóa do quá nhiều lần thử sai. Thử lại sau ${mins} phút.`,
+        variant: "destructive",
+      })
+      return
+    }
+
     if (!result?.ok || result?.error) {
+      const newCount = failCount + 1
+      setFailCount(newCount)
+
+      // Client-side lockout after reaching max attempts
+      if (newCount >= MAX_ATTEMPTS) {
+        setLockedUntil(Date.now() + 15 * 60 * 1000)
+        toast({
+          title: "Tài khoản tạm khóa",
+          description: "Quá nhiều lần thử sai. Thử lại sau 15 phút.",
+          variant: "destructive",
+        })
+        return
+      }
+
+      const remaining = MAX_ATTEMPTS - newCount
       return toast({
         title: "Đăng nhập thất bại",
-        description: "Email hoặc mật khẩu không đúng. Vui lòng thử lại.",
+        description: remaining <= 2
+          ? `Email hoặc mật khẩu không đúng. Còn ${remaining} lần thử trước khi bị khóa.`
+          : "Email hoặc mật khẩu không đúng. Vui lòng thử lại.",
         variant: "destructive",
       })
     }
@@ -78,7 +132,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
+              disabled={isLoading || isLocked}
               {...register("email")}
             />
             {errors?.email && (
@@ -94,7 +148,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 placeholder="••••••••"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
-                disabled={isLoading}
+                disabled={isLoading || isLocked}
                 {...register("password")}
               />
               <button
@@ -103,6 +157,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 onClick={() => setShowPassword((v) => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                disabled={isLocked}
               >
                 {showPassword ? (
                   <Icons.hide className="h-4 w-4" />
@@ -116,9 +171,26 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             )}
           </div>
 
-          <button className={cn(buttonVariants())} disabled={isLoading}>
-            {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-            Đăng nhập
+          {isLocked && (
+            <p className="text-center text-sm text-destructive">
+              Thử lại sau{" "}
+              <span className="font-semibold tabular-nums">
+                {Math.floor(countdown / 60)}:{String(countdown % 60).padStart(2, "0")}
+              </span>
+            </p>
+          )}
+
+          <button className={cn(buttonVariants())} disabled={isLoading || isLocked}>
+            {isLoading ? (
+              <>
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                Đang đăng nhập...
+              </>
+            ) : isLocked ? (
+              "Tài khoản tạm khóa"
+            ) : (
+              "Đăng nhập"
+            )}
           </button>
         </div>
       </form>

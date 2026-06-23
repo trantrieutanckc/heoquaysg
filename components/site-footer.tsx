@@ -48,12 +48,8 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold">Liên hệ</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>📍 47 Đường Ẩm Thực, TP.HCM</li>
-              <li>
-                <a href="tel:0901234567" className="hover:text-foreground transition-colors">
-                  📞 0901 234 567
-                </a>
-              </li>
+              {/* <li>📍 47 Đường Ẩm Thực, TP.HCM</li> */}
+              <li>📞 Cập nhật sau</li>
               <li>🕐 06:00 – 20:00 hàng ngày</li>
             </ul>
           </div>

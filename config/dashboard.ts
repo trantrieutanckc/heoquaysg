@@ -4,7 +4,7 @@ export const dashboardConfig: DashboardConfig = {
   mainNav: [
     {
       title: "Documentation",
-      href: "/docs",
+      href: "/dashboard/docs",
     },
     {
       title: "Support",
@@ -37,11 +37,6 @@ export const dashboardConfig: DashboardConfig = {
       title: "Users",
       href: "/dashboard/users",
       icon: "user",
-    },
-    {
-      title: "Billing",
-      href: "/dashboard/billing",
-      icon: "billing",
     },
     {
       title: "Settings",

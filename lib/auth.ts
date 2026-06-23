@@ -5,11 +5,13 @@ import { compare } from "bcryptjs"
 
 import { env } from "@/env.mjs"
 import { db } from "@/lib/db"
+import { checkLoginRateLimit, recordLoginFailure, resetLoginAttempts } from "@/lib/rate-limit"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db as any),
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 1 ngày
   },
   pages: {
     signIn: "/login",
@@ -25,18 +27,32 @@ export const authOptions: NextAuthOptions = {
         try {
           if (!credentials?.email || !credentials?.password) return null
 
+          const rateCheck = checkLoginRateLimit(credentials.email)
+          if (!rateCheck.ok) {
+            const mins = Math.ceil((rateCheck.remainingMs ?? 900000) / 60000)
+            throw new Error(`LOCKED:${mins}`)
+          }
+
           const user = await db.user.findUnique({
             where: { email: credentials.email },
             select: { id: true, name: true, email: true, image: true, password: true, role: true },
           })
 
-          if (!user || !user.password) return null
+          if (!user || !user.password) {
+            recordLoginFailure(credentials.email)
+            return null
+          }
 
           const valid = await compare(credentials.password, user.password)
-          if (!valid) return null
+          if (!valid) {
+            recordLoginFailure(credentials.email)
+            return null
+          }
 
+          resetLoginAttempts(credentials.email)
           return { id: user.id, name: user.name, email: user.email, image: user.image, role: user.role }
         } catch (error) {
+          if (error instanceof Error && error.message.startsWith("LOCKED:")) throw error
           console.error("[auth] authorize error:", error)
           return null
         }

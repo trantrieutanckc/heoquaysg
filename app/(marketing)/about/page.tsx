@@ -97,8 +97,8 @@ export default function AboutPage() {
             <h2 className="font-heading text-2xl">Liên hệ</h2>
             <div className="rounded-2xl border bg-card divide-y overflow-hidden">
               {[
-                { icon: "📍", label: "Địa chỉ", value: "47 Đường Ẩm Thực, TP. Hồ Chí Minh" },
-                { icon: "📞", label: "Điện thoại", value: "0901 234 567" },
+                // { icon: "📍", label: "Địa chỉ", value: "47 Đường Ẩm Thực, TP. Hồ Chí Minh" },
+                { icon: "📞", label: "Điện thoại", value: "Cập nhật sau" },
                 { icon: "🕐", label: "Giờ mở cửa", value: "06:00 – 20:00 hàng ngày" },
               ].map((contact) => (
                 <div key={contact.label} className="flex items-center gap-4 px-6 py-4">

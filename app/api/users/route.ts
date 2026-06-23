@@ -2,12 +2,13 @@ import { NextResponse } from "next/server"
 import * as z from "zod"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
+import { strongPasswordSchema } from "@/lib/validations/auth"
 
 const createUserSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email(),
   role: z.enum(["ADMIN", "EDITOR", "CONTRIBUTOR"]).default("CONTRIBUTOR"),
-  password: z.string().min(6, "Mật khẩu tối thiểu 6 ký tự"),
+  password: strongPasswordSchema,
 })
 
 export async function POST(req: Request) {
