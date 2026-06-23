@@ -1,3 +1,4 @@
+// [UNUSED] Stripe chưa được kích hoạt cho dự án này. Xóa file này khi không cần thanh toán.
 import Stripe from "stripe"
 
 import { env } from "@/env.mjs"

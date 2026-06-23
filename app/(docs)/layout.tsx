@@ -1,3 +1,4 @@
+// [UNUSED] Layout cho section docs/guides (Contentlayer) — không dùng trong food blog. Có thể xóa cả thư mục app/(docs).
 import Link from "next/link"
 
 import { docsConfig } from "@/config/docs"

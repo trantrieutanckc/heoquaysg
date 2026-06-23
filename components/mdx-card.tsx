@@ -1,3 +1,4 @@
+// [UNUSED] Card trong MDX content — chỉ dùng bởi mdx-components.tsx (cũng unused). Có thể xóa.
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"

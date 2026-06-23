@@ -1,3 +1,4 @@
+// [UNUSED] TOC parser cho MDX/Contentlayer — chỉ dùng bởi app/(docs). Có thể xóa cùng thư mục docs.
 // @ts-nocheck
 // TODO: Fix this when we turn strict mode on.
 

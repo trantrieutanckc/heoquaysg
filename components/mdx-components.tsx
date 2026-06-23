@@ -1,3 +1,4 @@
+// [UNUSED] MDX component renderer cho Contentlayer — chỉ dùng bởi app/(docs) và blog/[...slug]. Có thể xóa.
 import * as React from "react"
 import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer/hooks"

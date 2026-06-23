@@ -1,3 +1,4 @@
+// [UNUSED] Layout docs với sidebar — không dùng. Xóa cùng thư mục app/(docs).
 import { docsConfig } from "@/config/docs"
 import { DocsSidebarNav } from "@/components/sidebar-nav"
 

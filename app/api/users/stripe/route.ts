@@ -1,3 +1,4 @@
+// [UNUSED] API tạo Stripe checkout session — chưa kích hoạt.
 import { getServerSession } from "next-auth/next"
 import { z } from "zod"
 

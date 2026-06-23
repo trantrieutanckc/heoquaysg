@@ -1,3 +1,4 @@
+// [UNUSED] Trang docs chi tiết (Contentlayer) — không dùng. Xóa cùng thư mục app/(docs).
 import { notFound } from "next/navigation"
 import { allDocs } from "contentlayer/generated"
 

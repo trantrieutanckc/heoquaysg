@@ -1,3 +1,4 @@
+// [UNUSED] Trang guide chi tiết (Contentlayer) — không dùng. Xóa cùng thư mục app/(docs).
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { allGuides } from "contentlayer/generated"

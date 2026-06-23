@@ -1,3 +1,4 @@
+// [UNUSED] Trang danh sách guides (Contentlayer) — không dùng. Xóa cùng thư mục app/(docs).
 import Link from "next/link"
 import { allGuides } from "contentlayer/generated"
 import { compareDesc } from "date-fns"

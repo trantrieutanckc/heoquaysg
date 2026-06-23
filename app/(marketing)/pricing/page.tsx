@@ -1,3 +1,4 @@
+// [UNUSED] Trang pricing/billing — Stripe chưa kích hoạt. Có thể xóa.
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"

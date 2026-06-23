@@ -1,3 +1,4 @@
+// [UNUSED] TOC component cũ cho MDX docs — đã được thay bằng table-of-contents.tsx. Có thể xóa.
 "use client"
 
 import * as React from "react"

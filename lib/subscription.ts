@@ -1,3 +1,4 @@
+// [UNUSED] Subscription/Stripe plan logic — chưa kích hoạt. Xóa cùng lib/stripe.ts.
 // @ts-nocheck
 // TODO: Fix this when we turn strict mode on.
 import { UserSubscriptionPlan } from "types"

@@ -1,3 +1,4 @@
+// [UNUSED] Stripe webhook handler — chưa kích hoạt.
 import { headers } from "next/headers"
 import Stripe from "stripe"
 

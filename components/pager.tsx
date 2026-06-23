@@ -1,3 +1,4 @@
+// [UNUSED] Pagination cho trang docs Contentlayer — chỉ dùng bởi app/(docs). Có thể xóa.
 import Link from "next/link"
 import { Doc } from "contentlayer/generated"
 

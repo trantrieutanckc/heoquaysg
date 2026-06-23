@@ -1,3 +1,4 @@
+// [UNUSED] Sidebar navigation cho app/(docs) — không dùng trong food blog. Có thể xóa.
 "use client"
 
 import Link from "next/link"

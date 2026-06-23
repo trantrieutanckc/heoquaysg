@@ -1,3 +1,4 @@
+// [UNUSED] Cấu hình gói Free/Pro cho Stripe — chưa dùng. Xóa cùng lib/stripe.ts.
 import { SubscriptionPlan } from "types"
 import { env } from "@/env.mjs"
 

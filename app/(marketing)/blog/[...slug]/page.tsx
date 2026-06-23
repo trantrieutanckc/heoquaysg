@@ -1,3 +1,4 @@
+// [UNUSED] Route MDX blog cũ (/blog/slug) — blog đã chuyển sang /posts/[postId] với EditorJS. Có thể xóa.
 import { notFound } from "next/navigation"
 import { allAuthors, allPosts } from "contentlayer/generated"
 

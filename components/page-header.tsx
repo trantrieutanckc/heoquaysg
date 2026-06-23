@@ -1,3 +1,4 @@
+// [UNUSED] Header component cho trang docs/guides — chỉ dùng bởi app/(docs). Có thể xóa.
 import { cn } from "@/lib/utils"
 
 interface DocsPageHeaderProps extends React.HTMLAttributes<HTMLDivElement> {

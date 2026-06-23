@@ -1,3 +1,4 @@
+// [UNUSED] Form thanh toán Stripe — chưa kích hoạt. Xóa khi dọn dẹp billing.
 "use client"
 
 import * as React from "react"

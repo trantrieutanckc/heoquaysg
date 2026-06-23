@@ -1,3 +1,4 @@
+// [UNUSED] Catchall MDX pages route — không dùng trong food blog. Có thể xóa.
 import { notFound } from "next/navigation"
 import { allPages } from "contentlayer/generated"
 
