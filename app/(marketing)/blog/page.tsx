@@ -36,7 +36,7 @@ export default async function BlogPage() {
         <hr className="my-8" />
       </PageEntrance>
       {posts.length ? (
-        <StaggerContainer className="grid gap-8 sm:grid-cols-2">
+        <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
             return (
