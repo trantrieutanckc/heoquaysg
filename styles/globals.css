@@ -101,6 +101,10 @@
   color: #f87171;
 }
 
+/* Hide scrollbar but keep scroll */
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
 /* Shimmer loading animation */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
