@@ -9,6 +9,8 @@ import { buttonVariants } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { SiteFooter } from "@/components/site-footer"
 import { SearchButton } from "@/components/search-button"
+import { getCurrentUser } from "@/lib/session"
+import { UserAccountNav } from "@/components/user-account-nav"
 
 interface MarketingLayoutProps {
   children: React.ReactNode
@@ -17,6 +19,8 @@ interface MarketingLayoutProps {
 export default async function MarketingLayout({ children }: MarketingLayoutProps) {
   let dbMenuItems: { title: string; href: string; disabled?: boolean }[] = []
   let categories: { name: string; slug: string }[] = []
+  const user = await getCurrentUser()
+
   try {
     const [menus, cats] = await Promise.all([
       db.menuItem.findMany({ where: { disabled: false }, orderBy: { order: "asc" } }),
@@ -41,12 +45,19 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
           <MainNav items={navItems} />
           <nav className="flex items-center gap-2">
             <SearchButton />
-            <Link
-              href="/login"
-              className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 rounded-full")}
-            >
-              Đăng nhập
-            </Link>
+            {user ? (
+              <UserAccountNav
+                user={{ name: user.name, image: user.image, email: user.email }}
+                role={(user as any).role}
+              />
+            ) : (
+              <Link
+                href="/login"
+                className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 rounded-full")}
+              >
+                Đăng nhập
+              </Link>
+            )}
           </nav>
         </div>
       </header>
