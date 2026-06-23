@@ -126,6 +126,9 @@ prisma/
 - [x] Chỉ ADMIN/EDITOR mới tạo được bài viết
 - [x] Dashboard ẩn nút "Tạo bài" với CONTRIBUTOR
 - [x] Seed tài khoản admin: `admin@heoquay.com` / `Admin@123`
+- [x] Trang profile người dùng, redirect sau login theo role
+- [x] Avatar user hiển thị trên nav public khi đã đăng nhập
+- [x] Login page: logo HeoQuaySG, ẩn link đăng ký
 
 ### Bài viết
 - [x] Tạo, sửa, xóa bài viết
@@ -137,6 +140,11 @@ prisma/
 - [x] Gán category nhanh từ dashboard list (PostCategoryButton popover)
 - [x] Publish/unpublish
 - [x] Like và bình luận (public)
+- [x] Featured post toggle (trong dashboard)
+- [x] Table of contents sidebar tự động từ headings
+- [x] Full-width layout cho trang bài viết
+- [x] Bài liên quan: chọn thủ công trong editor, fallback theo category
+- [x] Bài liên quan carousel responsive (nhiều slide)
 
 ### Danh mục
 - [x] Tạo, sửa, xóa, sắp xếp thứ tự (drag & drop)
@@ -148,16 +156,23 @@ prisma/
 - [x] Menu động từ DB (dashboard → Menu)
 - [x] Fallback về `marketingConfig.mainNav` nếu DB trống
 - [x] Active state dùng `usePathname()` — fix bug active nhiều link cùng prefix
+- [x] Nav overflow dropdown khi có quá 5 mục visible
 
 ### Pages
-- [x] Trang chủ
-- [x] Blog (danh sách bài)
-- [x] Danh mục
+- [x] Trang chủ — redesign hoàn chỉnh, animations, logo, hiển thị tối đa 50 bài, featured post
+- [x] Blog (danh sách bài) — lưới 3 cột trên desktop
+- [x] Danh mục — cải thiện style, hero template gradient
 - [x] Bài viết
-- [x] Về chúng tôi (`/about`)
+- [x] Về chúng tôi (`/about`) — redesign style
 - [x] Liên hệ (`/lien-he`) — form + thông tin cửa hàng
-- [x] Tìm kiếm
+- [x] Tìm kiếm — redesign
 - [x] Footer 4 cột: brand, khám phá, về chúng tôi, thông tin
+
+### UX / Loading
+- [x] Skeleton loading states cho trang blog, category, post
+- [x] Shimmer animation cho loading skeleton
+- [x] Responsive layout toàn site (fix nhiều màn hình)
+- [x] Đánh dấu file không dùng với comment `[UNUSED]`
 
 ---
 
@@ -168,8 +183,13 @@ prisma/
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=clgshfksdhfksdhfksjdhfksjdhfksdhfksjdhf
-DATABASE_URL="postgresql://postgres:...@db...supabase.co:5432/postgres"
+DATABASE_URL="postgresql://postgres.vpdqxefnmbxklonhnlbs:[PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres:[PASSWORD]@db.vpdqxefnmbxklonhnlbs.supabase.co:5432/postgres"
 ```
+
+> **Lý do dùng pooler cho local**: Supabase free tier chỉ có ~100 connection slots. Next.js hot-reload liên tục tạo Prisma client mới gây hết slot (`FATAL: remaining connection slots are reserved for SUPERUSER`). Pooler port 6543 giải quyết vấn đề này.
+> 
+> **DIRECT_URL** dùng để `npx prisma db push` / `prisma generate` — pooler transaction mode không hỗ trợ migration.
 
 ### Vercel (đã cấu hình)
 ```
@@ -202,6 +222,17 @@ npx prisma db push
 ## Việc còn lại
 
 - [x] Fix DATABASE_URL trên Vercel → dùng Supabase Supavisor pooler `aws-1-ap-southeast-1` với `?pgbouncer=true` (login production đã hoạt động)
-- [ ] Trang chủ vẫn đang dùng nội dung mặc định của Taxonomy — cần redesign
+- [x] Trang chủ redesign hoàn chỉnh (23/06/2026)
 - [ ] Upload ảnh cần cấu hình storage (hiện tại dùng base64 hoặc URL ngoài)
 - [ ] Form liên hệ chưa gửi email thật (chỉ log ra console) — cần cấu hình SMTP/Resend
+
+---
+
+## Thay đổi gần đây
+
+### 23/06/2026 — Fix lỗi hết connection slots Supabase
+- **Vấn đề**: `FATAL: remaining connection slots are reserved for SUPERUSER` — Supabase free tier hết 100 connection slots do Next.js hot-reload tạo nhiều Prisma client.
+- **Fix**:
+  - `.env`: đổi `DATABASE_URL` sang pooler `port 6543` với `?pgbouncer=true`, thêm `DIRECT_URL` giữ nguyên direct `port 5432`
+  - `prisma/schema.prisma`: thêm `directUrl = env("DIRECT_URL")` để migration vẫn dùng direct connection
+- **Lưu ý**: Nếu lỗi tái diễn, vào Supabase Dashboard → SQL Editor → chạy `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'postgres' AND pid <> pg_backend_pid() AND state IN ('idle', 'idle in transaction');`. Nếu SQL Editor cũng không vào được → pause rồi resume project.

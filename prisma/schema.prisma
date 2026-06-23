@@ -13,8 +13,9 @@ enum Role {
 
 
 datasource db {
-  provider = "postgresql" // Đổi chữ mysql thành postgresql
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -152,6 +153,23 @@ model MenuItem {
   @@map(name: "menu_items")
 }
 
+
+model SiteConfig {
+  id        String   @id @default("default")
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "site_config")
+}
+
+model SiteDoc {
+  key       String   @id
+  title     String
+  content   String   @db.Text
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "site_docs")
+}
 
 model PostCategory {
   postId     String
