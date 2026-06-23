@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic"
 
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 
 import { dashboardConfig } from "@/config/dashboard"
 import { getCurrentUser } from "@/lib/session"
@@ -20,8 +20,11 @@ export default async function DashboardLayout({
 }: DashboardLayoutProps) {
   const user = await getCurrentUser()
 
-  if (!user) {
-    return notFound()
+  if (!user) redirect("/login")
+
+  const role = (user as any).role as Role | undefined
+  if (!role || (role !== "ADMIN" && role !== "EDITOR")) {
+    redirect("/profile")
   }
 
   return (

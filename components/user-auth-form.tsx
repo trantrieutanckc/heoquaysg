@@ -51,7 +51,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
     }
 
-    window.location.href = result.url ?? "/dashboard"
+    // Redirect based on role
+    const sessionRes = await fetch("/api/auth/session")
+    const session = await sessionRes.json()
+    const role = session?.user?.role
+    const from = searchParams?.get("from")
+    if (from) {
+      window.location.href = from
+    } else if (role === "ADMIN" || role === "EDITOR") {
+      window.location.href = "/dashboard"
+    } else {
+      window.location.href = "/profile"
+    }
   }
 
   return (
