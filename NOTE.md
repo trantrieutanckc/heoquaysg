@@ -170,9 +170,18 @@ prisma/
 
 ### UX / Loading
 - [x] Skeleton loading states cho trang blog, category, post
+- [x] Skeleton loading cho toàn bộ dashboard pages: posts, categories, comments, users, menu, settings
+- [x] Skeleton loading cho trang profile
 - [x] Shimmer animation cho loading skeleton
 - [x] Responsive layout toàn site (fix nhiều màn hình)
 - [x] Đánh dấu file không dùng với comment `[UNUSED]`
+
+### Dashboard mở rộng
+- [x] Trang profile người dùng (`/profile`) — sửa thông tin, avatar
+- [x] Dashboard Settings (`/dashboard/settings`) — cấu hình site: tên, tagline, logo, liên hệ, mạng xã hội, tracking code
+- [x] Dashboard Menu — quản lý điều hướng
+- [x] Dashboard Users — quản lý tài khoản, phân quyền, đổi mật khẩu, avatar
+- [x] Rate limiting cho API
 
 ---
 
@@ -221,14 +230,21 @@ npx prisma db push
 
 ## Việc còn lại
 
-- [x] Fix DATABASE_URL trên Vercel → dùng Supabase Supavisor pooler `aws-1-ap-southeast-1` với `?pgbouncer=true` (login production đã hoạt động)
-- [x] Trang chủ redesign hoàn chỉnh (23/06/2026)
-- [ ] Upload ảnh cần cấu hình storage (hiện tại dùng base64 hoặc URL ngoài)
-- [ ] Form liên hệ chưa gửi email thật (chỉ log ra console) — cần cấu hình SMTP/Resend
+**Version 1 — hoàn thành 24/06/2026** ✅
+
+**Version 2 — việc còn lại:**
+- [ ] Upload ảnh cần cấu hình storage thật (Cloudinary / Supabase Storage) — hiện dùng base64 hoặc URL ngoài
+- [ ] Form liên hệ chưa gửi email thật — cần cấu hình SMTP/Resend
+- [ ] `NEXT_PUBLIC_APP_URL` trên Vercel cần xóa trailing space (gây lỗi `Invalid URL` cho OG image)
 
 ---
 
 ## Thay đổi gần đây
+
+### 24/06/2026 — Version 1 hoàn thành
+- Skeleton loading cho tất cả dashboard pages (categories, comments, users, menu, settings, profile)
+- Fix `TypeError: Invalid URL` trên Vercel: thêm `.trim()` + try-catch quanh `new URL()` trong `generateMetadata` của blog/docs/guides
+- Fix Prisma cold start trên Vercel: dùng `global.cachedPrisma` cho cả production, `connection_limit=1`
 
 ### 23/06/2026 — Fix lỗi hết connection slots Supabase
 - **Vấn đề**: `FATAL: remaining connection slots are reserved for SUPERUSER` — Supabase free tier hết 100 connection slots do Next.js hot-reload tạo nhiều Prisma client.
