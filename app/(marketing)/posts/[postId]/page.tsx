@@ -69,6 +69,27 @@ export default async function PostPage({ params }: PostPageProps) {
   const banner = parseBanner(post.banner)
   const headings = extractHeadings(post.content)
 
+  // Related posts: manual selection or fallback to same category
+  const relatedIds = Array.isArray(post.relatedPostIds) ? (post.relatedPostIds as string[]) : []
+  const categoryIds = post.categories.map((c) => c.category.id)
+
+  const relatedPosts = relatedIds.length > 0
+    ? await db.post.findMany({
+        where: { id: { in: relatedIds }, published: true },
+        include: { categories: { include: { category: { select: { name: true, slug: true } } } } },
+        take: 4,
+      })
+    : await db.post.findMany({
+        where: {
+          published: true,
+          id: { not: params.postId },
+          categories: { some: { categoryId: { in: categoryIds } } },
+        },
+        include: { categories: { include: { category: { select: { name: true, slug: true } } } } },
+        orderBy: { createdAt: "desc" },
+        take: 4,
+      })
+
   return (
     <div className="min-h-screen">
       {postImage?.url && (
@@ -176,6 +197,36 @@ export default async function PostPage({ params }: PostPageProps) {
           <LikeButton postId={post.id} initialLikes={post.likes} />
           <ShareButton title={post.title} />
         </FadeUp>
+
+        {relatedPosts.length > 0 && (
+          <FadeUp className="border-t pt-10 mt-2">
+            <h2 className="font-heading text-xl sm:text-2xl mb-6">Bài viết liên quan</h2>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedPosts.map((p) => {
+                const img = p.image as { url?: string; alt?: string } | null
+                return (
+                  <Link key={p.id} href={`/posts/${p.id}`} className="group flex flex-col gap-3 rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow">
+                    <div className="aspect-video overflow-hidden bg-muted">
+                      {img?.url ? (
+                        <img src={img.url} alt={img.alt ?? p.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      ) : (
+                        <div className="h-full w-full bg-muted" />
+                      )}
+                    </div>
+                    <div className="px-4 pb-4 flex flex-col gap-1.5">
+                      <div className="flex flex-wrap gap-1">
+                        {p.categories.slice(0, 2).map(({ category }) => (
+                          <span key={category.slug} className="text-xs text-primary font-medium">{category.name}</span>
+                        ))}
+                      </div>
+                      <p className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors">{p.title}</p>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </FadeUp>
+        )}
 
         <FadeUp>
           <CommentSection postId={post.id} />

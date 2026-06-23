@@ -98,6 +98,7 @@ model Post {
   seoImage       String?
   template       String         @default("standard")
   banner         Json?
+  relatedPostIds Json?
   author         User           @relation(fields: [authorId], references: [id])
   categories     PostCategory[]
   comments       Comment[]

@@ -31,6 +31,7 @@ import { ImageUploader } from "@/components/image-uploader"
 import { POST_TEMPLATES } from "@/lib/templates"
 import { BannerEditor } from "@/components/banner-editor"
 import { type BannerConfig, parseBanner } from "@/lib/banner"
+import { RelatedPostSelector } from "@/components/related-post-selector"
 
 interface Category {
   id: string
@@ -38,15 +39,21 @@ interface Category {
   slug: string
 }
 
+interface PostOption {
+  id: string
+  title: string
+}
+
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string; banner?: unknown }
+  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string; banner?: unknown; relatedPostIds?: unknown }
   categories: Category[]
   postCategoryIds: string[]
+  allPosts: PostOption[]
 }
 
 type FormData = z.infer<typeof postPatchSchema>
 
-export function Editor({ post, categories, postCategoryIds }: EditorProps) {
+export function Editor({ post, categories, postCategoryIds, allPosts }: EditorProps) {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
     defaultValues: {
@@ -83,6 +90,9 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
     parseBanner(post.banner)
   )
   const [savingBanner, setSavingBanner] = React.useState(false)
+  const [relatedPostIds, setRelatedPostIds] = React.useState<string[]>(
+    Array.isArray(post.relatedPostIds) ? (post.relatedPostIds as string[]) : []
+  )
   const currentImageUrl = (watch("image") as { url?: string } | null)?.url
 
   const initializeEditor = React.useCallback(async () => {
@@ -194,6 +204,7 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
         seoKeywords: seoKeywords || undefined,
         seoImage: seoImage || undefined,
         template: postTemplate,
+        relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
       }),
     })
 
@@ -241,6 +252,12 @@ export function Editor({ post, categories, postCategoryIds }: EditorProps) {
               categories={categories}
               selected={selectedCategoryIds}
               onChange={setSelectedCategoryIds}
+            />
+            <RelatedPostSelector
+              allPosts={allPosts}
+              currentPostId={post.id}
+              selected={relatedPostIds}
+              onChange={setRelatedPostIds}
             />
             <Button
               type="button"

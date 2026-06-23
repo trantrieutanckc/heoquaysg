@@ -27,9 +27,10 @@ export default async function EditorPage({ params }: EditorPageProps) {
     redirect(authOptions?.pages?.signIn || "/login")
   }
 
-  const [post, categories] = await Promise.all([
+  const [post, categories, allPosts] = await Promise.all([
     getPostForUser(params.postId, user.id),
     db.category.findMany({ orderBy: { name: "asc" } }),
+    db.post.findMany({ select: { id: true, title: true }, orderBy: { createdAt: "desc" } }),
   ])
 
   if (!post) {
@@ -52,9 +53,11 @@ export default async function EditorPage({ params }: EditorPageProps) {
         seoImage: post.seoImage,
         template: post.template,
         banner: post.banner,
+        relatedPostIds: post.relatedPostIds,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}
+      allPosts={allPosts}
     />
   )
 }
