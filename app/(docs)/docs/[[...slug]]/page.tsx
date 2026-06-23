@@ -40,12 +40,17 @@ export async function generateMetadata({
     return {}
   }
 
-  const url = env.NEXT_PUBLIC_APP_URL
+  const url = env.NEXT_PUBLIC_APP_URL?.trim()
 
-  const ogUrl = new URL(`${url}/api/og`)
-  ogUrl.searchParams.set("heading", doc.description ?? doc.title)
-  ogUrl.searchParams.set("type", "Documentation")
-  ogUrl.searchParams.set("mode", "dark")
+  let ogUrl: URL | null = null
+  try {
+    ogUrl = new URL(`${url}/api/og`)
+    ogUrl.searchParams.set("heading", doc.description ?? doc.title)
+    ogUrl.searchParams.set("type", "Documentation")
+    ogUrl.searchParams.set("mode", "dark")
+  } catch {
+    // NEXT_PUBLIC_APP_URL chưa set hoặc không hợp lệ
+  }
 
   return {
     title: doc.title,
@@ -55,20 +60,15 @@ export async function generateMetadata({
       description: doc.description,
       type: "article",
       url: absoluteUrl(doc.slug),
-      images: [
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: doc.title,
-        },
-      ],
+      images: ogUrl
+        ? [{ url: ogUrl.toString(), width: 1200, height: 630, alt: doc.title }]
+        : [],
     },
     twitter: {
       card: "summary_large_image",
       title: doc.title,
       description: doc.description,
-      images: [ogUrl.toString()],
+      images: ogUrl ? [ogUrl.toString()] : [],
     },
   }
 }
