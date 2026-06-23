@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { motion } from "framer-motion"
 import { toast } from "@/components/ui/use-toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -53,9 +54,21 @@ export default function ContactPage() {
     }
   }
 
+  const contactItems = [
+    { icon: "📍", label: "Địa chỉ", content: <p>47 Đường Ẩm Thực, Quận 1, TP. Hồ Chí Minh</p> },
+    { icon: "📞", label: "Điện thoại", content: <a href="tel:0901234567" className="hover:text-foreground transition-colors">0901 234 567</a> },
+    { icon: "📧", label: "Email", content: <a href="mailto:heoquay47@gmail.com" className="hover:text-foreground transition-colors">heoquay47@gmail.com</a> },
+    { icon: "🕐", label: "Giờ mở cửa", content: <p>06:00 – 20:00, tất cả các ngày trong tuần</p> },
+  ]
+
   return (
     <div className="container max-w-5xl py-6 lg:py-10">
-      <div className="flex flex-col items-start gap-4">
+      <motion.div
+        className="flex flex-col items-start gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="space-y-2">
           <h1 className="font-heading text-4xl tracking-tight lg:text-5xl">
             Liên hệ
@@ -64,51 +77,44 @@ export default function ContactPage() {
             Hãy để lại tin nhắn, chúng tôi sẽ phản hồi trong thời gian sớm nhất.
           </p>
         </div>
-      </div>
+      </motion.div>
 
       <hr className="my-8" />
 
       <div className="grid gap-10 lg:grid-cols-2">
         {/* Thông tin liên hệ */}
-        <div className="space-y-6">
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
           <h2 className="font-heading text-2xl">Thông tin liên hệ</h2>
 
           <div className="space-y-4 text-muted-foreground">
-            <div className="flex gap-3">
-              <span className="text-xl">📍</span>
-              <div>
-                <p className="font-medium text-foreground">Địa chỉ</p>
-                <p>47 Đường Ẩm Thực, Quận 1, TP. Hồ Chí Minh</p>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-xl">📞</span>
-              <div>
-                <p className="font-medium text-foreground">Điện thoại</p>
-                <a href="tel:0901234567" className="hover:text-foreground transition-colors">
-                  0901 234 567
-                </a>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-xl">📧</span>
-              <div>
-                <p className="font-medium text-foreground">Email</p>
-                <a href="mailto:heoquay47@gmail.com" className="hover:text-foreground transition-colors">
-                  heoquay47@gmail.com
-                </a>
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <span className="text-xl">🕐</span>
-              <div>
-                <p className="font-medium text-foreground">Giờ mở cửa</p>
-                <p>06:00 – 20:00, tất cả các ngày trong tuần</p>
-              </div>
-            </div>
+            {contactItems.map((item, i) => (
+              <motion.div
+                key={item.label}
+                className="flex gap-3"
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <span className="text-xl">{item.icon}</span>
+                <div>
+                  <p className="font-medium text-foreground">{item.label}</p>
+                  {item.content}
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <div className="rounded-lg border bg-muted/40 p-6 space-y-2">
+          <motion.div
+            className="rounded-lg border bg-muted/40 p-6 space-y-2"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
             <h3 className="font-medium">Đặt hàng nhanh</h3>
             <p className="text-sm text-muted-foreground">
               Gọi trực tiếp để đặt hàng hoặc hỏi về thực đơn. Chúng tôi nhận đặt trước cho tiệc, sự kiện và giao hàng tận nơi.
@@ -119,11 +125,15 @@ export default function ContactPage() {
             >
               Gọi ngay: 0901 234 567
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Form liên hệ */}
-        <div>
+        <motion.div
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
           <h2 className="font-heading text-2xl mb-6">Gửi tin nhắn</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
@@ -177,7 +187,7 @@ export default function ContactPage() {
               {isSubmitting ? "Đang gửi..." : "Gửi tin nhắn"}
             </Button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   )

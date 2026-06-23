@@ -13,8 +13,12 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           {/* Brand */}
           <div className="space-y-3 sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2">
-              <Icons.logo />
-              <span className="font-heading font-bold">Heo Quay 47</span>
+              <img
+                src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
+                alt="Heo Quay SG"
+                className="h-10 w-10 rounded-full object-cover"
+              />
+              <span className="font-heading font-bold">Heo Quay SG</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Chuyên heo quay, vịt quay, gà quay chất lượng cao. Phục vụ tận tâm, giao hàng tận nơi.
@@ -59,7 +63,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Heo Quay 47. Bảo lưu mọi quyền.
+            © {new Date().getFullYear()} Heo Quay SG. Bảo lưu mọi quyền.
           </p>
           <ModeToggle />
         </div>

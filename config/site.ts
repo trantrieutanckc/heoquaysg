@@ -1,13 +1,13 @@
 import { SiteConfig } from "types"
 
 export const siteConfig: SiteConfig = {
-  name: "Taxonomy",
+  name: "Heo Quay SG",
   description:
-    "An open source application built using the new router, server components and everything new in Next.js 13.",
-  url: "https://tx.shadcn.com",
-  ogImage: "https://tx.shadcn.com/og.jpg",
+    "Chuyên heo quay, vịt quay, gà quay chất lượng cao. Công thức gia truyền, nguyên liệu tươi sạch.",
+  url: "https://taxonomy-ebon.vercel.app",
+  ogImage: "https://taxonomy-ebon.vercel.app/og.jpg",
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/taxonomy",
+    twitter: "https://twitter.com/heoquaysg",
+    github: "https://github.com/heoquaysg",
   },
 }

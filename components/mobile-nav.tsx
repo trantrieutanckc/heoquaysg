@@ -40,8 +40,11 @@ export function MobileNav({ items, children, onClose }: MobileNavProps) {
           <div className="rounded-xl border bg-background shadow-lg overflow-hidden">
             {/* Logo row */}
             <div className="flex items-center gap-2 px-4 py-3 border-b">
-              <Icons.logo className="h-5 w-5" />
-              <span className="font-bold text-sm">{siteConfig.name}</span>
+              <img
+                src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
+                alt="Heo Quay SG"
+                className="h-7 w-7 rounded-full object-cover"
+              />
             </div>
 
             {/* Nav links */}

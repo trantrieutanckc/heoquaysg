@@ -77,11 +77,14 @@ prisma/
 
 | | |
 |---|---|
-| **Host** | db.vpdqxefnmbxklonhnlbs.supabase.co |
-| **Port direct** | 5432 (dùng local dev) |
-| **Port pooler** | 6543 (dùng cho Vercel serverless) |
+| **Host direct** | db.vpdqxefnmbxklonhnlbs.supabase.co (IPv6 only — không dùng cho Vercel) |
+| **Port direct** | 5432 (chỉ dùng local dev) |
+| **Host pooler** | aws-1-ap-southeast-1.pooler.supabase.com (có IPv4 — dùng cho Vercel) |
+| **Port pooler** | 6543 (Transaction mode) |
 
-> **Lưu ý Vercel**: Login thất bại vì DATABASE_URL đang dùng port 5432 không connect được từ Vercel serverless. Cần đổi sang pooler URL port 6543 từ Supabase dashboard.
+> **Vercel DATABASE_URL** (production): `postgresql://postgres.vpdqxefnmbxklonhnlbs:[PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true`
+>
+> **Lý do**: `db.xxx.supabase.co` chỉ có IPv6 → Vercel serverless không reach được. Phải dùng Supabase Supavisor pooler (`aws-1-ap-southeast-1`) có IPv4. Thêm `?pgbouncer=true` để Prisma tắt prepared statements (transaction mode không hỗ trợ).
 
 ---
 
@@ -168,12 +171,12 @@ NEXTAUTH_SECRET=clgshfksdhfksdhfksjdhfksjdhfksdhfksjdhf
 DATABASE_URL="postgresql://postgres:...@db...supabase.co:5432/postgres"
 ```
 
-### Vercel (cần cấu hình)
+### Vercel (đã cấu hình)
 ```
 NEXT_PUBLIC_APP_URL=https://taxonomy-ebon.vercel.app
 NEXTAUTH_URL=https://taxonomy-ebon.vercel.app
-NEXTAUTH_SECRET=<secret mạnh>
-DATABASE_URL=<pooler URL port 6543 từ Supabase>
+NEXTAUTH_SECRET=<encrypted trên Vercel>
+DATABASE_URL=postgresql://postgres.vpdqxefnmbxklonhnlbs:[PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true
 ```
 
 ---
@@ -198,7 +201,7 @@ npx prisma db push
 
 ## Việc còn lại
 
-- [ ] Fix DATABASE_URL trên Vercel sang pooler port 6543 → login mới hoạt động trên production
+- [x] Fix DATABASE_URL trên Vercel → dùng Supabase Supavisor pooler `aws-1-ap-southeast-1` với `?pgbouncer=true` (login production đã hoạt động)
 - [ ] Trang chủ vẫn đang dùng nội dung mặc định của Taxonomy — cần redesign
 - [ ] Upload ảnh cần cấu hình storage (hiện tại dùng base64 hoặc URL ngoài)
 - [ ] Form liên hệ chưa gửi email thật (chỉ log ra console) — cần cấu hình SMTP/Resend

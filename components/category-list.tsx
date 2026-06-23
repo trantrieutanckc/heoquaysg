@@ -32,6 +32,7 @@ import { ImageUploader } from "@/components/image-uploader"
 import { CATEGORY_TEMPLATES, type CategoryTemplate } from "@/lib/templates"
 import { BannerEditor } from "@/components/banner-editor"
 import { type BannerConfig, parseBanner } from "@/lib/banner"
+import { PublishToggle } from "@/components/publish-toggle"
 
 interface CategoryImage {
   url: string
@@ -43,6 +44,7 @@ interface Category {
   id: string
   name: string
   slug: string
+  published: boolean
   order: number
   template: string
   image?: CategoryImage | null
@@ -128,6 +130,7 @@ function SortableRow({
       </div>
 
       <div className="flex items-center gap-1 shrink-0">
+        <PublishToggle id={cat.id} published={cat.published} endpoint="categories" />
         <Button variant="ghost" size="sm" onClick={() => onBanner(cat)} title="Banner" className={parseBanner(cat.banner) ? "text-primary" : ""}>
           <Icons.media className="h-4 w-4" />
         </Button>

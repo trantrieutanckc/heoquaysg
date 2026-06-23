@@ -121,6 +121,7 @@ model Category {
   id             String         @id @default(cuid())
   name           String         @unique
   slug           String         @unique
+  published      Boolean        @default(true)
   image          Json?
   order          Int            @default(0)
   seoTitle       String?

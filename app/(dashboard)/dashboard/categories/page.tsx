@@ -10,7 +10,7 @@ export default async function CategoriesPage() {
   const categories = await db.category.findMany({
     orderBy: { order: "asc" },
     select: {
-      id: true, name: true, slug: true, order: true, image: true, template: true, banner: true,
+      id: true, name: true, slug: true, published: true, order: true, image: true, template: true, banner: true,
       seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true,
       _count: { select: { posts: true } },
     },

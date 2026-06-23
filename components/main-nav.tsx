@@ -50,9 +50,12 @@ export function MainNav({ items, children }: MainNavProps) {
   return (
     <div className="flex items-center gap-4 md:gap-6">
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2 font-bold shrink-0">
-        <Icons.logo className="h-6 w-6" />
-        <span className="hidden sm:inline-block text-base">{siteConfig.name}</span>
+      <Link href="/" className="flex items-center shrink-0">
+        <img
+          src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
+          alt="Heo Quay SG"
+          className="h-9 w-9 rounded-full object-cover"
+        />
       </Link>
 
       {/* Desktop nav */}

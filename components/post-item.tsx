@@ -9,6 +9,7 @@ import { PostOperations } from "@/components/post-operations"
 import { PostAddImageButton } from "@/components/post-add-image-button"
 import { PostCategoryButton } from "@/components/post-category-button"
 import { FeaturedToggle } from "@/components/featured-toggle"
+import { PublishToggle } from "@/components/publish-toggle"
 
 interface PostItemProps {
   post: Pick<Post, "id" | "title" | "published" | "featured" | "createdAt" | "image" | "likes"> & {
@@ -60,6 +61,7 @@ export function PostItem({ post, allCategories }: PostItemProps) {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <PublishToggle id={post.id} published={post.published} endpoint="posts" />
         <FeaturedToggle postId={post.id} featured={post.featured ?? false} />
         <PostCategoryButton
           postId={post.id}

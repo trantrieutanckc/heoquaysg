@@ -20,7 +20,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
   try {
     const [menus, cats] = await Promise.all([
       db.menuItem.findMany({ where: { disabled: false }, orderBy: { order: "asc" } }),
-      db.category.findMany({ orderBy: { order: "asc" } }),
+      db.category.findMany({ where: { published: true }, orderBy: { order: "asc" } }),
     ])
     dbMenuItems = menus
     categories = cats

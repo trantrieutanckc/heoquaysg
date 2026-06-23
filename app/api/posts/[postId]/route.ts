@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 const postPatchSchema = z.object({
   title: z.string().optional(),
   content: z.any().optional(),
+  published: z.boolean().optional(),
   image: z.any().optional().nullable(),
   categoryIds: z.array(z.string()).optional(),
   seoTitle: z.string().optional(),
@@ -31,6 +32,7 @@ export async function PATCH(
       data: {
         title: body.title,
         content: body.content,
+        ...(body.published !== undefined && { published: body.published }),
         image: body.image == null || body.image === "" ? undefined : body.image,
         seoTitle: body.seoTitle,
         seoDescription: body.seoDescription,
