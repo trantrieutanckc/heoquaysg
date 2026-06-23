@@ -23,28 +23,34 @@ export default function LoginPage() {
       >
         <>
           <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          Back
+          Quay lại
         </>
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <Icons.logo className="mx-auto h-6 w-6" />
+          <Link href="/" className="mx-auto">
+            <img
+              src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
+              alt="Heo Quay SG"
+              className="mx-auto h-16 w-16 rounded-full object-cover"
+            />
+          </Link>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Welcome back
+            Đăng nhập
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email to sign in to your account
+            Nhập email để đăng nhập vào tài khoản
           </p>
         </div>
         <UserAuthForm />
-        <p className="px-8 text-center text-sm text-muted-foreground">
+        {/* <p className="px-8 text-center text-sm text-muted-foreground">
           <Link
             href="/register"
             className="hover:text-brand underline underline-offset-4"
           >
             Don&apos;t have an account? Sign Up
           </Link>
-        </p>
+        </p> */}
       </div>
     </div>
   )
