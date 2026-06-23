@@ -73,7 +73,7 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="min-h-screen">
       {postImage?.url && (
         <PageEntrance>
-          <div className="w-full overflow-hidden bg-muted aspect-[16/7] max-h-[480px]">
+          <div className="w-full overflow-hidden bg-muted aspect-video sm:aspect-[16/7] max-h-[480px]">
             <img
               src={postImage.url}
               alt={postImage.alt ?? post.title}
@@ -167,7 +167,7 @@ export default async function PostPage({ params }: PostPageProps) {
               <EditorJsRenderer content={post.content} />
             </div>
           </FadeUp>
-          <div className="w-56 shrink-0">
+          <div className="hidden lg:block w-56 shrink-0">
             <TableOfContents headings={headings} />
           </div>
         </div>

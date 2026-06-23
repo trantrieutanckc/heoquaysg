@@ -62,8 +62,7 @@ export default async function IndexPage() {
             <PageEntrance>
               <Link
                 href={`/posts/${featured.id}`}
-                className="group block relative w-full overflow-hidden rounded-2xl bg-muted"
-                style={{ height: "480px" }}
+                className="group block relative w-full overflow-hidden rounded-2xl bg-muted h-[280px] sm:h-[380px] lg:h-[480px]"
               >
                 {image?.url ? (
                   <img
@@ -130,7 +129,7 @@ export default async function IndexPage() {
                 </Link>
               </div>
             </SlideInLeft>
-            <StaggerContainer className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+            <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {categories.map((cat) => {
                 const catImg = img(cat.image)
                 return (
