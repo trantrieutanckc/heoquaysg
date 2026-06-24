@@ -87,6 +87,8 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
     (post.image as { title?: string } | null)?.title || ""
   )
   const [bannerDialogOpen, setBannerDialogOpen] = React.useState(false)
+  const [isPublished, setIsPublished] = React.useState(post.published)
+  const [isPublishing, setIsPublishing] = React.useState(false)
   const [bannerConfig, setBannerConfig] = React.useState<BannerConfig | null>(
     parseBanner(post.banner)
   )
@@ -189,6 +191,27 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
     toast({ description: "Đã lưu banner." })
   }
 
+  async function handlePublishToggle() {
+    setIsPublishing(true)
+    try {
+      const next = !isPublished
+      const res = await fetch(`/api/posts/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ published: next }),
+      })
+      if (res.ok) {
+        setIsPublished(next)
+        router.refresh()
+        toast({ description: next ? "Đã đăng bài." : "Đã chuyển về bản nháp." })
+      } else {
+        toast({ title: "Lỗi", description: "Không thể thay đổi trạng thái.", variant: "destructive" })
+      }
+    } finally {
+      setIsPublishing(false)
+    }
+  }
+
   async function onSubmit(data: FormData) {
     setIsSaving(true)
     try {
@@ -243,16 +266,16 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-10">
             <Link
-              href="/dashboard"
+              href="/dashboard/posts"
               className={cn(buttonVariants({ variant: "ghost" }))}
             >
               <>
                 <Icons.chevronLeft className="mr-2 h-4 w-4" />
-                Back
+                Quay lại
               </>
             </Link>
             <p className="text-sm text-muted-foreground">
-              {post.published ? "Published" : "Draft"}
+              {isPublished ? "Đã đăng" : "Bản nháp"}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -312,11 +335,21 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
             >
               SEO
             </Button>
-            <button type="submit" className={cn(buttonVariants())}>
+            <Button
+              type="button"
+              variant={isPublished ? "secondary" : "default"}
+              size="sm"
+              onClick={handlePublishToggle}
+              disabled={isPublishing}
+            >
+              {isPublishing && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+              {isPublished ? "Huỷ đăng" : "Đăng bài"}
+            </Button>
+            <button type="submit" className={cn(buttonVariants({ variant: "outline" }))}>
               {isSaving && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              <span>Save</span>
+              <span>Lưu</span>
             </button>
           </div>
         </div>
