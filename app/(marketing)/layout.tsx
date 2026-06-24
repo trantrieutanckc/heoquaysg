@@ -155,7 +155,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
       {/* ── Main header ─────────────────────────────────────── */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
-          <MainNav items={navItems} />
+          <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} />
           <nav className="flex items-center gap-1.5">
             <SearchButton />
             {user ? (
@@ -175,7 +175,19 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
         </div>
       </header>
       <main className="flex-1">{children}</main>
-      <SiteFooter />
+      <SiteFooter
+        siteName={cfg.siteName?.trim()}
+        logoUrl={cfg.logoUrl?.trim()}
+        siteDescription={cfg.siteDescription?.trim()}
+        contactPhone={cfg.contactPhone?.trim()}
+        contactEmail={cfg.contactEmail?.trim()}
+        contactAddress={cfg.contactAddress?.trim()}
+        businessHours={cfg.businessHours?.trim()}
+        socialFacebook={cfg.socialFacebook?.trim()}
+        socialInstagram={cfg.socialInstagram?.trim()}
+        socialYoutube={cfg.socialYoutube?.trim()}
+        contactZalo={cfg.contactZalo?.trim()}
+      />
     </div>
   )
 }

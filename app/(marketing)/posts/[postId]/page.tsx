@@ -140,7 +140,7 @@ export default async function PostPage({ params }: PostPageProps) {
             )}
 
             {template !== "minimal" && (
-              <div className="flex items-center gap-3 pt-1 border-t pt-4">
+              <div className="flex items-center gap-3 border-t pt-4">
                 {post.author && (
                   <>
                     {post.author.image ? (

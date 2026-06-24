@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { MainNavItem } from "types"
-import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { MobileNav } from "@/components/mobile-nav"
@@ -13,6 +12,8 @@ import { MobileNav } from "@/components/mobile-nav"
 interface MainNavProps {
   items?: MainNavItem[]
   children?: React.ReactNode
+  logoUrl?: string
+  siteName?: string
 }
 
 const MAX_VISIBLE = 5
@@ -22,7 +23,7 @@ function isActive(href: string, pathname: string) {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export function MainNav({ items, children }: MainNavProps) {
+export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
   const pathname = usePathname()
   const [showMobileMenu, setShowMobileMenu] = React.useState(false)
   const [showMore, setShowMore] = React.useState(false)
@@ -51,11 +52,17 @@ export function MainNav({ items, children }: MainNavProps) {
     <div className="flex items-center gap-4 md:gap-6">
       {/* Logo */}
       <Link href="/" className="flex items-center shrink-0">
-        <img
-          src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
-          alt="Heo Quay SG"
-          className="h-9 w-9 rounded-full object-cover"
-        />
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt={siteName ?? "Logo"}
+            className="h-9 w-9 rounded-full object-cover"
+          />
+        ) : (
+          <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm select-none">
+            {(siteName ?? "H")[0]}
+          </div>
+        )}
       </Link>
 
       {/* Desktop nav */}
@@ -142,7 +149,7 @@ export function MainNav({ items, children }: MainNavProps) {
       </button>
 
       {showMobileMenu && items && (
-        <MobileNav items={items} onClose={() => setShowMobileMenu(false)}>
+        <MobileNav items={items} logoUrl={logoUrl} siteName={siteName} onClose={() => setShowMobileMenu(false)}>
           {children}
         </MobileNav>
       )}

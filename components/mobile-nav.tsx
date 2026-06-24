@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { MainNavItem } from "types"
-import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { useLockBody } from "@/hooks/use-lock-body"
 import { Icons } from "@/components/icons"
@@ -14,9 +13,11 @@ interface MobileNavProps {
   items: MainNavItem[]
   children?: React.ReactNode
   onClose?: () => void
+  logoUrl?: string
+  siteName?: string
 }
 
-export function MobileNav({ items, children, onClose }: MobileNavProps) {
+export function MobileNav({ items, children, onClose, logoUrl, siteName }: MobileNavProps) {
   useLockBody()
   const pathname = usePathname()
 
@@ -40,11 +41,18 @@ export function MobileNav({ items, children, onClose }: MobileNavProps) {
           <div className="rounded-xl border bg-background shadow-lg overflow-hidden">
             {/* Logo row */}
             <div className="flex items-center gap-2 px-4 py-3 border-b">
-              <img
-                src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
-                alt="Heo Quay SG"
-                className="h-7 w-7 rounded-full object-cover"
-              />
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt={siteName ?? "Logo"}
+                  className="h-7 w-7 rounded-full object-cover"
+                />
+              ) : (
+                <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs select-none">
+                  {(siteName ?? "H")[0]}
+                </div>
+              )}
+              {siteName && <span className="text-sm font-semibold">{siteName}</span>}
             </div>
 
             {/* Nav links */}

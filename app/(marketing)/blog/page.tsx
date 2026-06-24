@@ -13,7 +13,7 @@ export default async function BlogPage() {
     where: { published: true },
     orderBy: { createdAt: "desc" },
     include: {
-      author: { select: { name: true } },
+      author: { select: { name: true, image: true } },
       categories: {
         include: { category: { select: { name: true, slug: true } } },
       },
@@ -35,58 +35,69 @@ export default async function BlogPage() {
         </div>
         <hr className="my-8" />
       </PageEntrance>
+
       {posts.length ? (
-        <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
             return (
               <StaggerItem key={post.id} hover>
-                <article className="group relative flex flex-col space-y-3">
-                  {image?.url ? (
-                    <div className="overflow-hidden rounded-md border bg-muted aspect-video">
+                <Link
+                  href={`/posts/${post.id}`}
+                  className="group flex flex-col rounded-2xl overflow-hidden border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
+                >
+                  <div className="aspect-video overflow-hidden bg-muted">
+                    {image?.url ? (
                       <img
                         src={image.url}
                         alt={image.alt ?? post.title}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                    </div>
-                  ) : (
-                    <div className="rounded-md border bg-muted aspect-video" />
-                  )}
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
+                    )}
+                  </div>
 
-                  <div className="flex flex-wrap gap-1">
-                    {post.categories.map(({ category }) => (
-                      <span
-                        key={category.slug}
-                        className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium"
-                      >
-                        {category.name}
+                  <div className="flex flex-col gap-2.5 p-4 flex-1">
+                    {post.categories.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {post.categories.map(({ category }) => (
+                          <span
+                            key={category.slug}
+                            className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-semibold"
+                          >
+                            {category.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h2>
+
+                    {post.price != null && (
+                      <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-2.5 py-0.5 text-xs font-bold w-fit">
+                        {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                       </span>
-                    ))}
+                    )}
+
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-2 border-t">
+                      {post.author?.image ? (
+                        <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />
+                      ) : (
+                        <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold">
+                          {post.author?.name?.[0]?.toUpperCase() ?? "?"}
+                        </div>
+                      )}
+                      {post.author?.name && <span>{post.author.name}</span>}
+                      {post.author?.name && <span>·</span>}
+                      <time dateTime={post.createdAt.toISOString()}>
+                        {formatDate(post.createdAt.toISOString())}
+                      </time>
+                    </div>
                   </div>
-
-                  <h2 className="text-2xl font-extrabold leading-tight group-hover:text-primary transition-colors">
-                    {post.title}
-                  </h2>
-
-                  {post.price != null && (
-                    <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-3 py-0.5 text-sm font-bold w-fit">
-                      {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                    </span>
-                  )}
-
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    {post.author?.name && <span>{post.author.name}</span>}
-                    {post.author?.name && <span>·</span>}
-                    <time dateTime={post.createdAt.toISOString()}>
-                      {formatDate(post.createdAt.toISOString())}
-                    </time>
-                  </div>
-
-                  <Link href={`/posts/${post.id}`} className="absolute inset-0">
-                    <span className="sr-only">Đọc bài viết</span>
-                  </Link>
-                </article>
+                </Link>
               </StaggerItem>
             )
           })}
