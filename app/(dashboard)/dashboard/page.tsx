@@ -85,7 +85,7 @@ export default async function DashboardPage() {
       where: { published: true, ...(isAdmin ? {} : postWhere) },
       select: {
         id: true, title: true,
-        _count: { select: { comments: { where: { approved: true } } } },
+        _count: { select: { comments: true } },
         categories: { select: { category: { select: { name: true } } }, take: 1 },
       },
       orderBy: { comments: { _count: "desc" } },
