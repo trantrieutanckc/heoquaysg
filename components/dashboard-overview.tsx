@@ -23,7 +23,6 @@ interface Props {
   stats: Stats
   postsByMonth: { month: string; count: number }[]
   commentsByMonth: { month: string; count: number }[]
-  topCategories: { name: string; count: number }[]
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -85,7 +84,7 @@ const STAT_CONFIGS = [
   },
 ]
 
-export default function DashboardOverview({ stats, postsByMonth, commentsByMonth, topCategories }: Props) {
+export default function DashboardOverview({ stats, postsByMonth, commentsByMonth }: Props) {
   const draftPosts = stats.totalPosts - stats.publishedPosts
 
   const statValues = [
@@ -149,37 +148,6 @@ export default function DashboardOverview({ stats, postsByMonth, commentsByMonth
         </div>
       </div>
 
-      {/* ── Top categories ─────────────────────────────────────── */}
-      {topCategories.length > 0 && (
-        <div className="rounded-xl border bg-card p-5">
-          <p className="text-sm font-semibold mb-1">Danh mục nhiều bài nhất</p>
-          <p className="text-xs text-muted-foreground mb-4">Top {topCategories.length} danh mục</p>
-          <div className="space-y-3">
-            {topCategories.map((cat, i) => {
-              const max = topCategories[0].count || 1
-              const pct = Math.round((cat.count / max) * 100)
-              const colors = ["bg-orange-500", "bg-blue-500", "bg-emerald-500", "bg-violet-500", "bg-rose-500"]
-              return (
-                <div key={cat.name} className="flex items-center gap-3">
-                  <span className="text-xs font-medium text-muted-foreground w-4 text-right shrink-0">{i + 1}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-sm font-medium truncate">{cat.name}</span>
-                      <span className="text-xs text-muted-foreground ml-2 shrink-0">{cat.count} bài</span>
-                    </div>
-                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${colors[i] ?? "bg-orange-500"}`}
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

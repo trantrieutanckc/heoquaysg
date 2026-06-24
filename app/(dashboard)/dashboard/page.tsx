@@ -51,7 +51,7 @@ export default async function DashboardPage() {
       isAdmin ? db.user.count() : Promise.resolve(0),
     ])
 
-  const [recentPosts, recentComments, topCategories] = await Promise.all([
+  const [recentPosts, recentComments] = await Promise.all([
     db.post.findMany({
       where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
       select: { createdAt: true },
@@ -59,11 +59,6 @@ export default async function DashboardPage() {
     db.comment.findMany({
       where: { createdAt: { gte: sixMonthsAgo } },
       select: { createdAt: true },
-    }),
-    db.category.findMany({
-      select: { name: true, _count: { select: { posts: true } } },
-      orderBy: { posts: { _count: "desc" } },
-      take: 5,
     }),
   ])
 
@@ -75,7 +70,6 @@ export default async function DashboardPage() {
         stats={{ totalPosts, publishedPosts, pendingComments, totalComments, totalUsers, isAdmin }}
         postsByMonth={buildMonthChart(recentPosts)}
         commentsByMonth={buildMonthChart(recentComments)}
-        topCategories={topCategories.map((c) => ({ name: c.name, count: c._count.posts }))}
       />
     </DashboardShell>
   )
