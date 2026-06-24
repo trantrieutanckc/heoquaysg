@@ -255,7 +255,17 @@ npx prisma db push
   - Trang `/reset-password/[token]`
   - SMTP/Resend (dùng chung với task form liên hệ bên dưới)
 - [ ] **Form liên hệ** — chưa gửi email thật, cần cấu hình SMTP/Resend
-- [ ] **`NEXT_PUBLIC_APP_URL` trên Vercel** — xóa trailing space (gây lỗi `Invalid URL` cho OG image)
+- [ ] **Hero banner trang chủ** — thiết kế lại section đầu trang chủ thành hero banner riêng biệt (ảnh nền full-width, tagline thương hiệu, CTA buttons), tách khỏi featured post hiện tại. Featured post sẽ nằm bên dưới hero
+- [ ] **Featured post hiển thị khác biệt** — bài được đánh dấu featured sẽ có layout riêng (ví dụ: card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng) thay vì chỉ là hero duy nhất như hiện tại
+- [ ] **Pagination cho dashboard** — thêm phân trang vào tất cả các trang list: posts, categories, comments, users. Hiện tại load toàn bộ, sẽ chậm khi data lớn
+- [ ] **Dashboard overview với chart** — trang `/dashboard` khi login vào sẽ hiển thị chart số lượng người xem website theo ngày/tuần/tháng thay vì chỉ list bài viết. Dùng **Google Analytics 4 API** (không dùng Search Console). Các widget gợi ý: tổng lượt xem, bài viết nhiều view nhất, bình luận mới, người dùng mới. **Lưu ý: chỉ test được khi site go live với GA4 account thật của khách hàng**
+- [ ] **Trang 404 tùy chỉnh** — thay trang 404 mặc định của Next.js bằng trang riêng phù hợp style Heo Quay 47. Chỉ cần tạo `app/not-found.tsx`
+- [x] **`NEXT_PUBLIC_APP_URL` trên Vercel** — đã xóa trailing space 24/06/2026, OG image không còn lỗi `Invalid URL`
+
+## Khi go live cần làm thêm
+- [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
+- [ ] **Cập nhật sitemap** — thêm `/about` và `/lien-he` vào `sitemap.ts`
+- [ ] **Cập nhật metadata** trong `app/layout.tsx` — đổi `authors`, `creator`, `keywords` (đang là placeholder của shadcn), `openGraph.locale` từ `en_US` → `vi_VN`
 
 ---
 
