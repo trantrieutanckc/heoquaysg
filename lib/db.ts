@@ -5,16 +5,25 @@ declare global {
   var cachedPrisma: PrismaClient
 }
 
-function createPrismaClient() {
-  const url = new URL(process.env.DATABASE_URL!)
-  url.searchParams.set("connection_limit", "5")
-  url.searchParams.set("pool_timeout", "20")
-  return new PrismaClient({ datasources: { db: { url: url.toString() } } })
+function patchDatabaseUrl() {
+  if (!process.env.DATABASE_URL) return
+  let url = process.env.DATABASE_URL
+  // Override any connection_limit=1 set in Supabase pooler URL
+  url = url.replace(/connection_limit=\d+/g, "connection_limit=5")
+  url = url.replace(/pool_timeout=\d+/g, "pool_timeout=20")
+  if (!url.includes("connection_limit=")) {
+    url += (url.includes("?") ? "&" : "?") + "connection_limit=5"
+  }
+  if (!url.includes("pool_timeout=")) {
+    url += "&pool_timeout=20"
+  }
+  process.env.DATABASE_URL = url
 }
 
 let prisma: PrismaClient
 if (!global.cachedPrisma) {
-  global.cachedPrisma = createPrismaClient()
+  patchDatabaseUrl()
+  global.cachedPrisma = new PrismaClient()
 }
 prisma = global.cachedPrisma
 
