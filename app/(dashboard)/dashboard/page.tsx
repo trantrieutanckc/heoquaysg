@@ -43,20 +43,16 @@ export default async function DashboardPage() {
   sixMonthsAgo.setDate(1)
   sixMonthsAgo.setHours(0, 0, 0, 0)
 
-  const [
-    totalPosts, publishedPosts,
-    totalComments, pendingComments,
-    totalUsers,
-    recentPosts, recentComments,
-    topCategories,
-    topLikedPosts,
-    topCommentedPosts,
-  ] = await Promise.all([
-    db.post.count({ where: isAdmin ? {} : postWhere }),
-    db.post.count({ where: isAdmin ? { published: true } : { ...postWhere, published: true } }),
-    db.comment.count(),
-    db.comment.count({ where: { approved: false } }),
-    isAdmin ? db.user.count() : Promise.resolve(0),
+  const [totalPosts, publishedPosts, totalComments, pendingComments, totalUsers] =
+    await Promise.all([
+      db.post.count({ where: isAdmin ? {} : postWhere }),
+      db.post.count({ where: isAdmin ? { published: true } : { ...postWhere, published: true } }),
+      db.comment.count(),
+      db.comment.count({ where: { approved: false } }),
+      isAdmin ? db.user.count() : Promise.resolve(0),
+    ])
+
+  const [recentPosts, recentComments, topCategories] = await Promise.all([
     db.post.findMany({
       where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
       select: { createdAt: true },
@@ -70,7 +66,9 @@ export default async function DashboardPage() {
       orderBy: { posts: { _count: "desc" } },
       take: 5,
     }),
-    // Top bài được like nhiều nhất
+  ])
+
+  const [topLikedPosts, topCommentedPosts] = await Promise.all([
     db.post.findMany({
       where: { published: true, ...(isAdmin ? {} : postWhere) },
       select: {
@@ -80,7 +78,6 @@ export default async function DashboardPage() {
       orderBy: { likes: "desc" },
       take: 5,
     }),
-    // Top bài nhiều bình luận nhất
     db.post.findMany({
       where: { published: true, ...(isAdmin ? {} : postWhere) },
       select: {
