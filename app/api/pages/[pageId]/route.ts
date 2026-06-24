@@ -8,6 +8,12 @@ const patchSchema = z.object({
   slug: z.string().min(1).max(200).regex(/^[a-z0-9-]+$/).optional(),
   content: z.any().optional(),
   published: z.boolean().optional(),
+  image: z.any().optional(),
+  seoTitle: z.string().max(200).nullable().optional(),
+  seoDescription: z.string().max(500).nullable().optional(),
+  seoKeywords: z.string().max(500).nullable().optional(),
+  seoImage: z.string().max(500).nullable().optional(),
+  banner: z.any().optional(),
 })
 
 async function getAdmin() {

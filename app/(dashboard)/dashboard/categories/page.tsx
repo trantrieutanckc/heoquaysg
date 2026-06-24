@@ -7,7 +7,7 @@ import { CategoryList } from "@/components/category-list"
 import { CategoryCreateButton } from "@/components/category-create-button"
 import { DashboardPagination } from "@/components/dashboard-pagination"
 
-export const metadata = { title: "Categories" }
+export const metadata = { title: "Danh mục" }
 
 const PAGE_SIZE = 20
 
@@ -39,7 +39,7 @@ export default async function CategoriesPage({
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Categories" text={`${total} danh mục.`}>
+      <DashboardHeader heading="Danh mục" text={`${total} danh mục.`}>
         <CategoryCreateButton />
       </DashboardHeader>
       <CategoryList categories={categories} />

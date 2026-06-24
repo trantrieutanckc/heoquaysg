@@ -240,10 +240,11 @@ npx prisma db push
 - [ ] **Hero banner trang chủ** — thiết kế lại section đầu trang chủ thành hero banner riêng biệt (ảnh nền full-width, tagline thương hiệu, CTA buttons), tách khỏi featured post hiện tại. Featured post sẽ nằm bên dưới hero
 - [ ] **Featured post hiển thị khác biệt** — bài được đánh dấu featured sẽ có layout riêng (card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng) thay vì chỉ là hero duy nhất như hiện tại
 - [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, route public `/pages/[slug]`
-- [ ] **Access token + Refresh token** — thay thế session JWT 24h hiện tại:
-  - Access token: JWT 30 phút, cookie `HttpOnly SameSite=Strict`
-  - Refresh token: 7 ngày, lưu hash trong DB, token rotation khi refresh
-  - Cần model `RefreshToken`, `POST /api/auth/refresh`, cập nhật middleware
+- [x] **Access token + Refresh token** — thay thế session JWT 24h:
+  - Access token: JWT 30 phút (`accessTokenExpires` trong JWT)
+  - Refresh token: 7 ngày, lưu hash SHA-256 trong DB (`refresh_tokens`), rotation khi access token hết hạn
+  - Model `RefreshToken` (cascade xóa theo user), rotation trong JWT callback, xóa khi signOut
+  - Middleware bắt `error: "RefreshTokenExpired"` → clear cookie + redirect `/login`
 - [ ] **Reset Password** — đổi mật khẩu qua email. Cần model `EmailToken`, `/api/auth/forgot-password`, `/api/auth/reset-password`, trang `/reset-password/[token]`, SMTP/Resend
 - [ ] **Form liên hệ** — chưa gửi email thật, cần SMTP/Resend (dùng chung với Reset Password)
 - [ ] **Dashboard chart** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
@@ -257,6 +258,11 @@ npx prisma db push
 ---
 
 ## Thay đổi gần đây
+
+### 24/06/2026 — Access token + Refresh token
+- `prisma/schema.prisma`: thêm model `RefreshToken` (userId, tokenHash unique, expiresAt, cascade)
+- `lib/auth.ts`: JWT callback tạo refresh token khi login, rotate khi access token hết hạn (30 phút), xóa khi signOut; `session.maxAge` đổi từ 1 ngày → 7 ngày
+- `middleware.ts`: check `token.error === "RefreshTokenExpired"` → clear cookie + redirect `/login`
 
 ### 24/06/2026 — Security fixes + bug fixes (post Version 1)
 

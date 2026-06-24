@@ -14,17 +14,22 @@ export const dashboardConfig: DashboardConfig = {
   ],
   sidebarNav: [
     {
-      title: "Posts",
+      title: "Dashboard",
       href: "/dashboard",
+      icon: "billing",
+    },
+    {
+      title: "Bài viết",
+      href: "/dashboard/posts",
       icon: "post",
     },
     {
-      title: "Categories",
+      title: "Danh mục",
       href: "/dashboard/categories",
       icon: "page",
     },
     {
-      title: "Pages",
+      title: "Trang tĩnh",
       href: "/dashboard/pages",
       icon: "page",
     },
@@ -34,17 +39,17 @@ export const dashboardConfig: DashboardConfig = {
       icon: "page",
     },
     {
-      title: "Comments",
+      title: "Bình luận",
       href: "/dashboard/comments",
       icon: "page",
     },
     {
-      title: "Users",
+      title: "Người dùng",
       href: "/dashboard/users",
       icon: "user",
     },
     {
-      title: "Settings",
+      title: "Cài đặt",
       href: "/dashboard/settings",
       icon: "settings",
     },

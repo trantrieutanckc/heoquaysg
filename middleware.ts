@@ -36,6 +36,15 @@ setInterval(() => {
 const authMiddleware = withAuth(
   async function middleware(req) {
     const token = await getToken({ req })
+
+    // Refresh token hết hạn hoặc bị revoke → buộc đăng nhập lại
+    if ((token as any)?.error === "RefreshTokenExpired") {
+      const response = NextResponse.redirect(new URL("/login", req.url))
+      response.cookies.delete("next-auth.session-token")
+      response.cookies.delete("__Secure-next-auth.session-token")
+      return response
+    }
+
     const isAuth = !!token
     const isAuthPage =
       req.nextUrl.pathname.startsWith("/login") ||

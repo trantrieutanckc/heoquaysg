@@ -203,7 +203,7 @@ export default function PagesPage() {
                   className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "h-8 w-8 p-0")}
                   title="Chỉnh sửa"
                 >
-                  <Icons.pencil className="h-4 w-4" />
+                  <Icons.edit className="h-4 w-4" />
                 </Link>
                 <Button
                   variant="ghost"

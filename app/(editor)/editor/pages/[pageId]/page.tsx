@@ -22,6 +22,12 @@ export default async function PageEditorPage({ params }: Props) {
         slug: page.slug,
         content: page.content,
         published: page.published,
+        image: page.image,
+        seoTitle: page.seoTitle,
+        seoDescription: page.seoDescription,
+        seoKeywords: page.seoKeywords,
+        seoImage: page.seoImage,
+        banner: page.banner,
       }}
     />
   )

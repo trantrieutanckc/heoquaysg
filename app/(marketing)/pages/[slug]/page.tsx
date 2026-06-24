@@ -7,7 +7,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const page = await db.page.findUnique({
+  const page = await db.page.findFirst({
     where: { slug: params.slug, published: true },
     select: { title: true },
   })
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function StaticPage({ params }: Props) {
-  const page = await db.page.findUnique({
+  const page = await db.page.findFirst({
     where: { slug: params.slug, published: true },
   })
 

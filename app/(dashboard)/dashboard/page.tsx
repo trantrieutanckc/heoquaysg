@@ -1,22 +1,14 @@
 import { redirect } from "next/navigation"
+import Link from "next/link"
 
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { isEditor } from "@/lib/permissions"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
-import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
 import { DashboardShell } from "@/components/shell"
-import { DashboardPagination } from "@/components/dashboard-pagination"
 import { DashboardOverview } from "@/components/dashboard-overview"
 
-export const metadata = {
-  title: "Dashboard",
-}
-
-const PAGE_SIZE = 10
+export const metadata = { title: "Dashboard" }
 
 function buildMonthChart(items: { createdAt: Date }[], monthCount = 6) {
   const now = new Date()
@@ -34,20 +26,11 @@ function buildMonthChart(items: { createdAt: Date }[], monthCount = 6) {
   })
 }
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams: { page?: string }
-}) {
+export default async function DashboardPage() {
   const user = await getCurrentUser()
-
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
-  }
+  if (!user) redirect(authOptions?.pages?.signIn || "/login")
 
   const isAdmin = (user as any).role === "ADMIN"
-  const canCreate = isEditor((user as any).role)
-  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
   const postWhere = { authorId: user.id }
 
   const sixMonthsAgo = new Date()
@@ -56,113 +39,136 @@ export default async function DashboardPage({
   sixMonthsAgo.setHours(0, 0, 0, 0)
 
   const [
-    total, posts, allCategories,
     totalPosts, publishedPosts,
     totalComments, pendingComments,
     totalUsers,
     recentPosts, recentComments,
     topCategories,
+    topLikedPosts,
+    topCommentedPosts,
   ] = await Promise.all([
-    // Posts list (paginated, by current user)
-    db.post.count({ where: postWhere }),
-    db.post.findMany({
-      where: postWhere,
-      select: {
-        id: true,
-        title: true,
-        published: true,
-        featured: true,
-        createdAt: true,
-        image: true,
-        likes: true,
-        categories: {
-          select: { category: { select: { id: true, name: true, slug: true } } },
-        },
-      },
-      orderBy: { updatedAt: "desc" },
-      skip: (page - 1) * PAGE_SIZE,
-      take: PAGE_SIZE,
-    }),
-    db.category.findMany({
-      select: { id: true, name: true },
-      orderBy: { name: "asc" },
-    }),
-    // Overview stats
     db.post.count({ where: isAdmin ? {} : postWhere }),
     db.post.count({ where: isAdmin ? { published: true } : { ...postWhere, published: true } }),
     db.comment.count(),
     db.comment.count({ where: { approved: false } }),
     isAdmin ? db.user.count() : Promise.resolve(0),
-    // Chart data
     db.post.findMany({
-      where: {
-        createdAt: { gte: sixMonthsAgo },
-        ...(isAdmin ? {} : postWhere),
-      },
+      where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
       select: { createdAt: true },
     }),
     db.comment.findMany({
       where: { createdAt: { gte: sixMonthsAgo } },
       select: { createdAt: true },
     }),
-    // Top categories
     db.category.findMany({
       select: { name: true, _count: { select: { posts: true } } },
       orderBy: { posts: { _count: "desc" } },
       take: 5,
     }),
+    // Top bài được like nhiều nhất
+    db.post.findMany({
+      where: { published: true, ...(isAdmin ? {} : postWhere) },
+      select: {
+        id: true, title: true, likes: true,
+        categories: { select: { category: { select: { name: true } } }, take: 1 },
+      },
+      orderBy: { likes: "desc" },
+      take: 5,
+    }),
+    // Top bài nhiều bình luận nhất
+    db.post.findMany({
+      where: { published: true, ...(isAdmin ? {} : postWhere) },
+      select: {
+        id: true, title: true,
+        _count: { select: { comments: { where: { approved: true } } } },
+        categories: { select: { category: { select: { name: true } } }, take: 1 },
+      },
+      orderBy: { comments: { _count: "desc" } },
+      take: 5,
+    }),
   ])
-
-  const totalPages = Math.ceil(total / PAGE_SIZE)
 
   return (
     <DashboardShell>
-      {/* ── Overview section ─────────────────────────────────── */}
+      <DashboardHeader heading="Dashboard" text="Tổng quan hoạt động của website." />
+
       <DashboardOverview
-        stats={{
-          totalPosts,
-          publishedPosts,
-          pendingComments,
-          totalComments,
-          totalUsers,
-          isAdmin,
-        }}
+        stats={{ totalPosts, publishedPosts, pendingComments, totalComments, totalUsers, isAdmin }}
         postsByMonth={buildMonthChart(recentPosts)}
         commentsByMonth={buildMonthChart(recentComments)}
         topCategories={topCategories.map((c) => ({ name: c.name, count: c._count.posts }))}
       />
 
-      {/* ── Posts list ───────────────────────────────────────── */}
-      <div className="mt-2">
-        <DashboardHeader heading="Bài viết của tôi" text={`${total} bài viết.`}>
-          {canCreate && <PostCreateButton />}
-        </DashboardHeader>
-        <div>
-          {posts?.length ? (
-            <>
-              <div className="divide-y divide-border rounded-md border">
-                {posts.map((post) => (
-                  <PostItem key={post.id} post={post} allCategories={allCategories} />
-                ))}
+      {/* ── Top bài viết ─────────────────────────────────────── */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Top liked */}
+        <div className="rounded-xl border bg-card overflow-hidden">
+          <div className="h-1 w-full bg-gradient-to-r from-rose-400 to-pink-500" />
+          <div className="p-5">
+            <p className="text-sm font-semibold mb-1">Bài được like nhiều nhất</p>
+            <p className="text-xs text-muted-foreground mb-4">Top 5 bài viết</p>
+            {topLikedPosts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Chưa có dữ liệu.</p>
+            ) : (
+              <div className="space-y-3">
+                {topLikedPosts.map((post, i) => {
+                  const badges = ["bg-rose-500","bg-rose-400","bg-rose-300","bg-rose-200","bg-rose-100"]
+                  const textColors = ["text-white","text-white","text-rose-700","text-rose-600","text-rose-500"]
+                  return (
+                    <div key={post.id} className="flex items-center gap-3">
+                      <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${badges[i]} ${textColors[i]}`}>
+                        {i + 1}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <Link href={`/editor/${post.id}`} className="text-sm font-medium truncate block hover:text-primary transition-colors">
+                          {post.title}
+                        </Link>
+                        {post.categories[0] && (
+                          <p className="text-xs text-muted-foreground truncate">{post.categories[0].category.name}</p>
+                        )}
+                      </div>
+                      <span className="text-sm font-bold text-rose-500 shrink-0 tabular-nums">♥ {post.likes}</span>
+                    </div>
+                  )
+                })}
               </div>
-              <DashboardPagination
-                currentPage={page}
-                totalPages={totalPages}
-                basePath="/dashboard"
-              />
-            </>
-          ) : (
-            <EmptyPlaceholder>
-              <EmptyPlaceholder.Icon name="post" />
-              <EmptyPlaceholder.Title>Chưa có bài viết</EmptyPlaceholder.Title>
-              <EmptyPlaceholder.Description>
-                {canCreate
-                  ? "Bạn chưa có bài viết nào. Bắt đầu tạo nội dung."
-                  : "Chưa có bài viết nào được phân công cho bạn."}
-              </EmptyPlaceholder.Description>
-              {canCreate && <PostCreateButton variant="outline" />}
-            </EmptyPlaceholder>
-          )}
+            )}
+          </div>
+        </div>
+
+        {/* Top commented */}
+        <div className="rounded-xl border bg-card overflow-hidden">
+          <div className="h-1 w-full bg-gradient-to-r from-amber-400 to-orange-500" />
+          <div className="p-5">
+            <p className="text-sm font-semibold mb-1">Bài nhiều bình luận nhất</p>
+            <p className="text-xs text-muted-foreground mb-4">Top 5 bài viết</p>
+            {topCommentedPosts.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Chưa có dữ liệu.</p>
+            ) : (
+              <div className="space-y-3">
+                {topCommentedPosts.map((post, i) => {
+                  const badges = ["bg-amber-500","bg-amber-400","bg-amber-300","bg-amber-200","bg-amber-100"]
+                  const textColors = ["text-white","text-white","text-amber-800","text-amber-700","text-amber-600"]
+                  return (
+                    <div key={post.id} className="flex items-center gap-3">
+                      <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${badges[i]} ${textColors[i]}`}>
+                        {i + 1}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <Link href={`/editor/${post.id}`} className="text-sm font-medium truncate block hover:text-primary transition-colors">
+                          {post.title}
+                        </Link>
+                        {post.categories[0] && (
+                          <p className="text-xs text-muted-foreground truncate">{post.categories[0].category.name}</p>
+                        )}
+                      </div>
+                      <span className="text-sm font-bold text-amber-500 shrink-0 tabular-nums">💬 {post._count.comments}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </DashboardShell>

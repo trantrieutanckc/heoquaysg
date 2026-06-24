@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  Layers,
   Loader2,
   LucideProps,
   Moon,
@@ -78,6 +79,7 @@ export const Icons = {
   show: Eye,
   hide: EyeOff,
   dragHandle: GripVertical,
+  layers: Layers,
   search: Search,
   google: ({ ...props }: LucideProps) => (
     <svg

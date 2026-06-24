@@ -86,7 +86,7 @@ function SortableRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center justify-between p-4 bg-background gap-3"
+      className="flex items-center justify-between p-4 bg-background gap-3 hover:bg-muted/40 transition-colors"
     >
       <button
         {...attributes}
@@ -125,14 +125,19 @@ function SortableRow({
         </button>
 
         <p className="font-medium truncate">{cat.name}</p>
-        <Badge variant="secondary" className="shrink-0">{cat.slug}</Badge>
+        <Badge variant="secondary" className="shrink-0 font-mono text-xs">{cat.slug}</Badge>
         <span className="text-xs text-muted-foreground shrink-0">{cat._count.posts} bài</span>
+        {cat.template && cat.template !== "standard" && (
+          <Badge variant="outline" className="shrink-0 text-xs hidden sm:flex">
+            {cat.template === "grid" ? "Lưới" : cat.template === "hero" ? "Hero" : cat.template}
+          </Badge>
+        )}
       </div>
 
       <div className="flex items-center gap-1 shrink-0">
         <PublishToggle id={cat.id} published={cat.published} endpoint="categories" />
         <Button variant="ghost" size="sm" onClick={() => onBanner(cat)} title="Banner" className={parseBanner(cat.banner) ? "text-primary" : ""}>
-          <Icons.media className="h-4 w-4" />
+          <Icons.layers className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onTemplate(cat)} title="Template">
           <Icons.page className="h-4 w-4" />

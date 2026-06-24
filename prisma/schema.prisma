@@ -61,9 +61,10 @@ model User {
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
-  accounts Account[]
-  sessions Session[]
-  Post     Post[]
+  accounts      Account[]
+  sessions      Session[]
+  Post          Post[]
+  refreshTokens RefreshToken[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -177,13 +178,19 @@ model SiteDoc {
 }
 
 model Page {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   Json?
-  published Boolean  @default(false)
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @updatedAt       @map(name: "updated_at")
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  content        Json?
+  published      Boolean  @default(false)
+  image          Json?
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  seoImage       String?
+  banner         Json?
+  createdAt      DateTime @default(now()) @map(name: "created_at")
+  updatedAt      DateTime @updatedAt       @map(name: "updated_at")
 
   @@map(name: "pages")
 }
@@ -199,6 +206,18 @@ model EmailToken {
 
   @@index([email])
   @@map(name: "email_tokens")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map(name: "refresh_tokens")
 }
 
 model PostCategory {
