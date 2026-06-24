@@ -9,12 +9,19 @@ import { DashboardHeader } from "@/components/header"
 import { PostCreateButton } from "@/components/post-create-button"
 import { PostItem } from "@/components/post-item"
 import { DashboardShell } from "@/components/shell"
+import { DashboardPagination } from "@/components/dashboard-pagination"
 
 export const metadata = {
   title: "Dashboard",
 }
 
-export default async function DashboardPage() {
+const PAGE_SIZE = 10
+
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { page?: string }
+}) {
   const user = await getCurrentUser()
 
   if (!user) {
@@ -22,10 +29,13 @@ export default async function DashboardPage() {
   }
 
   const canCreate = isEditor((user as any).role)
+  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
+  const where = { authorId: user.id }
 
-  const [posts, allCategories] = await Promise.all([
+  const [total, posts, allCategories] = await Promise.all([
+    db.post.count({ where }),
     db.post.findMany({
-      where: { authorId: user.id },
+      where,
       select: {
         id: true,
         title: true,
@@ -39,6 +49,8 @@ export default async function DashboardPage() {
         },
       },
       orderBy: { updatedAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
     }),
     db.category.findMany({
       select: { id: true, name: true },
@@ -46,18 +58,27 @@ export default async function DashboardPage() {
     }),
   ])
 
+  const totalPages = Math.ceil(total / PAGE_SIZE)
+
   return (
     <DashboardShell>
-      <DashboardHeader heading="Posts" text="Quản lý bài viết của bạn.">
+      <DashboardHeader heading="Posts" text={`${total} bài viết.`}>
         {canCreate && <PostCreateButton />}
       </DashboardHeader>
       <div>
         {posts?.length ? (
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} allCategories={allCategories} />
-            ))}
-          </div>
+          <>
+            <div className="divide-y divide-border rounded-md border">
+              {posts.map((post) => (
+                <PostItem key={post.id} post={post} allCategories={allCategories} />
+              ))}
+            </div>
+            <DashboardPagination
+              currentPage={page}
+              totalPages={totalPages}
+              basePath="/dashboard"
+            />
+          </>
         ) : (
           <EmptyPlaceholder>
             <EmptyPlaceholder.Icon name="post" />
