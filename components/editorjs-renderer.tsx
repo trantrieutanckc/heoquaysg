@@ -1,7 +1,17 @@
-import DOMPurify from "isomorphic-dompurify"
+import sanitizeHtml from "sanitize-html"
+
+const ALLOWED: sanitizeHtml.IOptions = {
+  allowedTags: ["b", "strong", "i", "em", "u", "s", "code", "a", "mark", "span", "br"],
+  allowedAttributes: {
+    a: ["href", "target", "rel"],
+    span: ["class"],
+    mark: ["class"],
+  },
+  allowedSchemes: ["https", "http", "mailto"],
+}
 
 function safe(html: string): string {
-  return DOMPurify.sanitize(html ?? "")
+  return sanitizeHtml(html ?? "", ALLOWED)
 }
 
 interface Block {
