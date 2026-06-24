@@ -176,6 +176,18 @@ model SiteDoc {
   @@map(name: "site_docs")
 }
 
+model Page {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   Json?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt       @map(name: "updated_at")
+
+  @@map(name: "pages")
+}
+
 model EmailToken {
   id        String    @id @default(cuid())
   email     String
