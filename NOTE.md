@@ -238,8 +238,8 @@ npx prisma db push
   - Upload ảnh trực tiếp vào nội dung bài (EditorJS image tool đã wire sẵn, chỉ cần đổi backend `api/upload`)
 - [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard mà không cần code. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, page editor, route public `/pages/[slug]`
 - [ ] **Access token + Refresh token** — thay thế session JWT 24h hiện tại bằng hệ thống 2 token an toàn hơn:
-  - **Access token**: JWT ngắn hạn (15 phút), lưu trong cookie `HttpOnly SameSite=Strict`
-  - **Refresh token**: random token dài hạn (7 ngày), lưu **hash** trong DB (model `RefreshToken`), dùng để cấp access token mới
+  - **Access token**: JWT ngắn hạn (30 phút), lưu trong cookie `HttpOnly SameSite=Strict`
+  - **Refresh token**: random token dài hạn (7 ngày), lưu **hash** trong DB (model `RefreshToken`), dùng để cấp access token mới. Config: `accessTokenExpiry: 30 * 60` (30 phút), `refreshTokenExpiry: 7 * 24 * 60 * 60` (7 ngày)
   - **Token rotation**: mỗi lần refresh → cấp refresh token mới + vô hiệu hóa cái cũ → nếu bị đánh cắp, user hợp lệ refresh sẽ fail và biết ngay
   - **Revoke**: logout hoặc admin có thể thu hồi refresh token bất cứ lúc nào
   - Cần: model `RefreshToken` (id, userId, tokenHash, expiresAt, revokedAt, userAgent, ip, createdAt), `POST /api/auth/refresh`, cập nhật middleware, auto-refresh client-side trước khi access token hết hạn

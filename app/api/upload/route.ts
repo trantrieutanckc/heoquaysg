@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server"
-import { writeFile, mkdir } from "fs/promises"
 import { randomUUID } from "crypto"
-import path from "path"
 import { getCurrentUser } from "@/lib/session"
+import { uploadToStorage } from "@/lib/supabase"
 
 const MIME_TO_EXT: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -33,16 +32,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "File too large (max 5MB)" }, { status: 400 })
     }
 
-    // Extension lấy từ MIME type (không lấy từ filename) để tránh bypass
     const filename = `${randomUUID()}.${ext}`
+    const buffer = Buffer.from(await file.arrayBuffer())
+    const publicUrl = await uploadToStorage(buffer, filename, file.type)
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads")
-    await mkdir(uploadDir, { recursive: true })
-    await writeFile(path.join(uploadDir, filename), Buffer.from(await file.arrayBuffer()))
-
-    const url = `/uploads/${filename}`
-    return NextResponse.json({ success: 1, url, file: { url } })
-  } catch {
+    return NextResponse.json({ success: 1, url: publicUrl, file: { url: publicUrl } })
+  } catch (err) {
+    console.error("[upload]", err)
     return NextResponse.json({ error: "Upload failed" }, { status: 500 })
   }
 }
