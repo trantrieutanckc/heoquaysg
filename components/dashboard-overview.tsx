@@ -85,7 +85,7 @@ const STAT_CONFIGS = [
   },
 ]
 
-export function DashboardOverview({ stats, postsByMonth, commentsByMonth, topCategories }: Props) {
+export default function DashboardOverview({ stats, postsByMonth, commentsByMonth, topCategories }: Props) {
   const draftPosts = stats.totalPosts - stats.publishedPosts
 
   const statValues = [
