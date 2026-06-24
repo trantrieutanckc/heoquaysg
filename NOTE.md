@@ -237,17 +237,18 @@ npx prisma db push
 - [x] **Pagination cho dashboard** — Posts (10/trang), Comments/Users/Categories (20/trang). URL `?page=N`, Prisma `skip/take`. Header hiển thị tổng record.
 - [x] **Trang 404 tùy chỉnh** — `app/not-found.tsx` theo theme Heo Quay 47.
 - [x] **`NEXT_PUBLIC_APP_URL` trên Vercel** — đã xóa trailing space 24/06/2026.
-- [ ] **Hero banner trang chủ** — thiết kế lại section đầu trang chủ thành hero banner riêng biệt (ảnh nền full-width, tagline thương hiệu, CTA buttons), tách khỏi featured post hiện tại. Featured post sẽ nằm bên dưới hero
-- [ ] **Featured post hiển thị khác biệt** — bài được đánh dấu featured sẽ có layout riêng (card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng) thay vì chỉ là hero duy nhất như hiện tại
-- [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, route public `/pages/[slug]`
+- [x] **Hero banner trang chủ** — hero banner full-width, tagline, CTA buttons; featured post layout riêng bên dưới
+- [x] **Featured post hiển thị khác biệt** — card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng
+- [x] **Quản lý trang tĩnh** — model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, route public `/pages/[slug]`; page editor có ảnh bìa, banner (tĩnh/slideshow), SEO panel
 - [x] **Access token + Refresh token** — thay thế session JWT 24h:
   - Access token: JWT 30 phút (`accessTokenExpires` trong JWT)
   - Refresh token: 7 ngày, lưu hash SHA-256 trong DB (`refresh_tokens`), rotation khi access token hết hạn
   - Model `RefreshToken` (cascade xóa theo user), rotation trong JWT callback, xóa khi signOut
   - Middleware bắt `error: "RefreshTokenExpired"` → clear cookie + redirect `/login`
-- [ ] **Reset Password** — đổi mật khẩu qua email. Cần model `EmailToken`, `/api/auth/forgot-password`, `/api/auth/reset-password`, trang `/reset-password/[token]`, SMTP/Resend
-- [ ] **Form liên hệ** — chưa gửi email thật, cần SMTP/Resend (dùng chung với Reset Password)
-- [ ] **Dashboard chart** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
+- [x] **Reset Password** — qua email Postmark; model `EmailToken`, `/api/auth/forgot-password`, `/api/auth/reset-password`, trang `/reset-password/[token]`
+- [x] **Form liên hệ** — gửi email thật qua Postmark
+- [x] **Dashboard overview v2** — tổng quan stats (gradient cards), charts bài/tháng + bình luận/tháng, top liked posts, top commented posts; danh sách bài tách ra `/dashboard/posts`
+- [ ] **Dashboard chart GA4** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
 - ~~**API Token**~~ — đã bỏ (không có use case thực tế cho restaurant blog)
 
 ## Khi go live cần làm thêm
@@ -259,10 +260,12 @@ npx prisma db push
 
 ## Thay đổi gần đây
 
-### 24/06/2026 — Access token + Refresh token
-- `prisma/schema.prisma`: thêm model `RefreshToken` (userId, tokenHash unique, expiresAt, cascade)
-- `lib/auth.ts`: JWT callback tạo refresh token khi login, rotate khi access token hết hạn (30 phút), xóa khi signOut; `session.maxAge` đổi từ 1 ngày → 7 ngày
-- `middleware.ts`: check `token.error === "RefreshTokenExpired"` → clear cookie + redirect `/login`
+### 25/06/2026 — Access/refresh token + Page SEO/banner + Dashboard v2 (commit 1cffe73)
+- `lib/auth.ts` + `middleware.ts` + `schema`: access token 30 phút, refresh token 7 ngày (hash SHA-256, rotation tự động, middleware clear cookie khi expired)
+- `page-editor.tsx` + `api/pages/[pageId]`: thêm ảnh bìa, banner (tĩnh/slideshow tối đa 10 slide), SEO panel cho trang tĩnh; schema `Page` thêm `image/seo*/banner`
+- `dashboard/page.tsx` + `dashboard-overview.tsx`: stats gradient cards, top liked/commented posts, chart labels vi
+- `dashboard/posts/`: tách danh sách bài ra route riêng `/dashboard/posts` (PAGE_SIZE=6)
+- `config/dashboard.ts`: labels tiếng Việt, thêm item Dashboard + Bài viết
 
 ### 24/06/2026 — Security fixes + bug fixes (post Version 1)
 
