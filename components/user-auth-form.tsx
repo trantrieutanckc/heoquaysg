@@ -193,6 +193,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               "Đăng nhập"
             )}
           </button>
+
+          <div className="text-center">
+            <a href="/forgot-password" className="text-sm text-muted-foreground hover:text-foreground underline-offset-4 hover:underline">
+              Quên mật khẩu?
+            </a>
+          </div>
         </div>
       </form>
     </div>

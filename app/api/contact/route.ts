@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server"
 import * as z from "zod"
+import { sendContactEmail } from "@/lib/mailer"
 
 const contactSchema = z.object({
-  name: z.string().min(1, "Tên không được để trống"),
+  name: z.string().min(1, "Tên không được để trống").max(100),
   email: z.string().email().optional().or(z.literal("")),
-  phone: z.string().optional(),
-  message: z.string().min(1, "Nội dung không được để trống"),
+  phone: z.string().max(20).optional(),
+  message: z.string().min(1, "Nội dung không được để trống").max(2000),
 })
 
 export async function POST(req: Request) {
@@ -13,7 +14,12 @@ export async function POST(req: Request) {
     const json = await req.json()
     const body = contactSchema.parse(json)
 
-    console.log("[contact] New message:", body)
+    sendContactEmail({
+      name: body.name,
+      email: body.email || undefined,
+      phone: body.phone || undefined,
+      message: body.message,
+    })
 
     return NextResponse.json({ success: true }, { status: 200 })
   } catch (error) {

@@ -176,6 +176,19 @@ model SiteDoc {
   @@map(name: "site_docs")
 }
 
+model EmailToken {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @unique
+  type      String    // "RESET_PASSWORD"
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+  @@map(name: "email_tokens")
+}
+
 model PostCategory {
   postId     String
   categoryId String
