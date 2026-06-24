@@ -1,12 +1,17 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { DashboardHeader } from "@/components/header"
 import { DashboardShell } from "@/components/shell"
-import { DashboardOverview } from "@/components/dashboard-overview"
+
+const DashboardOverview = dynamic(
+  () => import("@/components/dashboard-overview").then((m) => m.DashboardOverview),
+  { ssr: false }
+)
 
 export const metadata = { title: "Dashboard" }
 

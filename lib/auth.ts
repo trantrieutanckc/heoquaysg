@@ -115,22 +115,35 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // Đăng nhập lần đầu — tạo refresh token mới
       if (user) {
-        const rawToken = generateToken()
-        await db.refreshToken.create({
-          data: {
-            userId: user.id,
-            tokenHash: hashToken(rawToken),
-            expiresAt: new Date(Date.now() + REFRESH_TTL_MS),
-          },
-        })
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          picture: (user as any).image,
-          role: (user as any).role,
-          refreshToken: rawToken,
-          accessTokenExpires: Date.now() + ACCESS_TTL_MS,
+        try {
+          const rawToken = generateToken()
+          await db.refreshToken.create({
+            data: {
+              userId: user.id,
+              tokenHash: hashToken(rawToken),
+              expiresAt: new Date(Date.now() + REFRESH_TTL_MS),
+            },
+          })
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            picture: (user as any).image,
+            role: (user as any).role,
+            refreshToken: rawToken,
+            accessTokenExpires: Date.now() + ACCESS_TTL_MS,
+          }
+        } catch (e) {
+          console.error("[auth] failed to create refresh token:", e)
+          // Fallback: session vẫn hoạt động nhưng không có refresh token
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            picture: (user as any).image,
+            role: (user as any).role,
+            accessTokenExpires: Date.now() + REFRESH_TTL_MS, // dùng refresh TTL để không expire sớm
+          }
         }
       }
 
