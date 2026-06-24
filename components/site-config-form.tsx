@@ -13,7 +13,9 @@ export interface SiteConfigData {
   siteTagline?: string
   siteDescription?: string
   logoUrl?: string
+  heroImage?: string
   contactPhone?: string
+  contactZalo?: string
   contactEmail?: string
   contactAddress?: string
   businessHours?: string
@@ -89,11 +91,20 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
             <img src={data.logoUrl} alt="Logo preview" className="h-10 w-10 rounded-full object-cover border mt-1" />
           )}
         </Field>
+        <Field label="Ảnh Hero Banner (trang chủ)" id="heroImage">
+          <Input id="heroImage" value={data.heroImage ?? ""} onChange={set("heroImage")} placeholder="https://... (URL ảnh nền hero)" />
+          {data.heroImage && (
+            <img src={data.heroImage} alt="Hero preview" className="h-24 w-full rounded-lg object-cover border mt-1" />
+          )}
+        </Field>
       </Section>
 
       <Section title="Liên hệ">
         <Field label="Số điện thoại" id="contactPhone">
           <Input id="contactPhone" value={data.contactPhone ?? ""} onChange={set("contactPhone")} placeholder="0901 234 567" />
+        </Field>
+        <Field label="Zalo (số điện thoại Zalo)" id="contactZalo">
+          <Input id="contactZalo" value={data.contactZalo ?? ""} onChange={set("contactZalo")} placeholder="0901 234 567" />
         </Field>
         <Field label="Email" id="contactEmail">
           <Input id="contactEmail" type="email" value={data.contactEmail ?? ""} onChange={set("contactEmail")} placeholder="info@heoquay.com" />

@@ -233,34 +233,21 @@ npx prisma db push
 **Version 1 — hoàn thành 24/06/2026** ✅
 
 **Version 2 — việc còn lại:**
-- [ ] **Storage thật (Cloudinary / Supabase Storage)** — hiện `api/upload/route.ts` lưu vào `public/uploads/` (không tồn tại lâu trên Vercel). Khi fix xong thì 2 tính năng sau sẽ hoạt động tự động:
-  - Upload ảnh bìa bài viết (cover image)
-  - Upload ảnh trực tiếp vào nội dung bài (EditorJS image tool đã wire sẵn, chỉ cần đổi backend `api/upload`)
-- [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard mà không cần code. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, page editor, route public `/pages/[slug]`
-- [ ] **Access token + Refresh token** — thay thế session JWT 24h hiện tại bằng hệ thống 2 token an toàn hơn:
-  - **Access token**: JWT ngắn hạn (30 phút), lưu trong cookie `HttpOnly SameSite=Strict`
-  - **Refresh token**: random token dài hạn (7 ngày), lưu **hash** trong DB (model `RefreshToken`), dùng để cấp access token mới. Config: `accessTokenExpiry: 30 * 60` (30 phút), `refreshTokenExpiry: 7 * 24 * 60 * 60` (7 ngày)
-  - **Token rotation**: mỗi lần refresh → cấp refresh token mới + vô hiệu hóa cái cũ → nếu bị đánh cắp, user hợp lệ refresh sẽ fail và biết ngay
-  - **Revoke**: logout hoặc admin có thể thu hồi refresh token bất cứ lúc nào
-  - Cần: model `RefreshToken` (id, userId, tokenHash, expiresAt, revokedAt, userAgent, ip, createdAt), `POST /api/auth/refresh`, cập nhật middleware, auto-refresh client-side trước khi access token hết hạn
-  - Lưu ý: đây là thay đổi lớn, cần thay thế toàn bộ NextAuth session strategy hiện tại
-- [ ] **API Token** — user tự tạo personal access token để gọi API bằng `Authorization: Bearer <token>` thay cho session. Cần:
-  - Model `ApiToken` (id, userId, name, tokenHash, lastUsedAt, expiresAt?, createdAt)
-  - Trang quản lý token trong profile hoặc dashboard
-  - Middleware/helper check Bearer header song song với session hiện tại
-- [ ] **Reset Password / Email Token** — đổi mật khẩu qua email. Cần:
-  - Model `EmailToken` (id, email, tokenHash, type: RESET_PASSWORD | VERIFY_EMAIL, expiresAt, usedAt?)
-  - API route `POST /api/auth/forgot-password` — gửi link reset
-  - API route `POST /api/auth/reset-password` — xác nhận token + đổi mật khẩu
-  - Trang `/reset-password/[token]`
-  - SMTP/Resend (dùng chung với task form liên hệ bên dưới)
-- [ ] **Form liên hệ** — chưa gửi email thật, cần cấu hình SMTP/Resend
+- [x] **Storage thật — Supabase Storage** — `lib/supabase.ts` dùng REST API (không dùng @supabase/supabase-js tránh lỗi WebSocket Node.js 20). Upload ảnh bìa + ảnh trong EditorJS qua `/api/upload`.
+- [x] **Pagination cho dashboard** — Posts (10/trang), Comments/Users/Categories (20/trang). URL `?page=N`, Prisma `skip/take`. Header hiển thị tổng record.
+- [x] **Trang 404 tùy chỉnh** — `app/not-found.tsx` theo theme Heo Quay 47.
+- [x] **`NEXT_PUBLIC_APP_URL` trên Vercel** — đã xóa trailing space 24/06/2026.
 - [ ] **Hero banner trang chủ** — thiết kế lại section đầu trang chủ thành hero banner riêng biệt (ảnh nền full-width, tagline thương hiệu, CTA buttons), tách khỏi featured post hiện tại. Featured post sẽ nằm bên dưới hero
-- [ ] **Featured post hiển thị khác biệt** — bài được đánh dấu featured sẽ có layout riêng (ví dụ: card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng) thay vì chỉ là hero duy nhất như hiện tại
-- [ ] **Pagination cho dashboard** — thêm phân trang vào tất cả các trang list: posts, categories, comments, users. Hiện tại load toàn bộ, sẽ chậm khi data lớn
-- [ ] **Dashboard overview với chart** — trang `/dashboard` khi login vào sẽ hiển thị chart số lượng người xem website theo ngày/tuần/tháng thay vì chỉ list bài viết. Dùng **Google Analytics 4 API** (không dùng Search Console). Các widget gợi ý: tổng lượt xem, bài viết nhiều view nhất, bình luận mới, người dùng mới. **Lưu ý: chỉ test được khi site go live với GA4 account thật của khách hàng**
-- [ ] **Trang 404 tùy chỉnh** — thay trang 404 mặc định của Next.js bằng trang riêng phù hợp style Heo Quay 47. Chỉ cần tạo `app/not-found.tsx`
-- [x] **`NEXT_PUBLIC_APP_URL` trên Vercel** — đã xóa trailing space 24/06/2026, OG image không còn lỗi `Invalid URL`
+- [ ] **Featured post hiển thị khác biệt** — bài được đánh dấu featured sẽ có layout riêng (card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng) thay vì chỉ là hero duy nhất như hiện tại
+- [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, route public `/pages/[slug]`
+- [ ] **Access token + Refresh token** — thay thế session JWT 24h hiện tại:
+  - Access token: JWT 30 phút, cookie `HttpOnly SameSite=Strict`
+  - Refresh token: 7 ngày, lưu hash trong DB, token rotation khi refresh
+  - Cần model `RefreshToken`, `POST /api/auth/refresh`, cập nhật middleware
+- [ ] **Reset Password** — đổi mật khẩu qua email. Cần model `EmailToken`, `/api/auth/forgot-password`, `/api/auth/reset-password`, trang `/reset-password/[token]`, SMTP/Resend
+- [ ] **Form liên hệ** — chưa gửi email thật, cần SMTP/Resend (dùng chung với Reset Password)
+- [ ] **Dashboard chart** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
+- ~~**API Token**~~ — đã bỏ (không có use case thực tế cho restaurant blog)
 
 ## Khi go live cần làm thêm
 - [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
