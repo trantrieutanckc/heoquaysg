@@ -54,6 +54,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         template: post.template,
         banner: post.banner,
         relatedPostIds: post.relatedPostIds,
+        price: post.price,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

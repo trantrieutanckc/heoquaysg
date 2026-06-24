@@ -45,7 +45,7 @@ interface PostOption {
 }
 
 interface EditorProps {
-  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string; banner?: unknown; relatedPostIds?: unknown }
+  post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & { template?: string; banner?: unknown; relatedPostIds?: unknown; price?: number | null }
   categories: Category[]
   postCategoryIds: string[]
   allPosts: PostOption[]
@@ -71,6 +71,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
   const [seoDialogOpen, setSeoDialogOpen] = React.useState(false)
   const [templateDialogOpen, setTemplateDialogOpen] = React.useState(false)
   const [postTemplate, setPostTemplate] = React.useState<string>(post.template ?? "standard")
+  const [price, setPrice] = React.useState<string>(post.price != null ? String(post.price) : "")
   const [seoTitle, setSeoTitle] = React.useState((post.seoTitle as string) || "")
   const [seoDescription, setSeoDescription] = React.useState((post.seoDescription as string) || "")
   const [seoKeywords, setSeoKeywords] = React.useState((post.seoKeywords as string) || "")
@@ -207,6 +208,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
           seoImage: seoImage || undefined,
           template: postTemplate,
           relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
+          price: price !== "" ? parseFloat(price) : null,
         }),
       })
 
@@ -254,6 +256,18 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
             </p>
           </div>
           <div className="flex items-center gap-2">
+            <div className="flex items-center rounded-md border bg-background overflow-hidden h-9">
+              <span className="px-2.5 text-xs text-muted-foreground border-r bg-muted select-none">Giá (đ)</span>
+              <input
+                type="number"
+                min="0"
+                step="1000"
+                placeholder="VD: 150000"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="w-28 px-2 text-sm bg-transparent outline-none h-full"
+              />
+            </div>
             <CategorySelector
               categories={categories}
               selected={selectedCategoryIds}

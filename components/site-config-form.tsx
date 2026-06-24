@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
+import { ImagePickerInput } from "@/components/image-picker-input"
 
 export interface SiteConfigData {
   siteName?: string
@@ -85,17 +86,23 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
         <Field label="Mô tả ngắn" id="siteDescription">
           <Input id="siteDescription" value={data.siteDescription ?? ""} onChange={set("siteDescription")} placeholder="Chuyên heo quay, bánh mì thịt..." />
         </Field>
-        <Field label="URL Logo" id="logoUrl">
-          <Input id="logoUrl" value={data.logoUrl ?? ""} onChange={set("logoUrl")} placeholder="https://..." />
-          {data.logoUrl && (
-            <img src={data.logoUrl} alt="Logo preview" className="h-10 w-10 rounded-full object-cover border mt-1" />
-          )}
+        <Field label="Logo" id="logoUrl">
+          <ImagePickerInput
+            id="logoUrl"
+            value={data.logoUrl ?? ""}
+            onChange={(url) => setData((prev) => ({ ...prev, logoUrl: url }))}
+            previewClass="h-16 w-16 rounded-full object-cover border"
+            placeholder="https://..."
+          />
         </Field>
         <Field label="Ảnh Hero Banner (trang chủ)" id="heroImage">
-          <Input id="heroImage" value={data.heroImage ?? ""} onChange={set("heroImage")} placeholder="https://... (URL ảnh nền hero)" />
-          {data.heroImage && (
-            <img src={data.heroImage} alt="Hero preview" className="h-24 w-full rounded-lg object-cover border mt-1" />
-          )}
+          <ImagePickerInput
+            id="heroImage"
+            value={data.heroImage ?? ""}
+            onChange={(url) => setData((prev) => ({ ...prev, heroImage: url }))}
+            previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
+            placeholder="https://... (URL ảnh nền hero)"
+          />
         </Field>
       </Section>
 

@@ -93,6 +93,7 @@ model Post {
   authorId       String
   image          Json?
   likes          Int            @default(0)
+  price          Float?
   seoTitle       String?
   seoDescription String?
   seoKeywords    String?

@@ -38,7 +38,7 @@ export default async function IndexPage() {
     db.post.findMany({
       where: { published: true },
       select: {
-        id: true, title: true, createdAt: true, image: true, content: true,
+        id: true, title: true, createdAt: true, image: true, content: true, price: true,
         author: { select: { name: true, image: true } },
         categories: { include: { category: { select: { name: true, slug: true } } } },
       },
@@ -281,6 +281,11 @@ export default async function IndexPage() {
                         <h3 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
                           {post.title}
                         </h3>
+                        {post.price != null && (
+                          <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-2.5 py-0.5 text-xs font-bold w-fit">
+                            {new Intl.NumberFormat("vi-VN").format(post.price)} đ
+                          </span>
+                        )}
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-2 border-t">
                           {post.author?.image ? (
                             <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />

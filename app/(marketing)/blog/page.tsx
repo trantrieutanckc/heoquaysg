@@ -69,6 +69,12 @@ export default async function BlogPage() {
                     {post.title}
                   </h2>
 
+                  {post.price != null && (
+                    <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-3 py-0.5 text-sm font-bold w-fit">
+                      {new Intl.NumberFormat("vi-VN").format(post.price)} đ
+                    </span>
+                  )}
+
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     {post.author?.name && <span>{post.author.name}</span>}
                     {post.author?.name && <span>·</span>}

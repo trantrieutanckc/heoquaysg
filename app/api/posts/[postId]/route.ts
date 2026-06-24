@@ -16,6 +16,7 @@ const postPatchSchema = z.object({
   template: z.string().optional(),
   banner: z.any().optional().nullable(),
   relatedPostIds: z.array(z.string()).nullable().optional(),
+  price: z.number().nullable().optional(),
 })
 
 export async function PATCH(
@@ -62,6 +63,7 @@ export async function PATCH(
         template: body.template,
         ...(body.banner !== undefined && { banner: body.banner ?? undefined }),
         ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds }),
+        ...(body.price !== undefined && { price: body.price }),
         ...(body.categoryIds !== undefined && {
           categories: {
             deleteMany: {},
