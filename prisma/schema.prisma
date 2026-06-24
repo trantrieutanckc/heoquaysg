@@ -116,9 +116,11 @@ model Comment {
   authorName  String
   authorEmail String?
   postId      String
+  approved    Boolean  @default(false)
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now()) @map(name: "created_at")
 
+  @@index([postId, approved])
   @@map(name: "comments")
 }
 

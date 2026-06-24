@@ -23,7 +23,7 @@ export function DashboardPagination({ currentPage, totalPages, basePath }: Props
       <div className="flex items-center gap-2">
         {hasPrev ? (
           <Link
-            href={`${basePath}?page=${currentPage - 1}`}
+            href={`${basePath}${basePath.includes("?") ? "&" : "?"}page=${currentPage - 1}`}
             className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
@@ -37,7 +37,7 @@ export function DashboardPagination({ currentPage, totalPages, basePath }: Props
         )}
         {hasNext ? (
           <Link
-            href={`${basePath}?page=${currentPage + 1}`}
+            href={`${basePath}${basePath.includes("?") ? "&" : "?"}page=${currentPage + 1}`}
             className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
           >
             Sau
