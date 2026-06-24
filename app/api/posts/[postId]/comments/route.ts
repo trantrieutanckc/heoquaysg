@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 import { db } from "@/lib/db"
+import { sendCommentNotification } from "@/lib/mailer"
 
 // ── Rate limiter: 5 comments per IP per hour ──────────────────────────────────
 const commentRateMap = new Map<string, { count: number; resetAt: number }>()
@@ -106,7 +107,7 @@ export async function POST(
 
     const post = await db.post.findUnique({
       where: { id: params.postId },
-      select: { id: true },
+      select: { id: true, title: true },
     })
     if (!post) return new Response("Not found", { status: 404 })
 
@@ -118,6 +119,17 @@ export async function POST(
         postId: params.postId,
         approved: false, // requires admin moderation
       },
+    })
+
+    // Fire-and-forget email — doesn't block response
+    const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? ""
+    sendCommentNotification({
+      postId: params.postId,
+      postTitle: post.title,
+      authorName: cleanName,
+      authorEmail: body.authorEmail || null,
+      content: cleanContent,
+      siteUrl,
     })
 
     // Return 202 Accepted — comment is pending, not yet visible
