@@ -8,6 +8,22 @@ const ALLOWED: sanitizeHtml.IOptions = {
     mark: ["class"],
   },
   allowedSchemes: ["https", "http", "mailto"],
+  // Force noopener noreferrer on external links to prevent reverse tabnapping
+  transformTags: {
+    a: (tagName, attribs) => {
+      const href = attribs.href ?? ""
+      const isExternal = href.startsWith("http") || href.startsWith("//")
+      return {
+        tagName,
+        attribs: {
+          ...attribs,
+          ...(isExternal
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {}),
+        },
+      }
+    },
+  },
 }
 
 function safe(html: string): string {
