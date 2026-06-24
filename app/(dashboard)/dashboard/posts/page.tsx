@@ -7,7 +7,7 @@ import { isEditor } from "@/lib/permissions"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
+import { PostList } from "@/components/post-list"
 import { DashboardShell } from "@/components/shell"
 import { DashboardPagination } from "@/components/dashboard-pagination"
 
@@ -63,11 +63,7 @@ export default async function PostsPage({
 
       {posts?.length ? (
         <>
-          <div className="divide-y divide-border rounded-md border">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} allCategories={allCategories} />
-            ))}
-          </div>
+          <PostList posts={posts} allCategories={allCategories} />
           <DashboardPagination
             currentPage={page}
             totalPages={totalPages}
