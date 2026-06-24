@@ -109,7 +109,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const sessionRes = await fetch("/api/auth/session")
     const session = await sessionRes.json()
     const role = session?.user?.role
-    const from = searchParams?.get("from")
+    const raw = searchParams?.get("from") ?? ""
+    const from = raw.startsWith("/") && !raw.startsWith("//") ? raw : null
     if (from) {
       window.location.href = from
     } else if (role === "ADMIN" || role === "EDITOR") {

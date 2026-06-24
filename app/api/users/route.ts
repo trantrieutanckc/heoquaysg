@@ -3,6 +3,7 @@ import * as z from "zod"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 import { strongPasswordSchema } from "@/lib/validations/auth"
+import { getCurrentUser } from "@/lib/session"
 
 const createUserSchema = z.object({
   name: z.string().min(1).max(100),
@@ -12,6 +13,11 @@ const createUserSchema = z.object({
 })
 
 export async function POST(req: Request) {
+  const currentUser = await getCurrentUser()
+  if (!currentUser || (currentUser as any).role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
+
   try {
     const json = await req.json()
     const body = createUserSchema.parse(json)
@@ -38,6 +44,11 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  const currentUser = await getCurrentUser()
+  if (!currentUser || (currentUser as any).role !== "ADMIN") {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
+
   const users = await db.user.findMany({
     orderBy: { createdAt: "asc" },
     select: {

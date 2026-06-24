@@ -104,6 +104,8 @@ model Post {
   categories     PostCategory[]
   comments       Comment[]
 
+  @@index([authorId])
+  @@index([published, updatedAt])
   @@map(name: "posts")
 }
 

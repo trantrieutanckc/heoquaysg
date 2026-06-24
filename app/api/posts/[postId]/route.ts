@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import * as z from "zod"
 import { db } from "@/lib/db"
+import { getCurrentUser } from "@/lib/session"
 
 const postPatchSchema = z.object({
   title: z.string().optional(),
@@ -17,17 +18,36 @@ const postPatchSchema = z.object({
   relatedPostIds: z.array(z.string()).nullable().optional(),
 })
 
-// HÀM PATCH: Cập nhật bài viết
 export async function PATCH(
   req: Request,
   { params }: { params: { postId: string } }
 ) {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return new Response(null, { status: 401 })
+  }
+
+  const role = (currentUser as any).role
+  if (role !== "ADMIN" && role !== "EDITOR") {
+    return new Response(null, { status: 403 })
+  }
+
+  // EDITOR chỉ được sửa bài của chính mình
+  if (role === "EDITOR") {
+    const post = await db.post.findUnique({
+      where: { id: params.postId },
+      select: { authorId: true },
+    })
+    if (!post) return new Response(null, { status: 404 })
+    if (post.authorId !== (currentUser as any).id) {
+      return new Response(null, { status: 403 })
+    }
+  }
+
   try {
-    // 1. Đọc dữ liệu chỉnh sửa từ Editor gửi lên
     const json = await req.json()
     const body = postPatchSchema.parse(json)
 
-    // 2. Cập nhật thẳng vào Supabase bằng ID bài viết, bỏ qua bước check User sở hữu
     await db.post.update({
       where: { id: params.postId },
       data: {
@@ -56,25 +76,40 @@ export async function PATCH(
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }
-
     return new Response(null, { status: 500 })
   }
 }
 
-// HÀM DELETE: Xóa bài viết (Sửa luôn để sau này bạn bấm xóa bài viết không bị lỗi 403)
 export async function DELETE(
-  req: Request,
+  _req: Request,
   { params }: { params: { postId: string } }
 ) {
-  try {
-    await db.post.delete({
-      where: {
-        id: params.postId,
-      },
-    })
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return new Response(null, { status: 401 })
+  }
 
+  const role = (currentUser as any).role
+  if (role !== "ADMIN" && role !== "EDITOR") {
+    return new Response(null, { status: 403 })
+  }
+
+  // EDITOR chỉ được xóa bài của chính mình
+  if (role === "EDITOR") {
+    const post = await db.post.findUnique({
+      where: { id: params.postId },
+      select: { authorId: true },
+    })
+    if (!post) return new Response(null, { status: 404 })
+    if (post.authorId !== (currentUser as any).id) {
+      return new Response(null, { status: 403 })
+    }
+  }
+
+  try {
+    await db.post.delete({ where: { id: params.postId } })
     return new Response(null, { status: 200 })
-  } catch (error) {
+  } catch {
     return new Response(null, { status: 500 })
   }
 }

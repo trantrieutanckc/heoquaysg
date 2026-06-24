@@ -95,6 +95,9 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
   )
   const currentImageUrl = (watch("image") as { url?: string } | null)?.url
 
+  // Dùng ref để giữ dữ liệu ban đầu, tránh editor reinit mỗi khi parent re-render
+  const initialPostRef = React.useRef(post)
+
   const initializeEditor = React.useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default
     const Header = (await import("@editorjs/header")).default
@@ -106,10 +109,11 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
     const InlineCode = (await import("@editorjs/inline-code")).default
     const ImageTool = (await import("@editorjs/image")).default
 
-    const body = postPatchSchema.parse(post)
-    const editorData = typeof post.content === "string" 
-  ? JSON.parse(body.content) 
-  : (body.content || { blocks: [] })
+    const initialPost = initialPostRef.current
+    const body = postPatchSchema.parse(initialPost)
+    const editorData = typeof initialPost.content === "string"
+      ? JSON.parse(body.content)
+      : (body.content || { blocks: [] })
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -147,7 +151,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         },
       })
     }
-  }, [post])
+  }, [])
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -186,43 +190,45 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
 
   async function onSubmit(data: FormData) {
     setIsSaving(true)
+    try {
+      const blocks = await ref.current?.save()
 
-    const blocks = await ref.current?.save()
+      const response = await fetch(`/api/posts/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: data.title,
+          content: blocks,
+          image: data.image,
+          categoryIds: selectedCategoryIds,
+          seoTitle: seoTitle || undefined,
+          seoDescription: seoDescription || undefined,
+          seoKeywords: seoKeywords || undefined,
+          seoImage: seoImage || undefined,
+          template: postTemplate,
+          relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
+        }),
+      })
 
-    const response = await fetch(`/api/posts/${post.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: data.title,
-        content: blocks,
-        image: data.image,
-        categoryIds: selectedCategoryIds,
-        seoTitle: seoTitle || undefined,
-        seoDescription: seoDescription || undefined,
-        seoKeywords: seoKeywords || undefined,
-        seoImage: seoImage || undefined,
-        template: postTemplate,
-        relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
-      }),
-    })
+      if (!response?.ok) {
+        return toast({
+          title: "Something went wrong.",
+          description: "Your post was not saved. Please try again.",
+          variant: "destructive",
+        })
+      }
 
-    setIsSaving(false)
-
-    if (!response?.ok) {
-      return toast({
+      router.refresh()
+      return toast({ description: "Your post has been saved." })
+    } catch {
+      toast({
         title: "Something went wrong.",
         description: "Your post was not saved. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setIsSaving(false)
     }
-
-    router.refresh()
-
-    return toast({
-      description: "Your post has been saved.",
-    })
   }
 
   if (!isMounted) {

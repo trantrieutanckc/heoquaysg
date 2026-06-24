@@ -1,3 +1,9 @@
+import DOMPurify from "isomorphic-dompurify"
+
+function safe(html: string): string {
+  return DOMPurify.sanitize(html ?? "")
+}
+
 interface Block {
   type: string
   data: Record<string, any>
@@ -37,13 +43,13 @@ function renderBlock(block: Block, index: number) {
       const Tag = `h${level}` as keyof JSX.IntrinsicElements
       const id = `toc-${headingCount++}`
       return (
-        <Tag key={index} id={id} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+        <Tag key={index} id={id} dangerouslySetInnerHTML={{ __html: safe(block.data.text) }} />
       )
     }
 
     case "paragraph":
       return (
-        <p key={index} dangerouslySetInnerHTML={{ __html: block.data.text }} />
+        <p key={index} dangerouslySetInnerHTML={{ __html: safe(block.data.text) }} />
       )
 
     case "list": {
@@ -52,7 +58,7 @@ function renderBlock(block: Block, index: number) {
         return (
           <ol key={index}>
             {items.map((item, i) => (
-              <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+              <li key={i} dangerouslySetInnerHTML={{ __html: safe(item) }} />
             ))}
           </ol>
         )
@@ -60,7 +66,7 @@ function renderBlock(block: Block, index: number) {
       return (
         <ul key={index}>
           {items.map((item, i) => (
-            <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+            <li key={i} dangerouslySetInnerHTML={{ __html: safe(item) }} />
           ))}
         </ul>
       )
@@ -90,7 +96,7 @@ function renderBlock(block: Block, index: number) {
     case "quote":
       return (
         <blockquote key={index}>
-          <p dangerouslySetInnerHTML={{ __html: block.data.text }} />
+          <p dangerouslySetInnerHTML={{ __html: safe(block.data.text) }} />
           {block.data.caption && (
             <cite>— {block.data.caption}</cite>
           )}
@@ -110,7 +116,7 @@ function renderBlock(block: Block, index: number) {
               <thead>
                 <tr>
                   {rows[0].map((cell, ci) => (
-                    <th key={ci} dangerouslySetInnerHTML={{ __html: cell }} />
+                    <th key={ci} dangerouslySetInnerHTML={{ __html: safe(cell) }} />
                   ))}
                 </tr>
               </thead>
@@ -119,7 +125,7 @@ function renderBlock(block: Block, index: number) {
               {(hasHeader ? rows.slice(1) : rows).map((row, ri) => (
                 <tr key={ri}>
                   {row.map((cell, ci) => (
-                    <td key={ci} dangerouslySetInnerHTML={{ __html: cell }} />
+                    <td key={ci} dangerouslySetInnerHTML={{ __html: safe(cell) }} />
                   ))}
                 </tr>
               ))}

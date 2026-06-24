@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import * as z from "zod"
 import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
+import { getCurrentUser } from "@/lib/session"
 
 const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
@@ -15,9 +16,27 @@ export async function PATCH(
   req: Request,
   { params }: { params: { userId: string } }
 ) {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const isAdmin = (currentUser as any).role === "ADMIN"
+  const isSelf = (currentUser as any).id === params.userId
+
+  // Chỉ ADMIN hoặc chính user đó mới được sửa
+  if (!isAdmin && !isSelf) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
+
   try {
     const json = await req.json()
     const body = updateUserSchema.parse(json)
+
+    // Chỉ ADMIN mới được đổi role
+    if (body.role && !isAdmin) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    }
 
     const data: Record<string, any> = {}
     if (body.name) data.name = body.name

@@ -71,35 +71,31 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async jwt({ token, user }) {
+      // user chỉ có khi vừa đăng nhập — gán thông tin vào token ngay lúc đó
+      if (user) {
+        token.id = user.id
+        ;(token as any).role = (user as any).role
+        return token
+      }
+
+      // Token đã có đủ thông tin → không query DB nữa
+      if (token.id && (token as any).role) {
+        return token
+      }
+
+      // Fallback: token cũ chưa có role (migration từ session cũ)
       try {
-        const dbUser = await db.user.findFirst({
+        const dbUser = await db.user.findUnique({
           where: { email: token.email! },
           select: { id: true, name: true, email: true, image: true, role: true },
         })
-
-        if (!dbUser) {
-          if (user) {
-            token.id = user.id
-            ;(token as any).role = (user as any).role
-          }
-          return token
-        }
-
-        return {
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          picture: dbUser.image,
-          role: dbUser.role,
+        if (dbUser) {
+          return { id: dbUser.id, name: dbUser.name, email: dbUser.email, picture: dbUser.image, role: dbUser.role }
         }
       } catch (error) {
         console.error("[auth] jwt callback error:", error)
-        if (user) {
-          token.id = user.id
-          ;(token as any).role = (user as any).role
-        }
-        return token
       }
+      return token
     },
   },
 }

@@ -13,13 +13,20 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
-  const data = await req.json()
+  try {
+    const data = await req.json()
+    if (typeof data !== "object" || data === null || Array.isArray(data)) {
+      return NextResponse.json({ error: "Invalid data" }, { status: 422 })
+    }
 
-  const config = await db.siteConfig.upsert({
-    where: { id: "default" },
-    update: { data },
-    create: { id: "default", data },
-  })
+    const config = await db.siteConfig.upsert({
+      where: { id: "default" },
+      update: { data },
+      create: { id: "default", data },
+    })
 
-  return NextResponse.json(config.data)
+    return NextResponse.json(config.data)
+  } catch {
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }

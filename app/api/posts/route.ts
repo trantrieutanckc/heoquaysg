@@ -21,6 +21,8 @@ export async function GET() {
     const posts = await db.post.findMany({
       select: { id: true, title: true, published: true, createdAt: true },
       where: { authorId: session.user.id },
+      orderBy: { createdAt: "desc" },
+      take: 200,
     })
 
     return new Response(JSON.stringify(posts))

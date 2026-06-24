@@ -25,8 +25,12 @@ export function CommentSection({ postId }: { postId: string }) {
 
   React.useEffect(() => {
     fetch(`/api/posts/${postId}/comments`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("fetch failed")
+        return r.json()
+      })
       .then((data) => setComments(data))
+      .catch(() => toast({ title: "Lỗi", description: "Không thể tải bình luận.", variant: "destructive" }))
       .finally(() => setLoading(false))
   }, [postId])
 
@@ -49,6 +53,8 @@ export function CommentSection({ postId }: { postId: string }) {
 
     const newComment: Comment = await res.json()
     setComments((prev) => [...prev, newComment])
+    setName("")
+    setEmail("")
     setContent("")
     toast({ description: "Bình luận đã được gửi." })
   }

@@ -233,13 +233,55 @@ npx prisma db push
 **Version 1 — hoàn thành 24/06/2026** ✅
 
 **Version 2 — việc còn lại:**
-- [ ] Upload ảnh cần cấu hình storage thật (Cloudinary / Supabase Storage) — hiện dùng base64 hoặc URL ngoài
-- [ ] Form liên hệ chưa gửi email thật — cần cấu hình SMTP/Resend
-- [ ] `NEXT_PUBLIC_APP_URL` trên Vercel cần xóa trailing space (gây lỗi `Invalid URL` cho OG image)
+- [ ] **Storage thật (Cloudinary / Supabase Storage)** — hiện `api/upload/route.ts` lưu vào `public/uploads/` (không tồn tại lâu trên Vercel). Khi fix xong thì 2 tính năng sau sẽ hoạt động tự động:
+  - Upload ảnh bìa bài viết (cover image)
+  - Upload ảnh trực tiếp vào nội dung bài (EditorJS image tool đã wire sẵn, chỉ cần đổi backend `api/upload`)
+- [ ] **Quản lý trang tĩnh** — admin tự tạo page mới (ví dụ `/gioi-thieu`, `/chinh-sach`, `/faq`) trong dashboard mà không cần code. Cần: model `Page` (Prisma), API CRUD, dashboard `/dashboard/pages`, page editor, route public `/pages/[slug]`
+- [ ] **Access token + Refresh token** — thay thế session JWT 24h hiện tại bằng hệ thống 2 token an toàn hơn:
+  - **Access token**: JWT ngắn hạn (15 phút), lưu trong cookie `HttpOnly SameSite=Strict`
+  - **Refresh token**: random token dài hạn (7 ngày), lưu **hash** trong DB (model `RefreshToken`), dùng để cấp access token mới
+  - **Token rotation**: mỗi lần refresh → cấp refresh token mới + vô hiệu hóa cái cũ → nếu bị đánh cắp, user hợp lệ refresh sẽ fail và biết ngay
+  - **Revoke**: logout hoặc admin có thể thu hồi refresh token bất cứ lúc nào
+  - Cần: model `RefreshToken` (id, userId, tokenHash, expiresAt, revokedAt, userAgent, ip, createdAt), `POST /api/auth/refresh`, cập nhật middleware, auto-refresh client-side trước khi access token hết hạn
+  - Lưu ý: đây là thay đổi lớn, cần thay thế toàn bộ NextAuth session strategy hiện tại
+- [ ] **API Token** — user tự tạo personal access token để gọi API bằng `Authorization: Bearer <token>` thay cho session. Cần:
+  - Model `ApiToken` (id, userId, name, tokenHash, lastUsedAt, expiresAt?, createdAt)
+  - Trang quản lý token trong profile hoặc dashboard
+  - Middleware/helper check Bearer header song song với session hiện tại
+- [ ] **Reset Password / Email Token** — đổi mật khẩu qua email. Cần:
+  - Model `EmailToken` (id, email, tokenHash, type: RESET_PASSWORD | VERIFY_EMAIL, expiresAt, usedAt?)
+  - API route `POST /api/auth/forgot-password` — gửi link reset
+  - API route `POST /api/auth/reset-password` — xác nhận token + đổi mật khẩu
+  - Trang `/reset-password/[token]`
+  - SMTP/Resend (dùng chung với task form liên hệ bên dưới)
+- [ ] **Form liên hệ** — chưa gửi email thật, cần cấu hình SMTP/Resend
+- [ ] **`NEXT_PUBLIC_APP_URL` trên Vercel** — xóa trailing space (gây lỗi `Invalid URL` cho OG image)
 
 ---
 
 ## Thay đổi gần đây
+
+### 24/06/2026 — Security fixes + bug fixes (post Version 1)
+
+#### Security fixes
+- `api/users/route.ts`: GET + POST yêu cầu session ADMIN
+- `api/users/[userId]/route.ts`: PATCH yêu cầu auth; chỉ ADMIN đổi được role; user chỉ sửa được chính mình
+- `api/posts/[postId]/route.ts`: PATCH + DELETE yêu cầu ADMIN/EDITOR; EDITOR chỉ sửa/xóa bài của mình
+- `api/upload/route.ts`: thêm auth; extension lấy từ MIME type map (không từ filename); bỏ SVG
+- `api/comments/[commentId]/route.ts`: DELETE yêu cầu ADMIN hoặc EDITOR
+- `api/categories/route.ts`: POST yêu cầu ADMIN hoặc EDITOR
+- `api/posts/[postId]/featured/route.ts`: thêm auth + validate `featured` bằng Zod + dùng `$transaction`
+- `components/editorjs-renderer.tsx`: wrap tất cả `dangerouslySetInnerHTML` qua `DOMPurify.sanitize()` (cài `isomorphic-dompurify`)
+- `lib/rate-limit.ts`: fix off-by-one — block ngay từ lần thứ 5 thay vì lần thứ 6
+- `components/user-auth-form.tsx`: validate `from` chỉ accept path cùng origin, reject URL ngoài
+
+#### Bug fixes
+- `api/posts/route.ts`: GET giới hạn `take: 200`
+- `api/site-config/route.ts`: PUT bọc try/catch + validate body là object
+- `lib/auth.ts`: JWT callback không còn query DB mỗi request — chỉ query khi token cũ chưa có `role`
+- `components/comment-section.tsx`: fetch comments có error handling + reset name/email/content sau submit
+- `components/editor.tsx`: dùng `initialPostRef` để editor không reinit khi parent re-render; bọc `onSubmit` trong try/finally để `isSaving` luôn được reset
+- `prisma/schema.prisma`: thêm `@@index([authorId])` và `@@index([published, updatedAt])` cho bảng `posts`
 
 ### 24/06/2026 — Version 1 hoàn thành
 - Skeleton loading cho tất cả dashboard pages (categories, comments, users, menu, settings, profile)

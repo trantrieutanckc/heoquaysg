@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import * as z from "zod"
 
 import { db } from "@/lib/db"
+import { getCurrentUser } from "@/lib/session"
 
 const imageSchema = z.object({
   url: z.string().optional().or(z.literal("")),
@@ -24,6 +25,12 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const currentUser = await getCurrentUser()
+  const role = (currentUser as any)?.role
+  if (!currentUser || (role !== "ADMIN" && role !== "EDITOR")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
+
   try {
     const json = await req.json()
     const body = createCategorySchema.parse(json)

@@ -23,6 +23,10 @@ export function checkLoginRateLimit(email: string): { ok: boolean; remainingMs?:
     return { ok: true }
   }
 
+  if (rec.count >= MAX_ATTEMPTS) {
+    return { ok: false, remainingMs: LOCKOUT_MS }
+  }
+
   return { ok: true }
 }
 
