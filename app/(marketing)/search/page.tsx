@@ -1,8 +1,10 @@
 import Link from "next/link"
+import Image from "next/image"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import { SearchInput } from "@/components/search-input"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 export const metadata = { title: "Tìm kiếm" }
 
@@ -61,11 +63,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   className="group flex gap-4 p-4 bg-background hover:bg-muted/40 transition-colors"
                 >
                   {img?.url && (
-                    <div className="h-20 w-28 sm:w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
-                      <img
+                    <div className="relative h-20 w-28 sm:w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
+                      <Image
                         src={img.url}
                         alt={img.alt ?? post.title}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        fill
+                        sizes="128px"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        placeholder="blur"
+                        blurDataURL={BLUR_PLACEHOLDER}
                       />
                     </div>
                   )}
