@@ -70,6 +70,10 @@ export default async function PostPage({ params }: PostPageProps) {
   const banner = parseBanner(post.banner)
   const headings = extractHeadings(post.content)
 
+  const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const phone = cfg.contactPhone?.trim() || null
+
   // Related posts: manual selection or fallback to same category
   const relatedIds = Array.isArray(post.relatedPostIds) ? (post.relatedPostIds as string[]) : []
   const categoryIds = post.categories.map((c) => c.category.id)
@@ -206,6 +210,33 @@ export default async function PostPage({ params }: PostPageProps) {
           <LikeButton postId={post.id} initialLikes={post.likes} />
           <ShareButton title={post.title} />
         </FadeUp>
+
+        {phone && (
+          <FadeUp className="my-2 rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/30 p-8 text-center">
+            <h2 className="font-heading text-xl sm:text-2xl mb-2">Muốn đặt món hoặc hỏi thêm?</h2>
+            <p className="text-sm text-muted-foreground mb-6">Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất.</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href={`tel:${phone}`}
+                className="inline-flex items-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                Gọi ngay — {phone}
+              </a>
+              <Link
+                href="/lien-he"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 font-semibold px-6 py-3 transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                Nhắn tin / Đặt hàng
+              </Link>
+            </div>
+          </FadeUp>
+        )}
 
         {relatedPosts.length > 0 && (
           <FadeUp className="border-t pt-10 mt-2">

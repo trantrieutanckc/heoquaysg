@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 
 export const metadata = {
@@ -8,17 +9,33 @@ export const metadata = {
   description: "Các bài viết mới nhất về heo quay, vịt quay, gà quay và ẩm thực.",
 }
 
-export default async function BlogPage() {
-  const posts = await db.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-    include: {
-      author: { select: { name: true, image: true } },
-      categories: {
-        include: { category: { select: { name: true, slug: true } } },
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: { category?: string }
+}) {
+  const selectedSlug = searchParams.category?.trim() || null
+
+  const [categories, posts] = await Promise.all([
+    db.category.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
+    }),
+    db.post.findMany({
+      where: {
+        published: true,
+        ...(selectedSlug ? { categories: { some: { category: { slug: selectedSlug } } } } : {}),
       },
-    },
-  })
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: { select: { name: true, image: true } },
+        categories: { include: { category: { select: { name: true, slug: true } } } },
+      },
+    }),
+  ])
+
+  const selectedCategory = categories.find((c) => c.slug === selectedSlug)
 
   return (
     <div className="container py-6 lg:py-10">
@@ -26,18 +43,55 @@ export default async function BlogPage() {
         <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
           <div className="flex-1 space-y-4">
             <h1 className="inline-block font-heading text-4xl tracking-tight lg:text-5xl">
-              Tin tức
+              {selectedCategory ? selectedCategory.name : "Tin tức"}
             </h1>
             <p className="text-xl text-muted-foreground">
-              Các bài viết mới nhất về ẩm thực và món quay.
+              {selectedCategory
+                ? `${posts.length} bài viết trong danh mục này.`
+                : "Các bài viết mới nhất về ẩm thực và món quay."}
             </p>
           </div>
         </div>
+
+        {/* Category filter pills */}
+        {categories.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-6">
+            <Link
+              href="/blog"
+              className={cn(
+                "inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                !selectedSlug
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+              )}
+            >
+              Tất cả
+            </Link>
+            {categories.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/blog?category=${cat.slug}`}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  selectedSlug === cat.slug
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                )}
+              >
+                {cat.name}
+                {cat._count.posts > 0 && (
+                  <span className="text-xs opacity-60">{cat._count.posts}</span>
+                )}
+              </Link>
+            ))}
+          </div>
+        )}
+
         <hr className="my-8" />
       </PageEntrance>
 
       {posts.length ? (
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer key={selectedSlug ?? "all"} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
             return (
@@ -103,7 +157,16 @@ export default async function BlogPage() {
           })}
         </StaggerContainer>
       ) : (
-        <p className="text-muted-foreground">Chưa có bài viết nào được đăng.</p>
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <p className="text-muted-foreground">
+            {selectedSlug ? "Chưa có bài viết nào trong danh mục này." : "Chưa có bài viết nào được đăng."}
+          </p>
+          {selectedSlug && (
+            <Link href="/blog" className="mt-4 text-sm text-primary hover:underline">
+              Xem tất cả bài viết →
+            </Link>
+          )}
+        </div>
       )}
     </div>
   )
