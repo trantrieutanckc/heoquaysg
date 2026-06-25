@@ -251,6 +251,16 @@ npx prisma db push
 - [ ] **Dashboard chart GA4** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
 - ~~**API Token**~~ — đã bỏ (không có use case thực tế cho restaurant blog)
 
+**Version 3 — đang làm:**
+- [x] **Bulk actions — Posts** — `post-list.tsx` checkbox + `BulkActionBar`; API `/api/posts/bulk` (publish/unpublish/delete)
+- [x] **Bulk actions — Comments** — `comment-list.tsx` checkbox + `BulkActionBar`; API `/api/comments/bulk` (approve/reject/delete)
+- [x] **Bulk actions — Categories** — `category-list.tsx` checkbox + `BulkActionBar` (tích hợp vào DnD); API `/api/categories/bulk` (publish/unpublish/delete)
+- [x] **Bulk actions — Pages** — `page-list.tsx` checkbox + `BulkActionBar`; `pages/page.tsx` refactor thành server component; `page-create-button.tsx` tách dialog tạo trang
+- [x] **Import / Export CSV — Posts** — xem chi tiết bên dưới
+- [ ] **Schedule publish** — `scheduledAt` field + Vercel Cron
+- [ ] **Image lazy loading + blur placeholder**
+- [ ] **Dashboard notifications**
+
 ## Khi go live cần làm thêm
 - [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
 - [ ] **Cập nhật sitemap** — thêm `/about` và `/lien-he` vào `sitemap.ts`
@@ -259,6 +269,82 @@ npx prisma db push
 ---
 
 ## Thay đổi gần đây
+
+### 25/06/2026 — Import / Export CSV bài viết (V3)
+
+#### Tính năng
+Ba nút xuất hiện ở góc phải header trang `/dashboard/posts`:
+- **Export CSV** — tải toàn bộ bài viết của user hiện tại ra file `.csv`
+- **Import CSV** — upload file CSV để tạo hàng loạt bài viết nháp
+- **Mẫu** — tải file `import-template.csv` mẫu để điền
+
+#### Export
+
+Endpoint: `GET /api/posts/export`  
+Yêu cầu: đăng nhập (bất kỳ role nào)
+
+File trả về: `posts-YYYY-MM-DD.csv`
+
+| Cột | Kiểu | Mô tả |
+|---|---|---|
+| `id` | string | ID bài viết |
+| `title` | string | Tiêu đề |
+| `published` | true/false | Trạng thái đăng |
+| `featured` | true/false | Bài nổi bật |
+| `price` | number | Giá (VND), để trống nếu không có |
+| `categories` | string | Tên danh mục, nhiều danh mục ngăn cách bằng `\|` |
+| `likes` | number | Số lượt thích |
+| `createdAt` | ISO 8601 | Ngày tạo |
+
+#### Import
+
+Endpoint: `POST /api/posts/import` (multipart form, field `file`)  
+Yêu cầu: role EDITOR hoặc ADMIN
+
+File CSV phải có header dòng đầu tiên. Các cột được hỗ trợ:
+
+| Cột | Bắt buộc | Mô tả |
+|---|---|---|
+| `title` | ✅ | Tiêu đề bài viết |
+| `price` | | Giá (số, đơn vị VND) |
+| `categories` | | Tên danh mục, nhiều danh mục ngăn cách bằng `\|` — **phải tồn tại trong DB** |
+
+Tất cả bài được tạo ở trạng thái **nháp** (`published = false`). Nội dung bài trống, user tự vào editor để soạn.
+
+**Ví dụ file import:**
+```csv
+title,price,categories
+"Heo Quay Lá Mắc Mật",250000,"Món Quay|Đặc Sản"
+"Vịt Quay Bắc Kinh",320000,"Vịt Quay"
+"Gà Quay Mật Ong",180000,""
+```
+
+**Response:**
+```json
+{ "created": 3, "errors": [] }
+```
+
+Nếu có lỗi ở một số dòng, các dòng hợp lệ vẫn được tạo. Lỗi được báo theo số dòng trong file (dòng 2 = dòng dữ liệu đầu tiên).
+
+#### Files liên quan
+- `app/api/posts/export/route.ts` — GET handler
+- `app/api/posts/import/route.ts` — POST handler + CSV parser
+- `components/posts-import-export.tsx` — UI buttons (Export, Import, Mẫu)
+- `app/(dashboard)/dashboard/posts/page.tsx` — mount component vào header
+
+---
+
+### 25/06/2026 — UI improvements homepage (V3)
+- `app/(marketing)/page.tsx`: Hero CTA buttons to lên (`px-10 py-4 text-base`), thêm icon mũi tên và điện thoại
+- `app/(marketing)/page.tsx`: Thêm `SectionDivider` (3 chấm cam + gradient line) giữa các section: Featured → Categories → Về chúng tôi → Bài viết mới nhất
+- `app/(marketing)/blog/page.tsx`: Category filter pills (URL-based: `/blog?category=slug`), đếm bài theo category, active state highlight
+
+### 25/06/2026 — Bulk actions categories + pages (V3)
+- `api/categories/bulk/route.ts`: thêm action `publish` + `unpublish`
+- `components/category-list.tsx`: checkbox + BulkActionBar tích hợp vào DnD (`stopPropagation` để không conflict)
+- `components/page-list.tsx` (NEW): list pages với checkbox + BulkActionBar
+- `components/page-create-button.tsx` (NEW): dialog tạo trang, tách ra khỏi page.tsx
+- `app/(dashboard)/dashboard/pages/page.tsx`: refactor thành server component, fetch DB trực tiếp (nhất quán với categories)
 
 ### 25/06/2026 — Access/refresh token + Page SEO/banner + Dashboard v2 (commit 1cffe73)
 - `lib/auth.ts` + `middleware.ts` + `schema`: access token 30 phút, refresh token 7 ngày (hash SHA-256, rotation tự động, middleware clear cookie khi expired)

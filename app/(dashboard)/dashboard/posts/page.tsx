@@ -10,6 +10,7 @@ import { PostCreateButton } from "@/components/post-create-button"
 import { PostList } from "@/components/post-list"
 import { DashboardShell } from "@/components/shell"
 import { DashboardPagination } from "@/components/dashboard-pagination"
+import { PostsImportExport } from "@/components/posts-import-export"
 
 export const metadata = { title: "Bài viết" }
 
@@ -58,7 +59,10 @@ export default async function PostsPage({
   return (
     <DashboardShell>
       <DashboardHeader heading="Bài viết" text={`${total} bài viết.`}>
-        {canCreate && <PostCreateButton />}
+        <div className="flex items-center gap-2">
+          {canCreate && <PostsImportExport />}
+          {canCreate && <PostCreateButton />}
+        </div>
       </DashboardHeader>
 
       {posts?.length ? (
