@@ -50,10 +50,8 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "avatars.githubusercontent.com" },
-      { protocol: "https", hostname: "heoquay.com" },
-      { protocol: "https", hostname: "vpdqxefnmbxklonhnlbs.supabase.co" },
-      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "**" },
+      { protocol: "http", hostname: "**" },
     ],
   },
   experimental: {
