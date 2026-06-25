@@ -10,6 +10,7 @@ import { DashboardNav } from "@/components/nav"
 import { DashboardSearch } from "@/components/dashboard-search"
 import { SiteFooter } from "@/components/site-footer"
 import { UserAccountNav } from "@/components/user-account-nav"
+import { NotificationBell } from "@/components/notification-bell"
 
 interface DashboardLayoutProps {
   children?: React.ReactNode
@@ -34,6 +35,7 @@ export default async function DashboardLayout({
           <MainNav items={dashboardConfig.mainNav} />
           <div className="flex items-center gap-3">
             <DashboardSearch />
+            <NotificationBell />
             <UserAccountNav
             user={{
               name: user.name,

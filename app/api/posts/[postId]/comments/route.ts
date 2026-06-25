@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import * as z from "zod"
 import { db } from "@/lib/db"
 import { sendCommentNotification } from "@/lib/mailer"
+import { createCommentNotification } from "@/lib/notifications"
 
 // ── Rate limiter: 5 comments per IP per hour ──────────────────────────────────
 const commentRateMap = new Map<string, { count: number; resetAt: number }>()
@@ -121,7 +122,7 @@ export async function POST(
       },
     })
 
-    // Fire-and-forget email — doesn't block response
+    // Fire-and-forget: email + in-app notifications
     const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.NEXTAUTH_URL ?? ""
     sendCommentNotification({
       postId: params.postId,
@@ -131,6 +132,12 @@ export async function POST(
       content: cleanContent,
       siteUrl,
     })
+
+    createCommentNotification({
+      postId: params.postId,
+      postTitle: post.title,
+      authorName: cleanName,
+    }).catch(() => {}) // fire-and-forget
 
     // Return 202 Accepted — comment is pending, not yet visible
     return NextResponse.json({ pending: true }, { status: 202 })

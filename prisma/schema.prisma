@@ -65,6 +65,7 @@ model User {
   sessions      Session[]
   Post          Post[]
   refreshTokens RefreshToken[]
+  notifications Notification[]
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -218,6 +219,22 @@ model RefreshToken {
 
   @@index([userId])
   @@map(name: "refresh_tokens")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+  @@map(name: "notifications")
 }
 
 model PostCategory {
