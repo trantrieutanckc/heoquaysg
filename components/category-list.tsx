@@ -21,9 +21,11 @@ import { CSS } from "@dnd-kit/utilities"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
+import { BulkActionBar } from "@/components/bulk-action-bar"
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog"
@@ -56,6 +58,12 @@ interface Category {
   _count: { posts: number }
 }
 
+const BULK_ACTIONS = [
+  { label: "Đăng tất cả", action: "publish", variant: "default" as const },
+  { label: "Huỷ đăng", action: "unpublish", variant: "outline" as const },
+  { label: "Xoá", action: "delete", variant: "destructive" as const, confirm: true },
+]
+
 function SortableRow({
   cat,
   onDelete,
@@ -64,6 +72,8 @@ function SortableRow({
   onTemplate,
   onBanner,
   deleting,
+  checked,
+  onCheck,
 }: {
   cat: Category
   onDelete: (id: string) => void
@@ -72,6 +82,8 @@ function SortableRow({
   onTemplate: (cat: Category) => void
   onBanner: (cat: Category) => void
   deleting: string | null
+  checked: boolean
+  onCheck: (id: string) => void
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: cat.id })
@@ -88,6 +100,12 @@ function SortableRow({
       style={style}
       className="flex items-center justify-between p-4 bg-background gap-3 hover:bg-muted/40 transition-colors"
     >
+      <Checkbox
+        checked={checked}
+        onCheckedChange={() => onCheck(cat.id)}
+        aria-label={`Chọn ${cat.name}`}
+        onClick={(e) => e.stopPropagation()}
+      />
       <button
         {...attributes}
         {...listeners}
@@ -165,6 +183,20 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
   const router = useRouter()
   const [categories, setCategories] = React.useState(initialCategories)
   const [deleting, setDeleting] = React.useState<string | null>(null)
+  const [selected, setSelected] = React.useState<Set<string>>(new Set())
+
+  const toggle = (id: string) => setSelected((prev) => {
+    const next = new Set(prev)
+    next.has(id) ? next.delete(id) : next.add(id)
+    return next
+  })
+
+  const toggleAll = () => setSelected((prev) =>
+    prev.size === categories.length ? new Set() : new Set(categories.map((c) => c.id))
+  )
+
+  const allSelected = selected.size === categories.length && categories.length > 0
+  const someSelected = selected.size > 0 && selected.size < categories.length
 
   // Template dialog
   const [templateCategory, setTemplateCategory] = React.useState<Category | null>(null)
@@ -343,9 +375,20 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
 
   return (
     <>
+      <div>
+      <div className="flex items-center gap-3 px-4 py-2 border rounded-t-md bg-muted/40">
+        <Checkbox
+          checked={allSelected ? true : someSelected ? "indeterminate" : false}
+          onCheckedChange={toggleAll}
+          aria-label="Chọn tất cả"
+        />
+        <span className="text-xs text-muted-foreground">
+          {selected.size > 0 ? `${selected.size} đã chọn` : "Chọn tất cả"}
+        </span>
+      </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={categories.map((c) => c.id)} strategy={verticalListSortingStrategy}>
-          <div className="divide-y divide-border rounded-md border">
+          <div className="divide-y divide-border rounded-b-md border border-t-0">
             {categories.map((cat) => (
               <SortableRow
                 key={cat.id}
@@ -356,11 +399,14 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
                 onTemplate={openTemplate}
                 onBanner={setBannerCategory}
                 deleting={deleting}
+                checked={selected.has(cat.id)}
+                onCheck={toggle}
               />
             ))}
           </div>
         </SortableContext>
       </DndContext>
+      </div>
 
       {/* Banner dialog */}
       <BannerEditor
@@ -455,6 +501,14 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <BulkActionBar
+        selectedCount={selected.size}
+        selectedIds={[...selected]}
+        actions={BULK_ACTIONS}
+        apiEndpoint="/api/categories/bulk"
+        onClear={() => setSelected(new Set())}
+      />
 
       {/* SEO dialog */}
       <Dialog open={!!seoCategory} onOpenChange={(open) => !open && setSeoCategory(null)}>

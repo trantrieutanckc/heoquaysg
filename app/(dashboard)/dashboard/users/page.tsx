@@ -43,7 +43,7 @@ export default async function UsersPage({
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Users" text={`${total} tài khoản.`}>
+      <DashboardHeader heading="Người dùng" text={`${total} tài khoản.`}>
         <UserCreateButton />
       </DashboardHeader>
       <UserList users={users} />

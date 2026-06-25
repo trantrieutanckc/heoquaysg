@@ -89,6 +89,7 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
 
   return (
     <>
+      <div>
       {/* Header row with select all */}
       <div className="flex items-center gap-3 px-4 py-2 border rounded-t-md bg-muted/40">
         <Checkbox
@@ -205,6 +206,7 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       <BulkActionBar

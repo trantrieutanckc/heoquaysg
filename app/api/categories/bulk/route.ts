@@ -6,7 +6,7 @@ import { isEditor } from "@/lib/permissions"
 
 const schema = z.object({
   ids: z.array(z.string()).min(1),
-  action: z.enum(["delete"]),
+  action: z.enum(["delete", "publish", "unpublish"]),
 })
 
 export async function POST(req: Request) {
@@ -15,9 +15,15 @@ export async function POST(req: Request) {
   if (!isEditor((user as any).role)) return new Response(null, { status: 403 })
 
   const body = await req.json()
-  const { ids } = schema.parse(body)
+  const { ids, action } = schema.parse(body)
 
-  await db.category.deleteMany({ where: { id: { in: ids } } })
+  const where = { id: { in: ids } }
+
+  if (action === "delete") {
+    await db.category.deleteMany({ where })
+  } else {
+    await db.category.updateMany({ where, data: { published: action === "publish" } })
+  }
 
   return NextResponse.json({ ok: true })
 }

@@ -49,6 +49,7 @@ export function PostList({ posts, allCategories }: PostListProps) {
 
   return (
     <>
+      <div>
       {/* Header row */}
       <div className="flex items-center gap-3 px-4 py-2 border rounded-t-md bg-muted/40">
         <Checkbox
@@ -76,6 +77,7 @@ export function PostList({ posts, allCategories }: PostListProps) {
             </div>
           </div>
         ))}
+      </div>
       </div>
 
       <BulkActionBar

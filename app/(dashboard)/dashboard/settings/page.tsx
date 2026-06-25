@@ -21,7 +21,7 @@ export default async function SettingsPage() {
   return (
     <DashboardShell>
       <DashboardHeader
-        heading="Settings"
+        heading="Cài đặt"
         text="Cấu hình thông tin và nội dung hiển thị trên site."
       />
       <SiteConfigForm initial={data} />
