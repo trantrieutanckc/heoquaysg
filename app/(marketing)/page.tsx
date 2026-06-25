@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import Link from "next/link"
+import Image from "next/image"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import {
@@ -10,6 +11,7 @@ import {
   StaggerItem,
   ScaleIn,
 } from "@/components/motion-primitives"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 function SectionDivider() {
   return (
@@ -83,10 +85,15 @@ export default async function IndexPage() {
       {/* ── Hero Banner ────────────────────────────────────────── */}
       <section className="relative w-full overflow-hidden flex items-center" style={{ minHeight: "75vh" }}>
         {heroImage ? (
-          <img
+          <Image
             src={heroImage}
             alt="Hero background"
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-orange-950 to-stone-900" />
@@ -152,10 +159,14 @@ export default async function IndexPage() {
                   {/* Image */}
                   <div className="relative aspect-[4/3] md:aspect-auto overflow-hidden bg-muted min-h-[220px]">
                     {image?.url ? (
-                      <img
+                      <Image
                         src={image.url}
                         alt={image.alt ?? featured.title}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 45vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        placeholder="blur"
+                        blurDataURL={BLUR_PLACEHOLDER}
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-950 dark:to-stone-900" />
@@ -233,12 +244,16 @@ export default async function IndexPage() {
                       href={`/categories/${cat.slug}`}
                       className="group flex flex-col items-center gap-2 rounded-xl border bg-card p-4 text-center hover:border-primary/50 hover:shadow-sm transition-colors duration-200 h-full"
                     >
-                      <div className="w-14 h-14 rounded-full overflow-hidden bg-muted flex items-center justify-center shrink-0">
+                      <div className="relative w-14 h-14 rounded-full overflow-hidden bg-muted flex items-center justify-center shrink-0">
                         {catImg?.url ? (
-                          <img
+                          <Image
                             src={catImg.url}
                             alt={cat.name}
-                            className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            fill
+                            sizes="56px"
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            placeholder="blur"
+                            blurDataURL={BLUR_PLACEHOLDER}
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-xl">
@@ -305,7 +320,15 @@ export default async function IndexPage() {
               </div>
               <div className="relative aspect-[4/3] md:aspect-auto min-h-[260px] overflow-hidden order-1 md:order-2">
                 {heroImage ? (
-                  <img src={heroImage} alt={siteName} className="absolute inset-0 h-full w-full object-cover" />
+                  <Image
+                    src={heroImage}
+                    alt={siteName}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    placeholder="blur"
+                    blurDataURL={BLUR_PLACEHOLDER}
+                  />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-br from-orange-200 via-amber-100 to-orange-300 dark:from-orange-900 dark:via-amber-950 dark:to-orange-800 flex items-center justify-center">
                     <span className="text-8xl drop-shadow-sm select-none">🐷</span>
@@ -341,12 +364,16 @@ export default async function IndexPage() {
                       href={`/posts/${post.id}`}
                       className="group flex flex-col rounded-2xl overflow-hidden border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
                     >
-                      <div className="aspect-[16/9] overflow-hidden bg-muted">
+                      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
                         {image?.url ? (
-                          <img
+                          <Image
                             src={image.url}
                             alt={image.alt ?? post.title}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            placeholder="blur"
+                            blurDataURL={BLUR_PLACEHOLDER}
                           />
                         ) : (
                           <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />

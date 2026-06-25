@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 interface RelatedPost {
   id: string
@@ -56,12 +58,16 @@ export function RelatedPostsCarousel({ posts }: { posts: RelatedPost[] }) {
                 snap-start shrink-0
                 w-[80vw] sm:w-[calc(50%-8px)] lg:w-[calc(25%-12px)]"
             >
-              <div className="aspect-video overflow-hidden bg-muted">
+              <div className="relative aspect-video overflow-hidden bg-muted">
                 {img?.url ? (
-                  <img
+                  <Image
                     src={img.url}
                     alt={img.alt ?? p.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    placeholder="blur"
+                    blurDataURL={BLUR_PLACEHOLDER}
                   />
                 ) : (
                   <div className="h-full w-full bg-muted" />

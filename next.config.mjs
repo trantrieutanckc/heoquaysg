@@ -49,7 +49,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["avatars.githubusercontent.com", "heoquay.com"],
+    remotePatterns: [
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "heoquay.com" },
+      { protocol: "https", hostname: "vpdqxefnmbxklonhnlbs.supabase.co" },
+      { protocol: "https", hostname: "*.supabase.co" },
+    ],
   },
   experimental: {
     appDir: true,

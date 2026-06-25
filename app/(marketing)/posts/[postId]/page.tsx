@@ -11,7 +11,9 @@ import type { PostTemplate } from "@/lib/templates"
 import { BackButton } from "@/components/back-button"
 import { parseBanner } from "@/lib/banner"
 import { BannerDisplay } from "@/components/banner-display"
+import Image from "next/image"
 import { PageEntrance, FadeUp } from "@/components/motion-primitives"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { RelatedPostsCarousel } from "@/components/related-posts-carousel"
 
 interface PostPageProps {
@@ -99,11 +101,16 @@ export default async function PostPage({ params }: PostPageProps) {
     <div className="min-h-screen">
       {postImage?.url && (
         <PageEntrance>
-          <div className="w-full overflow-hidden bg-muted aspect-video sm:aspect-[16/7] max-h-[480px]">
-            <img
+          <div className="relative w-full overflow-hidden bg-muted aspect-video sm:aspect-[16/7] max-h-[480px]">
+            <Image
               src={postImage.url}
               alt={postImage.alt ?? post.title}
-              className="h-full w-full object-cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
             />
           </div>
         </PageEntrance>

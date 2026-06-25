@@ -1,8 +1,10 @@
 import Link from "next/link"
+import Image from "next/image"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import { cn } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 export const metadata = {
   title: "Tin tức",
@@ -100,12 +102,16 @@ export default async function BlogPage({
                   href={`/posts/${post.id}`}
                   className="group flex flex-col rounded-2xl overflow-hidden border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
                 >
-                  <div className="aspect-video overflow-hidden bg-muted">
+                  <div className="relative aspect-video overflow-hidden bg-muted">
                     {image?.url ? (
-                      <img
+                      <Image
                         src={image.url}
                         alt={image.alt ?? post.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        placeholder="blur"
+                        blurDataURL={BLUR_PLACEHOLDER}
                       />
                     ) : (
                       <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />

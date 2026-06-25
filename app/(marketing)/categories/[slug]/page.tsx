@@ -1,7 +1,9 @@
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 import type { CategoryTemplate } from "@/lib/templates"
 import { parseBanner } from "@/lib/banner"
 import { BannerDisplay } from "@/components/banner-display"
@@ -70,12 +72,16 @@ function PostCard({ post }: { post: any }) {
       href={`/posts/${post.id}`}
       className="group flex flex-col overflow-hidden rounded-2xl border bg-card hover:shadow-lg transition-all duration-300"
     >
-      <div className="aspect-[16/9] overflow-hidden bg-muted">
+      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
         {postImage?.url ? (
-          <img
+          <Image
             src={postImage.url}
             alt={postImage.alt ?? post.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
           />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
@@ -99,8 +105,17 @@ function StandardTemplate({ category, image, posts, banner }: any) {
         <div className="border-b bg-muted/30">
           <div className="container px-4 sm:px-6 py-12 lg:py-16">
             {image?.url && (
-              <div className="mb-6 overflow-hidden rounded-2xl" style={{ maxHeight: 260 }}>
-                <img src={image.url} alt={image.alt ?? category.name} className="h-full w-full object-cover" style={{ maxHeight: 260 }} />
+              <div className="relative mb-6 overflow-hidden rounded-2xl" style={{ height: 260 }}>
+                <Image
+                  src={image.url}
+                  alt={image.alt ?? category.name}
+                  fill
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                  className="object-cover"
+                  priority
+                  placeholder="blur"
+                  blurDataURL={BLUR_PLACEHOLDER}
+                />
               </div>
             )}
             <div className="flex items-end justify-between gap-4 flex-wrap">
@@ -145,8 +160,17 @@ function GridTemplate({ category, image, posts, banner }: any) {
         <div className="border-b bg-muted/30">
           <div className="container px-4 sm:px-6 py-12 lg:py-16">
             {image?.url && (
-              <div className="mb-6 overflow-hidden rounded-2xl" style={{ maxHeight: 260 }}>
-                <img src={image.url} alt={image.alt ?? category.name} className="h-full w-full object-cover" style={{ maxHeight: 260 }} />
+              <div className="relative mb-6 overflow-hidden rounded-2xl" style={{ height: 260 }}>
+                <Image
+                  src={image.url}
+                  alt={image.alt ?? category.name}
+                  fill
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                  className="object-cover"
+                  priority
+                  placeholder="blur"
+                  blurDataURL={BLUR_PLACEHOLDER}
+                />
               </div>
             )}
             <div className="flex items-end justify-between gap-4 flex-wrap">
@@ -189,7 +213,16 @@ function HeroTemplate({ category, image, posts, banner }: any) {
     <div className="min-h-screen">
       <div className="relative h-72 w-full overflow-hidden lg:h-[420px]">
         {image?.url ? (
-          <img src={image.url} alt={image.alt ?? category.name} className="h-full w-full object-cover" />
+          <Image
+            src={image.url}
+            alt={image.alt ?? category.name}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
+          />
         ) : (
           <div className="h-full w-full bg-gradient-to-br from-orange-900 via-orange-700 to-amber-500" />
         )}
