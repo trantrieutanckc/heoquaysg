@@ -38,35 +38,35 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
       {/* Drawer */}
       <div className="fixed left-0 right-0 top-16 z-50 md:hidden animate-in slide-in-from-top-2 duration-200">
         <div className="container px-4 sm:px-6 pt-2 pb-4">
-          <div className="rounded-xl border bg-background shadow-lg overflow-hidden">
+          <div className="border bg-background shadow-lg overflow-hidden">
             {/* Logo row */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b">
+            <div className="flex items-center gap-2.5 px-4 py-3 border-b">
               {logoUrl ? (
                 <img
                   src={logoUrl}
                   alt={siteName ?? "Logo"}
-                  className="h-7 w-7 rounded-full object-cover"
+                  className="h-7 w-7 object-cover"
                 />
               ) : (
-                <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs select-none">
+                <div className="h-7 w-7 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs select-none">
                   {(siteName ?? "H")[0]}
                 </div>
               )}
-              {siteName && <span className="text-sm font-semibold">{siteName}</span>}
+              {siteName && <span className="font-heading text-sm font-semibold italic">{siteName}</span>}
             </div>
 
             {/* Nav links */}
-            <nav className="p-2">
+            <nav className="py-1">
               {items.map((item, index) => (
                 <Link
                   key={index}
                   href={item.disabled ? "#" : item.href}
                   onClick={onClose}
                   className={cn(
-                    "flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    "flex items-center px-4 py-2.5 text-sm font-medium transition-colors border-l-2",
                     isActive(item.href)
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                      ? "border-primary text-primary bg-primary/5"
+                      : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
                     item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
                   )}
                 >

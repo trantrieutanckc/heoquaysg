@@ -40,31 +40,42 @@ export default async function BlogPage({
   const selectedCategory = categories.find((c) => c.slug === selectedSlug)
 
   return (
-    <div className="container py-6 lg:py-10">
-      <PageEntrance>
-        <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between md:gap-8">
-          <div className="flex-1 space-y-4">
-            <h1 className="inline-block font-heading text-4xl tracking-tight lg:text-5xl">
-              {selectedCategory ? selectedCategory.name : "Tin tức"}
+    <div>
+      {/* Page header */}
+      <div className="border-b bg-card">
+        <div className="container px-4 sm:px-6 py-10 lg:py-14">
+          <PageEntrance>
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">Khám phá</p>
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic">
+              {selectedCategory ? selectedCategory.name : "Bài viết & Thực đơn"}
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <div className="flex items-center gap-1.5 mt-3">
+              <div className="h-0.5 w-10 bg-primary rounded-full" />
+              <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+            </div>
+            <p className="text-muted-foreground mt-3">
               {selectedCategory
                 ? `${posts.length} bài viết trong danh mục này.`
                 : "Các bài viết mới nhất về ẩm thực và món quay."}
             </p>
-          </div>
+          </PageEntrance>
         </div>
+      </div>
 
-        {/* Category filter pills */}
+      <div className="container px-4 sm:px-6 py-8 lg:py-10">
+      <PageEntrance>
+        <div />
+
+        {/* Category filter tabs */}
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-6">
+          <div className="flex flex-wrap gap-1 mt-6 border-b">
             <Link
               href="/blog"
               className={cn(
-                "inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                "inline-flex items-center px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px",
                 !selectedSlug
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
               )}
             >
               Tất cả
@@ -74,22 +85,22 @@ export default async function BlogPage({
                 key={cat.slug}
                 href={`/blog?category=${cat.slug}`}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  "inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px",
                   selectedSlug === cat.slug
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-muted text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
                 )}
               >
                 {cat.name}
                 {cat._count.posts > 0 && (
-                  <span className="text-xs opacity-60">{cat._count.posts}</span>
+                  <span className="text-xs opacity-50">{cat._count.posts}</span>
                 )}
               </Link>
             ))}
           </div>
         )}
 
-        <hr className="my-8" />
+        <div className="my-8" />
       </PageEntrance>
 
       {posts.length ? (
@@ -100,9 +111,9 @@ export default async function BlogPage({
               <StaggerItem key={post.id} hover>
                 <Link
                   href={`/posts/${post.id}`}
-                  className="group flex flex-col rounded-2xl overflow-hidden border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
+                  className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
                 >
-                  <div className="relative aspect-video overflow-hidden bg-muted">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     {image?.url ? (
                       <Image
                         src={image.url}
@@ -120,29 +131,22 @@ export default async function BlogPage({
 
                   <div className="flex flex-col gap-2.5 p-4 flex-1">
                     {post.categories.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {post.categories.map(({ category }) => (
-                          <span
-                            key={category.slug}
-                            className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-semibold"
-                          >
-                            {category.name}
-                          </span>
-                        ))}
-                      </div>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                        {post.categories[0].category.name}
+                      </span>
                     )}
 
-                    <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                    <h2 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h2>
 
                     {post.price != null && (
-                      <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-2.5 py-0.5 text-xs font-bold w-fit">
+                      <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
                         {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                       </span>
                     )}
 
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-2 border-t">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
                       {post.author?.image ? (
                         <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />
                       ) : (
@@ -174,6 +178,7 @@ export default async function BlogPage({
           )}
         </div>
       )}
+      </div>
     </div>
   )
 }

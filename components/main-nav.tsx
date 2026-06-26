@@ -14,6 +14,7 @@ interface MainNavProps {
   children?: React.ReactNode
   logoUrl?: string
   siteName?: string
+  centered?: boolean
 }
 
 const MAX_VISIBLE = 5
@@ -23,7 +24,7 @@ function isActive(href: string, pathname: string) {
   return pathname === href || pathname.startsWith(href + "/")
 }
 
-export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
+export function MainNav({ items, children, logoUrl, siteName, centered }: MainNavProps) {
   const pathname = usePathname()
   const [showMobileMenu, setShowMobileMenu] = React.useState(false)
   const [showMore, setShowMore] = React.useState(false)
@@ -50,33 +51,41 @@ export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
 
   return (
     <div className="flex items-center gap-4 md:gap-6">
-      {/* Logo */}
-      <Link href="/" className="flex items-center shrink-0">
+      {/* Logo + site name */}
+      <Link href="/" className="flex items-center gap-2.5 shrink-0">
         {logoUrl ? (
           <img
             src={logoUrl}
             alt={siteName ?? "Logo"}
-            className="h-9 w-9 rounded-full object-cover"
+            className="h-9 w-9 object-cover"
           />
         ) : (
-          <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm select-none">
+          <div className="h-9 w-9 bg-primary/10 flex items-center justify-center text-primary font-bold text-sm select-none border border-primary/20">
             {(siteName ?? "H")[0]}
           </div>
+        )}
+        {siteName && (
+          <span className="font-heading font-semibold text-sm leading-none hidden sm:block italic">
+            {siteName}
+          </span>
         )}
       </Link>
 
       {/* Desktop nav */}
       {items?.length ? (
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className={cn(
+          "hidden md:flex items-center gap-1",
+          centered && "absolute left-1/2 -translate-x-1/2"
+        )}>
           {visibleItems.map((item, index) => (
             <Link
               key={index}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap",
+                "px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap border-b-2",
                 isActive(item.href, pathname)
-                  ? "bg-muted text-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border",
                 item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
               )}
             >
@@ -91,10 +100,10 @@ export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
                 type="button"
                 onClick={() => setShowMore(!showMore)}
                 className={cn(
-                  "flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap",
+                  "flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap border-b-2",
                   overflowItems.some((i) => isActive(i.href, pathname))
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                    ? "border-primary text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
                 )}
               >
                 Xem thêm
@@ -105,17 +114,17 @@ export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
               </button>
 
               {showMore && (
-                <div className="absolute left-0 top-full mt-1.5 w-44 rounded-xl border bg-background shadow-lg overflow-hidden z-50 animate-in fade-in-0 zoom-in-95 duration-100">
+                <div className="absolute left-0 top-full mt-1.5 w-44 border bg-background shadow-lg overflow-hidden z-50 animate-in fade-in-0 zoom-in-95 duration-100">
                   {overflowItems.map((item, index) => (
                     <Link
                       key={index}
                       href={item.disabled ? "#" : item.href}
                       onClick={() => setShowMore(false)}
                       className={cn(
-                        "flex items-center px-4 py-2.5 text-sm transition-colors",
+                        "flex items-center px-4 py-2.5 text-sm transition-colors border-l-2",
                         isActive(item.href, pathname)
-                          ? "bg-muted text-foreground font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                          ? "border-primary bg-muted text-foreground font-medium"
+                          : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
                         item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
                       )}
                     >
@@ -132,7 +141,7 @@ export function MainNav({ items, children, logoUrl, siteName }: MainNavProps) {
       {/* Mobile hamburger */}
       <button
         type="button"
-        className="flex md:hidden items-center justify-center h-9 w-9 rounded-md border bg-background hover:bg-muted transition-colors"
+        className="flex md:hidden items-center justify-center h-9 w-9 border bg-background hover:bg-muted transition-colors"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
         aria-label="Toggle menu"
         aria-expanded={showMobileMenu}

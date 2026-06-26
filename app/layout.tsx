@@ -1,5 +1,4 @@
-import { Inter as FontSans } from "next/font/google"
-import localFont from "next/font/local"
+import { Playfair_Display } from "next/font/google"
 import Script from "next/script"
 import { cache } from "react"
 
@@ -18,15 +17,11 @@ const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
   return (config?.data ?? {}) as Record<string, string>
 })
 
-const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-})
-
-// Font files can be colocated inside of `pages`
-const fontHeading = localFont({
-  src: "../assets/fonts/CalSans-SemiBold.woff2",
+const fontHeading = Playfair_Display({
+  subsets: ["latin", "vietnamese"],
   variable: "--font-heading",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 })
 
 interface RootLayoutProps {
@@ -89,7 +84,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
           fontHeading.variable
         )}
       >

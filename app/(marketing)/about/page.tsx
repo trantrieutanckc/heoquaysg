@@ -43,7 +43,7 @@ export default async function AboutPage() {
 
       {/* Hero */}
       <PageEntrance>
-        <div className="relative overflow-hidden border-b bg-muted/30" style={{ minHeight: 260 }}>
+        <div className="relative overflow-hidden border-b bg-card" style={{ minHeight: 260 }}>
           {heroImage && (
             <>
               <Image
@@ -56,17 +56,21 @@ export default async function AboutPage() {
                 placeholder="blur"
                 blurDataURL={BLUR_PLACEHOLDER}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10" />
             </>
           )}
           <div className={`relative z-10 container px-4 sm:px-6 py-14 lg:py-20 ${heroImage ? "text-white" : ""}`}>
-            <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${heroImage ? "text-orange-300" : "text-orange-500"}`}>
+            <p className={`text-xs font-bold uppercase tracking-[0.25em] mb-2 ${heroImage ? "text-orange-200" : "text-primary"}`}>
               {siteName}
             </p>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-3">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic mb-3">
               Về chúng tôi
             </h1>
-            <p className={`text-lg max-w-xl ${heroImage ? "text-white/80" : "text-muted-foreground"}`}>
+            <div className="flex items-center gap-1.5 mb-4">
+              <div className={`h-0.5 w-10 rounded-full ${heroImage ? "bg-white/60" : "bg-primary"}`} />
+              <div className={`h-0.5 w-4 rounded-full ${heroImage ? "bg-white/30" : "bg-primary/40"}`} />
+            </div>
+            <p className={`text-base max-w-xl leading-relaxed ${heroImage ? "text-white/80" : "text-muted-foreground"}`}>
               {siteDescription}
             </p>
           </div>
@@ -79,8 +83,12 @@ export default async function AboutPage() {
         <FadeUp>
           <section className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
             <div className="space-y-4">
-              <p className="text-xs font-bold uppercase tracking-widest text-orange-500">Câu chuyện của chúng tôi</p>
-              <h2 className="font-heading text-2xl sm:text-3xl leading-snug">{siteName}</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Câu chuyện của chúng tôi</p>
+              <h2 className="font-heading text-2xl sm:text-3xl leading-snug italic">{siteName}</h2>
+              <div className="flex items-center gap-1.5">
+                <div className="h-0.5 w-10 bg-primary rounded-full" />
+                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              </div>
               <p className="leading-relaxed text-muted-foreground">{siteDescription}</p>
               <p className="leading-relaxed text-muted-foreground">
                 Với nhiều năm kinh nghiệm trong nghề, đội ngũ của chúng tôi luôn tận tâm chọn lọc
@@ -90,19 +98,19 @@ export default async function AboutPage() {
               <div className="flex gap-3 pt-2">
                 <Link
                   href="/lien-he"
-                  className="inline-flex items-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   Liên hệ đặt hàng
                 </Link>
                 <Link
                   href="/blog"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/50 px-6 py-2.5 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 border border-border hover:bg-muted text-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
                 >
-                  Xem thực đơn →
+                  Xem thực đơn
                 </Link>
               </div>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
               {heroImage ? (
                 <Image
                   src={heroImage}
@@ -131,7 +139,7 @@ export default async function AboutPage() {
               { number: "3", label: "Món đặc trưng", desc: "Heo quay, Vịt quay, Gà quay" },
             ].map((stat) => (
               <StaggerItem key={stat.label} hover>
-                <div className="rounded-2xl border bg-card p-6 text-center space-y-1 h-full">
+                <div className="border bg-card p-6 text-center space-y-1 h-full">
                   <div className="font-heading text-4xl font-bold text-primary">{stat.number}</div>
                   <div className="font-semibold text-sm">{stat.label}</div>
                   <p className="text-xs text-muted-foreground">{stat.desc}</p>
@@ -144,7 +152,14 @@ export default async function AboutPage() {
         {/* Commitments */}
         <FadeUp>
           <section className="space-y-5">
-            <h2 className="font-heading text-2xl">Cam kết của chúng tôi</h2>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Chất lượng</p>
+              <h2 className="font-heading text-2xl sm:text-3xl italic">Cam kết của chúng tôi</h2>
+              <div className="flex items-center gap-1.5 mt-2.5">
+                <div className="h-0.5 w-10 bg-primary rounded-full" />
+                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              </div>
+            </div>
             <StaggerContainer className="grid gap-4 sm:grid-cols-2">
               {[
                 { title: "Nguyên liệu tươi sạch", desc: "Chọn lọc từ các nhà cung cấp uy tín, đảm bảo vệ sinh an toàn thực phẩm." },
@@ -153,7 +168,7 @@ export default async function AboutPage() {
                 { title: "Giá cả hợp lý", desc: "Chất lượng cao với mức giá phải chăng, phù hợp với mọi nhu cầu." },
               ].map((item) => (
                 <StaggerItem key={item.title}>
-                  <div className="flex gap-4 rounded-2xl border bg-card p-5 h-full">
+                  <div className="flex gap-4 border bg-card p-5 h-full">
                     <div className="mt-0.5 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M20 6 9 17l-5-5" />
@@ -174,8 +189,15 @@ export default async function AboutPage() {
         {contactItems.length > 0 && (
           <FadeUp>
             <section className="space-y-5">
-              <h2 className="font-heading text-2xl">Thông tin liên hệ</h2>
-              <div className="rounded-2xl border bg-card divide-y overflow-hidden">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Liên lạc</p>
+                <h2 className="font-heading text-2xl sm:text-3xl italic">Thông tin liên hệ</h2>
+                <div className="flex items-center gap-1.5 mt-2.5">
+                  <div className="h-0.5 w-10 bg-primary rounded-full" />
+                  <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+                </div>
+              </div>
+              <div className="border bg-card divide-y overflow-hidden">
                 {contactItems.map((item) => (
                   <div key={item.label} className="flex items-center gap-4 px-6 py-4">
                     <span className="text-xl shrink-0">{item.icon}</span>
@@ -198,14 +220,14 @@ export default async function AboutPage() {
                 <div className="flex gap-3 pt-1">
                   {socialFacebook && (
                     <a href={socialFacebook} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors">
+                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors">
                       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                       Facebook
                     </a>
                   )}
                   {socialInstagram && (
                     <a href={socialInstagram} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors">
+                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors">
                       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                       Instagram
                     </a>
@@ -218,19 +240,24 @@ export default async function AboutPage() {
 
         {/* CTA */}
         <FadeUp>
-          <section className="rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/30 p-8 lg:p-12 text-center">
-            <h2 className="font-heading text-2xl sm:text-3xl mb-3">Sẵn sàng thưởng thức?</h2>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi.</p>
+          <section className="border bg-card p-8 lg:p-12 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">Liên hệ ngay</p>
+            <h2 className="font-heading text-2xl sm:text-3xl italic mb-2">Sẵn sàng thưởng thức?</h2>
+            <div className="flex items-center justify-center gap-1.5 mb-5">
+              <div className="h-0.5 w-8 bg-primary rounded-full" />
+              <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+            </div>
+            <p className="text-muted-foreground mb-7 max-w-md mx-auto">Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi.</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/lien-he"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 font-semibold transition-colors shadow-lg"
+                className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider transition-colors"
               >
                 Đặt hàng ngay
               </Link>
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-orange-200 dark:border-orange-800 text-orange-700 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-950/50 px-8 py-3 font-semibold transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-border hover:bg-muted text-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider transition-colors"
               >
                 Xem thực đơn
               </Link>

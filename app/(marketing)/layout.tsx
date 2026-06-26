@@ -154,8 +154,8 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
 
       {/* ── Main header ─────────────────────────────────────── */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
-          <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} />
+        <div className="container relative flex h-16 items-center justify-between px-4 sm:px-6">
+          <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} centered />
           <nav className="flex items-center gap-1.5">
             <SearchButton />
             {user ? (
@@ -166,7 +166,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             ) : (
               <Link
                 href="/login"
-                className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 rounded-full ml-1")}
+                className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 ml-1 rounded-none text-xs uppercase tracking-wider font-bold")}
               >
                 Đăng nhập
               </Link>
