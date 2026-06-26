@@ -38,27 +38,14 @@ interface PageEditorProps {
   }
 }
 
-function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-}
-
 export function PageEditor({ page }: PageEditorProps) {
   const router = useRouter()
   const editorRef = React.useRef<any>()
   const [isMounted, setIsMounted] = React.useState(false)
   const [isSaving, setIsSaving] = React.useState(false)
   const [title, setTitle] = React.useState(page.title)
-  const [slug, setSlug] = React.useState(page.slug)
+  const [slug] = React.useState(page.slug)
   const [published, setPublished] = React.useState(page.published)
-  const [slugEdited, setSlugEdited] = React.useState(false)
   const [imageTab, setImageTab] = React.useState<"upload" | "url">("upload")
 
   // Image
@@ -241,25 +228,10 @@ export function PageEditor({ page }: PageEditorProps) {
         {/* Title */}
         <TextareaAutosize
           value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-            if (!slugEdited) setSlug(slugify(e.target.value))
-          }}
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="Tiêu đề trang"
           className="w-full resize-none appearance-none overflow-hidden bg-transparent text-4xl font-bold leading-tight focus:outline-none placeholder:text-muted-foreground/50"
         />
-
-        {/* Slug */}
-        <div className="flex items-center gap-2 text-sm">
-          <Label className="shrink-0 text-muted-foreground">URL:</Label>
-          <span className="text-muted-foreground">/pages/</span>
-          <Input
-            value={slug}
-            onChange={(e) => { setSlug(e.target.value); setSlugEdited(true) }}
-            className="h-7 text-sm px-2 w-auto min-w-[160px]"
-            placeholder="ten-trang"
-          />
-        </div>
 
         <hr />
 
