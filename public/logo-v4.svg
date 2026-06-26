@@ -94,13 +94,17 @@
   <text x="178" y="100" font-size="16" fill="#FFE020" text-anchor="middle">✦</text>
 
   <!-- Eyebrows -->
-  <path d="M80,103 C89,95 109,95 116,101" fill="none" stroke="#7B2E10" stroke-width="5" stroke-linecap="round"/>
-  <path d="M124,97 C132,89 152,90 159,97" fill="none" stroke="#7B2E10" stroke-width="5" stroke-linecap="round"/>
+  <path d="M80,96 C89,88 109,88 116,94" fill="none" stroke="#7B2E10" stroke-width="5" stroke-linecap="round"/>
+  <path d="M124,94 C131,88 151,88 160,96" fill="none" stroke="#7B2E10" stroke-width="5" stroke-linecap="round"/>
 
-  <!-- LEFT EYE: chibi wink arch ^ -->
-  <ellipse cx="99" cy="120" rx="21" ry="12" fill="white" opacity="0.5"/>
-  <path d="M80,121 C89,104 109,104 118,121" fill="none" stroke="#2A0804" stroke-width="6.5" stroke-linecap="round"/>
-  <ellipse cx="86" cy="133" rx="15" ry="10" fill="#FF4848" opacity="0.28"/>
+  <!-- LEFT EYE: normal round -->
+  <ellipse cx="99" cy="119" rx="21" ry="23" fill="white"/>
+  <ellipse cx="99" cy="119" rx="21" ry="23" fill="none" stroke="#D08050" stroke-width="1" opacity="0.3"/>
+  <circle cx="101" cy="121" r="16" fill="url(#irisGrad)"/>
+  <circle cx="102" cy="123" r="10" fill="#060201"/>
+  <circle cx="94" cy="112" r="7" fill="white" opacity="0.92"/>
+  <circle cx="106" cy="128" r="3.2" fill="white" opacity="0.55"/>
+  <ellipse cx="78" cy="139" rx="17" ry="12" fill="#FF4848" opacity="0.25"/>
 
   <!-- RIGHT EYE: big sparkly -->
   <ellipse cx="141" cy="119" rx="21" ry="23" fill="white"/>
@@ -126,16 +130,16 @@
   <path d="M102,180 C108,190 132,190 138,180 L138,183 C132,192 108,192 102,183 Z" fill="white" opacity="0.8"/>
 
   <!-- ==== RIBBON bottom ==== -->
-  <g clip-path="url(#clip)" filter="url(#ribShadow)">
-    <rect x="2" y="198" width="236" height="32" fill="url(#ribGrad)"/>
-    <path d="M 2,198 L 26,198 L 14,214 L 26,230 L 2,230 Z" fill="url(#ribGrad)"/>
-    <path d="M 238,198 L 214,198 L 226,214 L 214,230 L 238,230 Z" fill="url(#ribGrad)"/>
-    <path d="M 26,198 L 14,214 L 26,230" fill="none" stroke="#5C0A06" stroke-width="1.5"/>
-    <path d="M 214,198 L 226,214 L 214,230" fill="none" stroke="#5C0A06" stroke-width="1.5"/>
-    <rect x="2" y="198" width="236" height="13" fill="url(#ribSheen)"/>
-    <line x1="26" y1="228" x2="214" y2="228" stroke="#3A0604" stroke-width="1.5" opacity="0.4"/>
-    <text x="120" y="219" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="13" font-weight="900" fill="#FFD060" letter-spacing="2">091.121.237</text>
-    <circle cx="38" cy="214" r="2.5" fill="#FFD060" opacity="0.65"/>
-    <circle cx="202" cy="214" r="2.5" fill="#FFD060" opacity="0.65"/>
+  <g filter="url(#ribShadow)">
+    <rect x="2" y="186" width="236" height="32" fill="url(#ribGrad)"/>
+    <path d="M 2,186 L 26,186 L 14,202 L 26,218 L 2,218 Z" fill="url(#ribGrad)"/>
+    <path d="M 238,186 L 214,186 L 226,202 L 214,218 L 238,218 Z" fill="url(#ribGrad)"/>
+    <path d="M 26,186 L 14,202 L 26,218" fill="none" stroke="#5C0A06" stroke-width="1.5"/>
+    <path d="M 214,186 L 226,202 L 214,218" fill="none" stroke="#5C0A06" stroke-width="1.5"/>
+    <rect x="2" y="186" width="236" height="13" fill="url(#ribSheen)"/>
+    <line x1="26" y1="216" x2="214" y2="216" stroke="#3A0604" stroke-width="1.5" opacity="0.4"/>
+    <text x="120" y="207" text-anchor="middle" font-family="Arial Black,Impact,sans-serif" font-size="12" font-weight="900" fill="#FFD060" letter-spacing="1.8">HEO QUAY BÌNH TÂN</text>
+    <circle cx="38" cy="202" r="2.5" fill="#FFD060" opacity="0.65"/>
+    <circle cx="202" cy="202" r="2.5" fill="#FFD060" opacity="0.65"/>
   </g>
 </svg>

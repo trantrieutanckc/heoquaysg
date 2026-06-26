@@ -13,6 +13,7 @@ export async function uploadToStorage(
       method: "POST",
       headers: {
         Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        apikey: SUPABASE_SERVICE_ROLE_KEY,
         "Content-Type": contentType,
         "x-upsert": "false",
       },
