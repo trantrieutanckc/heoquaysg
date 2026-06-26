@@ -31,41 +31,45 @@ interface RootLayoutProps {
 export async function generateMetadata() {
   const data = await getSiteConfigData()
   const googleVerification = data.googleVerification?.trim()
+  const siteName = data.siteName?.trim() || siteConfig.name
+  const description = data.siteDescription?.trim() || siteConfig.description
+  const ogImage = data.heroImage?.trim() || data.logoUrl?.trim() || null
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL?.replace("http://localhost:3000", siteConfig.url) || siteConfig.url
 
   return {
     title: {
-      default: siteConfig.name,
-      template: `%s | ${siteConfig.name}`,
+      default: siteName,
+      template: `%s | ${siteName}`,
     },
-    description: siteConfig.description,
-    keywords: ["Next.js", "React", "Tailwind CSS", "Server Components", "Radix UI"],
-    authors: [{ name: "shadcn", url: "https://shadcn.com" }],
-    creator: "shadcn",
+    description,
+    keywords: ["heo quay", "vịt quay", "gà quay", "heo quay TP.HCM", "đặt heo quay", "heo quay gia truyền", siteName],
+    authors: [{ name: siteName }],
+    creator: siteName,
     themeColor: [
       { media: "(prefers-color-scheme: light)", color: "white" },
       { media: "(prefers-color-scheme: dark)", color: "black" },
     ],
     openGraph: {
       type: "website",
-      locale: "en_US",
-      url: siteConfig.url,
-      title: siteConfig.name,
-      description: siteConfig.description,
-      siteName: siteConfig.name,
+      locale: "vi_VN",
+      url: appUrl,
+      title: siteName,
+      description,
+      siteName,
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
-      title: siteConfig.name,
-      description: siteConfig.description,
-      images: [`${siteConfig.url}/og.jpg`],
-      creator: "@shadcn",
+      title: siteName,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon-16x16.png",
       apple: "/apple-touch-icon.png",
     },
-    manifest: `${siteConfig.url}/site.webmanifest`,
+    manifest: `${appUrl}/site.webmanifest`,
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   }
 }

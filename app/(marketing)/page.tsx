@@ -1,5 +1,33 @@
 export const dynamic = "force-dynamic"
 
+import { db as metaDb } from "@/lib/db"
+import { siteConfig } from "@/config/site"
+
+export async function generateMetadata() {
+  const row = await metaDb.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (row?.data ?? {}) as Record<string, string>
+  const siteName = cfg.siteName?.trim() || siteConfig.name
+  const description = cfg.siteDescription?.trim() || siteConfig.description
+  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  return {
+    title: { absolute: siteName },
+    description,
+    openGraph: {
+      title: siteName,
+      description,
+      locale: "vi_VN",
+      type: "website",
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
+  }
+}
+
 import React from "react"
 import Link from "next/link"
 import Image from "next/image"

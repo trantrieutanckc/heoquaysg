@@ -9,9 +9,24 @@ export const dynamic = "force-dynamic"
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (row?.data ?? {}) as Record<string, string>
+  const siteName = cfg.siteName?.trim() || "Heo Quay 47"
+  const description = cfg.siteDescription?.trim() || "Chuyên cung cấp heo quay, vịt quay, gà quay chất lượng cao."
+  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
   return {
-    title: `Về chúng tôi — ${cfg.siteName ?? "Heo Quay 47"}`,
-    description: cfg.siteDescription ?? "Chuyên cung cấp heo quay, vịt quay, gà quay chất lượng cao.",
+    title: `Về chúng tôi`,
+    description,
+    openGraph: {
+      title: `Về chúng tôi | ${siteName}`,
+      description,
+      locale: "vi_VN",
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `Về chúng tôi | ${siteName}`,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
   }
 }
 
