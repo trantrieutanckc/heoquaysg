@@ -46,12 +46,12 @@ export default async function AboutPage() {
   const socialInstagram = cfg.socialInstagram?.trim() || null
 
   const contactItems = [
-    contactAddress && { icon: "📍", label: "Địa chỉ", value: contactAddress, href: `https://maps.google.com/?q=${encodeURIComponent(contactAddress)}` },
-    contactPhone && { icon: "📞", label: "Điện thoại", value: contactPhone, href: `tel:${contactPhone}` },
-    businessHours && { icon: "🕐", label: "Giờ mở cửa", value: businessHours, href: null },
-    contactEmail && { icon: "✉️", label: "Email", value: contactEmail, href: `mailto:${contactEmail}` },
-    contactZalo && { icon: "💬", label: "Zalo", value: contactZalo, href: `https://zalo.me/${contactZalo.replace(/\s/g, "")}` },
-  ].filter(Boolean) as { icon: string; label: string; value: string; href: string | null }[]
+    contactAddress && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>, label: "Địa chỉ", value: contactAddress, href: `https://maps.google.com/?q=${encodeURIComponent(contactAddress)}` },
+    contactPhone && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>, label: "Điện thoại", value: contactPhone, href: `tel:${contactPhone}` },
+    businessHours && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>, label: "Giờ mở cửa", value: businessHours, href: null },
+    contactEmail && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>, label: "Email", value: contactEmail, href: `mailto:${contactEmail}` },
+    contactZalo && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 13.5h-1.25v-4h1.25v4zm-2.75 0H12.5V10h1.25v5.5zm-2.75 0H9.75v-2.75H8.5V10h1.25v2.75h.25v2.75zm-2.75-5.5H7v5.5H5.75v-5.5z"/></svg>, label: "Zalo", value: contactZalo, href: `https://zalo.me/${contactZalo.replace(/\s/g, "")}` },
+  ].filter(Boolean) as { icon: React.ReactNode; label: string; value: string; href: string | null }[]
 
   return (
     <div className="min-h-screen">
@@ -106,9 +106,15 @@ export default async function AboutPage() {
               </div>
               <p className="leading-relaxed text-muted-foreground">{siteDescription}</p>
               <p className="leading-relaxed text-muted-foreground">
-                Với nhiều năm kinh nghiệm trong nghề, đội ngũ của chúng tôi luôn tận tâm chọn lọc
-                nguyên liệu tươi ngon nhất, kết hợp với bí quyết ướp gia vị độc đáo để tạo nên
-                những món ăn hoàn hảo — giữ trọn hương vị gia truyền qua từng thế hệ.
+                Xuất phát từ tình yêu ẩm thực và niềm đam mê bếp núc, {siteName} được thành lập với
+                mong muốn mang đến những mâm cỗ heo quay, vịt quay, gà quay chuẩn vị — đậm đà như
+                cách bà nội vẫn làm mỗi dịp lễ tết.
+              </p>
+              <p className="leading-relaxed text-muted-foreground">
+                Mỗi con heo được chọn lọc kỹ từ các trang trại uy tín, ướp qua đêm với hơn 10 loại
+                gia vị bí truyền, rồi quay chậm bằng than hoa để da giòn tan, thịt mềm ngọt thấm đến
+                tận xương. Không tắt lửa, không cắt góc, chỉ là sự kiên nhẫn và tâm huyết trong từng
+                mẻ quay.
               </p>
               <div className="flex gap-3 pt-2">
                 <Link
@@ -164,6 +170,34 @@ export default async function AboutPage() {
           </StaggerContainer>
         </section>
 
+        {/* Process */}
+        <FadeUp>
+          <section className="space-y-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Bí quyết</p>
+              <h2 className="font-heading text-2xl sm:text-3xl italic">Từ nguyên liệu đến bàn ăn</h2>
+              <div className="flex items-center gap-1.5 mt-2.5">
+                <div className="h-0.5 w-10 bg-primary rounded-full" />
+                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              </div>
+            </div>
+            <div className="grid gap-px bg-border sm:grid-cols-4">
+              {[
+                { step: "01", title: "Chọn nguyên liệu", desc: "Heo, vịt, gà tươi sống từ trang trại uy tín, kiểm tra kỹ trước khi nhận." },
+                { step: "02", title: "Ướp gia vị", desc: "Hơn 10 loại gia vị bí truyền, ướp qua đêm để thấm đều từng thớ thịt." },
+                { step: "03", title: "Quay than hoa", desc: "Quay chậm bằng than hoa 3–4 giờ, xoay đều tay để da vàng giòn đều." },
+                { step: "04", title: "Giao đến tay bạn", desc: "Chặt nóng, đóng gói cẩn thận, giao tận nơi hoặc nhận trực tiếp tại cửa hàng." },
+              ].map((item) => (
+                <div key={item.step} className="bg-card p-6 space-y-2">
+                  <div className="font-heading text-3xl font-bold text-primary/30 italic">{item.step}</div>
+                  <div className="font-semibold text-sm">{item.title}</div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </FadeUp>
+
         {/* Commitments */}
         <FadeUp>
           <section className="space-y-5">
@@ -215,7 +249,7 @@ export default async function AboutPage() {
               <div className="border bg-card divide-y overflow-hidden">
                 {contactItems.map((item) => (
                   <div key={item.label} className="flex items-center gap-4 px-6 py-4">
-                    <span className="text-xl shrink-0">{item.icon}</span>
+                    <div className="h-8 w-8 shrink-0 bg-primary/10 border border-primary/20 flex items-center justify-center">{item.icon}</div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
                       <span className="text-sm font-semibold shrink-0">{item.label}:</span>
                       {item.href ? (
