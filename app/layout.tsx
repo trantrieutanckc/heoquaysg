@@ -64,6 +64,10 @@ export async function generateMetadata() {
       description,
       ...(ogImage ? { images: [ogImage] } : {}),
     },
+    robots: {
+      index: false,
+      follow: false,
+    },
     icons: {
       icon: "/favicon.ico",
       shortcut: "/favicon-16x16.png",
