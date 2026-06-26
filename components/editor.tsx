@@ -8,6 +8,8 @@ import { Post } from "@prisma/client"
 import { useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
+import { format } from "date-fns"
+import { Clock } from "lucide-react"
 
 import "@/styles/editor.css"
 import { cn } from "@/lib/utils"
@@ -20,6 +22,8 @@ import { Icons } from "@/components/icons"
 import { CategorySelector } from "@/components/category-selector"
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { POST_TEMPLATES } from "@/lib/templates"
 import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/lib/banner"
 import { RelatedPostSelector } from "@/components/related-post-selector"
@@ -47,6 +51,7 @@ interface EditorProps {
     banner?: unknown
     relatedPostIds?: unknown
     price?: number | null
+    scheduledAt?: Date | string | null
   }
   categories: Category[]
   postCategoryIds: string[]
@@ -68,6 +73,16 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
   const [isMounted, setIsMounted] = React.useState(false)
   const [isPublished, setIsPublished] = React.useState(post.published)
   const [isPublishing, setIsPublishing] = React.useState(false)
+
+  // Schedule
+  const initScheduled = post.scheduledAt ? new Date(post.scheduledAt) : undefined
+  const [scheduledAt, setScheduledAt] = React.useState<Date | undefined>(initScheduled)
+  const [scheduleOpen, setScheduleOpen] = React.useState(false)
+  const [scheduleDate, setScheduleDate] = React.useState<Date | undefined>(initScheduled)
+  const [scheduleTime, setScheduleTime] = React.useState(
+    initScheduled ? format(initScheduled, "HH:mm") : "09:00"
+  )
+  const [isScheduling, setIsScheduling] = React.useState(false)
 
   // Danh mục & bài liên quan
   const [selectedCategoryIds, setSelectedCategoryIds] = React.useState<string[]>(postCategoryIds)
@@ -185,6 +200,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
       })
       if (res.ok) {
         setIsPublished(next)
+        setScheduledAt(undefined)
         router.refresh()
         toast({ description: next ? "Đã đăng bài." : "Đã chuyển về bản nháp." })
       } else {
@@ -195,10 +211,58 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
     }
   }
 
+  async function handleScheduleSave() {
+    if (!scheduleDate) return
+    const [h, m] = scheduleTime.split(":").map(Number)
+    const dt = new Date(scheduleDate)
+    dt.setHours(h, m, 0, 0)
+    if (dt <= new Date()) {
+      toast({ title: "Lỗi", description: "Thời gian phải ở tương lai.", variant: "destructive" })
+      return
+    }
+    setIsScheduling(true)
+    try {
+      const res = await fetch(`/api/posts/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scheduledAt: dt.toISOString() }),
+      })
+      if (res.ok) {
+        setScheduledAt(dt)
+        setScheduleOpen(false)
+        toast({ description: `Đã lên lịch đăng lúc ${format(dt, "HH:mm dd/MM/yyyy")}.` })
+      } else {
+        toast({ title: "Lỗi", description: "Không thể lưu lịch.", variant: "destructive" })
+      }
+    } finally {
+      setIsScheduling(false)
+    }
+  }
+
+  async function handleCancelSchedule() {
+    setIsScheduling(true)
+    try {
+      const res = await fetch(`/api/posts/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scheduledAt: null }),
+      })
+      if (res.ok) {
+        setScheduledAt(undefined)
+        setScheduleDate(undefined)
+        setScheduleTime("09:00")
+        setScheduleOpen(false)
+        toast({ description: "Đã huỷ lịch đăng bài." })
+      }
+    } finally {
+      setIsScheduling(false)
+    }
+  }
+
   async function handleBannerSave() {
     setSavingBanner(true)
     try {
-      const validSlides = bannerSlides.filter((s) => s.image.trim())
+      const validSlides = bannerSlides.filter((s) => s.image.trim() || s.video?.trim())
       const value: BannerConfig | null = validSlides.length ? { type: bannerType, slides: validSlides } : null
       const res = await fetch(`/api/posts/${post.id}`, {
         method: "PATCH",
@@ -274,12 +338,77 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
                 "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold",
                 isPublished
                   ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400"
+                  : scheduledAt
+                  ? "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400"
                   : "bg-muted text-muted-foreground"
               )}
             >
-              <span className={cn("h-1.5 w-1.5 rounded-full", isPublished ? "bg-green-500" : "bg-muted-foreground")} />
-              {isPublished ? "Đã đăng" : "Bản nháp"}
+              <span className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                isPublished ? "bg-green-500" : scheduledAt ? "bg-orange-500" : "bg-muted-foreground"
+              )} />
+              {isPublished ? "Đã đăng" : scheduledAt ? `Lên lịch: ${format(scheduledAt, "HH:mm dd/MM")}` : "Bản nháp"}
             </span>
+
+            {/* Lên lịch */}
+            {!isPublished && (
+              <Popover open={scheduleOpen} onOpenChange={setScheduleOpen}>
+                <PopoverTrigger asChild>
+                  <Button type="button" variant="outline" size="sm" className="gap-1.5">
+                    <Clock className="h-3.5 w-3.5" />
+                    {scheduledAt ? "Sửa lịch" : "Lên lịch"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="end">
+                  <div className="p-3 border-b">
+                    <p className="text-sm font-medium">Lên lịch đăng bài</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Chọn ngày và giờ đăng tự động</p>
+                  </div>
+                  <Calendar
+                    mode="single"
+                    selected={scheduleDate}
+                    onSelect={setScheduleDate}
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    initialFocus
+                  />
+                  <div className="p-3 border-t space-y-3">
+                    <div className="grid gap-1.5">
+                      <Label className="text-xs text-muted-foreground">Giờ đăng</Label>
+                      <input
+                        type="time"
+                        value={scheduleTime}
+                        onChange={(e) => setScheduleTime(e.target.value)}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      {scheduledAt && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={handleCancelSchedule}
+                          disabled={isScheduling}
+                        >
+                          Huỷ lịch
+                        </Button>
+                      )}
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="flex-1"
+                        onClick={handleScheduleSave}
+                        disabled={!scheduleDate || isScheduling}
+                      >
+                        {isScheduling && <Icons.spinner className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
+                        Đặt lịch
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
 
             <Button
               type="button"
@@ -544,6 +673,14 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
                       <div className="grid gap-2">
                         <Label>Ảnh <span className="text-destructive">*</span></Label>
                         <ImageUploader value={slide.image} onChange={(url) => updateSlide(index, "image", url)} />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label>Video URL <span className="text-xs text-muted-foreground font-normal">(YouTube hoặc .mp4 — ưu tiên hơn ảnh)</span></Label>
+                        <Input
+                          placeholder="https://youtube.com/watch?v=... hoặc https://.../video.mp4"
+                          value={slide.video ?? ""}
+                          onChange={(e) => updateSlide(index, "video", e.target.value)}
+                        />
                       </div>
                       <div className="grid gap-2">
                         <Label>Tiêu đề</Label>

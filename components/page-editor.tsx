@@ -165,7 +165,7 @@ export function PageEditor({ page }: PageEditorProps) {
   async function handleBannerSave() {
     setSavingBanner(true)
     try {
-      const validSlides = bannerSlides.filter((s) => s.image.trim())
+      const validSlides = bannerSlides.filter((s) => s.image.trim() || s.video?.trim())
       const bannerValue: BannerConfig | null = validSlides.length
         ? { type: bannerType, slides: validSlides }
         : null
@@ -351,6 +351,14 @@ export function PageEditor({ page }: PageEditorProps) {
                         <ImageUploader
                           value={slide.image}
                           onChange={(url) => updateSlide(index, "image", url)}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label>Video URL <span className="text-xs text-muted-foreground font-normal">(YouTube hoặc .mp4 — ưu tiên hơn ảnh)</span></Label>
+                        <Input
+                          placeholder="https://youtube.com/watch?v=... hoặc https://.../video.mp4"
+                          value={slide.video ?? ""}
+                          onChange={(e) => updateSlide(index, "video", e.target.value)}
                         />
                       </div>
                       <div className="grid gap-2">

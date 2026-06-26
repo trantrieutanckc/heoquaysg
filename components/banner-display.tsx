@@ -8,6 +8,61 @@ interface BannerDisplayProps {
   banner: BannerConfig
 }
 
+function getYoutubeId(url: string): string | null {
+  const patterns = [
+    /youtube\.com\/watch\?v=([^&]+)/,
+    /youtu\.be\/([^?]+)/,
+    /youtube\.com\/embed\/([^?]+)/,
+  ]
+  for (const p of patterns) {
+    const m = url.match(p)
+    if (m) return m[1]
+  }
+  return null
+}
+
+function isDirectVideo(url: string) {
+  return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(url)
+}
+
+function SlideMedia({ slide, active }: { slide: { image: string; video?: string; title?: string }; active: boolean }) {
+  const youtubeId = slide.video ? getYoutubeId(slide.video) : null
+  const isDirect = slide.video ? isDirectVideo(slide.video) : false
+
+  if (youtubeId) {
+    return (
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=${active ? 1 : 0}&mute=1&loop=1&playlist=${youtubeId}&controls=0&showinfo=0&rel=0`}
+        className="absolute inset-0 h-full w-full object-cover border-0"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+        title={slide.title ?? "Video"}
+      />
+    )
+  }
+
+  if (isDirect && slide.video) {
+    return (
+      <video
+        src={slide.video}
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay={active}
+        muted
+        loop
+        playsInline
+      />
+    )
+  }
+
+  return (
+    <img
+      src={slide.image}
+      alt={slide.title ?? ""}
+      className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+    />
+  )
+}
+
 export function BannerDisplay({ banner }: BannerDisplayProps) {
   const [current, setCurrent] = React.useState(0)
   const slides = banner.slides
@@ -23,22 +78,17 @@ export function BannerDisplay({ banner }: BannerDisplayProps) {
   const slide = slides[current]
   if (!slide) return null
 
+  const hasContent = slide.title || slide.description || slide.linkUrl
+
   return (
     <div className="relative w-full overflow-hidden rounded-lg">
-      {/* Image */}
       <div className="relative aspect-[21/7] min-h-[160px] max-h-[420px] w-full bg-muted">
-        <img
-          key={current}
-          src={slide.image}
-          alt={slide.title ?? ""}
-          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-        />
-        {/* Overlay khi có text */}
-        {(slide.title || slide.description || slide.linkUrl) && (
+        <SlideMedia slide={slide} active={true} />
+
+        {hasContent && (
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
         )}
-        {/* Content */}
-        {(slide.title || slide.description || slide.linkUrl) && (
+        {hasContent && (
           <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
             {slide.title && (
               <h2 className="text-lg md:text-2xl font-bold mb-1 line-clamp-2">{slide.title}</h2>

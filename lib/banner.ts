@@ -1,5 +1,6 @@
 export type BannerSlide = {
   image: string
+  video?: string
   title?: string
   description?: string
   linkUrl?: string
