@@ -5,14 +5,20 @@ import { env } from "@/env.mjs"
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 
-  const [posts, categories] = await Promise.all([
+  const [posts, categories, pages] = await Promise.all([
     db.post.findMany({
+      where: { published: true },
       select: { id: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
     }),
     db.category.findMany({
+      where: { published: true },
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
+    }),
+    db.page.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
     }),
   ])
 
@@ -38,5 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...categoryPages, ...postPages]
+  const staticPageRoutes: MetadataRoute.Sitemap = pages.map((p) => ({
+    url: `${baseUrl}/pages/${p.slug}`,
+    lastModified: p.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }))
+
+  return [...staticPages, ...categoryPages, ...postPages, ...staticPageRoutes]
 }
