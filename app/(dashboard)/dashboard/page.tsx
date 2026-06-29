@@ -42,25 +42,22 @@ export default async function DashboardPage() {
   sixMonthsAgo.setDate(1)
   sixMonthsAgo.setHours(0, 0, 0, 0)
 
-  const [totalPosts, publishedPosts, totalComments, pendingComments, totalUsers] =
+  const [totalPosts, publishedPosts, totalComments, pendingComments, totalUsers, recentPosts, recentComments] =
     await Promise.all([
       db.post.count({ where: isAdmin ? {} : postWhere }),
       db.post.count({ where: isAdmin ? { published: true } : { ...postWhere, published: true } }),
       db.comment.count(),
       db.comment.count({ where: { approved: false } }),
       isAdmin ? db.user.count() : Promise.resolve(0),
+      db.post.findMany({
+        where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
+        select: { createdAt: true },
+      }),
+      db.comment.findMany({
+        where: { createdAt: { gte: sixMonthsAgo } },
+        select: { createdAt: true },
+      }),
     ])
-
-  const [recentPosts, recentComments] = await Promise.all([
-    db.post.findMany({
-      where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
-      select: { createdAt: true },
-    }),
-    db.comment.findMany({
-      where: { createdAt: { gte: sixMonthsAgo } },
-      select: { createdAt: true },
-    }),
-  ])
 
   return (
     <DashboardShell>

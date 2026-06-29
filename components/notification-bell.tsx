@@ -71,10 +71,12 @@ export function NotificationBell() {
     finally { setLoading(false) }
   }
 
-  // Initial fetch + polling every 30s
+  // Initial fetch + polling every 60s, pause when tab is hidden
   React.useEffect(() => {
     fetchNotifications()
-    const interval = setInterval(fetchNotifications, 30_000)
+    const interval = setInterval(() => {
+      if (!document.hidden) fetchNotifications()
+    }, 60_000)
     return () => clearInterval(interval)
   }, [])
 
