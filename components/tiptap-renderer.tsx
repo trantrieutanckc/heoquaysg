@@ -1,4 +1,5 @@
 // Server-side TipTap JSON → HTML renderer (no DOM dependency)
+// Note: StarterKit includes codeBlock by default — no need to disable it
 
 type Mark = { type: string; attrs?: Record<string, any> }
 type Node = { type: string; attrs?: Record<string, any>; content?: Node[]; marks?: Mark[]; text?: string }

@@ -112,8 +112,9 @@ export function TiptapEditor({
   const imageInputRef = React.useRef<HTMLInputElement>(null)
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ codeBlock: false }),
+      StarterKit,
       Underline,
       Highlight,
       TextStyle,
