@@ -36,3 +36,23 @@ export async function createCommentNotification({
     })),
   })
 }
+
+export async function createScheduledPublishedNotification({
+  postId,
+  postTitle,
+  authorId,
+}: {
+  postId: string
+  postTitle: string
+  authorId: string
+}) {
+  await db.notification.create({
+    data: {
+      userId: authorId,
+      type: "scheduled_published",
+      title: "Bài viết đã được đăng",
+      body: `"${postTitle}" vừa được đăng tự động theo lịch.`,
+      link: `/posts/${postId}`,
+    },
+  })
+}

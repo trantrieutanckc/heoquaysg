@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#2A0C04"/>
+      <stop offset="100%" stop-color="#080200"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="10%" y1="10%" x2="90%" y2="90%">
+      <stop offset="0%" stop-color="#F4CC70"/>
+      <stop offset="45%" stop-color="#C4874A"/>
+      <stop offset="100%" stop-color="#7A4010"/>
+    </linearGradient>
+    <radialGradient id="headFill" cx="38%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#A04E28"/>
+      <stop offset="100%" stop-color="#521808"/>
+    </radialGradient>
+    <radialGradient id="earFill" cx="35%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#8B3A1C"/>
+      <stop offset="100%" stop-color="#3E1006"/>
+    </radialGradient>
+    <radialGradient id="snoutFill" cx="35%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="#9A4A30"/>
+      <stop offset="100%" stop-color="#5A1808"/>
+    </radialGradient>
+    <radialGradient id="flameOuter" cx="50%" cy="72%" r="60%">
+      <stop offset="0%" stop-color="#FF8800"/>
+      <stop offset="55%" stop-color="#FF3300"/>
+      <stop offset="100%" stop-color="#CC1800" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flameCore" cx="50%" cy="78%" r="55%">
+      <stop offset="0%" stop-color="#FFEE55"/>
+      <stop offset="55%" stop-color="#FFAA00"/>
+      <stop offset="100%" stop-color="#FF5500" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="flameglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="120" height="120" rx="18" fill="url(#bgGrad)"/>
+  <rect width="120" height="120" rx="18" fill="none" stroke="#FFFFFF" stroke-width="0.8" opacity="0.05"/>
+
+  <!-- Head circle - 3D gradient fill + gold ring -->
+  <circle cx="60" cy="65" r="29" fill="url(#headFill)" stroke="url(#goldGrad)" stroke-width="2.5" filter="url(#shadow)"/>
+  <!-- Ring top-left shine -->
+  <path d="M 38 51 A 29 29 0 0 1 82 51" fill="none" stroke="white" stroke-width="1.2" opacity="0.22" stroke-linecap="round"/>
+
+  <!-- Left ear -->
+  <path d="M35 51 C30 36 38 25 46 32 C50 36 49 48 44 53 Z" fill="url(#earFill)" stroke="url(#goldGrad)" stroke-width="1.2" filter="url(#shadow)"/>
+  <path d="M37 49 C34 38 40 29 46 34 C49 37 48 47 44 51 Z" fill="#3A1008" opacity="0.45"/>
+
+  <!-- Right ear -->
+  <path d="M85 51 C90 36 82 25 74 32 C70 36 71 48 76 53 Z" fill="url(#earFill)" stroke="url(#goldGrad)" stroke-width="1.2" filter="url(#shadow)"/>
+  <path d="M83 49 C86 38 80 29 74 34 C71 37 72 47 76 51 Z" fill="#3A1008" opacity="0.45"/>
+
+  <!-- Flame - outer glow -->
+  <path d="M60 6 C57 11 50 14 52 23 C53.5 28 48 30 50 36 C51.5 40 57 38 60 30 C63 38 68.5 40 70 36 C72 30 66.5 28 68 23 C70 14 63 11 60 6 Z"
+        fill="url(#flameOuter)" filter="url(#flameglow)"/>
+  <!-- Flame - bright core -->
+  <path d="M60 12 C58 16 55 18 56.5 23 C57.5 26.5 55 28 57 31 C58.5 33.5 60 32 60 27 C60 32 61.5 33.5 63 31 C65 28 62.5 26.5 63.5 23 C65 18 62 16 60 12 Z"
+        fill="url(#flameCore)" opacity="0.95"/>
+  <!-- Flame tip spark -->
+  <ellipse cx="60" cy="9" rx="1.8" ry="3" fill="#FFFF99" opacity="0.85"/>
+
+  <!-- Eyes - golden with 3D highlight -->
+  <circle cx="50" cy="59" r="4" fill="url(#goldGrad)" filter="url(#shadow)"/>
+  <circle cx="51.5" cy="57.5" r="1.5" fill="#FFF5C0" opacity="0.78"/>
+
+  <circle cx="70" cy="59" r="4" fill="url(#goldGrad)" filter="url(#shadow)"/>
+  <circle cx="71.5" cy="57.5" r="1.5" fill="#FFF5C0" opacity="0.78"/>
+
+  <!-- Snout - 3D gradient -->
+  <ellipse cx="60" cy="73" rx="15.5" ry="11" fill="url(#snoutFill)" filter="url(#shadow)"/>
+  <ellipse cx="60" cy="73" rx="15.5" ry="11" fill="none" stroke="url(#goldGrad)" stroke-width="1.5"/>
+  <!-- Snout highlight -->
+  <ellipse cx="55.5" cy="68" rx="5" ry="2.5" fill="white" opacity="0.07"/>
+  <!-- Nostrils -->
+  <ellipse cx="53.5" cy="74" rx="3.8" ry="4.5" fill="#0C0300"/>
+  <ellipse cx="66.5" cy="74" rx="3.8" ry="4.5" fill="#0C0300"/>
+
+  <!-- Text -->
+  <text x="60" y="103" font-family="Georgia, serif" font-size="9.5" font-weight="700" fill="#C4874A" text-anchor="middle" letter-spacing="3">HEO QUAY</text>
+  <text x="60" y="115" font-family="Georgia, serif" font-size="7.5" fill="#7B4A22" text-anchor="middle" letter-spacing="6">47</text>
+</svg>

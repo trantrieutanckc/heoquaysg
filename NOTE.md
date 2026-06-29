@@ -251,15 +251,19 @@ npx prisma db push
 - [ ] **Dashboard chart GA4** — chart viewer GA4, chỉ test được khi go live với GA4 account thật
 - ~~**API Token**~~ — đã bỏ (không có use case thực tế cho restaurant blog)
 
-**Version 3 — đang làm:**
+**Version 3 — hoàn thành 25/06/2026:**
 - [x] **Bulk actions — Posts** — `post-list.tsx` checkbox + `BulkActionBar`; API `/api/posts/bulk` (publish/unpublish/delete)
 - [x] **Bulk actions — Comments** — `comment-list.tsx` checkbox + `BulkActionBar`; API `/api/comments/bulk` (approve/reject/delete)
 - [x] **Bulk actions — Categories** — `category-list.tsx` checkbox + `BulkActionBar` (tích hợp vào DnD); API `/api/categories/bulk` (publish/unpublish/delete)
 - [x] **Bulk actions — Pages** — `page-list.tsx` checkbox + `BulkActionBar`; `pages/page.tsx` refactor thành server component; `page-create-button.tsx` tách dialog tạo trang
 - [x] **Import / Export CSV — Posts** — xem chi tiết bên dưới
-- [ ] **Schedule publish** — `scheduledAt` field + Vercel Cron
-- [ ] **Image lazy loading + blur placeholder**
-- [ ] **Dashboard notifications**
+- [x] **Image lazy loading + blur placeholder** — `post-item.tsx` thêm blur; `categories/page.tsx` đổi `<img>` → `<Image>`
+- [x] **Schedule publish** — field `scheduledAt` (Prisma), editor UI (Calendar + time picker), cron `/api/cron/publish` (chạy mỗi giờ), trang `/dashboard/scheduled`
+- [x] **Dashboard notifications** — bell icon (polling 30s), trang `/dashboard/notifications`, tự tạo notification khi có bình luận mới + bài đăng theo lịch
+
+## Version 4 — ý tưởng tiếp theo
+- [ ] Thêm logo thương hiệu vào header/footer
+- [ ] Go live checklist (bên dưới)
 
 ## Khi go live cần làm thêm
 - [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)

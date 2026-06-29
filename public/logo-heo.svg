@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Background -->
+  <rect width="120" height="120" fill="#8B3A1A"/>
+
+  <!-- Tai trái -->
+  <ellipse cx="34" cy="34" rx="13" ry="17" fill="#FDF0E6"/>
+  <ellipse cx="34" cy="34" rx="8" ry="12" fill="#C4614A"/>
+
+  <!-- Tai phải -->
+  <ellipse cx="86" cy="34" rx="13" ry="17" fill="#FDF0E6"/>
+  <ellipse cx="86" cy="34" rx="8" ry="12" fill="#C4614A"/>
+
+  <!-- Mặt -->
+  <circle cx="60" cy="66" r="36" fill="#FDF0E6"/>
+
+  <!-- Mắt trái -->
+  <circle cx="47" cy="57" r="5" fill="#2C1206"/>
+  <circle cx="48.5" cy="55.5" r="1.8" fill="white"/>
+
+  <!-- Mắt phải -->
+  <circle cx="73" cy="57" r="5" fill="#2C1206"/>
+  <circle cx="74.5" cy="55.5" r="1.8" fill="white"/>
+
+  <!-- Mõm -->
+  <ellipse cx="60" cy="76" rx="17" ry="13" fill="#C4614A"/>
+
+  <!-- Lỗ mũi trái -->
+  <ellipse cx="54" cy="77" rx="4.5" ry="5.5" fill="#8B3A1A"/>
+
+  <!-- Lỗ mũi phải -->
+  <ellipse cx="66" cy="77" rx="4.5" ry="5.5" fill="#8B3A1A"/>
+</svg>

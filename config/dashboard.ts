@@ -24,6 +24,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "post",
     },
     {
+      title: "Lên lịch",
+      href: "/dashboard/scheduled",
+      icon: "clock",
+    },
+    {
       title: "Danh mục",
       href: "/dashboard/categories",
       icon: "page",
@@ -47,6 +52,11 @@ export const dashboardConfig: DashboardConfig = {
       title: "Người dùng",
       href: "/dashboard/users",
       icon: "user",
+    },
+    {
+      title: "Thông báo",
+      href: "/dashboard/notifications",
+      icon: "bell",
     },
     {
       title: "Cài đặt",

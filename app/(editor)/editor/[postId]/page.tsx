@@ -55,6 +55,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         banner: post.banner,
         relatedPostIds: post.relatedPostIds,
         price: post.price,
+        scheduledAt: post.scheduledAt,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

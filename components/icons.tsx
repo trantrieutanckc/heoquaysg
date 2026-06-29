@@ -1,6 +1,8 @@
 import {
   AlertTriangle,
   ArrowRight,
+  Bell,
+  CalendarClock,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -81,6 +83,8 @@ export const Icons = {
   dragHandle: GripVertical,
   layers: Layers,
   search: Search,
+  clock: CalendarClock,
+  bell: Bell,
   google: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

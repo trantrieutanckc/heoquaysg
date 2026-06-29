@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Post } from "@prisma/client"
 
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { formatDate } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -30,8 +31,9 @@ export function PostItem({ post, allCategories }: PostItemProps) {
               src={image.url}
               alt={image.alt || post.title}
               fill
-              unoptimized
               className="object-cover"
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
             />
           </div>
         )}

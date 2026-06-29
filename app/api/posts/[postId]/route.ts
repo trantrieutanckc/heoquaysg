@@ -17,6 +17,7 @@ const postPatchSchema = z.object({
   banner: z.any().optional().nullable(),
   relatedPostIds: z.array(z.string()).nullable().optional(),
   price: z.number().nullable().optional(),
+  scheduledAt: z.string().datetime().nullable().optional(),
 })
 
 export async function PATCH(
@@ -64,6 +65,11 @@ export async function PATCH(
         ...(body.banner !== undefined && { banner: body.banner ?? undefined }),
         ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds }),
         ...(body.price !== undefined && { price: body.price }),
+        ...(body.scheduledAt !== undefined && {
+          scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
+        }),
+        // Khi publish thủ công thì xoá lịch đã đặt
+        ...(body.published !== undefined && { scheduledAt: null }),
         ...(body.categoryIds !== undefined && {
           categories: {
             deleteMany: {},

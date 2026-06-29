@@ -1,5 +1,7 @@
+import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
+import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 
 export const metadata = {
@@ -42,10 +44,13 @@ export default async function CategoriesPage() {
                   >
                     <div className="aspect-[16/9] overflow-hidden bg-muted relative">
                       {image?.url ? (
-                        <img
+                        <Image
                           src={image.url}
                           alt={image.alt ?? cat.name}
-                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          placeholder="blur"
+                          blurDataURL={BLUR_PLACEHOLDER}
                         />
                       ) : (
                         <div className="h-full w-full bg-gradient-to-br from-primary/20 via-muted to-muted-foreground/10 flex items-center justify-center">
