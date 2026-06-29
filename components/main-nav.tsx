@@ -84,8 +84,8 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
               className={cn(
                 "px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
                 isActive(item.href, pathname)
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-primary/90 hover:text-primary-foreground",
+                  ? "text-[#bf9b30] font-semibold"
+                  : "text-muted-foreground hover:text-[#bf9b30] hover:bg-[#9690a20f]",
                 item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
               )}
             >
@@ -102,8 +102,8 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
                 className={cn(
                   "flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
                   overflowItems.some((i) => isActive(i.href, pathname))
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                    ? "text-[#bf9b30] font-semibold"
+                    : "text-muted-foreground hover:text-[#bf9b30] hover:bg-[#9690a20f]"
                 )}
               >
                 Xem thêm
