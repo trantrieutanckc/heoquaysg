@@ -54,6 +54,8 @@ export interface SiteConfigData {
   aboutCommit3Desc?: string
   aboutCommit4Title?: string
   aboutCommit4Desc?: string
+  // SEO robots
+  robotsIndex?: string  // "true" = cho phép index, "false" = noindex
   // Homepage section backgrounds
   homeFeaturedBgColor?: string
   homeFeaturedBgImage?: string
@@ -177,6 +179,39 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
       </Section>
 
       <Section title="Phân tích & SEO">
+        {/* Robots index toggle */}
+        <div className="flex items-start justify-between gap-4 rounded-lg border p-4">
+          <div>
+            <p className="text-sm font-medium">Cho phép Google index website</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Tắt khi đang dev/test. Bật khi go live để Google tìm thấy website.
+            </p>
+            <p className="text-xs mt-1.5">
+              Hiện tại:{" "}
+              <span className={data.robotsIndex === "true" ? "text-green-600 font-semibold" : "text-orange-500 font-semibold"}>
+                {data.robotsIndex === "true" ? "✓ Đang cho phép index" : "✗ Đang chặn index (noindex)"}
+              </span>
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={data.robotsIndex === "true"}
+            onClick={() => setData((prev) => ({ ...prev, robotsIndex: prev.robotsIndex === "true" ? "false" : "true" }))}
+            className={[
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+              data.robotsIndex === "true" ? "bg-green-500" : "bg-muted-foreground/30",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
+                data.robotsIndex === "true" ? "translate-x-5" : "translate-x-0",
+              ].join(" ")}
+            />
+          </button>
+        </div>
+
         <Field label="Google Search Console — Verification Code" id="googleVerification">
           <Input
             id="googleVerification"

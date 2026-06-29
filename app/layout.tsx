@@ -65,8 +65,8 @@ export async function generateMetadata() {
       ...(ogImage ? { images: [ogImage] } : {}),
     },
     robots: {
-      index: false,
-      follow: false,
+      index: data.robotsIndex === "true",
+      follow: data.robotsIndex === "true",
     },
     icons: {
       icon: [
