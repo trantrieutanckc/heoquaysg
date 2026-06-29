@@ -169,6 +169,17 @@ export function NotificationBell() {
             })
           )}
         </div>
+
+        {/* Footer */}
+        <div className="border-t px-4 py-2.5">
+          <Link
+            href="/dashboard/notifications"
+            onClick={() => setOpen(false)}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Xem tất cả thông báo →
+          </Link>
+        </div>
       </PopoverContent>
     </Popover>
   )

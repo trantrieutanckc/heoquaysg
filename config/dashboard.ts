@@ -54,11 +54,6 @@ export const dashboardConfig: DashboardConfig = {
       icon: "user",
     },
     {
-      title: "Thông báo",
-      href: "/dashboard/notifications",
-      icon: "bell",
-    },
-    {
       title: "Cài đặt",
       href: "/dashboard/settings",
       icon: "settings",
