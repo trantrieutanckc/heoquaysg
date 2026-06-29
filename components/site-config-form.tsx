@@ -56,6 +56,7 @@ export interface SiteConfigData {
   aboutCommit4Desc?: string
   // SEO robots
   robotsIndex?: string  // "true" = cho phép index, "false" = noindex
+  robotsTxtContent?: string
   // Homepage section backgrounds
   homeFeaturedBgColor?: string
   homeFeaturedBgImage?: string
@@ -221,6 +222,20 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
           />
           <p className="text-xs text-muted-foreground">
             Ví dụ: <code className="bg-muted px-1 rounded">AbCdEf1234567890</code> — lấy từ Google Search Console → Xác minh quyền sở hữu → Thẻ HTML
+          </p>
+        </Field>
+
+        <Field label="Nội dung file robots.txt" id="robotsTxtContent">
+          <Textarea
+            id="robotsTxtContent"
+            value={data.robotsTxtContent ?? ""}
+            onChange={(e) => setData((prev) => ({ ...prev, robotsTxtContent: e.target.value }))}
+            placeholder={`User-agent: *\nDisallow: /dashboard/\nDisallow: /api/\nAllow: /\n\nSitemap: https://your-domain.com/sitemap.xml`}
+            className="font-mono text-xs min-h-[160px] resize-y"
+          />
+          <p className="text-xs text-muted-foreground">
+            Để trống sẽ dùng nội dung mặc định. Xem trực tiếp tại{" "}
+            <a href="/robots.txt" target="_blank" className="underline hover:text-foreground">/robots.txt</a>
           </p>
         </Field>
 
