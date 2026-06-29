@@ -121,6 +121,15 @@ export default async function IndexPage() {
   const siteTagline = cfg.siteTagline?.trim() || "Hương vị gia truyền, đậm đà qua nhiều thế hệ"
   const siteDescription = cfg.siteDescription?.trim() || "Chuyên heo quay, vịt quay, gà quay — công thức bí truyền, nguyên liệu tươi sạch, phục vụ hàng ngày."
 
+  // Section backgrounds from config
+  function sectionStyle(colorKey: string, imageKey: string): React.CSSProperties {
+    const image = cfg[imageKey]?.trim()
+    const color = cfg[colorKey]?.trim()
+    if (image) return { backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundPosition: "center" }
+    if (color) return { backgroundColor: color }
+    return {}
+  }
+
   const featured = featuredPost ?? posts[0] ?? null
   const others = posts.filter((p) => p.id !== featured?.id).slice(0, 6)
   const img = (image: unknown) => image as { url?: string; alt?: string } | null
@@ -195,7 +204,7 @@ export default async function IndexPage() {
         const image = img(featured.image)
         const excerpt = getExcerpt((featured as any).content)
         return (
-          <section className="bg-background py-14 lg:py-20">
+          <section className="py-14 lg:py-20" style={{ backgroundColor: "var(--background)", ...sectionStyle("homeFeaturedBgColor", "homeFeaturedBgImage") }}>
             <div className="container px-4 sm:px-6">
               <ScaleIn>
                 <SlideInLeft>
@@ -264,7 +273,7 @@ export default async function IndexPage() {
 
       {/* ── Danh mục nổi bật ─────────────────────────────────── */}
       {categories.length > 0 && (
-        <section className="bg-stone-50 dark:bg-stone-900/60 py-14 lg:py-20 border-y border-border/40">
+        <section className="py-14 lg:py-20 border-y border-border/40" style={{ backgroundColor: "#f8f7f5", ...sectionStyle("homeCategoriesBgColor", "homeCategoriesBgImage") }}>
           <div className="container px-4 sm:px-6">
             <SlideInLeft>
               <SectionTitle
@@ -319,7 +328,7 @@ export default async function IndexPage() {
       )}
 
       {/* ── Về chúng tôi ─────────────────────────────────────── */}
-      <section className="bg-amber-50/60 dark:bg-amber-950/20 py-14 lg:py-20 border-b border-border/40">
+      <section className="py-14 lg:py-20 border-b border-border/40" style={{ backgroundColor: "#fdf8f0", ...sectionStyle("homeAboutBgColor", "homeAboutBgImage") }}>
         <div className="container px-4 sm:px-6">
           <FadeUp>
             <div className="overflow-hidden border border-border/60 bg-card/80">
@@ -395,7 +404,7 @@ export default async function IndexPage() {
 
       {/* ── Bài viết mới nhất ────────────────────────────────── */}
       {others.length > 0 && (
-        <section className="bg-background py-14 lg:py-20">
+        <section className="py-14 lg:py-20" style={{ backgroundColor: "var(--background)", ...sectionStyle("homePostsBgColor", "homePostsBgImage") }}>
           <div className="container px-4 sm:px-6">
             <SlideInLeft>
               <SectionTitle
@@ -480,7 +489,7 @@ export default async function IndexPage() {
 
       {/* ── Google Map ───────────────────────────────────────── */}
       {cfg.contactAddress && (
-        <section className="bg-stone-50 dark:bg-stone-900/60 py-14 lg:py-20 border-t border-border/40">
+        <section className="py-14 lg:py-20 border-t border-border/40" style={{ backgroundColor: "#f8f7f5", ...sectionStyle("homeMapBgColor", "homeMapBgImage") }}>
           <div className="container px-4 sm:px-6">
             <FadeUp>
               <div className="grid md:grid-cols-2 border overflow-hidden bg-card">

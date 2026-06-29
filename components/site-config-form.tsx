@@ -54,6 +54,17 @@ export interface SiteConfigData {
   aboutCommit3Desc?: string
   aboutCommit4Title?: string
   aboutCommit4Desc?: string
+  // Homepage section backgrounds
+  homeFeaturedBgColor?: string
+  homeFeaturedBgImage?: string
+  homeCategoriesBgColor?: string
+  homeCategoriesBgImage?: string
+  homeAboutBgColor?: string
+  homeAboutBgImage?: string
+  homePostsBgColor?: string
+  homePostsBgImage?: string
+  homeMapBgColor?: string
+  homeMapBgImage?: string
 }
 
 interface SiteConfigFormProps {

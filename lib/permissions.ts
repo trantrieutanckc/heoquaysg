@@ -2,7 +2,7 @@ export type Role = "ADMIN" | "EDITOR" | "CONTRIBUTOR"
 
 // Các trang mỗi role được phép truy cập
 const ROLE_PERMISSIONS: Record<Role, string[]> = {
-  ADMIN: ["/dashboard", "/dashboard/categories", "/dashboard/pages", "/dashboard/menu", "/dashboard/comments", "/dashboard/users", "/dashboard/billing", "/dashboard/settings", "/dashboard/about", "/dashboard/lien-he"],
+  ADMIN: ["/dashboard", "/dashboard/categories", "/dashboard/pages", "/dashboard/menu", "/dashboard/comments", "/dashboard/users", "/dashboard/billing", "/dashboard/settings", "/dashboard/about", "/dashboard/lien-he", "/dashboard/giao-dien"],
   EDITOR: ["/dashboard", "/dashboard/categories", "/dashboard/menu"],
   CONTRIBUTOR: [],
 }
