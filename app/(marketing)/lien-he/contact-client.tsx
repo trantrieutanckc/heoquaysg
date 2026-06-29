@@ -11,9 +11,10 @@ interface Props {
   contactAddress?: string
   businessHours?: string
   contactZalo?: string
+  contactIntro?: string
 }
 
-export function ContactClient({ siteName, contactPhone, contactEmail, contactAddress, businessHours, contactZalo }: Props) {
+export function ContactClient({ siteName, contactPhone, contactEmail, contactAddress, businessHours, contactZalo, contactIntro }: Props) {
   const [saving, setSaving] = React.useState(false)
   const [form, setForm] = React.useState({ name: "", email: "", phone: "", message: "" })
 
@@ -54,7 +55,7 @@ export function ContactClient({ siteName, contactPhone, contactEmail, contactAdd
             <div className="h-0.5 w-2 bg-primary/20" />
           </div>
           <p className="text-muted-foreground max-w-xl leading-relaxed">
-            Liên hệ để đặt hàng, hỏi về thực đơn, hoặc gửi góp ý. Chúng tôi nhận đặt trước cho tiệc, sự kiện và giao hàng tận nơi.
+            {contactIntro || "Liên hệ để đặt hàng, hỏi về thực đơn, hoặc gửi góp ý. Chúng tôi nhận đặt trước cho tiệc, sự kiện và giao hàng tận nơi."}
           </p>
         </div>
       </div>

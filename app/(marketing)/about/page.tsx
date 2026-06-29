@@ -45,6 +45,30 @@ export default async function AboutPage() {
   const socialFacebook = cfg.socialFacebook?.trim() || null
   const socialInstagram = cfg.socialInstagram?.trim() || null
 
+  // About page editable content (fallback to demo content)
+  const aboutStory1 = cfg.aboutStory1?.trim() || `Xuất phát từ tình yêu ẩm thực và niềm đam mê bếp núc, ${siteName} được thành lập với mong muốn mang đến những mâm cỗ heo quay, vịt quay, gà quay chuẩn vị — đậm đà như cách bà nội vẫn làm mỗi dịp lễ tết.`
+  const aboutStory2 = cfg.aboutStory2?.trim() || "Mỗi con heo được chọn lọc kỹ từ các trang trại uy tín, ướp qua đêm với hơn 10 loại gia vị bí truyền, rồi quay chậm bằng than hoa để da giòn tan, thịt mềm ngọt thấm đến tận xương. Không tắt lửa, không cắt góc, chỉ là sự kiên nhẫn và tâm huyết trong từng mẻ quay."
+
+  const aboutStats = [
+    { number: cfg.aboutStat1Number?.trim() || "10+", label: cfg.aboutStat1Label?.trim() || "Năm kinh nghiệm", desc: cfg.aboutStat1Desc?.trim() || "Gắn bó với nghề hơn một thập kỷ" },
+    { number: cfg.aboutStat2Number?.trim() || "1000+", label: cfg.aboutStat2Label?.trim() || "Khách hàng hài lòng", desc: cfg.aboutStat2Desc?.trim() || "Phục vụ hàng nghìn lượt khách mỗi tháng" },
+    { number: cfg.aboutStat3Number?.trim() || "3", label: cfg.aboutStat3Label?.trim() || "Món đặc trưng", desc: cfg.aboutStat3Desc?.trim() || "Heo quay, Vịt quay, Gà quay" },
+  ]
+
+  const aboutSteps = [
+    { step: "01", title: cfg.aboutStep1Title?.trim() || "Chọn nguyên liệu", desc: cfg.aboutStep1Desc?.trim() || "Heo, vịt, gà tươi sống từ trang trại uy tín, kiểm tra kỹ trước khi nhận." },
+    { step: "02", title: cfg.aboutStep2Title?.trim() || "Ướp gia vị", desc: cfg.aboutStep2Desc?.trim() || "Hơn 10 loại gia vị bí truyền, ướp qua đêm để thấm đều từng thớ thịt." },
+    { step: "03", title: cfg.aboutStep3Title?.trim() || "Quay than hoa", desc: cfg.aboutStep3Desc?.trim() || "Quay chậm bằng than hoa 3–4 giờ, xoay đều tay để da vàng giòn đều." },
+    { step: "04", title: cfg.aboutStep4Title?.trim() || "Giao đến tay bạn", desc: cfg.aboutStep4Desc?.trim() || "Chặt nóng, đóng gói cẩn thận, giao tận nơi hoặc nhận trực tiếp tại cửa hàng." },
+  ]
+
+  const aboutCommitments = [
+    { title: cfg.aboutCommit1Title?.trim() || "Nguyên liệu tươi sạch", desc: cfg.aboutCommit1Desc?.trim() || "Chọn lọc từ các nhà cung cấp uy tín, đảm bảo vệ sinh an toàn thực phẩm." },
+    { title: cfg.aboutCommit2Title?.trim() || "Công thức gia truyền", desc: cfg.aboutCommit2Desc?.trim() || "Bí quyết ướp và nướng đặc biệt tạo nên hương vị độc đáo không đâu có." },
+    { title: cfg.aboutCommit3Title?.trim() || "Giao hàng tận nơi", desc: cfg.aboutCommit3Desc?.trim() || "Phục vụ đặt hàng online, giao tận nơi nhanh chóng và đúng giờ." },
+    { title: cfg.aboutCommit4Title?.trim() || "Giá cả hợp lý", desc: cfg.aboutCommit4Desc?.trim() || "Chất lượng cao với mức giá phải chăng, phù hợp với mọi nhu cầu." },
+  ]
+
   const contactItems = [
     contactAddress && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>, label: "Địa chỉ", value: contactAddress, href: `https://maps.google.com/?q=${encodeURIComponent(contactAddress)}` },
     contactPhone && { icon: <svg viewBox="0 0 24 24" className="h-4 w-4 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>, label: "Điện thoại", value: contactPhone, href: `tel:${contactPhone}` },
@@ -105,17 +129,8 @@ export default async function AboutPage() {
                 <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
               </div>
               <p className="leading-relaxed text-muted-foreground">{siteDescription}</p>
-              <p className="leading-relaxed text-muted-foreground">
-                Xuất phát từ tình yêu ẩm thực và niềm đam mê bếp núc, {siteName} được thành lập với
-                mong muốn mang đến những mâm cỗ heo quay, vịt quay, gà quay chuẩn vị — đậm đà như
-                cách bà nội vẫn làm mỗi dịp lễ tết.
-              </p>
-              <p className="leading-relaxed text-muted-foreground">
-                Mỗi con heo được chọn lọc kỹ từ các trang trại uy tín, ướp qua đêm với hơn 10 loại
-                gia vị bí truyền, rồi quay chậm bằng than hoa để da giòn tan, thịt mềm ngọt thấm đến
-                tận xương. Không tắt lửa, không cắt góc, chỉ là sự kiên nhẫn và tâm huyết trong từng
-                mẻ quay.
-              </p>
+              <p className="leading-relaxed text-muted-foreground">{aboutStory1}</p>
+              <p className="leading-relaxed text-muted-foreground">{aboutStory2}</p>
               <div className="flex gap-3 pt-2">
                 <Link
                   href="/lien-he"
@@ -154,11 +169,7 @@ export default async function AboutPage() {
         {/* Stats */}
         <section>
           <StaggerContainer className="grid gap-4 sm:grid-cols-3">
-            {[
-              { number: "10+", label: "Năm kinh nghiệm", desc: "Gắn bó với nghề hơn một thập kỷ" },
-              { number: "1000+", label: "Khách hàng hài lòng", desc: "Phục vụ hàng nghìn lượt khách mỗi tháng" },
-              { number: "3", label: "Món đặc trưng", desc: "Heo quay, Vịt quay, Gà quay" },
-            ].map((stat) => (
+            {aboutStats.map((stat) => (
               <StaggerItem key={stat.label} hover>
                 <div className="border bg-card p-6 text-center space-y-1 h-full">
                   <div className="font-heading text-4xl font-bold text-primary">{stat.number}</div>
@@ -182,12 +193,7 @@ export default async function AboutPage() {
               </div>
             </div>
             <div className="grid gap-px bg-border sm:grid-cols-4">
-              {[
-                { step: "01", title: "Chọn nguyên liệu", desc: "Heo, vịt, gà tươi sống từ trang trại uy tín, kiểm tra kỹ trước khi nhận." },
-                { step: "02", title: "Ướp gia vị", desc: "Hơn 10 loại gia vị bí truyền, ướp qua đêm để thấm đều từng thớ thịt." },
-                { step: "03", title: "Quay than hoa", desc: "Quay chậm bằng than hoa 3–4 giờ, xoay đều tay để da vàng giòn đều." },
-                { step: "04", title: "Giao đến tay bạn", desc: "Chặt nóng, đóng gói cẩn thận, giao tận nơi hoặc nhận trực tiếp tại cửa hàng." },
-              ].map((item) => (
+              {aboutSteps.map((item) => (
                 <div key={item.step} className="bg-card p-6 space-y-2">
                   <div className="font-heading text-3xl font-bold text-primary/30 italic">{item.step}</div>
                   <div className="font-semibold text-sm">{item.title}</div>
@@ -210,12 +216,7 @@ export default async function AboutPage() {
               </div>
             </div>
             <StaggerContainer className="grid gap-4 sm:grid-cols-2">
-              {[
-                { title: "Nguyên liệu tươi sạch", desc: "Chọn lọc từ các nhà cung cấp uy tín, đảm bảo vệ sinh an toàn thực phẩm." },
-                { title: "Công thức gia truyền", desc: "Bí quyết ướp và nướng đặc biệt tạo nên hương vị độc đáo không đâu có." },
-                { title: "Giao hàng tận nơi", desc: "Phục vụ đặt hàng online, giao tận nơi nhanh chóng và đúng giờ." },
-                { title: "Giá cả hợp lý", desc: "Chất lượng cao với mức giá phải chăng, phù hợp với mọi nhu cầu." },
-              ].map((item) => (
+              {aboutCommitments.map((item) => (
                 <StaggerItem key={item.title}>
                   <div className="flex gap-4 border bg-card p-5 h-full">
                     <div className="mt-0.5 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary">

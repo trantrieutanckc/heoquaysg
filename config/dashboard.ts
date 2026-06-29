@@ -54,6 +54,16 @@ export const dashboardConfig: DashboardConfig = {
       icon: "user",
     },
     {
+      title: "Về chúng tôi",
+      href: "/dashboard/about",
+      icon: "page",
+    },
+    {
+      title: "Liên hệ",
+      href: "/dashboard/lien-he",
+      icon: "page",
+    },
+    {
       title: "Cài đặt",
       href: "/dashboard/settings",
       icon: "settings",

@@ -15,6 +15,7 @@ export default async function ContactPage() {
       contactAddress={cfg.contactAddress?.trim()}
       businessHours={cfg.businessHours?.trim()}
       contactZalo={cfg.contactZalo?.trim()}
+      contactIntro={cfg.contactIntro?.trim()}
     />
   )
 }

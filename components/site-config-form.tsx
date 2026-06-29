@@ -20,11 +20,40 @@ export interface SiteConfigData {
   contactEmail?: string
   contactAddress?: string
   businessHours?: string
+  contactIntro?: string
   socialFacebook?: string
   socialInstagram?: string
   socialYoutube?: string
   googleVerification?: string
   trackingCode?: string
+  // About page
+  aboutStory1?: string
+  aboutStory2?: string
+  aboutStat1Number?: string
+  aboutStat1Label?: string
+  aboutStat1Desc?: string
+  aboutStat2Number?: string
+  aboutStat2Label?: string
+  aboutStat2Desc?: string
+  aboutStat3Number?: string
+  aboutStat3Label?: string
+  aboutStat3Desc?: string
+  aboutStep1Title?: string
+  aboutStep1Desc?: string
+  aboutStep2Title?: string
+  aboutStep2Desc?: string
+  aboutStep3Title?: string
+  aboutStep3Desc?: string
+  aboutStep4Title?: string
+  aboutStep4Desc?: string
+  aboutCommit1Title?: string
+  aboutCommit1Desc?: string
+  aboutCommit2Title?: string
+  aboutCommit2Desc?: string
+  aboutCommit3Title?: string
+  aboutCommit3Desc?: string
+  aboutCommit4Title?: string
+  aboutCommit4Desc?: string
 }
 
 interface SiteConfigFormProps {
@@ -54,7 +83,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
   const [saving, setSaving] = React.useState(false)
 
   function set(key: keyof SiteConfigData) {
-    return (e: React.ChangeEvent<HTMLInputElement>) =>
+    return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setData((prev) => ({ ...prev, [key]: e.target.value }))
   }
 
