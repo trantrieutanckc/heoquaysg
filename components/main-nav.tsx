@@ -82,10 +82,10 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
               key={index}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap border-b-2",
+                "px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
                 isActive(item.href, pathname)
-                  ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border",
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-primary/90 hover:text-primary-foreground",
                 item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
               )}
             >
@@ -100,10 +100,10 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
                 type="button"
                 onClick={() => setShowMore(!showMore)}
                 className={cn(
-                  "flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap border-b-2",
+                  "flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
                   overflowItems.some((i) => isActive(i.href, pathname))
-                    ? "border-primary text-foreground"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-primary/90 hover:text-primary-foreground"
                 )}
               >
                 Xem thêm
