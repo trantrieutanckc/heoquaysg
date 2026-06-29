@@ -11,9 +11,10 @@ import { PostAddImageButton } from "@/components/post-add-image-button"
 import { PostCategoryButton } from "@/components/post-category-button"
 import { FeaturedToggle } from "@/components/featured-toggle"
 import { PublishToggle } from "@/components/publish-toggle"
+import { StarDisplay } from "@/components/star-display"
 
 interface PostItemProps {
-  post: Pick<Post, "id" | "title" | "published" | "featured" | "createdAt" | "image" | "likes"> & {
+  post: Pick<Post, "id" | "title" | "published" | "featured" | "createdAt" | "image" | "likes" | "avgRating" | "ratingCount"> & {
     categories: { category: { id: string; name: string; slug: string } }[]
   }
   allCategories: { id: string; name: string }[]
@@ -58,6 +59,9 @@ export function PostItem({ post, allCategories }: PostItemProps) {
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-3 w-3 fill-rose-500 stroke-rose-500" strokeWidth={2}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 {post.likes}
               </span>
+            )}
+            {post.avgRating != null && post.ratingCount > 0 && (
+              <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
             )}
           </div>
         </div>

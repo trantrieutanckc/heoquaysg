@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/utils"
 import { cn } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
+import { StarDisplay } from "@/components/star-display"
 
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
@@ -49,9 +50,16 @@ export default async function BlogPage({
         ...(selectedSlug ? { categories: { some: { category: { slug: selectedSlug } } } } : {}),
       },
       orderBy: { createdAt: "desc" },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        image: true,
+        price: true,
+        createdAt: true,
+        avgRating: true,
+        ratingCount: true,
         author: { select: { name: true, image: true } },
-        categories: { include: { category: { select: { name: true, slug: true } } } },
+        categories: { select: { category: { select: { name: true, slug: true } } } },
       },
     }),
   ])
@@ -163,6 +171,10 @@ export default async function BlogPage({
                       <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
                         {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                       </span>
+                    )}
+
+                    {post.avgRating != null && post.ratingCount > 0 && (
+                      <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
                     )}
 
                     <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">

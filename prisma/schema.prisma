@@ -104,6 +104,8 @@ model Post {
   banner         Json?
   relatedPostIds Json?
   scheduledAt    DateTime?
+  avgRating      Float?
+  ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])
   categories     PostCategory[]
   comments       Comment[]
@@ -120,6 +122,7 @@ model Comment {
   authorEmail String?
   postId      String
   approved    Boolean  @default(false)
+  rating      Int?
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now()) @map(name: "created_at")
 

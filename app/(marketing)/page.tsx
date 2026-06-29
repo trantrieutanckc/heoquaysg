@@ -41,6 +41,7 @@ import {
   ScaleIn,
 } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
+import { StarDisplay } from "@/components/star-display"
 
 function SectionDivider() {
   return (
@@ -92,17 +93,20 @@ export default async function IndexPage() {
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
     db.post.findFirst({
       where: { published: true, featured: true },
-      include: {
+      select: {
+        id: true, title: true, createdAt: true, image: true, content: true, price: true,
+        avgRating: true, ratingCount: true,
         author: { select: { name: true, image: true } },
-        categories: { include: { category: { select: { name: true, slug: true } } } },
+        categories: { select: { category: { select: { name: true, slug: true } } } },
       },
     }),
     db.post.findMany({
       where: { published: true },
       select: {
         id: true, title: true, createdAt: true, image: true, content: true, price: true,
+        avgRating: true, ratingCount: true,
         author: { select: { name: true, image: true } },
-        categories: { include: { category: { select: { name: true, slug: true } } } },
+        categories: { select: { category: { select: { name: true, slug: true } } } },
       },
       orderBy: { createdAt: "desc" },
       take: 8,
@@ -244,6 +248,9 @@ export default async function IndexPage() {
                     </h2>
                     {excerpt && (
                       <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">{excerpt}</p>
+                    )}
+                    {featured.avgRating != null && featured.ratingCount > 0 && (
+                      <StarDisplay rating={featured.avgRating} size="md" showNumber count={featured.ratingCount} />
                     )}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       {featured.author?.image ? (
@@ -455,6 +462,9 @@ export default async function IndexPage() {
                           <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
                             {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                           </span>
+                        )}
+                        {post.avgRating != null && post.ratingCount > 0 && (
+                          <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
                         )}
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
                           {post.author?.image ? (

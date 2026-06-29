@@ -8,6 +8,7 @@ import type { CategoryTemplate } from "@/lib/templates"
 import { parseBanner } from "@/lib/banner"
 import { BannerDisplay } from "@/components/banner-display"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
+import { StarDisplay } from "@/components/star-display"
 
 interface CategoryPageProps {
   params: { slug: string }
@@ -91,6 +92,9 @@ function PostCard({ post }: { post: any }) {
         <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
           {post.title}
         </h2>
+        {post.avgRating != null && post.ratingCount > 0 && (
+          <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
+        )}
         <time className="text-xs text-muted-foreground">{formatDate(post.createdAt.toISOString())}</time>
       </div>
     </Link>

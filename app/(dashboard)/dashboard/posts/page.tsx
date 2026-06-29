@@ -40,6 +40,8 @@ export default async function PostsPage({
         createdAt: true,
         image: true,
         likes: true,
+        avgRating: true,
+        ratingCount: true,
         categories: {
           select: { category: { select: { id: true, name: true, slug: true } } },
         },

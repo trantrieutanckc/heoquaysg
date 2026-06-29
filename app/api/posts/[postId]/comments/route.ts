@@ -46,6 +46,7 @@ const commentSchema = z.object({
   content: z.string().min(5, "Bình luận quá ngắn").max(2000, "Bình luận tối đa 2000 ký tự"),
   authorName: z.string().min(1).max(100),
   authorEmail: z.string().email().optional().or(z.literal("")),
+  rating: z.number().int().min(1).max(5).optional(),
   _hp: z.string().optional(), // honeypot — must be empty
 })
 
@@ -61,6 +62,7 @@ export async function GET(
       id: true,
       content: true,
       authorName: true,
+      rating: true,
       createdAt: true,
     },
   })
@@ -118,6 +120,7 @@ export async function POST(
         authorName: cleanName,
         authorEmail: body.authorEmail || undefined,
         postId: params.postId,
+        rating: body.rating ?? null,
         approved: false, // requires admin moderation
       },
     })

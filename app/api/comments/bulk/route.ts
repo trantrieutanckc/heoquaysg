@@ -3,6 +3,7 @@ import * as z from "zod"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { isEditor } from "@/lib/permissions"
+import { recalculateRating } from "@/lib/rating"
 
 const schema = z.object({
   ids: z.array(z.string()).min(1),
@@ -19,11 +20,20 @@ export async function POST(req: Request) {
 
   const where = { id: { in: ids } }
 
+  // Fetch affected postIds for comments that have ratings (need recalculation)
+  const affected = await db.comment.findMany({
+    where: { ...where, rating: { not: null } },
+    select: { postId: true },
+  })
+  const affectedPostIds = [...new Set(affected.map((c) => c.postId))]
+
   if (action === "delete") {
     await db.comment.deleteMany({ where })
   } else {
     await db.comment.updateMany({ where, data: { approved: action === "approve" } })
   }
+
+  await Promise.all(affectedPostIds.map(recalculateRating))
 
   return NextResponse.json({ ok: true })
 }

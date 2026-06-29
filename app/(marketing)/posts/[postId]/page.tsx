@@ -16,6 +16,7 @@ import Image from "next/image"
 import { PageEntrance, FadeUp } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { RelatedPostsCarousel } from "@/components/related-posts-carousel"
+import { StarDisplay } from "@/components/star-display"
 
 interface PostPageProps {
   params: { postId: string }
@@ -149,6 +150,12 @@ export default async function PostPage({ params }: PostPageProps) {
                 <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-4 py-1.5 text-base font-bold">
                   {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                 </span>
+              </div>
+            )}
+
+            {post.avgRating != null && post.ratingCount > 0 && (
+              <div className="mb-4">
+                <StarDisplay rating={post.avgRating} size="lg" showNumber count={post.ratingCount} />
               </div>
             )}
 
