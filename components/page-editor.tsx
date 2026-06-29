@@ -4,7 +4,6 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import TextareaAutosize from "react-textarea-autosize"
 
-import "@/styles/editor.css"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Button } from "@/components/ui/button"
@@ -21,6 +20,8 @@ import {
 import { SeoPanel } from "@/components/seo-panel"
 import { ImageUploader } from "@/components/image-uploader"
 import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/lib/banner"
+import { TiptapEditor } from "@/components/tiptap-editor"
+import { editorJsToTiptap, isTiptapContent } from "@/lib/editorjs-to-tiptap"
 
 interface PageEditorProps {
   page: {
@@ -40,9 +41,15 @@ interface PageEditorProps {
 
 export function PageEditor({ page }: PageEditorProps) {
   const router = useRouter()
-  const editorRef = React.useRef<any>()
   const [isMounted, setIsMounted] = React.useState(false)
   const [isSaving, setIsSaving] = React.useState(false)
+
+  const initialContent = React.useMemo(() => {
+    const raw = page.content
+    const parsed = typeof raw === "string" ? (() => { try { return JSON.parse(raw) } catch { return null } })() : raw
+    return isTiptapContent(parsed) ? parsed as object : editorJsToTiptap(parsed)
+  }, [])
+  const [tiptapContent, setTiptapContent] = React.useState<object>(initialContent)
   const [title, setTitle] = React.useState(page.title)
   const [slug] = React.useState(page.slug)
   const [published, setPublished] = React.useState(page.published)
@@ -74,65 +81,7 @@ export function PageEditor({ page }: PageEditorProps) {
 
   React.useEffect(() => setIsMounted(true), [])
 
-  React.useEffect(() => {
-    if (!isMounted) return
-    const init = async () => {
-      const { default: EditorJSClass } = await import("@editorjs/editorjs")
-      const { default: Header } = await import("@editorjs/header")
-      const { default: List } = await import("@editorjs/list")
-      const { default: Paragraph } = await import("@editorjs/paragraph")
-      const { default: Table } = await import("@editorjs/table")
-      const { default: Code } = await import("@editorjs/code")
-      const { default: InlineCode } = await import("@editorjs/inline-code")
-      const { default: Embed } = await import("@editorjs/embed")
-      const { default: ImageTool } = await import("@editorjs/image")
-
-      if (!editorRef.current) {
-        editorRef.current = new EditorJSClass({
-          holder: "page-editor",
-          placeholder: "Viết nội dung trang...",
-          inlineToolbar: true,
-          data: (page.content as any) ?? { blocks: [] },
-          tools: {
-            header: { class: Header as any, config: { levels: [2, 3, 4], defaultLevel: 2 } },
-            list: List as any,
-            paragraph: { class: Paragraph as any, inlineToolbar: true },
-            table: Table as any,
-            code: Code as any,
-            inlineCode: { class: InlineCode as any, shortcut: "CMD+SHIFT+M" },
-            embed: Embed as any,
-            image: {
-              class: ImageTool as any,
-              config: {
-                uploader: {
-                  async uploadByFile(file: File) {
-                    const form = new FormData()
-                    form.append("file", file)
-                    const res = await fetch("/api/upload", { method: "POST", body: form })
-                    return res.json()
-                  },
-                  async uploadByUrl(url: string) {
-                    return { success: 1, file: { url } }
-                  },
-                },
-              },
-            },
-          },
-        })
-      }
-    }
-    init()
-    return () => {
-      if (editorRef.current?.destroy) {
-        editorRef.current.destroy()
-        editorRef.current = undefined
-      }
-    }
-  }, [isMounted])
-
   async function handleSave() {
-    if (!editorRef.current) return
-    const content = await editorRef.current.save()
     setIsSaving(true)
     try {
       const res = await fetch(`/api/pages/${page.id}`, {
@@ -141,7 +90,7 @@ export function PageEditor({ page }: PageEditorProps) {
         body: JSON.stringify({
           title,
           slug,
-          content,
+          content: tiptapContent,
           published,
           image: imageUrl ? { url: imageUrl, alt: imageAlt } : null,
           seoTitle: seoTitle || null,
@@ -235,9 +184,12 @@ export function PageEditor({ page }: PageEditorProps) {
 
         <hr />
 
-        {/* EditorJS */}
+        {/* TipTap Editor */}
         {isMounted && (
-          <div id="page-editor" className="prose prose-stone dark:prose-invert max-w-none min-h-[300px]" />
+          <TiptapEditor
+            content={tiptapContent}
+            onChange={setTiptapContent}
+          />
         )}
 
         <hr />

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import EditorJS from "@editorjs/editorjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Post } from "@prisma/client"
 import { useForm } from "react-hook-form"
@@ -11,7 +10,6 @@ import * as z from "zod"
 import { format } from "date-fns"
 import { Clock } from "lucide-react"
 
-import "@/styles/editor.css"
 import { cn } from "@/lib/utils"
 import { postPatchSchema } from "@/lib/validations/post"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -27,6 +25,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { POST_TEMPLATES } from "@/lib/templates"
 import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/lib/banner"
 import { RelatedPostSelector } from "@/components/related-post-selector"
+import { TiptapEditor } from "@/components/tiptap-editor"
+import { editorJsToTiptap, isTiptapContent } from "@/lib/editorjs-to-tiptap"
 import {
   Accordion,
   AccordionContent,
@@ -65,9 +65,15 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
     resolver: zodResolver(postPatchSchema),
     defaultValues: { title: post.title, content: post.content },
   })
-  const ref = React.useRef<EditorJS>()
   const router = useRouter()
   const initialPostRef = React.useRef(post)
+
+  const initialContent = React.useMemo(() => {
+    const raw = initialPostRef.current.content
+    const parsed = typeof raw === "string" ? (() => { try { return JSON.parse(raw) } catch { return null } })() : raw
+    return isTiptapContent(parsed) ? parsed as object : editorJsToTiptap(parsed)
+  }, [])
+  const [tiptapContent, setTiptapContent] = React.useState<object>(initialContent)
 
   const [isSaving, setIsSaving] = React.useState(false)
   const [isMounted, setIsMounted] = React.useState(false)
@@ -119,74 +125,9 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
 
   const shownSlides = bannerType === "banner" ? bannerSlides.slice(0, 1) : bannerSlides
 
-  // ── EditorJS ────────────────────────────────────────────────
-  const initializeEditor = React.useCallback(async () => {
-    const EditorJS = (await import("@editorjs/editorjs")).default
-    const Header = (await import("@editorjs/header")).default
-    const Embed = (await import("@editorjs/embed")).default
-    const Table = (await import("@editorjs/table")).default
-    const List = (await import("@editorjs/list")).default
-    const Code = (await import("@editorjs/code")).default
-    const LinkTool = (await import("@editorjs/link")).default
-    const InlineCode = (await import("@editorjs/inline-code")).default
-    const ImageTool = (await import("@editorjs/image")).default
-
-    const initialPost = initialPostRef.current
-    const body = postPatchSchema.parse(initialPost)
-    const editorData =
-      typeof initialPost.content === "string"
-        ? JSON.parse(body.content)
-        : body.content || { blocks: [] }
-
-    if (!ref.current) {
-      const editor = new EditorJS({
-        holder: "editor",
-        onReady() { ref.current = editor },
-        placeholder: "Bắt đầu viết nội dung...",
-        inlineToolbar: true,
-        data: editorData,
-        tools: {
-          header: Header,
-          linkTool: LinkTool,
-          list: List,
-          code: Code,
-          inlineCode: { class: InlineCode as any, shortcut: "CMD+SHIFT+M" },
-          table: Table,
-          embed: Embed,
-          image: {
-            class: ImageTool,
-            config: {
-              uploader: {
-                async uploadByFile(file: File) {
-                  const form = new FormData()
-                  form.append("file", file)
-                  const res = await fetch("/api/upload", { method: "POST", body: form })
-                  return res.json()
-                },
-                async uploadByUrl(url: string) {
-                  return { success: 1, file: { url } }
-                },
-              },
-            },
-          },
-        },
-      })
-    }
-  }, [])
-
   React.useEffect(() => {
     if (typeof window !== "undefined") setIsMounted(true)
   }, [])
-
-  React.useEffect(() => {
-    if (isMounted) {
-      initializeEditor()
-      return () => {
-        ref.current?.destroy()
-        ref.current = undefined
-      }
-    }
-  }, [isMounted, initializeEditor])
 
   // ── Handlers ────────────────────────────────────────────────
   async function handlePublishToggle() {
@@ -285,13 +226,12 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
   async function onSubmit(data: FormData) {
     setIsSaving(true)
     try {
-      const blocks = await ref.current?.save()
       const res = await fetch(`/api/posts/${post.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: data.title,
-          content: blocks,
+          content: tiptapContent,
           image: imageUrl ? { url: imageUrl, alt: imageAlt, title: imageTitle } : null,
           categoryIds: selectedCategoryIds,
           seoTitle: seoTitle || null,
@@ -442,8 +382,13 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
           {...register("title")}
         />
 
-        {/* EditorJS */}
-        <div id="editor" className="min-h-[500px] prose prose-stone dark:prose-invert max-w-none" />
+        {/* TipTap Editor */}
+        {isMounted && (
+          <TiptapEditor
+            content={tiptapContent}
+            onChange={setTiptapContent}
+          />
+        )}
 
         <hr />
 

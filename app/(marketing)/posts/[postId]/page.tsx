@@ -3,6 +3,7 @@ import Link from "next/link"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import { EditorJsRenderer, extractHeadings } from "@/components/editorjs-renderer"
+import { TiptapRenderer, extractHeadingsTiptap } from "@/components/tiptap-renderer"
 import { TableOfContents } from "@/components/table-of-contents"
 import { CommentSection } from "@/components/comment-section"
 import { LikeButton } from "@/components/like-button"
@@ -70,7 +71,8 @@ export default async function PostPage({ params }: PostPageProps) {
   const postImage = post.image as { url?: string; alt?: string; title?: string } | null
   const template = (post.template ?? "standard") as PostTemplate
   const banner = parseBanner(post.banner)
-  const headings = extractHeadings(post.content)
+  const isTiptap = post.content && typeof post.content === "object" && (post.content as any).type === "doc"
+  const headings = isTiptap ? extractHeadingsTiptap(post.content) : extractHeadings(post.content)
 
   const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
@@ -198,15 +200,13 @@ export default async function PostPage({ params }: PostPageProps) {
         {/* Content + TOC */}
         <div className="flex gap-10 items-start">
           <FadeUp delay={0.1} className="min-w-0 flex-1">
-            <div className="prose prose-neutral dark:prose-invert max-w-none
-              prose-headings:font-heading prose-headings:scroll-mt-24
-              prose-h2:text-xl prose-h2:sm:text-2xl
-              prose-p:text-base prose-p:leading-relaxed prose-p:text-foreground/90
-              prose-img:rounded-xl prose-img:shadow-md
-              prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-primary prose-blockquote:bg-muted/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1">
-              <EditorJsRenderer content={post.content} />
-            </div>
+            {isTiptap
+              ? <TiptapRenderer
+                  content={post.content}
+                  className="prose prose-neutral dark:prose-invert max-w-none prose-headings:font-heading prose-headings:scroll-mt-24 prose-h2:text-xl prose-h2:sm:text-2xl prose-p:text-base prose-p:leading-relaxed prose-p:text-foreground/90 prose-img:rounded-xl prose-img:shadow-md prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-blockquote:border-primary prose-blockquote:bg-muted/50 prose-blockquote:rounded-r-lg prose-blockquote:py-1 [&_.tiptap-columns]:grid [&_.tiptap-columns]:grid-cols-2 [&_.tiptap-columns]:gap-6 [&_.tiptap-column]:min-w-0"
+                />
+              : <EditorJsRenderer content={post.content} />
+            }
           </FadeUp>
           <div className="hidden lg:block w-56 shrink-0">
             <TableOfContents headings={headings} />
