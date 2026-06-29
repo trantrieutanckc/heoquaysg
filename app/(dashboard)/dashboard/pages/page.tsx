@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { PageList } from "@/components/page-list"
-import { PageCreateButton } from "@/components/page-create-button"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { PageList } from "@/components/admin/page-list"
+import { PageCreateButton } from "@/components/admin/page-create-button"
 
 export const metadata = { title: "Trang tĩnh" }
 

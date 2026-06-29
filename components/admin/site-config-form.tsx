@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
-import { ImagePickerInput } from "@/components/image-picker-input"
+import { ImagePickerInput } from "@/components/admin/image-picker-input"
 
 export interface SiteConfigData {
   siteName?: string

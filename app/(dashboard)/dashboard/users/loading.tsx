@@ -1,5 +1,5 @@
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function UsersLoading() {

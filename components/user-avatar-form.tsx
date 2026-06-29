@@ -17,7 +17,7 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 import { UserAvatar } from "@/components/user-avatar"
-import { ImageUploader } from "@/components/image-uploader"
+import { ImageUploader } from "@/components/admin/image-uploader"
 
 interface UserAvatarFormProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "id" | "name" | "image">

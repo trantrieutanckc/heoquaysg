@@ -3,10 +3,10 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { ScheduledPostItem } from "@/components/scheduled-post-item"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { ScheduledPostItem } from "@/components/admin/scheduled-post-item"
+import { EmptyPlaceholder } from "@/components/admin/empty-placeholder"
 
 export const metadata = { title: "Lên lịch" }
 

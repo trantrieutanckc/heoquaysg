@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation"
 import { getCurrentUser } from "@/lib/session"
 import { db } from "@/lib/db"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { SiteConfigForm, type SiteConfigData } from "@/components/site-config-form"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { SiteConfigForm, type SiteConfigData } from "@/components/admin/site-config-form"
 
 export const metadata = {
   title: "Settings",

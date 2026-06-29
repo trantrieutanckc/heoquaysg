@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { UserList } from "@/components/user-list"
-import { UserCreateButton } from "@/components/user-create-button"
-import { DashboardPagination } from "@/components/dashboard-pagination"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { UserList } from "@/components/admin/user-list"
+import { UserCreateButton } from "@/components/admin/user-create-button"
+import { DashboardPagination } from "@/components/admin/dashboard-pagination"
 
 export const metadata = { title: "Users" }
 

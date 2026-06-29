@@ -8,7 +8,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog"
 import { Icons } from "@/components/icons"
-import { ImageUploader } from "@/components/image-uploader"
+import { ImageUploader } from "@/components/admin/image-uploader"
 import { type BannerConfig, type BannerSlide, emptySlide } from "@/lib/banner"
 
 interface BannerEditorProps {

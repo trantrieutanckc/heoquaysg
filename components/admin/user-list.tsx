@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
-import { ImageUploader } from "@/components/image-uploader"
+import { ImageUploader } from "@/components/admin/image-uploader"
 
 type Role = "ADMIN" | "EDITOR" | "CONTRIBUTOR"
 

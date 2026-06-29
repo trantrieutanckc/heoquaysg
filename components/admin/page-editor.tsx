@@ -17,10 +17,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { SeoPanel } from "@/components/seo-panel"
-import { ImageUploader } from "@/components/image-uploader"
+import { SeoPanel } from "@/components/admin/seo-panel"
+import { ImageUploader } from "@/components/admin/image-uploader"
 import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/lib/banner"
-import { TiptapEditor } from "@/components/tiptap-editor"
+import { TiptapEditor } from "@/components/admin/tiptap-editor"
 import { editorJsToTiptap, isTiptapContent } from "@/lib/editorjs-to-tiptap"
 
 interface PageEditorProps {

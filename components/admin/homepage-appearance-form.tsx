@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
-import type { SiteConfigData } from "@/components/site-config-form"
+import type { SiteConfigData } from "@/components/admin/site-config-form"
 
 // ── Helpers ──────────────────────────────────────────────────
 

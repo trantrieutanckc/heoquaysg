@@ -1,8 +1,8 @@
 import { db } from "@/lib/db"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { MenuList } from "@/components/menu-list"
-import { MenuCreateButton } from "@/components/menu-create-button"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { MenuList } from "@/components/admin/menu-list"
+import { MenuCreateButton } from "@/components/admin/menu-create-button"
 
 export const metadata = { title: "Menu" }
 

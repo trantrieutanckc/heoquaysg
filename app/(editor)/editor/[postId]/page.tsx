@@ -6,7 +6,7 @@ import { Post, User } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { Editor } from "@/components/editor"
+import { Editor } from "@/components/admin/editor"
 
 async function getPostForUser(postId: Post["id"], userId: User["id"]) {
   return await db.post.findFirst({

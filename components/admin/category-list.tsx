@@ -25,16 +25,16 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
-import { BulkActionBar } from "@/components/bulk-action-bar"
+import { BulkActionBar } from "@/components/admin/bulk-action-bar"
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog"
-import { SeoPanel } from "@/components/seo-panel"
-import { ImageUploader } from "@/components/image-uploader"
+import { SeoPanel } from "@/components/admin/seo-panel"
+import { ImageUploader } from "@/components/admin/image-uploader"
 import { CATEGORY_TEMPLATES, type CategoryTemplate } from "@/lib/templates"
-import { BannerEditor } from "@/components/banner-editor"
+import { BannerEditor } from "@/components/admin/banner-editor"
 import { type BannerConfig, parseBanner } from "@/lib/banner"
-import { PublishToggle } from "@/components/publish-toggle"
+import { PublishToggle } from "@/components/admin/publish-toggle"
 
 interface CategoryImage {
   url: string

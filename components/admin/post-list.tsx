@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
-import { PostItem } from "@/components/post-item"
-import { BulkActionBar } from "@/components/bulk-action-bar"
+import { PostItem } from "@/components/admin/post-item"
+import { BulkActionBar } from "@/components/admin/bulk-action-bar"
 
 interface Post {
   id: string

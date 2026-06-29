@@ -6,11 +6,11 @@ import { dashboardConfig } from "@/config/dashboard"
 import { getCurrentUser } from "@/lib/session"
 import { canAccess, isAdmin, type Role } from "@/lib/permissions"
 import { MainNav } from "@/components/main-nav"
-import { DashboardNav } from "@/components/nav"
-import { DashboardSearch } from "@/components/dashboard-search"
+import { DashboardNav } from "@/components/admin/nav"
+import { DashboardSearch } from "@/components/admin/dashboard-search"
 import { SiteFooter } from "@/components/site-footer"
 import { UserAccountNav } from "@/components/user-account-nav"
-import { NotificationBell } from "@/components/notification-bell"
+import { NotificationBell } from "@/components/admin/notification-bell"
 
 interface DashboardLayoutProps {
   children?: React.ReactNode

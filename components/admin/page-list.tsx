@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
 import { cn, formatDate } from "@/lib/utils"
-import { BulkActionBar } from "@/components/bulk-action-bar"
+import { BulkActionBar } from "@/components/admin/bulk-action-bar"
 
 interface Page {
   id: string

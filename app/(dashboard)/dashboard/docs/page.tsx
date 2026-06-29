@@ -1,9 +1,9 @@
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 import { redirect } from "next/navigation"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { DocsEditor } from "@/components/docs-editor"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { DocsEditor } from "@/components/admin/docs-editor"
 
 export const metadata = { title: "Hướng dẫn sử dụng" }
 

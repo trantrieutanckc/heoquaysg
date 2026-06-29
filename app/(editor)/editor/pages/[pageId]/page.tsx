@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { PageEditor } from "@/components/page-editor"
+import { PageEditor } from "@/components/admin/page-editor"
 
 interface Props {
   params: { pageId: string }

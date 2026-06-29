@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
-import type { SiteConfigData } from "@/components/site-config-form"
+import type { SiteConfigData } from "@/components/admin/site-config-form"
 
 function Section({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
   return (

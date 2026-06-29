@@ -4,11 +4,11 @@ import dynamic from "next/dynamic"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
 
 const DashboardOverview = dynamic(
-  () => import("@/components/dashboard-overview"),
+  () => import("@/components/admin/dashboard-overview"),
   { ssr: false }
 )
 

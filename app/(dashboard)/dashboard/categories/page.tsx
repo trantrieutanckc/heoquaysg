@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { CategoryList } from "@/components/category-list"
-import { CategoryCreateButton } from "@/components/category-create-button"
-import { DashboardPagination } from "@/components/dashboard-pagination"
+import { DashboardHeader } from "@/components/admin/header"
+import { DashboardShell } from "@/components/admin/shell"
+import { CategoryList } from "@/components/admin/category-list"
+import { CategoryCreateButton } from "@/components/admin/category-create-button"
+import { DashboardPagination } from "@/components/admin/dashboard-pagination"
 
 export const metadata = { title: "Danh mục" }
 
