@@ -80,7 +80,7 @@ export function ContactEditorForm({ initial }: { initial: SiteConfigData }) {
           <Input type="email" value={data.contactEmail ?? ""} onChange={set("contactEmail")} placeholder="info@heoquay.com" />
         </Field>
         <Field label="Địa chỉ">
-          <Input value={data.contactAddress ?? ""} onChange={set("contactAddress")} placeholder="47 Đường Ẩm Thực, Quận 1, TP.HCM" />
+          <Input value={data.contactAddress ?? ""} onChange={set("contactAddress")} placeholder="123 Đường ABC, Bình Tân, TP.HCM" />
         </Field>
         <Field label="Giờ mở cửa">
           <Input value={data.businessHours ?? ""} onChange={set("businessHours")} placeholder="06:00 – 20:00, tất cả các ngày" />

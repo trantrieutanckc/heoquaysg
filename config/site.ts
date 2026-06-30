@@ -1,7 +1,7 @@
 import { SiteConfig } from "types"
 
 export const siteConfig: SiteConfig = {
-  name: "Heo Quay SG",
+  name: "Heo Quay Bình Tân",
   description:
     "Chuyên heo quay, vịt quay, gà quay chất lượng cao. Công thức gia truyền, nguyên liệu tươi sạch.",
   url: "https://taxonomy-ebon.vercel.app",

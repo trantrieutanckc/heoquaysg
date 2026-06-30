@@ -1,7 +1,12 @@
 {
-  "name": "Taxonomy",
-  "short_name": "Taxonomy",
+  "name": "Heo Quay Bình Tân",
+  "short_name": "HQ Bình Tân",
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
     {
       "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
@@ -13,7 +18,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#FAC020",
+  "background_color": "#FAC020",
   "display": "standalone"
 }

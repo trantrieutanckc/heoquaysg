@@ -121,7 +121,7 @@ export default async function IndexPage() {
 
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
   const heroImage = cfg.heroImage?.trim()
-  const siteName = cfg.siteName?.trim() || "Heo Quay 47"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const siteTagline = cfg.siteTagline?.trim() || "Hương vị gia truyền, đậm đà qua nhiều thế hệ"
   const siteDescription = cfg.siteDescription?.trim() || "Chuyên heo quay, vịt quay, gà quay — công thức bí truyền, nguyên liệu tươi sạch, phục vụ hàng ngày."
 

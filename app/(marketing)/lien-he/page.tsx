@@ -9,7 +9,7 @@ export default async function ContactPage() {
 
   return (
     <ContactClient
-      siteName={cfg.siteName?.trim() || "Heo Quay 47"}
+      siteName={cfg.siteName?.trim() || "Heo Quay Bình Tân"}
       contactPhone={cfg.contactPhone?.trim()}
       contactEmail={cfg.contactEmail?.trim()}
       contactAddress={cfg.contactAddress?.trim()}

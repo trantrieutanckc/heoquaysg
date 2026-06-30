@@ -235,7 +235,7 @@ npx prisma db push
 **Version 2 — việc còn lại:**
 - [x] **Storage thật — Supabase Storage** — `lib/supabase.ts` dùng REST API (không dùng @supabase/supabase-js tránh lỗi WebSocket Node.js 20). Upload ảnh bìa + ảnh trong EditorJS qua `/api/upload`.
 - [x] **Pagination cho dashboard** — Posts (10/trang), Comments/Users/Categories (20/trang). URL `?page=N`, Prisma `skip/take`. Header hiển thị tổng record.
-- [x] **Trang 404 tùy chỉnh** — `app/not-found.tsx` theo theme Heo Quay 47.
+- [x] **Trang 404 tùy chỉnh** — `app/not-found.tsx` theo theme Heo Quay Bình Tân.
 - [x] **`NEXT_PUBLIC_APP_URL` trên Vercel** — đã xóa trailing space 24/06/2026.
 - [x] **Hero banner trang chủ** — hero banner full-width, tagline, CTA buttons; featured post layout riêng bên dưới
 - [x] **Featured post hiển thị khác biệt** — card lớn hơn, badge nổi bật, section "Bài nổi bật" riêng
@@ -261,14 +261,14 @@ npx prisma db push
 - [x] **Schedule publish** — field `scheduledAt` (Prisma), editor UI (Calendar + time picker), cron `/api/cron/publish` (chạy mỗi giờ), trang `/dashboard/scheduled`
 - [x] **Dashboard notifications** — bell icon (polling 30s), trang `/dashboard/notifications`, tự tạo notification khi có bình luận mới + bài đăng theo lịch
 
-## Version 4 — ý tưởng tiếp theo
-- [ ] Thêm logo thương hiệu vào header/footer
-- [ ] Go live checklist (bên dưới)
+## Version 4 ✅ — hoàn thành 30/06/2026
+- [x] Logo thương hiệu vào header/footer — đã có từ trước, lấy từ Dashboard → Settings → logoUrl
+- [x] Go live checklist — sitemap, metadata đã xong; robots index bật qua dashboard khi go live (bên dưới)
 
 ## Khi go live cần làm thêm
 - [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
-- [ ] **Cập nhật sitemap** — thêm `/about` và `/lien-he` vào `sitemap.ts`
-- [ ] **Cập nhật metadata** trong `app/layout.tsx` — đổi `authors`, `creator`, `keywords` (đang là placeholder của shadcn), `openGraph.locale` từ `en_US` → `vi_VN`
+- [x] **Cập nhật sitemap** — `/about` và `/lien-he` đã có trong `sitemap.ts`
+- [x] **Cập nhật metadata** trong `app/layout.tsx` — `locale: "vi_VN"`, keywords tiếng Việt, authors/creator lấy từ `siteName` động
 
 ---
 

@@ -160,7 +160,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
           <Input id="contactEmail" type="email" value={data.contactEmail ?? ""} onChange={set("contactEmail")} placeholder="info@heoquay.com" />
         </Field>
         <Field label="Địa chỉ" id="contactAddress">
-          <Input id="contactAddress" value={data.contactAddress ?? ""} onChange={set("contactAddress")} placeholder="47 Đường Ẩm Thực, Quận 1, TP.HCM" />
+          <Input id="contactAddress" value={data.contactAddress ?? ""} onChange={set("contactAddress")} placeholder="123 Đường ABC, Bình Tân, TP.HCM" />
         </Field>
         <Field label="Giờ mở cửa" id="businessHours">
           <Input id="businessHours" value={data.businessHours ?? ""} onChange={set("businessHours")} placeholder="06:00 – 20:00, tất cả các ngày" />

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic"
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (row?.data ?? {}) as Record<string, string>
-  const siteName = cfg.siteName?.trim() || "Heo Quay 47"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = cfg.siteDescription?.trim() || "Chuyên cung cấp heo quay, vịt quay, gà quay chất lượng cao."
   const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
   return {
@@ -34,7 +34,7 @@ export default async function AboutPage() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (row?.data ?? {}) as Record<string, string>
 
-  const siteName = cfg.siteName?.trim() || "Heo Quay 47"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const siteDescription = cfg.siteDescription?.trim() || "Chuyên heo quay, vịt quay, gà quay — công thức bí truyền, nguyên liệu tươi sạch."
   const heroImage = cfg.heroImage?.trim() || null
   const contactPhone = cfg.contactPhone?.trim() || null

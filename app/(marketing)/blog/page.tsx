@@ -10,7 +10,7 @@ import { StarDisplay } from "@/components/star-display"
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (row?.data ?? {}) as Record<string, string>
-  const siteName = cfg.siteName?.trim() || "Heo Quay 47"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = `Các món heo quay, vịt quay, gà quay và ẩm thực từ ${siteName}.`
   const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
   return {

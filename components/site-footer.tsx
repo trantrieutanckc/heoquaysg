@@ -32,7 +32,7 @@ export function SiteFooter({
   socialYoutube,
   contactZalo,
 }: SiteFooterProps) {
-  const name = siteName || "Heo Quay 47"
+  const name = siteName || "Heo Quay Bình Tân"
   const description =
     siteDescription ||
     "Chuyên heo quay, vịt quay, gà quay chất lượng cao. Phục vụ tận tâm, giao hàng tận nơi."
