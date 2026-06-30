@@ -5,6 +5,7 @@ import { cache } from "react"
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
 import { absoluteUrl, cn } from "@/lib/utils"
+import NextTopLoader from "nextjs-toploader"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@/components/analytics"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
@@ -100,6 +101,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <NextTopLoader color="hsl(22 82% 40%)" height={3} showSpinner={false} />
           {children}
           <Analytics />
           <Toaster />
