@@ -241,6 +241,24 @@ model Notification {
   @@map(name: "notifications")
 }
 
+model Booking {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String
+  address      String?
+  product      String
+  quantity     Float    @default(1)
+  deliveryDate DateTime
+  note         String?
+  status       String   @default("pending")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @updatedAt       @map(name: "updated_at")
+
+  @@index([status])
+  @@index([deliveryDate])
+  @@map(name: "bookings")
+}
+
 model PostCategory {
   postId     String
   categoryId String
