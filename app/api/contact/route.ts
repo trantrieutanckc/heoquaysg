@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       email: body.email || undefined,
       phone: body.phone || undefined,
       message: body.message,
-    })
+    }).catch(() => {})
 
     return NextResponse.json({ success: true }, { status: 200 })
   } catch (error) {

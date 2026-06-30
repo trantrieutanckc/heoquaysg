@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
@@ -48,6 +50,7 @@ export default async function CategoriesPage() {
                           src={image.url}
                           alt={image.alt ?? cat.name}
                           fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                           placeholder="blur"
                           blurDataURL={BLUR_PLACEHOLDER}

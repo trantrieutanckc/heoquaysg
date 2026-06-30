@@ -5,7 +5,8 @@ const db = new PrismaClient()
 
 async function main() {
   const email = process.env.ADMIN_EMAIL || "admin@heoquay.com"
-  const password = process.env.ADMIN_PASSWORD || "Admin@123"
+  const password = process.env.ADMIN_PASSWORD
+  if (!password) throw new Error("ADMIN_PASSWORD env is required to run seed")
   const name = process.env.ADMIN_NAME || "Admin"
 
   const existing = await db.user.findUnique({ where: { email } })

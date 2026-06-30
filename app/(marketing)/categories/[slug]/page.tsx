@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -44,7 +46,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     where: { slug: params.slug },
     include: {
       posts: {
-        include: { post: true },
+        select: {
+          post: {
+            select: {
+              id: true,
+              title: true,
+              image: true,
+              createdAt: true,
+              published: true,
+              avgRating: true,
+              ratingCount: true,
+            },
+          },
+        },
       },
     },
   })
@@ -60,7 +74,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     return <HeroTemplate category={category} image={image} posts={posts} banner={banner} />
   }
   if (template === "grid") {
-    return <GridTemplate category={category} image={image} posts={posts} banner={banner} />
+    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} />
   }
   return <StandardTemplate category={category} image={image} posts={posts} banner={banner} />
 }
@@ -103,61 +117,6 @@ function PostCard({ post }: { post: any }) {
 
 // ─── Standard template ────────────────────────────────────────────────────────
 function StandardTemplate({ category, image, posts, banner }: any) {
-  return (
-    <div className="min-h-screen">
-      <PageEntrance>
-        <div className="border-b bg-muted/30">
-          <div className="container px-4 sm:px-6 py-12 lg:py-16">
-            {image?.url && (
-              <div className="relative mb-6 overflow-hidden rounded-2xl" style={{ height: 260 }}>
-                <Image
-                  src={image.url}
-                  alt={image.alt ?? category.name}
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 1280px"
-                  className="object-cover"
-                  priority
-                  placeholder="blur"
-                  blurDataURL={BLUR_PLACEHOLDER}
-                />
-              </div>
-            )}
-            <div className="flex items-end justify-between gap-4 flex-wrap">
-              <div>
-                <Link href="/categories" className="text-xs text-muted-foreground hover:text-foreground transition-colors mb-2 inline-block">
-                  ← Danh mục
-                </Link>
-                <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">{category.name}</h1>
-              </div>
-              <span className="text-sm text-muted-foreground shrink-0">{posts.length} bài viết</span>
-            </div>
-          </div>
-        </div>
-      </PageEntrance>
-
-      <div className="container px-4 sm:px-6 py-10 lg:py-14">
-        {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
-        {posts.length ? (
-          <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post: any) => (
-              <StaggerItem key={post.id} hover>
-                <PostCard post={post} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        ) : (
-          <FadeUp className="flex flex-col items-center justify-center py-32 text-center">
-            <p className="font-medium mb-1">Chưa có bài viết nào</p>
-            <p className="text-sm text-muted-foreground">Danh mục này chưa có bài viết nào được đăng.</p>
-          </FadeUp>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ─── Grid template ────────────────────────────────────────────────────────────
-function GridTemplate({ category, image, posts, banner }: any) {
   return (
     <div className="min-h-screen">
       <PageEntrance>

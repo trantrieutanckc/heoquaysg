@@ -21,10 +21,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           published: true,
           title: { contains: q, mode: "insensitive" },
         },
-        include: {
+        select: {
+          id: true,
+          title: true,
+          image: true,
+          createdAt: true,
           author: { select: { name: true } },
           categories: {
-            include: { category: { select: { name: true, slug: true } } },
+            select: { category: { select: { name: true, slug: true } } },
           },
         },
         orderBy: { createdAt: "desc" },
