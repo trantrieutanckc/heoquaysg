@@ -99,10 +99,11 @@ export default async function BlogPage({
             <Link
               href="/blog"
               className={cn(
-                "inline-flex items-center px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px",
+                "relative inline-flex items-center px-4 py-2 text-sm font-semibold transition-colors",
+                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                 !selectedSlug
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                  ? "text-primary after:w-full"
+                  : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full"
               )}
             >
               Tất cả
@@ -112,10 +113,11 @@ export default async function BlogPage({
                 key={cat.slug}
                 href={`/blog?category=${cat.slug}`}
                 className={cn(
-                  "inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px",
+                  "relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-colors",
+                  "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                   selectedSlug === cat.slug
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+                    ? "text-primary after:w-full"
+                    : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full"
                 )}
               >
                 {cat.name}
