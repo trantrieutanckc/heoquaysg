@@ -163,7 +163,7 @@ export default async function BlogPage({
                       </span>
                     )}
 
-                    <h2 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                    <h2 className="relative font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2 after:absolute after:-bottom-[2px] after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:w-0 after:transition-[width] after:duration-500 group-hover:after:w-full">
                       {post.title}
                     </h2>
 
