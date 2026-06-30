@@ -49,6 +49,8 @@ function SortableRow({
   onDelete,
   onToggle,
   deleting,
+  saving,
+  toggling,
   editing,
   editTitle,
   editHref,
@@ -62,6 +64,8 @@ function SortableRow({
   onDelete: (id: string) => void
   onToggle: (item: MenuItem) => void
   deleting: string | null
+  saving: string | null
+  toggling: string | null
   editing: string | null
   editTitle: string
   editHref: string
@@ -108,8 +112,11 @@ function SortableRow({
             onChange={(e) => setEditHref(e.target.value)}
             className="h-8 flex-1"
           />
-          <Button size="sm" onClick={() => onSave(item)}>Lưu</Button>
-          <Button size="sm" variant="ghost" onClick={onCancelEdit}>Huỷ</Button>
+          <Button size="sm" onClick={() => onSave(item)} disabled={saving === item.id}>
+            {saving === item.id && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Lưu
+          </Button>
+          <Button size="sm" variant="ghost" onClick={onCancelEdit} disabled={saving === item.id}>Huỷ</Button>
         </div>
       ) : (
         <div className="flex flex-1 items-center gap-3 flex-wrap">
@@ -127,8 +134,10 @@ function SortableRow({
 
       {editing !== item.id && (
         <div className="flex items-center gap-1 shrink-0">
-          <Button variant="ghost" size="sm" onClick={() => onToggle(item)} title={item.disabled ? "Hiện" : "Ẩn"}>
-            {item.disabled ? <Icons.show className="h-4 w-4" /> : <Icons.hide className="h-4 w-4" />}
+          <Button variant="ghost" size="sm" onClick={() => onToggle(item)} title={item.disabled ? "Hiện" : "Ẩn"} disabled={toggling === item.id}>
+            {toggling === item.id
+              ? <Icons.spinner className="h-4 w-4 animate-spin" />
+              : item.disabled ? <Icons.show className="h-4 w-4" /> : <Icons.hide className="h-4 w-4" />}
           </Button>
           <Button variant="ghost" size="sm" onClick={() => onEdit(item)}>
             <Icons.edit className="h-4 w-4" />
@@ -153,6 +162,8 @@ export function MenuList({ items: initialItems, categories: _categories }: { ite
   const router = useRouter()
   const [items, setItems] = React.useState(initialItems)
   const [deleting, setDeleting] = React.useState<string | null>(null)
+  const [saving, setSaving] = React.useState<string | null>(null)
+  const [toggling, setToggling] = React.useState<string | null>(null)
   const [editing, setEditing] = React.useState<string | null>(null)
   const [editTitle, setEditTitle] = React.useState("")
   const [editHref, setEditHref] = React.useState("")
@@ -191,17 +202,21 @@ export function MenuList({ items: initialItems, categories: _categories }: { ite
   }
 
   async function handleSave(item: MenuItem) {
+    setSaving(item.id)
     const res = await fetch(`/api/menu/${item.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: editTitle, href: editHref, type: item.type, order: item.order, disabled: item.disabled, categoryId: item.categoryId }),
     })
+    setSaving(null)
 
     if (!res.ok) {
       return toast({ title: "Lỗi", description: "Không thể cập nhật.", variant: "destructive" })
     }
 
+    setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, title: editTitle, href: editHref } : i))
     setEditing(null)
+    toast({ variant: "success", description: "Đã cập nhật menu item." })
     router.refresh()
   }
 
@@ -214,15 +229,24 @@ export function MenuList({ items: initialItems, categories: _categories }: { ite
       return toast({ title: "Lỗi", description: "Không thể xoá.", variant: "destructive" })
     }
     setItems((prev) => prev.filter((i) => i.id !== id))
+    toast({ variant: "success", description: "Đã xoá menu item." })
     router.refresh()
   }
 
   async function toggleDisabled(item: MenuItem) {
-    await fetch(`/api/menu/${item.id}`, {
+    setToggling(item.id)
+    const res = await fetch(`/api/menu/${item.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...item, disabled: !item.disabled }),
     })
+    setToggling(null)
+
+    if (!res.ok) {
+      return toast({ title: "Lỗi", description: "Không thể cập nhật.", variant: "destructive" })
+    }
+    setItems((prev) => prev.map((i) => i.id === item.id ? { ...i, disabled: !i.disabled } : i))
+    toast({ variant: "success", description: item.disabled ? "Đã hiện menu item." : "Đã ẩn menu item." })
     router.refresh()
   }
 
@@ -246,6 +270,8 @@ export function MenuList({ items: initialItems, categories: _categories }: { ite
               onDelete={handleDelete}
               onToggle={toggleDisabled}
               deleting={deleting}
+              saving={saving}
+              toggling={toggling}
               editing={editing}
               editTitle={editTitle}
               editHref={editHref}

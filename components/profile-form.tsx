@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 
 interface ProfileFormProps {
   user: { id: string; name: string; email: string; image: string }
@@ -89,6 +90,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
   return (
     <div className="space-y-6">
+      <SaveOverlay visible={savingInfo || savingPassword} />
       {/* Info form */}
       <form onSubmit={handleSaveInfo} className="rounded-2xl border bg-card p-6 space-y-5">
         <h2 className="font-heading text-lg font-semibold">Thông tin cá nhân</h2>
@@ -163,7 +165,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
 
         <Button type="submit" disabled={savingInfo}>
-          {savingInfo && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Lưu thay đổi
         </Button>
       </form>
@@ -206,7 +207,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </div>
 
         <Button type="submit" disabled={savingPassword || !currentPassword || !newPassword}>
-          {savingPassword && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Đổi mật khẩu
         </Button>
       </form>

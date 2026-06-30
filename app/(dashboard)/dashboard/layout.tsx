@@ -23,7 +23,7 @@ export default async function DashboardLayout({
 
   if (!user) redirect("/login")
 
-  const role = (user as any).role as Role | undefined
+  const role = user.role as Role | undefined
   if (!role || (role !== "ADMIN" && role !== "EDITOR")) {
     redirect("/profile")
   }

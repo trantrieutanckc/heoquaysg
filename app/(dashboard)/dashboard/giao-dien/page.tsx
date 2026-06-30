@@ -11,7 +11,7 @@ export const metadata = { title: "Giao diện Homepage" }
 export default async function HomepageAppearancePage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
-  if ((user as any).role !== "ADMIN") redirect("/dashboard")
+  if (user.role !== "ADMIN") redirect("/dashboard")
 
   const config = await db.siteConfig.findUnique({ where: { id: "default" } })
   const data = (config?.data ?? {}) as SiteConfigData
@@ -20,7 +20,7 @@ export default async function HomepageAppearancePage() {
     <DashboardShell>
       <DashboardHeader
         heading="Giao diện Homepage"
-        text="Tùy chỉnh màu nền hoặc ảnh nền cho từng section trên trang chủ."
+        text="Chỉnh nội dung text và màu nền / ảnh nền cho từng section trên trang chủ."
       />
       <HomepageAppearanceForm initialData={data} />
     </DashboardShell>

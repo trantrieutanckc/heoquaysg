@@ -34,7 +34,7 @@ export default async function DashboardPage() {
   const user = await getCurrentUser()
   if (!user) redirect(authOptions?.pages?.signIn || "/login")
 
-  const isAdmin = (user as any).role === "ADMIN"
+  const isAdmin = user.role === "ADMIN"
   const postWhere = { authorId: user.id }
 
   const sixMonthsAgo = new Date()

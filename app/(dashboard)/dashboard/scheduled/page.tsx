@@ -14,7 +14,7 @@ export default async function ScheduledPage() {
   const user = await getCurrentUser()
   if (!user) redirect(authOptions?.pages?.signIn || "/login")
 
-  const isAdmin = (user as any).role === "ADMIN"
+  const isAdmin = user.role === "ADMIN"
 
   const posts = await db.post.findMany({
     where: {

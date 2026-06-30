@@ -9,7 +9,7 @@ interface Props {
 
 export default async function PageEditorPage({ params }: Props) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") redirect("/dashboard")
+  if (!user || user.role !== "ADMIN") redirect("/dashboard")
 
   const page = await db.page.findUnique({ where: { id: params.pageId } })
   if (!page) notFound()

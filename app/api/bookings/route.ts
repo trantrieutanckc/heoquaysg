@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import * as z from "zod"
 import { db } from "@/lib/db"
+import { createBookingNotification } from "@/lib/notifications"
 
 const RATE_LIMIT_MINUTES = 10
 const MIN_FORM_SECONDS = 5
@@ -46,17 +47,28 @@ export async function POST(req: Request) {
       )
     }
 
+    const deliveryDate = new Date(body.deliveryDate)
     const booking = await db.booking.create({
       data: {
         name: body.name,
         phone: body.phone,
         address: body.address,
         items: body.items,
-        deliveryDate: new Date(body.deliveryDate),
+        deliveryDate,
         note: body.note,
         status: "pending",
       },
     })
+
+    // Fire-and-forget — không block response nếu notification lỗi
+    createBookingNotification({
+      bookingId: booking.id,
+      name: body.name,
+      phone: body.phone,
+      deliveryDate,
+      items: body.items,
+    }).catch((e) => console.error("[booking notification]", e))
+
     return NextResponse.json(booking, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {

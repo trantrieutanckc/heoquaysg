@@ -55,6 +55,7 @@ export function ScheduledPostItem({ post }: { post: ScheduledPost }) {
             src={image.url}
             alt={image.alt || post.title}
             fill
+            sizes="56px"
             className="object-cover"
             placeholder="blur"
             blurDataURL={BLUR_PLACEHOLDER}

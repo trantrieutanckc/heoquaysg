@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
 import { ImagePickerInput } from "@/components/admin/image-picker-input"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 
 export interface SiteConfigData {
   siteName?: string
@@ -57,6 +57,17 @@ export interface SiteConfigData {
   // SEO robots
   robotsIndex?: string  // "true" = cho phép index, "false" = noindex
   robotsTxtContent?: string
+  // Homepage section text
+  homeFeaturedLabel?: string
+  homeFeaturedTitle?: string
+  homeCategoriesLabel?: string
+  homeCategoriesTitle?: string
+  homeAboutLabel?: string
+  homePostsLabel?: string
+  homePostsTitle?: string
+  homeBookingLabel?: string
+  homeBookingTitle?: string
+  homeBookingDesc?: string
   // Homepage section backgrounds
   homeFeaturedBgColor?: string
   homeFeaturedBgImage?: string
@@ -66,6 +77,8 @@ export interface SiteConfigData {
   homeAboutBgImage?: string
   homePostsBgColor?: string
   homePostsBgImage?: string
+  homeBookingBgColor?: string
+  homeBookingBgImage?: string
   homeMapBgColor?: string
   homeMapBgImage?: string
 }
@@ -118,6 +131,8 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
   }
 
   return (
+    <>
+    <SaveOverlay visible={saving} />
     <form onSubmit={handleSave} className="space-y-6">
       <Section title="Thông tin site">
         <Field label="Tên site" id="siteName">
@@ -254,9 +269,9 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
       </Section>
 
       <Button type="submit" disabled={saving}>
-        {saving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
         Lưu cấu hình
       </Button>
     </form>
+    </>
   )
 }

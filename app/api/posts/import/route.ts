@@ -43,7 +43,7 @@ function parseCSV(text: string): Record<string, string>[] {
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session) return new Response("Unauthorized", { status: 403 })
-  if (!isEditor((session.user as any).role)) return new Response("Forbidden", { status: 403 })
+  if (!isEditor(session.user.role)) return new Response("Forbidden", { status: 403 })
 
   let text: string
   try {

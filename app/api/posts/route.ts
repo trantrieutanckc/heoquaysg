@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       return new Response("Unauthorized", { status: 403 })
     }
 
-    const role = (session.user as any).role
+    const role = session.user.role
     if (!isEditor(role)) {
       return new Response("Forbidden", { status: 403 })
     }

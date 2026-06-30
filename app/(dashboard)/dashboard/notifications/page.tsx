@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
 import { vi } from "date-fns/locale"
-import { Bell, MessageSquare, Clock, Info, Trash2, Check } from "lucide-react"
+import { Bell, MessageSquare, Clock, Info, Trash2, Check, CalendarCheck } from "lucide-react"
 
 import { DashboardHeader } from "@/components/admin/header"
 import { DashboardShell } from "@/components/admin/shell"
@@ -25,6 +25,7 @@ interface Notification {
 function NotificationIcon({ type }: { type: string }) {
   if (type === "new_comment") return <MessageSquare className="h-4 w-4 text-blue-500" />
   if (type === "scheduled_published") return <Clock className="h-4 w-4 text-green-500" />
+  if (type === "new_booking") return <CalendarCheck className="h-4 w-4 text-orange-500" />
   return <Info className="h-4 w-4 text-muted-foreground" />
 }
 
@@ -99,7 +100,7 @@ export default function NotificationsPage() {
         <div className="flex flex-col items-center justify-center py-24 gap-3 text-muted-foreground rounded-md border">
           <Bell className="h-12 w-12 opacity-15" />
           <p className="font-medium">Chưa có thông báo nào</p>
-          <p className="text-sm">Thông báo sẽ xuất hiện khi có bình luận mới hoặc bài viết được đăng theo lịch.</p>
+          <p className="text-sm">Thông báo sẽ xuất hiện khi có đặt lịch mới, bình luận mới, hoặc bài viết được đăng theo lịch.</p>
         </div>
       ) : (
         <div className="rounded-md border overflow-hidden">

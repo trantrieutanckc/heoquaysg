@@ -4,9 +4,9 @@ import * as React from "react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
 import type { SiteConfigData } from "@/components/admin/site-config-form"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -117,6 +117,32 @@ function BgField({
   )
 }
 
+function TextField({
+  label,
+  fieldKey,
+  placeholder,
+  data,
+  set,
+}: {
+  label: string
+  fieldKey: keyof SiteConfigData
+  placeholder: string
+  data: SiteConfigData
+  set: (key: keyof SiteConfigData, val: string) => void
+}) {
+  return (
+    <div className="grid gap-1.5">
+      <Label className="text-xs">{label}</Label>
+      <Input
+        value={(data[fieldKey] as string) ?? ""}
+        onChange={(e) => set(fieldKey, e.target.value)}
+        placeholder={placeholder}
+        className="text-sm"
+      />
+    </div>
+  )
+}
+
 // ── Main component ────────────────────────────────────────────
 
 interface Props {
@@ -151,16 +177,7 @@ export function HomepageAppearanceForm({ initialData }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold">Giao diện Homepage</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">Chỉnh màu nền hoặc ảnh nền cho từng section.</p>
-        </div>
-        <Button onClick={handleSave} disabled={saving} size="sm">
-          {saving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Lưu
-        </Button>
-      </div>
+      <SaveOverlay visible={saving} />
 
       <p className="text-xs text-muted-foreground bg-muted/60 border rounded-lg px-4 py-3">
         <strong>Lưu ý:</strong> Nếu để trống cả màu lẫn ảnh, section đó sẽ dùng màu mặc định của hệ thống.
@@ -169,58 +186,65 @@ export function HomepageAppearanceForm({ initialData }: Props) {
 
       <Section
         title="Section 1 — Bài viết nổi bật"
-        desc="Background phía sau card bài viết featured"
+        desc="Tiêu đề và background"
       >
-        <BgField
-          label="Bài viết nổi bật"
-          colorKey="homeFeaturedBgColor"
-          imageKey="homeFeaturedBgImage"
-          data={data}
-          set={set}
-        />
+        <div className="grid sm:grid-cols-2 gap-3">
+          <TextField label='Nhãn nhỏ (label)' fieldKey="homeFeaturedLabel" placeholder="Nổi bật" data={data} set={set} />
+          <TextField label='Tiêu đề (title)' fieldKey="homeFeaturedTitle" placeholder="Bài viết nổi bật" data={data} set={set} />
+        </div>
+        <BgField label="Background" colorKey="homeFeaturedBgColor" imageKey="homeFeaturedBgImage" data={data} set={set} />
       </Section>
 
       <Section
         title="Section 2 — Danh mục món"
-        desc="Background phía sau lưới danh mục"
+        desc="Tiêu đề và background"
       >
-        <BgField
-          label="Danh mục món"
-          colorKey="homeCategoriesBgColor"
-          imageKey="homeCategoriesBgImage"
-          data={data}
-          set={set}
-        />
+        <div className="grid sm:grid-cols-2 gap-3">
+          <TextField label='Nhãn nhỏ (label)' fieldKey="homeCategoriesLabel" placeholder="Thực đơn" data={data} set={set} />
+          <TextField label='Tiêu đề (title)' fieldKey="homeCategoriesTitle" placeholder="Danh mục món" data={data} set={set} />
+        </div>
+        <BgField label="Background" colorKey="homeCategoriesBgColor" imageKey="homeCategoriesBgImage" data={data} set={set} />
       </Section>
 
       <Section
         title="Section 3 — Về chúng tôi"
-        desc="Background phía sau card giới thiệu"
+        desc="Nhãn nhỏ và background"
       >
-        <BgField
-          label="Về chúng tôi"
-          colorKey="homeAboutBgColor"
-          imageKey="homeAboutBgImage"
-          data={data}
-          set={set}
-        />
+        <TextField label='Nhãn nhỏ (label)' fieldKey="homeAboutLabel" placeholder="Câu chuyện của chúng tôi" data={data} set={set} />
+        <BgField label="Background" colorKey="homeAboutBgColor" imageKey="homeAboutBgImage" data={data} set={set} />
       </Section>
 
       <Section
         title="Section 4 — Bài viết mới nhất"
-        desc="Background phía sau lưới bài viết"
+        desc="Tiêu đề và background"
       >
+        <div className="grid sm:grid-cols-2 gap-3">
+          <TextField label='Nhãn nhỏ (label)' fieldKey="homePostsLabel" placeholder="Khám phá" data={data} set={set} />
+          <TextField label='Tiêu đề (title)' fieldKey="homePostsTitle" placeholder="Bài viết mới nhất" data={data} set={set} />
+        </div>
+        <BgField label="Background" colorKey="homePostsBgColor" imageKey="homePostsBgImage" data={data} set={set} />
+      </Section>
+
+      <Section
+        title="Section 5 — Đặt lịch ngay"
+        desc="Nội dung text và background (mặc định: gradient cam)"
+      >
+        <TextField label='Nhãn nhỏ (label)' fieldKey="homeBookingLabel" placeholder="Giao hàng tận nơi" data={data} set={set} />
+        <div className="grid sm:grid-cols-2 gap-3">
+          <TextField label='Tiêu đề (title)' fieldKey="homeBookingTitle" placeholder="Đặt lịch ngay hôm nay" data={data} set={set} />
+          <TextField label='Mô tả ngắn' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
+        </div>
         <BgField
-          label="Bài viết mới nhất"
-          colorKey="homePostsBgColor"
-          imageKey="homePostsBgImage"
+          label="Background"
+          colorKey="homeBookingBgColor"
+          imageKey="homeBookingBgImage"
           data={data}
           set={set}
         />
       </Section>
 
       <Section
-        title="Section 5 — Bản đồ"
+        title="Section 6 — Bản đồ"
         desc="Background phía sau section bản đồ và địa chỉ"
       >
         <BgField
@@ -234,7 +258,6 @@ export function HomepageAppearanceForm({ initialData }: Props) {
 
       <div className="flex justify-end">
         <Button onClick={handleSave} disabled={saving}>
-          {saving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Lưu thay đổi
         </Button>
       </div>

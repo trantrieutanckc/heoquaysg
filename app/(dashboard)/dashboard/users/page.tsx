@@ -17,7 +17,7 @@ export default async function UsersPage({
   searchParams: { page?: string }
 }) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") redirect("/dashboard")
+  if (!user || user.role !== "ADMIN") redirect("/dashboard")
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
 

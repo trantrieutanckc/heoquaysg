@@ -11,7 +11,7 @@ export const metadata = { title: "Về chúng tôi" }
 export default async function AboutEditorPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
-  if ((user as any).role !== "ADMIN") redirect("/dashboard")
+  if (user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
   const config = await db.siteConfig.findUnique({ where: { id: "default" } })
   const data = (config?.data ?? {}) as SiteConfigData

@@ -17,8 +17,28 @@ interface CommentWithPost {
   authorName: string
   authorEmail: string | null
   approved: boolean
+  rating: number | null
   createdAt: Date
   post: { id: string; title: string }
+}
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <span className="inline-flex items-center gap-0.5" title={`${rating}/5 sao`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg
+          key={i}
+          viewBox="0 0 24 24"
+          className={`h-3 w-3 ${i < rating ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      ))}
+      <span className="text-[11px] text-muted-foreground ml-0.5">{rating}/5</span>
+    </span>
+  )
 }
 
 const BULK_ACTIONS = [
@@ -129,6 +149,7 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
                 {comment.authorEmail && (
                   <span className="text-xs text-muted-foreground">{comment.authorEmail}</span>
                 )}
+                {comment.rating != null && <StarRating rating={comment.rating} />}
                 <span className="text-xs text-muted-foreground">·</span>
                 <span className="text-xs text-muted-foreground">
                   {formatDate(comment.createdAt.toISOString())}

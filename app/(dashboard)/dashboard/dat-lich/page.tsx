@@ -36,7 +36,7 @@ export default async function DatLichPage({
   searchParams: { status?: string }
 }) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") redirect("/dashboard")
+  if (!user || user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
   const statusFilter = searchParams.status
 

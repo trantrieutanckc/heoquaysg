@@ -32,6 +32,7 @@ export function PostItem({ post, allCategories }: PostItemProps) {
               src={image.url}
               alt={image.alt || post.title}
               fill
+              sizes="64px"
               className="object-cover"
               placeholder="blur"
               blurDataURL={BLUR_PLACEHOLDER}

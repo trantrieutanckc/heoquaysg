@@ -14,7 +14,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
   const user = await getCurrentUser()
   if (!user) redirect("/login")
 
-  const role = (user as any).role as Role | undefined
+  const role = user.role as Role | undefined
   const canAccessDashboard = role === "ADMIN" || role === "EDITOR"
 
   return (

@@ -4,6 +4,7 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 import { cn } from "@/lib/utils"
 
 interface Doc {
@@ -141,6 +142,7 @@ export function DocsEditor({ docs, isAdmin }: DocsEditorProps) {
 
   return (
     <div className="grid gap-6 md:grid-cols-[200px_1fr]">
+      <SaveOverlay visible={saving} />
       {/* Sidebar tabs */}
       <nav className="flex flex-row md:flex-col gap-1">
         {docs.map((doc) => (
@@ -170,7 +172,6 @@ export function DocsEditor({ docs, isAdmin }: DocsEditorProps) {
                 <>
                   <Button variant="ghost" size="sm" onClick={() => setEditing(false)}>Huỷ</Button>
                   <Button size="sm" onClick={handleSave} disabled={saving}>
-                    {saving && <Icons.spinner className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
                     Lưu
                   </Button>
                 </>

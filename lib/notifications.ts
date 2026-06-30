@@ -37,6 +37,39 @@ export async function createCommentNotification({
   })
 }
 
+export async function createBookingNotification({
+  bookingId,
+  name,
+  phone,
+  deliveryDate,
+  items,
+}: {
+  bookingId: string
+  name: string
+  phone: string
+  deliveryDate: Date
+  items: { title: string; quantity: number }[]
+}) {
+  const admins = await db.user.findMany({
+    where: { role: "ADMIN" },
+    select: { id: true },
+  })
+  if (!admins.length) return
+
+  const dateStr = deliveryDate.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })
+  const itemsStr = items.map((i) => `${i.title} x${i.quantity}`).join(", ")
+
+  await db.notification.createMany({
+    data: admins.map(({ id }) => ({
+      userId: id,
+      type: "new_booking",
+      title: `Đặt lịch mới từ ${name}`,
+      body: `SĐT: ${phone} — ${itemsStr} — Giao ngày ${dateStr}`,
+      link: `/dashboard/dat-lich`,
+    })),
+  })
+}
+
 export async function createScheduledPublishedNotification({
   postId,
   postTitle,

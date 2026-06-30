@@ -38,7 +38,7 @@ const authMiddleware = withAuth(
     const token = await getToken({ req })
 
     // Refresh token hết hạn hoặc bị revoke → buộc đăng nhập lại
-    if ((token as any)?.error === "RefreshTokenExpired") {
+    if ((token)?.error === "RefreshTokenExpired") {
       const response = NextResponse.redirect(new URL("/login", req.url))
       response.cookies.delete("next-auth.session-token")
       response.cookies.delete("__Secure-next-auth.session-token")
@@ -64,10 +64,18 @@ const authMiddleware = withAuth(
       )
     }
 
-    const role = (token as any)?.role as string | undefined
+    const role = token?.role
+
+    if (role === "CONTRIBUTOR") {
+      const path = req.nextUrl.pathname
+      if (path.startsWith("/dashboard") || path.startsWith("/editor")) {
+        return NextResponse.redirect(new URL("/", req.url))
+      }
+    }
+
     if (req.nextUrl.pathname.startsWith("/editor")) {
       if (role !== "ADMIN" && role !== "EDITOR") {
-        return NextResponse.redirect(new URL("/dashboard", req.url))
+        return NextResponse.redirect(new URL("/", req.url))
       }
     }
   },

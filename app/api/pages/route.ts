@@ -10,7 +10,7 @@ const createSchema = z.object({
 
 export async function GET() {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") {
+  if (!user || user.role !== "ADMIN") {
     return new Response(null, { status: 403 })
   }
 
@@ -23,7 +23,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") {
+  if (!user || user.role !== "ADMIN") {
     return new Response(null, { status: 403 })
   }
 

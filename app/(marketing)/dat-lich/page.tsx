@@ -20,7 +20,7 @@ export default async function DatLichPage() {
   const [products, siteConfigRow] = await Promise.all([
     db.post.findMany({
       where: { bookable: true, published: true },
-      select: { id: true, title: true, price: true },
+      select: { id: true, title: true, price: true, image: true },
       orderBy: { createdAt: "asc" },
     }),
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
@@ -29,6 +29,7 @@ export default async function DatLichPage() {
   const data = (siteConfigRow?.data ?? {}) as Record<string, string>
   const heroImage = data.heroImage?.trim() || null
   const siteName = data.siteName?.trim() || "Heo Quay Bình Tân"
+  const contactPhone = data.contactPhone?.trim() || null
 
   return (
     <div className="min-h-screen">
@@ -77,20 +78,22 @@ export default async function DatLichPage() {
             </div>
 
             {/* Hotline */}
-            <a
-              href="tel:0909123456"
-              className="flex items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 px-5 py-4 hover:bg-primary/10 transition-colors group"
-            >
-              <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/25 transition-colors">
-                <svg viewBox="0 0 24 24" className="h-5 w-5 text-primary" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 7.31 7.31l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Hoặc gọi trực tiếp</p>
-                <p className="font-bold text-primary text-base">0909 123 456</p>
-              </div>
-            </a>
+            {contactPhone && (
+              <a
+                href={`tel:${contactPhone.replace(/\s/g, "")}`}
+                className="flex items-center gap-3 rounded-xl border border-primary/30 bg-primary/5 px-5 py-4 hover:bg-primary/10 transition-colors group"
+              >
+                <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/25 transition-colors">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 text-primary" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 7.31 7.31l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Hoặc gọi trực tiếp</p>
+                  <p className="font-bold text-primary text-base">{contactPhone}</p>
+                </div>
+              </a>
+            )}
           </div>
 
           {/* ── Cột phải: form ──────────────────────────────── */}
@@ -101,7 +104,7 @@ export default async function DatLichPage() {
                 Điền form bên dưới, chúng tôi sẽ liên hệ xác nhận sớm nhất.
               </p>
             </div>
-            <BookingForm products={products} />
+            <BookingForm products={products} contactPhone={contactPhone} />
           </div>
 
         </div>

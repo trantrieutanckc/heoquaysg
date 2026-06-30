@@ -1,12 +1,19 @@
 "use client"
 
 import * as React from "react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 
 interface Product {
   id: string
   title: string
   price: number | null
+  image?: unknown
+}
+
+interface BookingFormProps {
+  products: Product[]
+  contactPhone?: string | null
 }
 
 interface SelectedItem {
@@ -30,7 +37,18 @@ function tomorrow() {
 const inputCls = "w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/60"
 const labelCls = "block text-sm font-medium text-foreground mb-1.5"
 
-export function BookingForm({ products }: { products: Product[] }) {
+function StepLabel({ num, children }: { num: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2.5 mb-4">
+      <span className="flex-shrink-0 h-6 w-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center leading-none">
+        {num}
+      </span>
+      <h2 className="text-base font-semibold">{children}</h2>
+    </div>
+  )
+}
+
+export function BookingForm({ products, contactPhone }: BookingFormProps) {
   const [items, setItems] = React.useState<SelectedItem[]>([])
   const [name, setName] = React.useState("")
   const [phone, setPhone] = React.useState("")
@@ -57,6 +75,15 @@ export function BookingForm({ products }: { products: Product[] }) {
       )
     )
   }
+
+  const totalPrice = React.useMemo(() =>
+    items.reduce((sum, item) => {
+      const p = products.find((pr) => pr.id === item.id)
+      return sum + (p?.price ?? 0) * item.quantity
+    }, 0)
+  , [items, products])
+
+  const hasPrices = items.some((i) => (products.find((p) => p.id === i.id)?.price ?? 0) > 0)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -103,15 +130,17 @@ export function BookingForm({ products }: { products: Product[] }) {
             Trong thời gian này bạn có thể đặt hàng trực tiếp qua điện thoại — nhanh hơn và tiện hơn!
           </p>
         </div>
-        <a
-          href="tel:0909123456"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
-        >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2}>
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 7.31 7.31l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          Gọi đặt hàng ngay
-        </a>
+        {contactPhone && (
+          <a
+            href={`tel:${contactPhone.replace(/\s/g, "")}`}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 7.31 7.31l.96-.96a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Gọi đặt hàng ngay — {contactPhone}
+          </a>
+        )}
       </div>
     )
   }
@@ -146,69 +175,88 @@ export function BookingForm({ products }: { products: Product[] }) {
     <form onSubmit={handleSubmit} className="space-y-8">
 
       {/* 1. Chọn món */}
-      <section className="space-y-3">
-        <div>
-          <h2 className="text-base font-semibold">
-            Chọn món <span className="text-destructive">*</span>
-          </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">Có thể chọn nhiều loại cùng lúc</p>
-        </div>
+      <section>
+        <StepLabel num="1">
+          Chọn món <span className="text-destructive">*</span>
+          <span className="ml-1.5 text-xs font-normal text-muted-foreground">(có thể chọn nhiều)</span>
+        </StepLabel>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2">
           {products.map((p) => {
             const selected = items.find((i) => i.id === p.id)
+            const imgUrl = (p.image as { url?: string } | null)?.url ?? null
             return (
               <div
                 key={p.id}
                 className={cn(
-                  "rounded-xl border-2 transition-all duration-150",
+                  "rounded-xl border-2 overflow-hidden transition-all duration-150 cursor-pointer group",
                   selected
-                    ? "border-primary shadow-sm shadow-primary/10"
-                    : "border-border hover:border-primary/40"
+                    ? "border-primary shadow-md shadow-primary/15"
+                    : "border-border hover:border-primary/50"
                 )}
               >
+                {/* Ảnh */}
                 <button
                   type="button"
                   onClick={() => toggleProduct(p)}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
+                  className="w-full text-left"
                 >
-                  {/* Checkbox */}
-                  <span className={cn(
-                    "flex-shrink-0 h-5 w-5 rounded-md border-2 flex items-center justify-center transition-colors",
-                    selected ? "border-primary bg-primary" : "border-muted-foreground/30 bg-background"
-                  )}>
-                    {selected && (
-                      <svg className="h-3 w-3 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
+                  <div className="relative aspect-[4/3] bg-muted overflow-hidden">
+                    {imgUrl ? (
+                      <Image
+                        src={imgUrl}
+                        alt={p.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 640px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100 dark:from-orange-950/30 dark:to-amber-900/20 text-4xl">
+                        🐷
+                      </div>
                     )}
-                  </span>
-                  <span className="flex-1 min-w-0">
-                    <span className="block font-semibold text-sm leading-snug">{p.title}</span>
+                    {/* Selected overlay */}
+                    <div className={cn(
+                      "absolute inset-0 flex items-center justify-center transition-opacity",
+                      selected ? "opacity-100 bg-primary/20" : "opacity-0"
+                    )}>
+                      <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                        <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tên + giá */}
+                  <div className="px-3 py-2.5">
+                    <p className="font-semibold text-sm leading-snug line-clamp-2">{p.title}</p>
                     {p.price != null && (
-                      <span className="text-xs text-primary font-medium">
+                      <p className="text-xs text-primary font-medium mt-0.5">
                         {new Intl.NumberFormat("vi-VN").format(p.price)}đ / con
-                      </span>
+                      </p>
                     )}
-                  </span>
+                  </div>
                 </button>
 
-                {/* Số lượng — chỉ hiện khi chọn */}
+                {/* Số lượng */}
                 {selected && (
-                  <div className="flex items-center gap-2 px-4 pb-3.5">
-                    <span className="text-xs text-muted-foreground mr-1">Số lượng:</span>
-                    <button
-                      type="button"
-                      onClick={() => setQty(p.id, -1)}
-                      className="h-8 w-8 rounded-lg border flex items-center justify-center hover:bg-muted transition-colors text-base font-bold leading-none"
-                    >−</button>
-                    <span className="w-8 text-center text-sm font-bold tabular-nums">{selected.quantity}</span>
-                    <button
-                      type="button"
-                      onClick={() => setQty(p.id, 1)}
-                      className="h-8 w-8 rounded-lg border flex items-center justify-center hover:bg-muted transition-colors text-base font-bold leading-none"
-                    >+</button>
-                    <span className="text-xs text-muted-foreground ml-1">con</span>
+                  <div className="flex items-center gap-1.5 px-3 pb-3 border-t bg-primary/5">
+                    <span className="text-xs text-muted-foreground flex-1 pt-2">Số lượng</span>
+                    <div className="flex items-center gap-1.5 pt-2">
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setQty(p.id, -1) }}
+                        className="h-7 w-7 rounded-lg border bg-background flex items-center justify-center hover:bg-muted transition-colors text-base font-bold leading-none"
+                      >−</button>
+                      <span className="w-7 text-center text-sm font-bold tabular-nums">{selected.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setQty(p.id, 1) }}
+                        className="h-7 w-7 rounded-lg border bg-background flex items-center justify-center hover:bg-muted transition-colors text-base font-bold leading-none"
+                      >+</button>
+                      <span className="text-xs text-muted-foreground ml-0.5">con</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -217,9 +265,9 @@ export function BookingForm({ products }: { products: Product[] }) {
         </div>
       </section>
 
-      {/* 2. Ngày & giờ giao */}
-      <section className="space-y-3">
-        <h2 className="text-base font-semibold">Thời gian giao hàng</h2>
+      {/* 2. Thời gian */}
+      <section>
+        <StepLabel num="2">Thời gian giao hàng</StepLabel>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelCls} htmlFor="date">
@@ -252,8 +300,8 @@ export function BookingForm({ products }: { products: Product[] }) {
       </section>
 
       {/* 3. Thông tin liên hệ */}
-      <section className="space-y-3">
-        <h2 className="text-base font-semibold">Thông tin liên hệ</h2>
+      <section>
+        <StepLabel num="3">Thông tin liên hệ</StepLabel>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className={labelCls} htmlFor="name">
@@ -284,7 +332,7 @@ export function BookingForm({ products }: { products: Product[] }) {
             />
           </div>
         </div>
-        <div>
+        <div className="mt-4">
           <label className={labelCls} htmlFor="address">Địa chỉ giao hàng</label>
           <input
             id="address"
@@ -299,7 +347,7 @@ export function BookingForm({ products }: { products: Product[] }) {
 
       {/* 4. Ghi chú */}
       <section>
-        <label className={labelCls} htmlFor="note">Ghi chú thêm</label>
+        <StepLabel num="4">Ghi chú thêm</StepLabel>
         <textarea
           id="note"
           value={note}
@@ -309,6 +357,38 @@ export function BookingForm({ products }: { products: Product[] }) {
           className={cn(inputCls, "resize-none")}
         />
       </section>
+
+      {/* Order summary */}
+      {items.length > 0 && (
+        <section className="rounded-xl bg-muted/50 border p-4 space-y-2">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Tóm tắt đơn hàng</p>
+          {items.map((item) => {
+            const product = products.find((p) => p.id === item.id)
+            return (
+              <div key={item.id} className="flex items-center justify-between text-sm">
+                <span className="text-foreground">{item.title}</span>
+                <span className="font-medium text-muted-foreground">
+                  {item.quantity} con
+                  {product?.price ? (
+                    <span className="ml-1.5 text-foreground">· {new Intl.NumberFormat("vi-VN").format(product.price * item.quantity)}đ</span>
+                  ) : null}
+                </span>
+              </div>
+            )
+          })}
+          {hasPrices && (
+            <div className="flex items-center justify-between text-sm font-bold border-t border-border pt-2.5 mt-1">
+              <span>Tạm tính</span>
+              <span className="text-primary text-base">{new Intl.NumberFormat("vi-VN").format(totalPrice)}đ</span>
+            </div>
+          )}
+          {date && (
+            <p className="text-xs text-muted-foreground pt-1">
+              Giao lúc <span className="font-medium text-foreground">{time} ngày {date.split("-").reverse().join("/")}</span>
+            </p>
+          )}
+        </section>
+      )}
 
       {/* Error */}
       {errorMsg && (

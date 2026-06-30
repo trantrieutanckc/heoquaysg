@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
 import type { SiteConfigData } from "@/components/admin/site-config-form"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 
 function Section({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
   return (
@@ -54,6 +54,8 @@ export function ContactEditorForm({ initial }: { initial: SiteConfigData }) {
   }
 
   return (
+    <>
+    <SaveOverlay visible={saving} />
     <form onSubmit={handleSave} className="space-y-5">
 
       {/* Intro */}
@@ -101,9 +103,9 @@ export function ContactEditorForm({ initial }: { initial: SiteConfigData }) {
       </Section>
 
       <Button type="submit" disabled={saving}>
-        {saving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
         Lưu trang Liên hệ
       </Button>
     </form>
+    </>
   )
 }

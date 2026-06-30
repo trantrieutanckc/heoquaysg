@@ -265,6 +265,19 @@ npx prisma db push
 - [x] Logo thương hiệu vào header/footer — đã có từ trước, lấy từ Dashboard → Settings → logoUrl
 - [x] Go live checklist — sitemap, metadata đã xong; robots index bật qua dashboard khi go live (bên dưới)
 
+## Version 5 — đang làm
+
+### Đã hoàn thành
+- [x] **Chỉnh text trang chủ qua dashboard Giao diện** — `homepage-appearance-form.tsx` đã có sẵn text fields (label/title) + background cho từng section; wire `page.tsx` truyền cfg xuống; `home-sections.tsx` (`LatestPostsSection`, `BookingCtaSection`, `AboutSection`) nhận props thay vì hardcode text
+- [x] **Fix duplicate heading** — xóa h1 thừa bên trong `homepage-appearance-form.tsx` (trùng với `DashboardHeader`); xóa nút Lưu thừa ở đầu form; cập nhật mô tả trang `/dashboard/giao-dien`
+
+### Còn lại
+- [ ] **Tags bài viết** — model `Tag` + `PostTag` (many-to-many); dashboard `/dashboard/tags`; tag selector trong editor; filter `/blog?tag=slug`; trang `/tags/[slug]`
+- [ ] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish`; dashboard `/dashboard/thuc-don`; trang public `/thuc-don`
+- [ ] **Newsletter** — model `Subscriber`; form đăng ký nhúng footer; API `/api/subscribe` + `/api/unsubscribe`; dashboard `/dashboard/subscribers` (danh sách + export CSV)
+
+---
+
 ## Khi go live cần làm thêm
 - [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
 - [x] **Cập nhật sitemap** — `/about` và `/lien-he` đã có trong `sitemap.ts`

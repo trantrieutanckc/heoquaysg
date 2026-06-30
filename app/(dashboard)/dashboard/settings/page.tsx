@@ -13,7 +13,7 @@ export const metadata = {
 export default async function SettingsPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
-  if ((user as any).role !== "ADMIN") redirect("/dashboard")
+  if (user.role !== "ADMIN") redirect("/dashboard")
 
   const config = await db.siteConfig.findUnique({ where: { id: "default" } })
   const data = (config?.data ?? {}) as SiteConfigData

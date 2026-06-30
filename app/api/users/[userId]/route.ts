@@ -21,8 +21,8 @@ export async function PATCH(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const isAdmin = (currentUser as any).role === "ADMIN"
-  const isSelf = (currentUser as any).id === params.userId
+  const isAdmin = currentUser.role === "ADMIN"
+  const isSelf = currentUser.id === params.userId
 
   // Chỉ ADMIN hoặc chính user đó mới được sửa
   if (!isAdmin && !isSelf) {

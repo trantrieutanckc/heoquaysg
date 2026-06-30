@@ -113,6 +113,8 @@ model Post {
 
   @@index([authorId])
   @@index([published, updatedAt])
+  @@index([published, scheduledAt])
+  @@index([featured])
   @@map(name: "posts")
 }
 
@@ -149,6 +151,7 @@ model Category {
   posts     PostCategory[]
   menuItems MenuItem[]
 
+  @@index([published])
   @@map(name: "categories")
 }
 
@@ -266,5 +269,6 @@ model PostCategory {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@id([postId, categoryId])
+  @@index([categoryId])
   @@map(name: "post_categories")
 }

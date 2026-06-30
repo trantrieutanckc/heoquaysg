@@ -66,12 +66,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       callbackUrl: searchParams?.get("from") || "/dashboard",
     })
 
-    setIsLoading(false)
-
     // Server-side lockout
     if (result?.error?.startsWith("LOCKED:")) {
       const mins = parseInt(result.error.split(":")[1]) || 15
       setLockedUntil(Date.now() + mins * 60 * 1000)
+      setIsLoading(false)
       toast({
         title: "Tài khoản tạm khóa",
         description: `Đăng nhập bị tạm khóa do quá nhiều lần thử sai. Thử lại sau ${mins} phút.`,
@@ -83,8 +82,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (!result?.ok || result?.error) {
       const newCount = failCount + 1
       setFailCount(newCount)
+      setIsLoading(false)
 
-      // Client-side lockout after reaching max attempts
       if (newCount >= MAX_ATTEMPTS) {
         setLockedUntil(Date.now() + 15 * 60 * 1000)
         toast({
@@ -111,13 +110,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const role = session?.user?.role
     const raw = searchParams?.get("from") ?? ""
     const from = raw.startsWith("/") && !raw.startsWith("//") ? raw : null
-    if (from) {
-      window.location.href = from
-    } else if (role === "ADMIN" || role === "EDITOR") {
-      window.location.href = "/dashboard"
-    } else {
-      window.location.href = "/profile"
-    }
+    const dest = from ?? (role === "ADMIN" || role === "EDITOR" ? "/dashboard" : "/")
+
+    toast({ variant: "success", description: "Đăng nhập thành công! Đang chuyển hướng..." })
+    await new Promise((r) => setTimeout(r, 900))
+    window.location.href = dest
   }
 
   return (

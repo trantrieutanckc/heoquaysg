@@ -12,7 +12,7 @@ const ACCESS_TTL_MS  = 30 * 60 * 1000           // 30 phút
 const REFRESH_TTL_MS = 7 * 24 * 60 * 60 * 1000  // 7 ngày
 
 async function rotateRefreshToken(token: JWT): Promise<JWT> {
-  const raw = (token as any).refreshToken as string | undefined
+  const raw = token.refreshToken as string | undefined
   if (!raw) return { ...token, error: "RefreshTokenExpired" }
 
   try {
@@ -107,8 +107,8 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name
         session.user.email = token.email
         session.user.image = token.picture
-        ;(session.user as any).role = token.role
-        ;(session.user as any).error = (token as any).error
+        ;session.user.role = token.role
+        ;session.user.error = token.error
       }
       return session
     },
@@ -128,8 +128,8 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             name: user.name,
             email: user.email,
-            picture: (user as any).image,
-            role: (user as any).role,
+            picture: user.image,
+            role: user.role,
             refreshToken: rawToken,
             accessTokenExpires: Date.now() + ACCESS_TTL_MS,
           }
@@ -140,15 +140,15 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             name: user.name,
             email: user.email,
-            picture: (user as any).image,
-            role: (user as any).role,
+            picture: user.image,
+            role: user.role,
             accessTokenExpires: Date.now() + REFRESH_TTL_MS, // dùng refresh TTL để không expire sớm
           }
         }
       }
 
       // Access token còn hạn → pass
-      if (Date.now() < ((token as any).accessTokenExpires ?? 0)) {
+      if (Date.now() < (token.accessTokenExpires ?? 0)) {
         return token
       }
 

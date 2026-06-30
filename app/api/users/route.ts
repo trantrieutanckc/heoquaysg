@@ -14,7 +14,7 @@ const createUserSchema = z.object({
 
 export async function POST(req: Request) {
   const currentUser = await getCurrentUser()
-  if (!currentUser || (currentUser as any).role !== "ADMIN") {
+  if (!currentUser || currentUser.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   const currentUser = await getCurrentUser()
-  if (!currentUser || (currentUser as any).role !== "ADMIN") {
+  if (!currentUser || currentUser.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 

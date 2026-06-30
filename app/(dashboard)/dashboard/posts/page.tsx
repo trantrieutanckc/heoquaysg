@@ -24,7 +24,7 @@ export default async function PostsPage({
   const user = await getCurrentUser()
   if (!user) redirect(authOptions?.pages?.signIn || "/login")
 
-  const canCreate = isEditor((user as any).role)
+  const canCreate = isEditor(user.role)
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
   const postWhere = { authorId: user.id }
 

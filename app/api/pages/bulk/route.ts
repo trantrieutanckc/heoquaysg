@@ -12,7 +12,7 @@ const schema = z.object({
 export async function POST(req: Request) {
   const user = await getCurrentUser()
   if (!user) return new Response(null, { status: 401 })
-  if (!isEditor((user as any).role)) return new Response(null, { status: 403 })
+  if (!isEditor(user.role)) return new Response(null, { status: 403 })
 
   const body = await req.json()
   const { ids, action } = schema.parse(body)

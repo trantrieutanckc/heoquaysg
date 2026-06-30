@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, type Variants } from "framer-motion"
+import { LazyMotion, domAnimation, m, type Variants } from "framer-motion"
 
 const staggerVariants: Variants = {
   hidden: {},
@@ -27,14 +27,16 @@ export function PageEntrance({
   delay?: number
 }) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   )
 }
 
@@ -48,15 +50,17 @@ export function FadeUp({
   delay?: number
 }) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   )
 }
 
@@ -68,15 +72,17 @@ export function SlideInLeft({
   className?: string
 }) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, x: -18 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial={{ opacity: 0, x: -18 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   )
 }
 
@@ -88,15 +94,17 @@ export function StaggerContainer({
   className?: string
 }) {
   return (
-    <motion.div
-      className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
-      variants={staggerVariants}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={staggerVariants}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   )
 }
 
@@ -110,13 +118,13 @@ export function StaggerItem({
   hover?: boolean
 }) {
   return (
-    <motion.div
+    <m.div
       className={className}
       variants={itemVariants}
       whileHover={hover ? { y: -5, transition: { duration: 0.2 } } : undefined}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -130,14 +138,16 @@ export function ScaleIn({
   delay?: number
 }) {
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, scale: 0.92 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial={{ opacity: 0, scale: 0.92 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   )
 }

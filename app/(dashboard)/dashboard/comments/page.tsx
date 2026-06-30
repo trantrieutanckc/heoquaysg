@@ -18,7 +18,7 @@ export default async function CommentsPage({
   searchParams: { page?: string; status?: string }
 }) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") redirect("/dashboard")
+  if (!user || user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
   const status = searchParams.status // "pending" | "approved" | undefined (all)

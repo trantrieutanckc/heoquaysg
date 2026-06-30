@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "@/components/ui/use-toast"
 
 const OPTIONS = [
   { value: "pending",   label: "Chờ xác nhận" },
@@ -24,14 +25,22 @@ export function BookingStatusSelect({ id, status }: { id: string; status: string
 
   async function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const next = e.target.value
+    const prev = current
     setLoading(true)
     setCurrent(next)
-    await fetch(`/api/bookings/${id}`, {
+    const res = await fetch(`/api/bookings/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: next }),
     })
     setLoading(false)
+    if (!res.ok) {
+      setCurrent(prev)
+      toast({ title: "Lỗi", description: "Không thể cập nhật trạng thái.", variant: "destructive" })
+      return
+    }
+    const label = OPTIONS.find((o) => o.value === next)?.label ?? next
+    toast({ variant: "success", description: `Đã cập nhật: ${label}.` })
     router.refresh()
   }
 

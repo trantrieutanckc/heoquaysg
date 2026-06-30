@@ -11,7 +11,7 @@ export const metadata = { title: "Liên hệ" }
 export default async function ContactEditorPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
-  if ((user as any).role !== "ADMIN") redirect("/dashboard")
+  if (user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
   const config = await db.siteConfig.findUnique({ where: { id: "default" } })
   const data = (config?.data ?? {}) as SiteConfigData

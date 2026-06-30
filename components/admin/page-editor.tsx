@@ -22,6 +22,7 @@ import { ImageUploader } from "@/components/admin/image-uploader"
 import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/lib/banner"
 import { TiptapEditor } from "@/components/admin/tiptap-editor"
 import { editorJsToTiptap, isTiptapContent } from "@/lib/editorjs-to-tiptap"
+import { SaveOverlay } from "@/components/ui/save-overlay"
 
 interface PageEditorProps {
   page: {
@@ -137,6 +138,7 @@ export function PageEditor({ page }: PageEditorProps) {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <SaveOverlay visible={isSaving} />
       {/* ── Sticky header ──────────────────────────────────── */}
       <div className="sticky top-0 z-10 border-b bg-background">
         <div className="container flex h-14 items-center justify-between px-4 gap-4">
@@ -164,7 +166,6 @@ export function PageEditor({ page }: PageEditorProps) {
             </button>
 
             <Button size="sm" onClick={handleSave} disabled={isSaving}>
-              {isSaving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
               Lưu
             </Button>
           </div>

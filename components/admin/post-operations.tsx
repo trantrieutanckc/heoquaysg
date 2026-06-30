@@ -32,12 +32,14 @@ async function deletePost(postId: string) {
 
   if (!response?.ok) {
     toast({
-      title: "Something went wrong.",
-      description: "Your post was not deleted. Please try again.",
+      title: "Có lỗi xảy ra.",
+      description: "Không thể xoá bài viết. Vui lòng thử lại.",
       variant: "destructive",
     })
+    return false
   }
 
+  toast({ variant: "success", description: "Đã xoá bài viết." })
   return true
 }
 
@@ -76,23 +78,23 @@ export function PostOperations({ post }: PostOperationsProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this post?
+              Xoá bài viết này?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone.
+              Hành động này không thể hoàn tác.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Huỷ</AlertDialogCancel>
             <AlertDialogAction
               onClick={async (event) => {
                 event.preventDefault()
                 setIsDeleteLoading(true)
 
                 const deleted = await deletePost(post.id)
+                setIsDeleteLoading(false)
 
                 if (deleted) {
-                  setIsDeleteLoading(false)
                   setShowDeleteAlert(false)
                   router.refresh()
                 }
@@ -104,7 +106,7 @@ export function PostOperations({ post }: PostOperationsProps) {
               ) : (
                 <Icons.trash className="mr-2 h-4 w-4" />
               )}
-              <span>Delete</span>
+              <span>Xoá</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

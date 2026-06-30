@@ -10,7 +10,7 @@ export async function GET(_: Request, { params }: { params: { key: string } }) {
 
 export async function PUT(req: Request, { params }: { params: { key: string } }) {
   const user = await getCurrentUser()
-  if (!user || (user as any).role !== "ADMIN") {
+  if (!user || user.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
 

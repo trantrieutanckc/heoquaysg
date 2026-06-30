@@ -103,13 +103,6 @@ const DEFAULT_DOCS = [
     title: "Chung",
     content: `# Hướng dẫn chung
 
-## Phân quyền
-| Role | Quyền |
-|---|---|
-| ADMIN | Toàn quyền: tạo/sửa/xóa bài, danh mục, menu, quản lý user |
-| EDITOR | Tạo/sửa bài, quản lý danh mục và menu (không quản lý user) |
-| CONTRIBUTOR | Chỉ xem dashboard, không tạo được bài |
-
 ## Tài khoản
 - Thay đổi tên và ảnh đại diện tại trang Profile
 - Đổi mật khẩu tại Profile → mật khẩu phải có 8+ ký tự, chữ hoa, số, ký tự đặc biệt
@@ -123,9 +116,119 @@ const DEFAULT_DOCS = [
 ## Bình luận
 - Vào Dashboard → Comments để duyệt/xóa bình luận
 - Bình luận của người dùng không cần đăng nhập
+- Hệ thống hỗ trợ rating (đánh giá sao) kèm bình luận
+
+## Thông báo
+- Chuông thông báo ở góc phải header dashboard
+- Tự động cập nhật mỗi 60 giây
+- Có thông báo khi: có đặt lịch mới, bình luận mới, bài viết được đăng theo lịch
 
 ## Tìm kiếm
 - Thanh tìm kiếm ở góc phải dashboard tìm nhanh bài viết`,
+  },
+  {
+    key: "permissions",
+    title: "Phân quyền",
+    content: `# Phân quyền người dùng
+
+## Các role hiện có
+
+| Role | Mô tả |
+|---|---|
+| **ADMIN** | Quản trị viên — toàn quyền hệ thống |
+| **EDITOR** | Biên tập viên — quản lý nội dung, không quản lý user |
+| **CONTRIBUTOR** | Cộng tác viên — chỉ xem dashboard |
+
+---
+
+## Chi tiết quyền từng role
+
+### Bài viết (Posts)
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem danh sách bài viết | ✅ | ✅ | ✅ |
+| Tạo bài viết mới | ✅ | ✅ | ❌ |
+| Sửa bài viết | ✅ | ✅ | ❌ |
+| Xoá bài viết | ✅ | ✅ | ❌ |
+| Đăng / Huỷ đăng bài | ✅ | ✅ | ❌ |
+| Đặt bài nổi bật (Featured) | ✅ | ✅ | ❌ |
+| Đặt lịch đăng tự động | ✅ | ✅ | ❌ |
+| Import / Export CSV | ✅ | ✅ | ❌ |
+
+### Danh mục (Categories)
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem danh sách | ✅ | ✅ | ✅ |
+| Tạo danh mục mới | ✅ | ✅ | ❌ |
+| Sửa tên / slug | ✅ | ✅ | ❌ |
+| Đổi template / ảnh / SEO / banner | ✅ | ✅ | ❌ |
+| Kéo thả sắp xếp thứ tự | ✅ | ✅ | ❌ |
+| Xoá danh mục | ✅ | ✅ | ❌ |
+
+### Đặt lịch (Bookings)
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem danh sách đặt lịch | ✅ | ✅ | ❌ |
+| Cập nhật trạng thái đơn | ✅ | ✅ | ❌ |
+
+### Bình luận (Comments)
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem bình luận | ✅ | ✅ | ❌ |
+| Duyệt / Bỏ duyệt bình luận | ✅ | ✅ | ❌ |
+| Xoá bình luận | ✅ | ✅ | ❌ |
+
+### Menu & Trang tĩnh
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Quản lý menu điều hướng | ✅ | ✅ | ❌ |
+| Tạo / sửa / xoá trang tĩnh | ✅ | ✅ | ❌ |
+
+### Giao diện & Cấu hình
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Cấu hình site (tên, logo, hotline...) | ✅ | ❌ | ❌ |
+| Giao diện homepage (màu, ảnh nền) | ✅ | ❌ | ❌ |
+| Trang Về chúng tôi / Liên hệ | ✅ | ❌ | ❌ |
+| Hướng dẫn sử dụng (Docs) | ✅ | ❌ | ❌ |
+| Liên kết nhanh (Docs edit) | ✅ | ❌ | ❌ |
+
+### Quản lý người dùng
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem danh sách user | ✅ | ❌ | ❌ |
+| Tạo user mới | ✅ | ❌ | ❌ |
+| Sửa tên / email / avatar | ✅ | ❌ | ❌ |
+| Đổi role (ADMIN/EDITOR/CONTRIBUTOR) | ✅ | ❌ | ❌ |
+| Đổi mật khẩu user khác | ✅ | ❌ | ❌ |
+
+---
+
+## Tạo user mới
+
+1. Vào **Dashboard → Người dùng**
+2. Nhấn **"Tạo tài khoản"**
+3. Nhập tên, email, mật khẩu và chọn role
+4. Người dùng có thể đăng nhập ngay
+
+## Đổi role
+
+- Chỉ ADMIN mới đổi được role
+- Vào Users → chọn người dùng → dropdown Role
+- Thay đổi có hiệu lực ngay lập tức
+
+## Lưu ý bảo mật
+
+- Không nên tạo nhiều tài khoản ADMIN
+- Mật khẩu tối thiểu 8 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt
+- Tài khoản bị khoá sau 5 lần đăng nhập sai liên tiếp (khoá 15 phút)`,
   },
 ]
 
@@ -133,7 +236,7 @@ export default async function DocsPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
 
-  const isAdmin = (user as any).role === "ADMIN"
+  const isAdmin = user.role === "ADMIN"
 
   const dbDocs = await db.siteDoc.findMany()
 

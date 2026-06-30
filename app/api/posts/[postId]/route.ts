@@ -31,7 +31,7 @@ export async function PATCH(
     return new Response(null, { status: 401 })
   }
 
-  const role = (currentUser as any).role
+  const role = currentUser.role
   if (role !== "ADMIN" && role !== "EDITOR") {
     return new Response(null, { status: 403 })
   }
@@ -43,7 +43,7 @@ export async function PATCH(
       select: { authorId: true },
     })
     if (!post) return new Response(null, { status: 404 })
-    if (post.authorId !== (currentUser as any).id) {
+    if (post.authorId !== currentUser.id) {
       return new Response(null, { status: 403 })
     }
   }
@@ -101,7 +101,7 @@ export async function DELETE(
     return new Response(null, { status: 401 })
   }
 
-  const role = (currentUser as any).role
+  const role = currentUser.role
   if (role !== "ADMIN" && role !== "EDITOR") {
     return new Response(null, { status: 403 })
   }
@@ -113,7 +113,7 @@ export async function DELETE(
       select: { authorId: true },
     })
     if (!post) return new Response(null, { status: 404 })
-    if (post.authorId !== (currentUser as any).id) {
+    if (post.authorId !== currentUser.id) {
       return new Response(null, { status: 403 })
     }
   }

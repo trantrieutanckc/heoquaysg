@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const currentUser = await getCurrentUser()
-  const role = (currentUser as any)?.role
+  const role = currentUser?.role
   if (!currentUser || (role !== "ADMIN" && role !== "EDITOR")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 })
   }
