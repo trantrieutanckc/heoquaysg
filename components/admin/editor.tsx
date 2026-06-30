@@ -114,7 +114,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bookable: next }),
       })
-      toast({ description: next ? "Bài đã hiện trên trang đặt lịch." : "Bài đã ẩn khỏi trang đặt lịch." })
+      toast({ variant: "success", description: next ? "Bài đã hiện trên trang đặt lịch." : "Bài đã ẩn khỏi trang đặt lịch." })
     } finally {
       setIsSavingBookable(false)
     }
@@ -164,7 +164,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         setIsPublished(next)
         setScheduledAt(undefined)
         router.refresh()
-        toast({ description: next ? "Đã đăng bài." : "Đã chuyển về bản nháp." })
+        toast({ variant: "success", description: next ? "Đã đăng bài." : "Đã chuyển về bản nháp." })
       } else {
         toast({ title: "Lỗi", description: "Không thể thay đổi trạng thái.", variant: "destructive" })
       }
@@ -192,7 +192,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
       if (res.ok) {
         setScheduledAt(dt)
         setScheduleOpen(false)
-        toast({ description: `Đã lên lịch đăng lúc ${format(dt, "HH:mm dd/MM/yyyy")}.` })
+        toast({ variant: "success", description: `Đã lên lịch đăng lúc ${format(dt, "HH:mm dd/MM/yyyy")}.` })
       } else {
         toast({ title: "Lỗi", description: "Không thể lưu lịch.", variant: "destructive" })
       }
@@ -214,7 +214,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         setScheduleDate(undefined)
         setScheduleTime("09:00")
         setScheduleOpen(false)
-        toast({ description: "Đã huỷ lịch đăng bài." })
+        toast({ variant: "success", description: "Đã huỷ lịch đăng bài." })
       }
     } finally {
       setIsScheduling(false)
@@ -233,7 +233,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
       })
       if (res.ok) {
         setBannerConfig(value)
-        toast({ description: "Đã lưu banner." })
+        toast({ variant: "success", description: "Đã lưu banner." })
       }
     } finally {
       setSavingBanner(false)
@@ -269,7 +269,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
         return
       }
       router.refresh()
-      toast({ description: "Đã lưu bài viết." })
+      toast({ variant: "success", description: "Đã lưu bài viết." })
     } catch {
       toast({ title: "Lỗi", description: "Không thể lưu bài viết.", variant: "destructive" })
     } finally {

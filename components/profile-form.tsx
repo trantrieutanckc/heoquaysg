@@ -52,7 +52,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     })
     setSavingInfo(false)
     if (res.ok) {
-      toast({ description: "Đã cập nhật thông tin." })
+      toast({ variant: "success", description: "Đã cập nhật thông tin." })
       router.refresh()
     } else {
       toast({ description: "Có lỗi xảy ra, vui lòng thử lại.", variant: "destructive" })
@@ -77,7 +77,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     })
     setSavingPassword(false)
     if (res.ok) {
-      toast({ description: "Đã đổi mật khẩu thành công." })
+      toast({ variant: "success", description: "Đã đổi mật khẩu thành công." })
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")

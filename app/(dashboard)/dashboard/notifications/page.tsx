@@ -51,14 +51,14 @@ export default function NotificationsPage() {
     await fetch("/api/notifications/read-all", { method: "PATCH" })
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
     setUnreadCount(0)
-    toast({ description: "Đã đánh dấu tất cả là đã đọc." })
+    toast({ variant: "success", description: "Đã đánh dấu tất cả là đã đọc." })
   }
 
   async function clearAll() {
     await fetch("/api/notifications/read-all", { method: "DELETE" })
     setNotifications([])
     setUnreadCount(0)
-    toast({ description: "Đã xoá tất cả thông báo." })
+    toast({ variant: "success", description: "Đã xoá tất cả thông báo." })
   }
 
   return (

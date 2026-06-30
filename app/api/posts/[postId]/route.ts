@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import * as z from "zod"
+import { Prisma } from "@prisma/client"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
 
@@ -9,10 +10,10 @@ const postPatchSchema = z.object({
   published: z.boolean().optional(),
   image: z.any().optional().nullable(),
   categoryIds: z.array(z.string()).optional(),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-  seoKeywords: z.string().optional(),
-  seoImage: z.string().optional(),
+  seoTitle: z.string().nullable().optional(),
+  seoDescription: z.string().nullable().optional(),
+  seoKeywords: z.string().nullable().optional(),
+  seoImage: z.string().nullable().optional(),
   template: z.string().optional(),
   banner: z.any().optional().nullable(),
   relatedPostIds: z.array(z.string()).nullable().optional(),
@@ -64,7 +65,7 @@ export async function PATCH(
         seoImage: body.seoImage,
         template: body.template,
         ...(body.banner !== undefined && { banner: body.banner ?? undefined }),
-        ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds }),
+        ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds === null ? Prisma.JsonNull : body.relatedPostIds }),
         ...(body.price !== undefined && { price: body.price }),
         ...(body.bookable !== undefined && { bookable: body.bookable }),
         ...(body.scheduledAt !== undefined && {
@@ -86,6 +87,7 @@ export async function PATCH(
     if (error instanceof z.ZodError) {
       return new Response(JSON.stringify(error.issues), { status: 422 })
     }
+    console.error("[posts PATCH]", error)
     return new Response(null, { status: 500 })
   }
 }

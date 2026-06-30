@@ -36,7 +36,7 @@ export function ScheduledPostItem({ post }: { post: ScheduledPost }) {
         body: JSON.stringify({ scheduledAt: null }),
       })
       if (res.ok) {
-        toast({ description: "Đã huỷ lịch đăng bài." })
+        toast({ variant: "success", description: "Đã huỷ lịch đăng bài." })
         router.refresh()
       } else {
         toast({ title: "Lỗi", description: "Không thể huỷ lịch.", variant: "destructive" })

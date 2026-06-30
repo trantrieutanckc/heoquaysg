@@ -132,7 +132,7 @@ export function DocsEditor({ docs, isAdmin }: DocsEditorProps) {
     })
     setSaving(false)
     if (res.ok) {
-      toast({ description: "Đã lưu hướng dẫn." })
+      toast({ variant: "success", description: "Đã lưu hướng dẫn." })
       setEditing(false)
     } else {
       toast({ description: "Không thể lưu.", variant: "destructive" })

@@ -53,7 +53,7 @@ export function UserCreateButton() {
       return toast({ title: "Lỗi", description: "Không thể tạo user.", variant: "destructive" })
     }
 
-    toast({ description: "Đã tạo user thành công." })
+    toast({ variant: "success", description: "Đã tạo user thành công." })
     setOpen(false)
     setName("")
     setEmail("")

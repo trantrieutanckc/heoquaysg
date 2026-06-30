@@ -55,7 +55,7 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
       return
     }
     setComments((prev) => prev.filter((c) => c.id !== id))
-    toast({ description: "Đã xoá bình luận." })
+    toast({ variant: "success", description: "Đã xoá bình luận." })
     router.refresh()
   }
 
@@ -72,7 +72,7 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
       return
     }
     setComments((prev) => prev.map((c) => (c.id === id ? { ...c, approved } : c)))
-    toast({ description: approved ? "Đã duyệt bình luận." : "Đã bỏ duyệt bình luận." })
+    toast({ variant: "success", description: approved ? "Đã duyệt bình luận." : "Đã bỏ duyệt bình luận." })
     router.refresh()
   }
 

@@ -32,7 +32,7 @@ export function ContactClient({ siteName, contactPhone, contactEmail, contactAdd
         body: JSON.stringify(form),
       })
       if (res.ok) {
-        toast({ title: "Gửi thành công!", description: "Chúng tôi sẽ liên hệ lại với bạn sớm nhất." })
+        toast({ variant: "success", title: "Gửi thành công!", description: "Chúng tôi sẽ liên hệ lại với bạn sớm nhất." })
         setForm({ name: "", email: "", phone: "", message: "" })
       } else throw new Error()
     } catch {

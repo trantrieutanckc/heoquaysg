@@ -27,6 +27,7 @@ export function FeaturedToggle({ postId, featured }: FeaturedToggleProps) {
       setIsFeatured(next)
       router.refresh()
       toast({
+        variant: "success",
         description: next ? "Đã đặt làm bài nổi bật." : "Đã bỏ bài nổi bật.",
       })
     } catch {

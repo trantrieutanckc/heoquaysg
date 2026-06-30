@@ -111,7 +111,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
     })
     setSaving(false)
     if (res.ok) {
-      toast({ description: "Đã lưu cấu hình." })
+      toast({ variant: "success", description: "Đã lưu cấu hình." })
     } else {
       toast({ description: "Có lỗi xảy ra.", variant: "destructive" })
     }

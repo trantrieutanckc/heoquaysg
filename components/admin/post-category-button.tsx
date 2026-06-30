@@ -57,7 +57,7 @@ export function PostCategoryButton({
       })
     }
 
-    toast({ description: "Đã cập nhật category." })
+    toast({ variant: "success", description: "Đã cập nhật category." })
     setOpen(false)
     router.refresh()
   }

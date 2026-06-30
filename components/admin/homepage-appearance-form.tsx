@@ -140,7 +140,7 @@ export function HomepageAppearanceForm({ initialData }: Props) {
         body: JSON.stringify(data),
       })
       if (res.ok) {
-        toast({ description: "Đã lưu giao diện homepage." })
+        toast({ variant: "success", description: "Đã lưu giao diện homepage." })
       } else {
         toast({ title: "Lỗi", description: "Không thể lưu.", variant: "destructive" })
       }

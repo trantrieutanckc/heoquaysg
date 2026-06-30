@@ -77,7 +77,7 @@ export async function generateMetadata() {
       shortcut: "/favicon.svg",
       apple: "/apple-touch-icon.png",
     },
-    manifest: `${appUrl}/site.webmanifest`,
+    manifest: "/site.webmanifest",
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   }
 }

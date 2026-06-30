@@ -51,7 +51,7 @@ export function PageList({ pages: initialPages }: { pages: Page[] }) {
     await fetch(`/api/pages/${id}`, { method: "DELETE" })
     setDeleting(null)
     setPages((prev) => prev.filter((p) => p.id !== id))
-    toast({ description: "Đã xoá trang." })
+    toast({ variant: "success", description: "Đã xoá trang." })
     router.refresh()
   }
 

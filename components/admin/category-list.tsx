@@ -252,7 +252,7 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
     setCategories((prev) =>
       prev.map((c) => c.id === bannerCategory.id ? { ...c, banner: config } : c)
     )
-    toast({ description: "Đã lưu banner." })
+    toast({ variant: "success", description: "Đã lưu banner." })
     setBannerCategory(null)
     router.refresh()
   }
@@ -324,7 +324,7 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
       )
     )
 
-    toast({ description: "Đã cập nhật ảnh category." })
+    toast({ variant: "success", description: "Đã cập nhật ảnh category." })
     setImageCategory(null)
     router.refresh()
   }

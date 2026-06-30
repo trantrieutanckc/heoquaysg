@@ -49,7 +49,7 @@ export function ContactEditorForm({ initial }: { initial: SiteConfigData }) {
       body: JSON.stringify(data),
     })
     setSaving(false)
-    if (res.ok) toast({ description: "Đã lưu trang Liên hệ." })
+    if (res.ok) toast({ variant: "success", description: "Đã lưu trang Liên hệ." })
     else toast({ description: "Có lỗi xảy ra.", variant: "destructive" })
   }
 

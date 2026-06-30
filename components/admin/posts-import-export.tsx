@@ -49,7 +49,7 @@ export function PostsImportExport() {
         description: data.errors?.length
           ? `${data.errors.length} dòng lỗi: ${data.errors.slice(0, 2).join("; ")}${data.errors.length > 2 ? "..." : ""}`
           : "Import hoàn tất. Các bài đang ở trạng thái nháp.",
-        variant: data.errors?.length ? "default" : "default",
+        variant: data.errors?.length ? "default" : "success",
       })
       router.refresh()
     } catch {

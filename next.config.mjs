@@ -19,7 +19,7 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Next.js requires unsafe-inline for hydration scripts; unsafe-eval for some libs
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://static.hotjar.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://static.hotjar.com https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Allow images from anywhere over HTTPS (Supabase Storage, avatars, etc.)
       "img-src 'self' data: blob: https:",
@@ -34,6 +34,7 @@ const securityHeaders = [
       "base-uri 'self'",
       // Form submissions must stay on this domain
       "form-action 'self'",
+      "manifest-src 'self'",
       "media-src 'self' https:",
     ].join("; "),
   },

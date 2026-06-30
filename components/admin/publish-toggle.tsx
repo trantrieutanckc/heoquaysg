@@ -29,6 +29,7 @@ export function PublishToggle({ id, published, endpoint }: PublishToggleProps) {
       setIsPublished(next)
       router.refresh()
       toast({
+        variant: "success",
         description: next ? "Đã đăng." : "Đã chuyển về nháp.",
       })
     } catch {

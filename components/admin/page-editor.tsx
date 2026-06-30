@@ -104,7 +104,7 @@ export function PageEditor({ page }: PageEditorProps) {
         toast({ title: "Lỗi", description: data.error ?? "Không thể lưu trang.", variant: "destructive" })
         return
       }
-      toast({ description: "Đã lưu trang." })
+      toast({ variant: "success", description: "Đã lưu trang." })
       router.refresh()
     } finally {
       setIsSaving(false)
@@ -123,7 +123,7 @@ export function PageEditor({ page }: PageEditorProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ banner: bannerValue }),
       })
-      toast({ description: "Đã lưu banner." })
+      toast({ variant: "success", description: "Đã lưu banner." })
     } finally {
       setSavingBanner(false)
     }

@@ -57,7 +57,7 @@ export function AboutEditorForm({ initial }: { initial: SiteConfigData }) {
       body: JSON.stringify(data),
     })
     setSaving(false)
-    if (res.ok) toast({ description: "Đã lưu trang Về chúng tôi." })
+    if (res.ok) toast({ variant: "success", description: "Đã lưu trang Về chúng tôi." })
     else toast({ description: "Có lỗi xảy ra.", variant: "destructive" })
   }
 

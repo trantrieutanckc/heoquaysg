@@ -1,19 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react"
+import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
 import Placeholder from "@tiptap/extension-placeholder"
 import TextAlign from "@tiptap/extension-text-align"
 import Underline from "@tiptap/extension-underline"
-import Table from "@tiptap/extension-table"
+import { Table } from "@tiptap/extension-table"
 import TableRow from "@tiptap/extension-table-row"
 import TableCell from "@tiptap/extension-table-cell"
 import TableHeader from "@tiptap/extension-table-header"
 import Highlight from "@tiptap/extension-highlight"
-import TextStyle from "@tiptap/extension-text-style"
+import { TextStyle } from "@tiptap/extension-text-style"
 import Color from "@tiptap/extension-color"
 import { cn } from "@/lib/utils"
 
@@ -114,7 +114,7 @@ export function TiptapEditor({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit,
+      StarterKit.configure({ link: false, underline: false }),
       Underline,
       Highlight,
       TextStyle,
@@ -242,19 +242,6 @@ export function TiptapEditor({
           e.target.value = ""
         }}
       />
-
-      {/* ── Bubble menu (inline format) ────────────────────────── */}
-      <BubbleMenu
-        editor={editor}
-        tippyOptions={{ duration: 100 }}
-        className="flex items-center gap-0.5 rounded-md border bg-background px-1.5 py-1 shadow-md"
-      >
-        <ToolBtn title="In đậm" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>{I.bold}</ToolBtn>
-        <ToolBtn title="In nghiêng" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}>{I.italic}</ToolBtn>
-        <ToolBtn title="Gạch chân" active={editor.isActive("underline")} onClick={() => editor.chain().focus().toggleUnderline().run()}>{I.underline}</ToolBtn>
-        <ToolBtn title="Link" active={editor.isActive("link")} onClick={handleLink}>{I.link}</ToolBtn>
-        <ToolBtn title="Highlight" active={editor.isActive("highlight")} onClick={() => editor.chain().focus().toggleHighlight().run()}>{I.highlight}</ToolBtn>
-      </BubbleMenu>
 
       {/* ── Editor area ────────────────────────────────────────── */}
       <div className="px-4 py-2">

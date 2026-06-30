@@ -93,7 +93,7 @@ export function UserList({ users: initialUsers }: { users: User[] }) {
         u.id === editUser.id ? { ...u, name: editName.trim(), email: editEmail.trim() } : u
       )
     )
-    toast({ description: "Đã cập nhật thông tin user." })
+    toast({ variant: "success", description: "Đã cập nhật thông tin user." })
     setEditUser(null)
     router.refresh()
   }
@@ -110,7 +110,7 @@ export function UserList({ users: initialUsers }: { users: User[] }) {
     if (!res.ok) {
       return toast({ title: "Lỗi", description: "Không thể cập nhật vai trò.", variant: "destructive" })
     }
-    toast({ description: "Đã cập nhật vai trò." })
+    toast({ variant: "success", description: "Đã cập nhật vai trò." })
     router.refresh()
   }
 
@@ -133,7 +133,7 @@ export function UserList({ users: initialUsers }: { users: User[] }) {
     if (!res.ok) {
       return toast({ title: "Lỗi", description: "Không thể đổi mật khẩu.", variant: "destructive" })
     }
-    toast({ description: "Đã đổi mật khẩu thành công." })
+    toast({ variant: "success", description: "Đã đổi mật khẩu thành công." })
     setPwdUserId(null)
   }
 
@@ -158,7 +158,7 @@ export function UserList({ users: initialUsers }: { users: User[] }) {
     setUsers((prev) =>
       prev.map((u) => u.id === avatarUser.id ? { ...u, image: avatarUrl || null } : u)
     )
-    toast({ description: "Đã cập nhật avatar." })
+    toast({ variant: "success", description: "Đã cập nhật avatar." })
     setAvatarUser(null)
     router.refresh()
   }
