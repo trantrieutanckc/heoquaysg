@@ -18,6 +18,7 @@ const postPatchSchema = z.object({
   relatedPostIds: z.array(z.string()).nullable().optional(),
   price: z.number().nullable().optional(),
   scheduledAt: z.string().datetime().nullable().optional(),
+  bookable: z.boolean().optional(),
 })
 
 export async function PATCH(
@@ -65,6 +66,7 @@ export async function PATCH(
         ...(body.banner !== undefined && { banner: body.banner ?? undefined }),
         ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds }),
         ...(body.price !== undefined && { price: body.price }),
+        ...(body.bookable !== undefined && { bookable: body.bookable }),
         ...(body.scheduledAt !== undefined && {
           scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
         }),

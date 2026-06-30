@@ -6,7 +6,7 @@ const bookingSchema = z.object({
   name: z.string().min(1).max(100),
   phone: z.string().min(9).max(15),
   address: z.string().max(300).optional(),
-  product: z.enum(["heo-quay", "ga-quay", "vit-quay", "heo-quay-sua"]),
+  product: z.string().min(1),
   quantity: z.number().positive().max(100),
   deliveryDate: z.string().min(1),
   note: z.string().max(500).optional(),

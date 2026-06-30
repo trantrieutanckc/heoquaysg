@@ -8,6 +8,7 @@ const MIME_TO_EXT: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
   "image/gif": "gif",
+  "image/svg+xml": "svg",
 }
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB

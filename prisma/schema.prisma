@@ -104,6 +104,7 @@ model Post {
   banner         Json?
   relatedPostIds Json?
   scheduledAt    DateTime?
+  bookable       Boolean   @default(false)
   avgRating      Float?
   ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])

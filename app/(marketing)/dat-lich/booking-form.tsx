@@ -3,12 +3,11 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-const PRODUCTS = [
-  { value: "heo-quay",     label: "Heo Quay",       desc: "Nguyên con, da giòn vàng óng" },
-  { value: "ga-quay",      label: "Gà Quay",        desc: "Gà ta hoặc gà công nghiệp" },
-  { value: "vit-quay",     label: "Vịt Quay",       desc: "Vịt quay Quảng Đông, Bắc Kinh" },
-  { value: "heo-quay-sua", label: "Heo Quay Sữa",   desc: "Đặt trước 3–5 ngày" },
-]
+interface Product {
+  id: string
+  title: string
+  price: number | null
+}
 
 const TIME_SLOTS = [
   "07:00", "08:00", "09:00", "10:00", "11:00",
@@ -20,8 +19,8 @@ function today() {
   return new Date().toISOString().split("T")[0]
 }
 
-export function BookingForm() {
-  const [product, setProduct] = React.useState("heo-quay")
+export function BookingForm({ products }: { products: Product[] }) {
+  const [productId, setProductId] = React.useState(products[0]?.id ?? "")
   const [name, setName] = React.useState("")
   const [phone, setPhone] = React.useState("")
   const [address, setAddress] = React.useState("")
@@ -35,6 +34,7 @@ export function BookingForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!date) { setErrorMsg("Vui lòng chọn ngày giao."); return }
+    if (!productId) { setErrorMsg("Vui lòng chọn món."); return }
     setStatus("loading")
     setErrorMsg("")
 
@@ -43,7 +43,8 @@ export function BookingForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name, phone, address, product,
+          name, phone, address,
+          product: productId,
           quantity,
           deliveryDate: `${date}T${time}:00`,
           note,
@@ -55,6 +56,15 @@ export function BookingForm() {
       setStatus("error")
       setErrorMsg("Có lỗi xảy ra, vui lòng thử lại hoặc gọi điện trực tiếp.")
     }
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed p-10 text-center text-muted-foreground">
+        <p className="font-medium mb-1">Chưa có món nào</p>
+        <p className="text-sm">Admin chưa bật đặt lịch cho bài viết nào.</p>
+      </div>
+    )
   }
 
   if (status === "success") {
@@ -84,22 +94,28 @@ export function BookingForm() {
 
       {/* Chọn món */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold">Món muốn đặt <span className="text-destructive">*</span></label>
+        <label className="text-sm font-semibold">
+          Món muốn đặt <span className="text-destructive">*</span>
+        </label>
         <div className="grid grid-cols-2 gap-3">
-          {PRODUCTS.map((p) => (
+          {products.map((p) => (
             <button
-              key={p.value}
+              key={p.id}
               type="button"
-              onClick={() => setProduct(p.value)}
+              onClick={() => setProductId(p.id)}
               className={cn(
-                "flex flex-col items-start gap-0.5 rounded-lg border p-3 text-left transition-colors",
-                product === p.value
+                "flex flex-col items-start gap-1 rounded-lg border p-3 text-left transition-colors",
+                productId === p.id
                   ? "border-primary bg-primary/5 text-foreground"
                   : "border-border hover:border-primary/50 text-muted-foreground"
               )}
             >
-              <span className="font-semibold text-sm text-foreground">{p.label}</span>
-              <span className="text-xs">{p.desc}</span>
+              <span className="font-semibold text-sm text-foreground line-clamp-2">{p.title}</span>
+              {p.price != null && (
+                <span className="text-xs text-primary font-medium">
+                  {new Intl.NumberFormat("vi-VN").format(p.price)}đ
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -107,7 +123,7 @@ export function BookingForm() {
 
       {/* Số lượng */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold" htmlFor="quantity">
+        <label className="text-sm font-semibold">
           Số lượng (con) <span className="text-destructive">*</span>
         </label>
         <div className="flex items-center gap-3">

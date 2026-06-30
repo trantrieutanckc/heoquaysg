@@ -1,3 +1,4 @@
+import { db } from "@/lib/db"
 import { BookingForm } from "./booking-form"
 
 export const metadata = {
@@ -5,7 +6,13 @@ export const metadata = {
   description: "Đặt heo quay, gà quay, vịt quay — giao tận nơi đúng giờ tại Heo Quay Bình Tân.",
 }
 
-export default function DatLichPage() {
+export default async function DatLichPage() {
+  const products = await db.post.findMany({
+    where: { bookable: true, published: true },
+    select: { id: true, title: true, price: true },
+    orderBy: { createdAt: "asc" },
+  })
+
   return (
     <div>
       <div className="border-b bg-card">
@@ -22,7 +29,7 @@ export default function DatLichPage() {
         </div>
       </div>
       <div className="container px-4 sm:px-6 py-10 max-w-2xl">
-        <BookingForm />
+        <BookingForm products={products} />
       </div>
     </div>
   )
