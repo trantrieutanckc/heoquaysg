@@ -124,7 +124,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
           <Input id="siteName" value={data.siteName ?? ""} onChange={set("siteName")} placeholder="Heo Quay Bình Tân" />
         </Field>
         <Field label="Tagline" id="siteTagline">
-          <Input id="siteTagline" value={data.siteTagline ?? ""} onChange={set("siteTagline")} placeholder="Heo quay ngon nhất Sài Gòn" />
+          <Input id="siteTagline" value={data.siteTagline ?? ""} onChange={set("siteTagline")} placeholder="Heo quay ngon nhất Bình Tân" />
         </Field>
         <Field label="Mô tả ngắn" id="siteDescription">
           <Input id="siteDescription" value={data.siteDescription ?? ""} onChange={set("siteDescription")} placeholder="Chuyên heo quay, bánh mì thịt..." />
