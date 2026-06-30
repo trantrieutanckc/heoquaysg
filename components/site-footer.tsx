@@ -110,11 +110,22 @@ export function SiteFooter({
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-widest text-stone-100">Khám phá</h4>
             <ul className="space-y-2.5 text-sm text-stone-400">
-              <li><Link href="/" className="hover:text-stone-100 transition-colors">Trang chủ</Link></li>
-              <li><Link href="/blog" className="hover:text-stone-100 transition-colors">Bài viết</Link></li>
-              <li><Link href="/categories" className="hover:text-stone-100 transition-colors">Danh mục</Link></li>
-              <li><Link href="/about" className="hover:text-stone-100 transition-colors">Giới thiệu</Link></li>
-              <li><Link href="/lien-he" className="hover:text-stone-100 transition-colors">Liên hệ</Link></li>
+              {[
+                { href: "/", label: "Trang chủ" },
+                { href: "/blog", label: "Bài viết" },
+                { href: "/categories", label: "Danh mục" },
+                { href: "/about", label: "Giới thiệu" },
+                { href: "/lien-he", label: "Liên hệ" },
+              ].map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="relative hover:text-stone-100 transition-colors after:absolute after:-bottom-[2px] after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:w-0 after:transition-[width] after:duration-500 hover:after:w-full"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

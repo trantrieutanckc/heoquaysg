@@ -82,10 +82,11 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
               key={index}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
+                "relative px-3 py-1.5 text-sm font-medium whitespace-nowrap",
+                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                 isActive(item.href, pathname)
-                  ? "text-[#bf9b30] font-semibold"
-                  : "text-muted-foreground hover:text-[#bf9b30] hover:bg-[#9690a20f]",
+                  ? "text-primary font-semibold after:w-full"
+                  : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full",
                 item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
               )}
             >
@@ -100,10 +101,11 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
                 type="button"
                 onClick={() => setShowMore(!showMore)}
                 className={cn(
-                  "flex items-center gap-1 px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
+                  "relative flex items-center gap-1 px-3 py-1.5 text-sm font-medium whitespace-nowrap",
+                  "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                   overflowItems.some((i) => isActive(i.href, pathname))
-                    ? "text-[#bf9b30] font-semibold"
-                    : "text-muted-foreground hover:text-[#bf9b30] hover:bg-[#9690a20f]"
+                    ? "text-primary font-semibold after:w-full"
+                    : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full"
                 )}
               >
                 Xem thêm
