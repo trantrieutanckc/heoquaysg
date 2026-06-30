@@ -19,6 +19,10 @@ export const marketingConfig: MarketingConfig = {
       href: "/about",
     },
     {
+      title: "Đặt lịch",
+      href: "/dat-lich",
+    },
+    {
       title: "Liên hệ",
       href: "/lien-he",
     },
