@@ -121,7 +121,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
     <form onSubmit={handleSave} className="space-y-6">
       <Section title="Thông tin site">
         <Field label="Tên site" id="siteName">
-          <Input id="siteName" value={data.siteName ?? ""} onChange={set("siteName")} placeholder="Heo Quay SG" />
+          <Input id="siteName" value={data.siteName ?? ""} onChange={set("siteName")} placeholder="Heo Quay Bình Tân" />
         </Field>
         <Field label="Tagline" id="siteTagline">
           <Input id="siteTagline" value={data.siteTagline ?? ""} onChange={set("siteTagline")} placeholder="Heo quay ngon nhất Sài Gòn" />
