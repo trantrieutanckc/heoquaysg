@@ -9,13 +9,6 @@ import { BookingStatusSelect } from "./booking-status-select"
 
 export const metadata = { title: "Đặt lịch" }
 
-const PRODUCT_LABELS: Record<string, string> = {
-  "heo-quay":     "Heo Quay",
-  "ga-quay":      "Gà Quay",
-  "vit-quay":     "Vịt Quay",
-  "heo-quay-sua": "Heo Quay Sữa",
-}
-
 const STATUS_STYLES: Record<string, string> = {
   pending:   "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
   confirmed: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -127,10 +120,21 @@ export default async function DatLichPage({
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <p className="font-medium">{PRODUCT_LABELS[b.product] ?? b.product}</p>
-                    <p className="text-xs text-muted-foreground">{b.quantity} con</p>
+                    {(() => {
+                      const list = Array.isArray(b.items) ? b.items as {title:string,quantity:number}[] : []
+                      return list.length > 0 ? (
+                        <ul className="space-y-0.5">
+                          {list.map((item, i) => (
+                            <li key={i} className="text-sm">
+                              <span className="font-medium">{item.title}</span>
+                              <span className="text-muted-foreground"> × {item.quantity}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : <span className="text-muted-foreground text-xs">—</span>
+                    })()}
                     {b.note && (
-                      <p className="text-xs text-muted-foreground italic truncate max-w-[160px]">{b.note}</p>
+                      <p className="text-xs text-muted-foreground italic truncate max-w-[160px] mt-1">{b.note}</p>
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">

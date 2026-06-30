@@ -247,8 +247,7 @@ model Booking {
   name         String
   phone        String
   address      String?
-  product      String
-  quantity     Float    @default(1)
+  items        Json
   deliveryDate DateTime
   note         String?
   status       String   @default("pending")
