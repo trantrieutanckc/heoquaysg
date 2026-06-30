@@ -23,11 +23,11 @@ export default async function ProfileLayout({ children }: { children: React.Reac
         <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2">
             <img
-              src="https://heoquaysg.com/wp-content/uploads/2022/08/cropped-heo-quay-47.jpg"
-              alt="Heo Quay SG"
+              src="/logo-v4.svg"
+              alt="Heo Quay Bình Tân"
               className="h-8 w-8 rounded-full object-cover"
             />
-            <span className="font-heading font-bold text-sm hidden sm:block">Heo Quay SG</span>
+            <span className="font-heading font-bold text-sm hidden sm:block">Heo Quay Bình Tân</span>
           </Link>
           <div className="flex items-center gap-2">
             {canAccessDashboard && (
