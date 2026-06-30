@@ -57,7 +57,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
           <img
             src={logoUrl}
             alt={siteName ?? "Logo"}
-            className="h-9 w-9 object-cover"
+            className="h-14 w-14 object-cover"
           />
         ) : (
           <div className="h-9 w-9 bg-primary/10 flex items-center justify-center text-primary font-bold text-sm select-none border border-primary/20">

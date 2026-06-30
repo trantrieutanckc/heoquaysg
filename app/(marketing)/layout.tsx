@@ -154,7 +154,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
 
       {/* ── Main header ─────────────────────────────────────── */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
-        <div className="container relative flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="container relative flex h-20 items-center justify-between px-4 sm:px-6">
           <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} centered />
           <nav className="flex items-center gap-1.5">
             <SearchButton />
