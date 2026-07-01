@@ -64,6 +64,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "settings",
     },
     {
+      title: "Tài liệu",
+      href: "/dashboard/docs",
+      icon: "page",
+    },
+    {
       title: "Cài đặt",
       href: "/dashboard/settings",
       icon: "settings",
