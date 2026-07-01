@@ -281,6 +281,8 @@ npx prisma db push
 - [x] **FunnyLoader khi đăng nhập** — hiện full-screen overlay ngay khi submit form (thay spinner button cũ); tắt nếu sai mật khẩu, giữ đến khi redirect nếu thành công
 - [x] **Loading 2 tầng** — `NavigationLoader` pig overlay full-screen khi click link; skeleton `loading.tsx` gốc restore lại cho body streaming (không dùng FunnyLoader trong loading.tsx nữa để tránh double loading)
 
+- [x] **Profile page 2 cột** — trái: avatar + info + form chỉnh thông tin; phải: ảnh heo quay Unsplash + lời chào tên user + stats (số bài viết, thành viên từ) + message nhỏ; cột phải sticky trên desktop
+
 ## Version 6 — còn lại
 - [ ] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish`; dashboard `/dashboard/thuc-don`; trang public `/thuc-don`
 - [ ] **Newsletter** — model `Subscriber`; form đăng ký nhúng footer; API `/api/subscribe` + `/api/unsubscribe`; dashboard `/dashboard/subscribers` (danh sách + export CSV)
