@@ -279,7 +279,7 @@ npx prisma db push
 - [x] **FunnyLoader** — `components/funny-loader.tsx` (🐷 animate-spin + 💨 animate-bounce + text random animate-pulse); dùng "use client" + `useState(() => Math.random())` tránh hydration mismatch
 - [x] **Full-screen navigation loader** — `NavigationLoader` overlay (click link → hiện, pathname thay đổi → ẩn sau 400ms); mount trong root layout; dùng lại `FunnyLoader`
 - [x] **FunnyLoader khi đăng nhập** — hiện full-screen overlay ngay khi submit form (thay spinner button cũ); tắt nếu sai mật khẩu, giữ đến khi redirect nếu thành công
-- [x] **Tất cả `loading.tsx`** — 18+ file thay bằng `FunnyLoader` (marketing, dashboard, editor, auth pages)
+- [x] **Loading 2 tầng** — `NavigationLoader` pig overlay full-screen khi click link; skeleton `loading.tsx` gốc restore lại cho body streaming (không dùng FunnyLoader trong loading.tsx nữa để tránh double loading)
 
 ## Version 6 — còn lại
 - [ ] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish`; dashboard `/dashboard/thuc-don`; trang public `/thuc-don`
