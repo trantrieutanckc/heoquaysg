@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
+import { ImageUploader } from "@/components/admin/image-uploader"
 
 interface Dish {
   id: string
@@ -14,6 +15,7 @@ interface Dish {
   description: string | null
   price: number
   unit: string
+  image: string | null
   available: boolean
   order: number
 }
@@ -38,10 +40,10 @@ export default function ThucDonPage() {
   const [editGroupName, setEditGroupName] = React.useState("")
 
   const [addingDishFor, setAddingDishFor] = React.useState<string | null>(null)
-  const [newDish, setNewDish] = React.useState({ name: "", price: "", unit: "phần", description: "" })
+  const [newDish, setNewDish] = React.useState({ name: "", price: "", unit: "phần", description: "", image: "" })
 
   const [editDishId, setEditDishId] = React.useState<string | null>(null)
-  const [editDish, setEditDish] = React.useState({ name: "", price: "", unit: "", description: "" })
+  const [editDish, setEditDish] = React.useState({ name: "", price: "", unit: "", description: "", image: "" })
 
   async function load() {
     const res = await fetch("/api/dish-groups")
@@ -94,11 +96,12 @@ export default function ThucDonPage() {
         price: parseFloat(newDish.price),
         unit: newDish.unit || "phần",
         description: newDish.description || null,
+        image: newDish.image || null,
       }),
     })
     if (res.ok) {
       setAddingDishFor(null)
-      setNewDish({ name: "", price: "", unit: "phần", description: "" })
+      setNewDish({ name: "", price: "", unit: "phần", description: "", image: "" })
       load()
       toast({ description: "Đã thêm món." })
     }
@@ -122,6 +125,7 @@ export default function ThucDonPage() {
         price: parseFloat(editDish.price),
         unit: editDish.unit,
         description: editDish.description || null,
+        image: editDish.image || null,
       }),
     })
     setEditDishId(null)
@@ -268,6 +272,14 @@ export default function ThucDonPage() {
                           value={editDish.description}
                           onChange={e => setEditDish(d => ({ ...d, description: e.target.value }))}
                         />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1.5">Ảnh món (tuỳ chọn)</p>
+                          <ImageUploader
+                            value={editDish.image}
+                            onChange={url => setEditDish(d => ({ ...d, image: url }))}
+                            className="max-w-[200px]"
+                          />
+                        </div>
                         <div className="flex gap-2">
                           <Button size="sm" className="h-7 text-xs" onClick={() => updateDish(dish.id)}>Lưu</Button>
                           <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setEditDishId(null)}>Hủy</Button>
@@ -276,6 +288,16 @@ export default function ThucDonPage() {
                     ) : (
                       /* Dish row */
                       <div className={cn("flex items-center gap-4", !dish.available && "opacity-50")}>
+                        {/* Thumbnail */}
+                        {dish.image ? (
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-muted border">
+                            <img src={dish.image} alt={dish.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg shrink-0 bg-muted/50 border border-dashed flex items-center justify-center text-muted-foreground/40 text-lg">
+                            🍽️
+                          </div>
+                        )}
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-sm">{dish.name}</p>
                           {dish.description && (
@@ -307,7 +329,7 @@ export default function ThucDonPage() {
                             title="Sửa món"
                             onClick={() => {
                               setEditDishId(dish.id)
-                              setEditDish({ name: dish.name, price: String(dish.price), unit: dish.unit, description: dish.description ?? "" })
+                              setEditDish({ name: dish.name, price: String(dish.price), unit: dish.unit, description: dish.description ?? "", image: dish.image ?? "" })
                             }}
                           >
                             ✏️
@@ -357,11 +379,19 @@ export default function ThucDonPage() {
                       value={newDish.description}
                       onChange={e => setNewDish(d => ({ ...d, description: e.target.value }))}
                     />
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1.5">Ảnh món (tuỳ chọn)</p>
+                      <ImageUploader
+                        value={newDish.image}
+                        onChange={url => setNewDish(d => ({ ...d, image: url }))}
+                        className="max-w-[200px]"
+                      />
+                    </div>
                     <div className="flex gap-2">
                       <Button size="sm" className="h-8 text-xs" onClick={() => addDish(group.id)}>+ Thêm món</Button>
                       <Button
                         size="sm" variant="ghost" className="h-8 text-xs"
-                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", price: "", unit: "phần", description: "" }) }}
+                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", price: "", unit: "phần", description: "", image: "" }) }}
                       >
                         Hủy
                       </Button>
