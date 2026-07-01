@@ -25,6 +25,7 @@ import { type BannerConfig, type BannerSlide, emptySlide, parseBanner } from "@/
 import { Accordion } from "@/components/ui/accordion"
 
 import { EditorCategorySection } from "./category-section"
+import { EditorTagSection } from "./tag-section"
 import { EditorRelatedSection } from "./related-section"
 import { EditorPriceSection } from "./price-section"
 import { EditorBookableSection } from "./bookable-section"
@@ -34,6 +35,12 @@ import { EditorBannerSection } from "./banner-section"
 import { EditorSeoSection } from "./seo-section"
 
 interface Category {
+  id: string
+  name: string
+  slug: string
+}
+
+interface Tag {
   id: string
   name: string
   slug: string
@@ -56,11 +63,13 @@ interface EditorProps {
   categories: Category[]
   postCategoryIds: string[]
   allPosts: PostOption[]
+  tags: Tag[]
+  postTagIds: string[]
 }
 
 type FormData = z.infer<typeof postPatchSchema>
 
-export function Editor({ post, categories, postCategoryIds, allPosts }: EditorProps) {
+export function Editor({ post, categories, postCategoryIds, allPosts, tags: initialTags, postTagIds }: EditorProps) {
   const { register, handleSubmit, watch } = useForm<FormData>({
     resolver: zodResolver(postPatchSchema),
     defaultValues: { title: post.title, content: post.content },
@@ -90,8 +99,10 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
   )
   const [isScheduling, setIsScheduling] = React.useState(false)
 
-  // Danh mục & bài liên quan
+  // Danh mục, tags & bài liên quan
   const [selectedCategoryIds, setSelectedCategoryIds] = React.useState<string[]>(postCategoryIds)
+  const [availableTags, setAvailableTags] = React.useState<Tag[]>(initialTags)
+  const [selectedTagIds, setSelectedTagIds] = React.useState<string[]>(postTagIds)
   const [relatedPostIds, setRelatedPostIds] = React.useState<string[]>(
     Array.isArray(post.relatedPostIds) ? (post.relatedPostIds as string[]) : []
   )
@@ -247,6 +258,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
           content: tiptapContent,
           image: imageUrl ? { url: imageUrl, alt: imageAlt, title: imageTitle } : null,
           categoryIds: selectedCategoryIds,
+          tagIds: selectedTagIds,
           seoTitle: seoTitle || null,
           seoDescription: seoDescription || null,
           seoKeywords: seoKeywords || null,
@@ -408,6 +420,12 @@ export function Editor({ post, categories, postCategoryIds, allPosts }: EditorPr
             categories={categories}
             selectedCategoryIds={selectedCategoryIds}
             onChange={setSelectedCategoryIds}
+          />
+          <EditorTagSection
+            tags={availableTags}
+            selectedTagIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            onTagCreated={(tag) => setAvailableTags((prev) => [...prev, tag])}
           />
           <EditorRelatedSection
             allPosts={allPosts}

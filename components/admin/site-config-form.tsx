@@ -68,6 +68,9 @@ export interface SiteConfigData {
   homeBookingLabel?: string
   homeBookingTitle?: string
   homeBookingDesc?: string
+  // Rich content (TipTap JSON serialized)
+  homeAboutContent?: string
+  homeBookingContent?: string
   // Homepage section backgrounds
   homeFeaturedBgColor?: string
   homeFeaturedBgImage?: string
@@ -161,36 +164,6 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
             previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
             placeholder="https://... (URL ảnh nền hero)"
           />
-        </Field>
-      </Section>
-
-      <Section title="Liên hệ">
-        <Field label="Số điện thoại" id="contactPhone">
-          <Input id="contactPhone" value={data.contactPhone ?? ""} onChange={set("contactPhone")} placeholder="0901 234 567" />
-        </Field>
-        <Field label="Zalo (số điện thoại Zalo)" id="contactZalo">
-          <Input id="contactZalo" value={data.contactZalo ?? ""} onChange={set("contactZalo")} placeholder="0901 234 567" />
-        </Field>
-        <Field label="Email" id="contactEmail">
-          <Input id="contactEmail" type="email" value={data.contactEmail ?? ""} onChange={set("contactEmail")} placeholder="info@heoquay.com" />
-        </Field>
-        <Field label="Địa chỉ" id="contactAddress">
-          <Input id="contactAddress" value={data.contactAddress ?? ""} onChange={set("contactAddress")} placeholder="123 Đường ABC, Bình Tân, TP.HCM" />
-        </Field>
-        <Field label="Giờ mở cửa" id="businessHours">
-          <Input id="businessHours" value={data.businessHours ?? ""} onChange={set("businessHours")} placeholder="06:00 – 20:00, tất cả các ngày" />
-        </Field>
-      </Section>
-
-      <Section title="Mạng xã hội">
-        <Field label="Facebook" id="socialFacebook">
-          <Input id="socialFacebook" value={data.socialFacebook ?? ""} onChange={set("socialFacebook")} placeholder="https://facebook.com/..." />
-        </Field>
-        <Field label="Instagram" id="socialInstagram">
-          <Input id="socialInstagram" value={data.socialInstagram ?? ""} onChange={set("socialInstagram")} placeholder="https://instagram.com/..." />
-        </Field>
-        <Field label="YouTube" id="socialYoutube">
-          <Input id="socialYoutube" value={data.socialYoutube ?? ""} onChange={set("socialYoutube")} placeholder="https://youtube.com/..." />
         </Field>
       </Section>
 

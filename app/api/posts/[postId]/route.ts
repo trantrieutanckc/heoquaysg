@@ -10,6 +10,7 @@ const postPatchSchema = z.object({
   published: z.boolean().optional(),
   image: z.any().optional().nullable(),
   categoryIds: z.array(z.string()).optional(),
+  tagIds: z.array(z.string()).optional(),
   seoTitle: z.string().nullable().optional(),
   seoDescription: z.string().nullable().optional(),
   seoKeywords: z.string().nullable().optional(),
@@ -77,6 +78,12 @@ export async function PATCH(
           categories: {
             deleteMany: {},
             create: body.categoryIds.map((id) => ({ categoryId: id })),
+          },
+        }),
+        ...(body.tagIds !== undefined && {
+          tags: {
+            deleteMany: {},
+            create: body.tagIds.map((id) => ({ tagId: id })),
           },
         }),
       },

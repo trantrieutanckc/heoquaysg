@@ -6,6 +6,7 @@ import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
 import { absoluteUrl, cn } from "@/lib/utils"
 import NextTopLoader from "nextjs-toploader"
+import { NavigationLoader } from "@/components/navigation-loader"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@/components/analytics"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
@@ -102,6 +103,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextTopLoader color="hsl(22 82% 40%)" height={3} showSpinner={false} />
+          <NavigationLoader />
           {children}
           <Analytics />
           <Toaster />

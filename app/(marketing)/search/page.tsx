@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/utils"
 import { SearchInput } from "@/components/search-input"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
+import { RecentSearches } from "@/components/recent-searches"
 
 export const metadata = { title: "Tìm kiếm" }
 
@@ -19,7 +20,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     ? await db.post.findMany({
         where: {
           published: true,
-          title: { contains: q, mode: "insensitive" },
+          OR: [
+            { title: { contains: q, mode: "insensitive" } },
+            { tags: { some: { tag: { name: { contains: q, mode: "insensitive" } } } } },
+          ],
         },
         select: {
           id: true,
@@ -30,11 +34,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           categories: {
             select: { category: { select: { name: true, slug: true } } },
           },
+          tags: { select: { tag: { select: { name: true, slug: true } } } },
         },
         orderBy: { createdAt: "desc" },
         take: 20,
       })
     : []
+
+  // Lấy 3 từ khoá tìm kiếm gần nhất
+  const recentSearches = q
+    ? []
+    : await db.searchQuery
+        .findMany({ orderBy: { createdAt: "desc" }, take: 3, select: { query: true } })
+        .then((rows) => [...new Map(rows.map((r) => [r.query, r])).values()])
+        .then((rows) => rows.slice(0, 3).map((r) => r.query))
+        .catch(() => [] as string[])
 
   const postImage = (image: unknown) => image as { url?: string; alt?: string } | null
 
@@ -42,8 +56,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <div className="container px-4 sm:px-6 py-8 lg:py-12">
       <PageEntrance className="mb-8">
         <h1 className="font-heading text-3xl sm:text-4xl tracking-tight mb-4">Tìm kiếm</h1>
-        <SearchInput defaultValue={q} />
+        <SearchInput defaultValue={q} logQuery={q.length >= 3} />
       </PageEntrance>
+
+      {!q && recentSearches.length > 0 && (
+        <FadeUp className="mb-6">
+          <RecentSearches queries={recentSearches} />
+        </FadeUp>
+      )}
 
       {q && (
         <FadeUp>
@@ -90,6 +110,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                           className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium"
                         >
                           {category.name}
+                        </span>
+                      ))}
+                      {post.tags.map(({ tag }) => (
+                        <span
+                          key={tag.slug}
+                          className="inline-flex items-center rounded-full bg-muted text-muted-foreground px-2 py-0.5 text-xs"
+                        >
+                          #{tag.name}
                         </span>
                       ))}
                       {post.author?.name && (

@@ -158,6 +158,15 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
           <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} centered />
           <nav className="flex items-center gap-1.5">
             <SearchButton />
+            <Link
+              href="/dat-lich"
+              className="hidden sm:inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors rounded-none"
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Đặt lịch
+            </Link>
             {user ? (
               <UserAccountNav
                 user={{ name: user.name, image: user.image, email: user.email }}
@@ -166,7 +175,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             ) : (
               <Link
                 href="/login"
-                className={cn(buttonVariants({ variant: "default", size: "sm" }), "px-4 ml-1 rounded-none text-xs uppercase tracking-wider font-bold")}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "px-4 ml-1 rounded-none text-xs uppercase tracking-wider font-bold")}
               >
                 Đăng nhập
               </Link>
@@ -176,23 +185,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
       </header>
       <main className="flex-1">{children}</main>
 
-      {/* Floating booking button */}
-      <Link
-        href="/dat-lich"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-3 text-sm font-bold uppercase tracking-wider shadow-2xl shadow-primary/40 transition-all hover:scale-105 active:scale-95 rounded-none"
-        aria-label="Đặt lịch ngay"
-      >
-        <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span className="hidden sm:inline">Đặt lịch ngay</span>
-        <span className="sm:hidden">Đặt lịch</span>
-      </Link>
-
-      <SiteFooter
+<SiteFooter
         siteName={cfg.siteName?.trim()}
         logoUrl={cfg.logoUrl?.trim()}
         siteDescription={cfg.siteDescription?.trim()}

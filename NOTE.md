@@ -265,14 +265,23 @@ npx prisma db push
 - [x] Logo thương hiệu vào header/footer — đã có từ trước, lấy từ Dashboard → Settings → logoUrl
 - [x] Go live checklist — sitemap, metadata đã xong; robots index bật qua dashboard khi go live (bên dưới)
 
-## Version 5 — đang làm
+## Version 5 — hoàn thành 01/07/2026
 
-### Đã hoàn thành
 - [x] **Chỉnh text trang chủ qua dashboard Giao diện** — `homepage-appearance-form.tsx` đã có sẵn text fields (label/title) + background cho từng section; wire `page.tsx` truyền cfg xuống; `home-sections.tsx` (`LatestPostsSection`, `BookingCtaSection`, `AboutSection`) nhận props thay vì hardcode text
-- [x] **Fix duplicate heading** — xóa h1 thừa bên trong `homepage-appearance-form.tsx` (trùng với `DashboardHeader`); xóa nút Lưu thừa ở đầu form; cập nhật mô tả trang `/dashboard/giao-dien`
+- [x] **Fix duplicate heading** — xóa h1 thừa bên trong `homepage-appearance-form.tsx` (trùng với `DashboardHeader`); xóa nút Lưu thừa ở đầu form
+- [x] **Tags bài viết** — model `Tag` + `PostTag` (many-to-many) trong Prisma; API `/api/tags` (GET/POST) + `/api/tags/[tagId]` (DELETE, ADMIN only); `TagSelector` popover trong editor (toggle + tạo mới inline); `EditorTagSection` accordion; filter `/blog?tag=slug` (pill dưới category tabs); trang public `/tags/[slug]`; dashboard `/dashboard/tags`
+- [x] **Search theo tags** — OR query tìm theo title OR tag name; hiển thị tag badges trên kết quả tìm kiếm
+- [x] **Lưu lịch sử tìm kiếm** — model `SearchQuery`; API `/api/search/log` (POST log ≥3 ký tự, GET 3 recent deduped); component `RecentSearches`; hiện 3 tìm kiếm gần nhất khi chưa có query
+- [x] **TipTap rich text editor trong Giao diện** — `MiniTiptapEditor` (StarterKit.configure({link:false,underline:false}), Underline, Link, Placeholder); toolbar Bold/Italic/Underline/BulletList/OrderedList/Link/ClearFormat; `lib/tiptap-html.ts` render server-side; `AboutSection` fallback về `siteDescription` nếu chưa có content
+- [x] **EDITOR role vào được trang Giao diện** — `dashboard/giao-dien/page.tsx` + `api/site-config` PUT cho phép ADMIN hoặc EDITOR
+- [x] **Xóa duplicate contact/social trong Settings** — giữ ở trang Liên hệ, bỏ khỏi `site-config-form.tsx`
+- [x] **Nút Đặt lịch trên nav bar** — xóa floating button cũ (fixed bottom-right), thêm vào nav giữa Search và Đăng nhập (`bg-primary`, uppercase, tracking-wider); đổi login button thành `variant="outline"`
+- [x] **FunnyLoader** — `components/funny-loader.tsx` (🐷 animate-spin + 💨 animate-bounce + text random animate-pulse); dùng "use client" + `useState(() => Math.random())` tránh hydration mismatch
+- [x] **Full-screen navigation loader** — `NavigationLoader` overlay (click link → hiện, pathname thay đổi → ẩn sau 400ms); mount trong root layout; dùng lại `FunnyLoader`
+- [x] **FunnyLoader khi đăng nhập** — hiện full-screen overlay ngay khi submit form (thay spinner button cũ); tắt nếu sai mật khẩu, giữ đến khi redirect nếu thành công
+- [x] **Tất cả `loading.tsx`** — 18+ file thay bằng `FunnyLoader` (marketing, dashboard, editor, auth pages)
 
-### Còn lại
-- [ ] **Tags bài viết** — model `Tag` + `PostTag` (many-to-many); dashboard `/dashboard/tags`; tag selector trong editor; filter `/blog?tag=slug`; trang `/tags/[slug]`
+## Version 6 — còn lại
 - [ ] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish`; dashboard `/dashboard/thuc-don`; trang public `/thuc-don`
 - [ ] **Newsletter** — model `Subscriber`; form đăng ký nhúng footer; API `/api/subscribe` + `/api/unsubscribe`; dashboard `/dashboard/subscribers` (danh sách + export CSV)
 

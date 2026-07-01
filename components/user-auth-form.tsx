@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { FunnyLoader } from "@/components/funny-loader"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -118,6 +119,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
+    <>
+    {isLoading && (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background/90 backdrop-blur-sm">
+        <FunnyLoader />
+      </div>
+    )}
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-3">
@@ -179,16 +186,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           )}
 
           <button className={cn(buttonVariants())} disabled={isLoading || isLocked}>
-            {isLoading ? (
-              <>
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                Đang đăng nhập...
-              </>
-            ) : isLocked ? (
-              "Tài khoản tạm khóa"
-            ) : (
-              "Đăng nhập"
-            )}
+            {isLocked ? "Tài khoản tạm khóa" : "Đăng nhập"}
           </button>
 
           <div className="text-center">
@@ -199,5 +197,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         </div>
       </form>
     </div>
+    </>
   )
 }

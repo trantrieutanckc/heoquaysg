@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import type { SiteConfigData } from "@/components/admin/site-config-form"
 import { SaveOverlay } from "@/components/ui/save-overlay"
+import { MiniTiptapEditor } from "@/components/admin/mini-tiptap-editor"
+import { Icons } from "@/components/icons"
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -157,6 +159,10 @@ export function HomepageAppearanceForm({ initialData }: Props) {
     setData((prev) => ({ ...prev, [key]: val }))
   }
 
+  function setContent(key: "homeAboutContent" | "homeBookingContent", val: string) {
+    setData((prev) => ({ ...prev, [key]: val }))
+  }
+
   async function handleSave() {
     setSaving(true)
     try {
@@ -208,9 +214,18 @@ export function HomepageAppearanceForm({ initialData }: Props) {
 
       <Section
         title="Section 3 — Về chúng tôi"
-        desc="Nhãn nhỏ và background"
+        desc="Nhãn nhỏ, nội dung và background"
       >
         <TextField label='Nhãn nhỏ (label)' fieldKey="homeAboutLabel" placeholder="Câu chuyện của chúng tôi" data={data} set={set} />
+        <div className="grid gap-1.5">
+          <Label className="text-xs">Nội dung (rich text)</Label>
+          <MiniTiptapEditor
+            value={data.homeAboutContent}
+            onChange={(val) => setContent("homeAboutContent", val)}
+            placeholder="Viết câu chuyện thương hiệu, điểm nổi bật..."
+          />
+          <p className="text-[11px] text-muted-foreground">Hỗ trợ in đậm, in nghiêng, danh sách, link. Nếu để trống sẽ dùng Mô tả ngắn từ Cài đặt.</p>
+        </div>
         <BgField label="Background" colorKey="homeAboutBgColor" imageKey="homeAboutBgImage" data={data} set={set} />
       </Section>
 
@@ -232,7 +247,7 @@ export function HomepageAppearanceForm({ initialData }: Props) {
         <TextField label='Nhãn nhỏ (label)' fieldKey="homeBookingLabel" placeholder="Giao hàng tận nơi" data={data} set={set} />
         <div className="grid sm:grid-cols-2 gap-3">
           <TextField label='Tiêu đề (title)' fieldKey="homeBookingTitle" placeholder="Đặt lịch ngay hôm nay" data={data} set={set} />
-          <TextField label='Mô tả ngắn' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
+          <TextField label='Mô tả ngắn (plain text)' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
         </div>
         <BgField
           label="Background"

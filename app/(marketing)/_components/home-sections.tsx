@@ -315,9 +315,10 @@ interface AboutSectionProps {
   contactPhone?: string
   label?: string
   bgStyle?: React.CSSProperties
+  aboutContentHtml?: string | null
 }
 
-export function AboutSection({ siteName, siteDescription, heroImage, contactAddress, businessHours, contactPhone, label, bgStyle }: AboutSectionProps) {
+export function AboutSection({ siteName, siteDescription, heroImage, contactAddress, businessHours, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
   return (
     <section className="py-14 lg:py-20 border-b border-border/40" style={{ backgroundColor: "#fdf8f0", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
@@ -333,7 +334,14 @@ export function AboutSection({ siteName, siteDescription, heroImage, contactAddr
                     <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed">{siteDescription}</p>
+                {aboutContentHtml ? (
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground [&_a]:text-primary [&_a]:underline"
+                    dangerouslySetInnerHTML={{ __html: aboutContentHtml }}
+                  />
+                ) : (
+                  <p className="text-muted-foreground leading-relaxed">{siteDescription}</p>
+                )}
                 <div className="flex flex-col gap-2 text-sm">
                   {contactAddress && (
                     <div className="flex items-start gap-2">

@@ -24,6 +24,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "page",
     },
     {
+      title: "Tags",
+      href: "/dashboard/tags",
+      icon: "page",
+    },
+    {
       title: "Trang tĩnh",
       href: "/dashboard/pages",
       icon: "page",

@@ -4,14 +4,27 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Icons } from "@/components/icons"
 
-export function SearchInput({ defaultValue = "" }: { defaultValue?: string }) {
+export function SearchInput({ defaultValue = "", logQuery = false }: { defaultValue?: string; logQuery?: boolean }) {
   const router = useRouter()
   const [value, setValue] = React.useState(defaultValue)
+  const [isPending, startTransition] = React.useTransition()
+
+  React.useEffect(() => {
+    if (logQuery && defaultValue.length >= 3) {
+      fetch("/api/search/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: defaultValue }),
+      }).catch(() => null)
+    }
+  }, [logQuery, defaultValue])
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const q = value.trim()
-    router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search")
+    startTransition(() => {
+      router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search")
+    })
   }
 
   return (
@@ -27,10 +40,15 @@ export function SearchInput({ defaultValue = "" }: { defaultValue?: string }) {
       />
       <button
         type="submit"
-        className="absolute right-2 inline-flex h-8 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        disabled={isPending}
+        className="absolute right-2 inline-flex h-8 items-center gap-1.5 rounded-lg bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-70"
       >
-        <Icons.search className="h-3 w-3" />
-        Tìm
+        {isPending ? (
+          <Icons.spinner className="h-3 w-3 animate-spin" />
+        ) : (
+          <Icons.search className="h-3 w-3" />
+        )}
+        {isPending ? "Đang tìm..." : "Tìm"}
       </button>
     </form>
   )

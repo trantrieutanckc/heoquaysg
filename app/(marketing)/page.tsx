@@ -30,6 +30,7 @@ export async function generateMetadata() {
 
 import { db } from "@/lib/db"
 import React from "react"
+import { tiptapToHtml } from "@/lib/tiptap-html"
 import {
   HeroSection,
   FeaturedSection,
@@ -72,6 +73,7 @@ export default async function IndexPage() {
   ])
 
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const aboutContentHtml = tiptapToHtml(cfg.homeAboutContent)
   const heroImage = cfg.heroImage?.trim()
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const siteTagline = cfg.siteTagline?.trim() || "Hương vị gia truyền, đậm đà qua nhiều thế hệ"
@@ -124,6 +126,7 @@ export default async function IndexPage() {
         contactPhone={cfg.contactPhone}
         label={cfg.homeAboutLabel}
         bgStyle={sectionStyle("homeAboutBgColor", "homeAboutBgImage")}
+        aboutContentHtml={aboutContentHtml}
       />
 
       <LatestPostsSection

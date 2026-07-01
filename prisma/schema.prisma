@@ -109,6 +109,7 @@ model Post {
   ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])
   categories     PostCategory[]
+  tags           PostTag[]
   comments       Comment[]
 
   @@index([authorId])
@@ -271,4 +272,34 @@ model PostCategory {
   @@id([postId, categoryId])
   @@index([categoryId])
   @@map(name: "post_categories")
+}
+
+model Tag {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  posts     PostTag[]
+
+  @@map(name: "tags")
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+  @@map(name: "post_tags")
+}
+
+model SearchQuery {
+  id        String   @id @default(cuid())
+  query     String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  @@index([createdAt])
+  @@map(name: "search_queries")
 }

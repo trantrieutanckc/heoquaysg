@@ -34,20 +34,26 @@ export async function generateMetadata() {
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: { category?: string }
+  searchParams: { category?: string; tag?: string }
 }) {
   const selectedSlug = searchParams.category?.trim() || null
+  const selectedTag = searchParams.tag?.trim() || null
 
-  const [categories, posts] = await Promise.all([
+  const [categories, tags, posts] = await Promise.all([
     db.category.findMany({
       where: { published: true },
       orderBy: { order: "asc" },
+      select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
+    }),
+    db.tag.findMany({
+      orderBy: { name: "asc" },
       select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
     }),
     db.post.findMany({
       where: {
         published: true,
         ...(selectedSlug ? { categories: { some: { category: { slug: selectedSlug } } } } : {}),
+        ...(selectedTag ? { tags: { some: { tag: { slug: selectedTag } } } } : {}),
       },
       orderBy: { createdAt: "desc" },
       select: {
@@ -60,11 +66,13 @@ export default async function BlogPage({
         ratingCount: true,
         author: { select: { name: true, image: true } },
         categories: { select: { category: { select: { name: true, slug: true } } } },
+        tags: { select: { tag: { select: { name: true, slug: true } } } },
       },
     }),
   ])
 
   const selectedCategory = categories.find((c) => c.slug === selectedSlug)
+  const selectedTagObj = tags.find((t) => t.slug === selectedTag)
 
   return (
     <div>
@@ -74,15 +82,15 @@ export default async function BlogPage({
           <PageEntrance>
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">Khám phá</p>
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic">
-              {selectedCategory ? selectedCategory.name : "Bài viết & Thực đơn"}
+              {selectedCategory ? selectedCategory.name : selectedTagObj ? `#${selectedTagObj.name}` : "Bài viết & Thực đơn"}
             </h1>
             <div className="flex items-center gap-1.5 mt-3">
               <div className="h-0.5 w-10 bg-primary rounded-full" />
               <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
             </div>
             <p className="text-muted-foreground mt-3">
-              {selectedCategory
-                ? `${posts.length} bài viết trong danh mục này.`
+              {selectedCategory || selectedTagObj
+                ? `${posts.length} bài viết.`
                 : "Các bài viết mới nhất về ẩm thực và món quay."}
             </p>
           </PageEntrance>
@@ -125,6 +133,29 @@ export default async function BlogPage({
                   <span className="text-xs opacity-50">{cat._count.posts}</span>
                 )}
               </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Tag filter */}
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-4">
+            {tags.map((tag) => (
+              <a
+                key={tag.slug}
+                href={selectedTag === tag.slug ? "/blog" : `/blog?tag=${tag.slug}`}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium border transition-colors",
+                  selectedTag === tag.slug
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                )}
+              >
+                #{tag.name}
+                {tag._count.posts > 0 && (
+                  <span className="opacity-60">{tag._count.posts}</span>
+                )}
+              </a>
             ))}
           </div>
         )}
