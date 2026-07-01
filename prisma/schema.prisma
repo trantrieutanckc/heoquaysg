@@ -303,3 +303,32 @@ model SearchQuery {
   @@index([createdAt])
   @@map(name: "search_queries")
 }
+
+model DishGroup {
+  id        String   @id @default(cuid())
+  name      String
+  order     Int      @default(0)
+  dishes    Dish[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map(name: "dish_groups")
+}
+
+model Dish {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  unit        String    @default("phần")
+  image       String?
+  available   Boolean   @default(true)
+  order       Int       @default(0)
+  groupId     String
+  group       DishGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([groupId])
+  @@map(name: "dishes")
+}

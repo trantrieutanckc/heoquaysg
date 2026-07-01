@@ -28,10 +28,18 @@ const TIME_SLOTS = [
   "17:00", "18:00", "19:00",
 ]
 
-function tomorrow() {
+function nextWeekday() {
   const d = new Date()
   d.setDate(d.getDate() + 1)
+  // nếu ngày mai là thứ 7 → +1, chủ nhật → +2
+  if (d.getDay() === 6) d.setDate(d.getDate() + 2)
+  if (d.getDay() === 0) d.setDate(d.getDate() + 1)
   return d.toISOString().split("T")[0]
+}
+
+function isWeekend(dateStr: string) {
+  const day = new Date(dateStr + "T00:00:00").getDay()
+  return day === 0 || day === 6
 }
 
 const inputCls = "w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-muted-foreground/60"
@@ -89,6 +97,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
     e.preventDefault()
     if (items.length === 0) { setErrorMsg("Vui lòng chọn ít nhất 1 món."); return }
     if (!date) { setErrorMsg("Vui lòng chọn ngày giao."); return }
+    if (isWeekend(date)) { setErrorMsg("Chúng tôi chỉ giao hàng Thứ 2 – Thứ 6. Vui lòng chọn ngày khác."); return }
     setStatus("loading")
     setErrorMsg("")
 
@@ -276,12 +285,22 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
             <input
               id="date"
               type="date"
-              min={tomorrow()}
+              min={nextWeekday()}
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => {
+                const v = e.target.value
+                if (isWeekend(v)) {
+                  setErrorMsg("Chúng tôi chỉ giao hàng Thứ 2 – Thứ 6. Vui lòng chọn ngày khác.")
+                  setDate("")
+                } else {
+                  setErrorMsg("")
+                  setDate(v)
+                }
+              }}
               required
               className={inputCls}
             />
+            <p className="mt-1 text-[11px] text-muted-foreground">Giao hàng Thứ 2 – Thứ 6 (không giao T7, CN)</p>
           </div>
           <div>
             <label className={labelCls} htmlFor="time">Giờ giao</label>
