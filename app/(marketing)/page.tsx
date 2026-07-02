@@ -39,10 +39,11 @@ import {
   LatestPostsSection,
   BookingCtaSection,
   MapSection,
+  ThucDonSection,
 } from "./_components/home-sections"
 
 export default async function IndexPage() {
-  const [siteConfigRow, featuredPost, posts, categories] = await Promise.all([
+  const [siteConfigRow, featuredPost, posts, categories, dishGroups] = await Promise.all([
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
     db.post.findFirst({
       where: { published: true, featured: true },
@@ -67,8 +68,12 @@ export default async function IndexPage() {
     db.category.findMany({
       where: { published: true },
       orderBy: { order: "asc" },
-      take: 6,
+      take: 7,
       include: { _count: { select: { posts: true } } },
+    }),
+    db.dishGroup.findMany({
+      orderBy: { order: "asc" },
+      include: { dishes: { orderBy: { order: "asc" } } },
     }),
   ])
 
@@ -110,7 +115,8 @@ export default async function IndexPage() {
 
       {categories.length > 0 && (
         <CategoriesSection
-          categories={categories}
+          categories={categories.slice(0, 6)}
+          showViewAll={categories.length >= 6}
           bgStyle={sectionStyle("homeCategoriesBgColor", "homeCategoriesBgImage")}
           label={cfg.homeCategoriesLabel}
           title={cfg.homeCategoriesTitle}
@@ -144,6 +150,8 @@ export default async function IndexPage() {
           </div>
         </section>
       )}
+
+      <ThucDonSection groups={dishGroups} />
 
       <BookingCtaSection
         bgStyle={sectionStyle("homeBookingBgColor", "homeBookingBgImage")}

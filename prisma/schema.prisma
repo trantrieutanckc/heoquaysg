@@ -304,6 +304,18 @@ model SearchQuery {
   @@map(name: "search_queries")
 }
 
+model Subscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  token          String    @unique @default(cuid())
+  active         Boolean   @default(true)
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@map(name: "subscribers")
+}
+
 model DishGroup {
   id        String   @id @default(cuid())
   name      String

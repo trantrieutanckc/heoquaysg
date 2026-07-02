@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
+import { NewsletterForm } from "@/components/newsletter-form"
 
 interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   siteName?: string
@@ -45,7 +46,7 @@ export function SiteFooter({
       <div className="h-0.5 bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
       <div className="container py-12 md:py-16">
-        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
 
           {/* Brand */}
           <div className="flex flex-col space-y-5 sm:col-span-2 md:col-span-2">
@@ -127,6 +128,13 @@ export function SiteFooter({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-widest text-stone-100">Nhận tin mới</h4>
+            <p className="text-sm text-stone-400 leading-relaxed">Đăng ký để nhận thông báo ưu đãi và tin tức mới nhất.</p>
+            <NewsletterForm />
           </div>
 
           {/* Liên hệ */}

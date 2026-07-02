@@ -242,12 +242,13 @@ interface CategoryItem {
 
 interface CategoriesSectionProps {
   categories: CategoryItem[]
+  showViewAll?: boolean
   bgStyle?: React.CSSProperties
   label?: string
   title?: string
 }
 
-export function CategoriesSection({ categories, bgStyle, label, title }: CategoriesSectionProps) {
+export function CategoriesSection({ categories, showViewAll, bgStyle, label, title }: CategoriesSectionProps) {
   return (
     <section className="py-14 lg:py-20 border-y border-border/40" style={{ backgroundColor: "#f8f7f5", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
@@ -256,10 +257,12 @@ export function CategoriesSection({ categories, bgStyle, label, title }: Categor
             label={label || "Thực đơn"}
             title={title || "Danh mục món"}
             right={
-              <Link href="/categories" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
-                Xem tất cả
-                <ArrowRightSm />
-              </Link>
+              showViewAll ? (
+                <Link href="/categories" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
+                  Xem tất cả
+                  <ArrowRightSm />
+                </Link>
+              ) : undefined
             }
           />
         </SlideInLeft>
@@ -656,6 +659,112 @@ export function MapSection({ contactAddress, businessHours, contactPhone, bgStyl
               />
             </div>
           </div>
+        </FadeUp>
+      </div>
+    </section>
+  )
+}
+
+// ── Section: Thực đơn ───────────────────────────────────────────────
+
+interface DishItem {
+  id: string
+  name: string
+  description: string | null
+  price: number
+  unit: string
+  available: boolean
+  image: string | null
+}
+
+interface DishGroupItem {
+  id: string
+  name: string
+  dishes: DishItem[]
+}
+
+interface ThucDonSectionProps {
+  groups: DishGroupItem[]
+  bgStyle?: React.CSSProperties
+}
+
+function formatPrice(p: number) {
+  return p.toLocaleString("vi-VN") + "đ"
+}
+
+export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
+  const visibleGroups = groups.filter((g) => g.dishes.length > 0)
+  if (visibleGroups.length === 0) return null
+
+  return (
+    <section className="py-14 lg:py-20 border-y border-border/40" style={{ backgroundColor: "#f8f7f5", ...bgStyle }}>
+      <div className="container px-4 sm:px-6">
+        <SlideInLeft>
+          <SectionTitle
+            label="Thực đơn & Bảng giá"
+            title="Các món chúng tôi cung cấp"
+            right={
+              <Link href="/thuc-don" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
+                Xem đầy đủ
+                <ArrowRightSm />
+              </Link>
+            }
+          />
+        </SlideInLeft>
+
+        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleGroups.map((group) => {
+            const preview = group.dishes.slice(0, 3)
+            const remaining = group.dishes.length - preview.length
+            return (
+              <StaggerItem key={group.id} hover>
+                <Link
+                  href="/thuc-don"
+                  className="group flex flex-col h-full border bg-card hover:shadow-lg transition-all duration-300 overflow-hidden"
+                >
+                  {/* Header */}
+                  <div className="flex items-center gap-3 px-5 py-4 border-b bg-primary/5">
+                    <div className="w-1 h-5 rounded-full bg-primary shrink-0" />
+                    <h3 className="font-heading font-bold text-base">{group.name}</h3>
+                    <span className="ml-auto text-xs text-muted-foreground">{group.dishes.length} món</span>
+                  </div>
+
+                  {/* Dish preview */}
+                  <div className="flex-1 divide-y">
+                    {preview.map((dish) => (
+                      <div key={dish.id} className={`flex items-center justify-between px-5 py-3 gap-3${!dish.available ? " opacity-40" : ""}`}>
+                        <span className="text-sm truncate">{dish.name}</span>
+                        <span className="text-sm font-bold text-primary shrink-0">{formatPrice(dish.price)}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="px-5 py-3 border-t bg-muted/30 flex items-center justify-between">
+                    {remaining > 0 ? (
+                      <span className="text-xs text-muted-foreground">+{remaining} món khác</span>
+                    ) : (
+                      <span />
+                    )}
+                    <span className="text-xs font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Xem thêm <ArrowRightSm />
+                    </span>
+                  </div>
+                </Link>
+              </StaggerItem>
+            )
+          })}
+        </StaggerContainer>
+
+        {/* CTA */}
+        <FadeUp className="mt-10 text-center">
+          <Link
+            href="/thuc-don"
+            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-sm font-bold uppercase tracking-wider transition-colors"
+          >
+            Xem thực đơn & bảng giá đầy đủ
+            <ArrowRightSm />
+          </Link>
         </FadeUp>
       </div>
     </section>

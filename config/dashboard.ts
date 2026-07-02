@@ -49,6 +49,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "page",
     },
     {
+      title: "Subscribers",
+      href: "/dashboard/subscribers",
+      icon: "page",
+    },
+    {
       title: "Người dùng",
       href: "/dashboard/users",
       icon: "user",
