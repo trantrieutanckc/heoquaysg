@@ -448,9 +448,7 @@ export function LatestPostsSection({ posts, categories, activeCategory, bgStyle,
             }
           />
         </SlideInLeft>
-        {categories && categories.length > 0 && (
-          <CategoryFilterTabs categories={categories} activeCategory={activeCategory ?? null} />
-        )}
+
         {posts.length === 0 ? (
           <p className="text-sm text-muted-foreground py-12 text-center">Chưa có bài viết nào trong danh mục này.</p>
         ) : (
