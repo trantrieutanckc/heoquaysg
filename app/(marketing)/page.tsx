@@ -42,7 +42,13 @@ import {
   ThucDonSection,
 } from "./_components/home-sections"
 
-export default async function IndexPage() {
+export default async function IndexPage({
+  searchParams,
+}: {
+  searchParams?: { category?: string }
+}) {
+  const activeCategory = searchParams?.category ?? null
+
   const [siteConfigRow, featuredPost, posts, categories, dishGroups] = await Promise.all([
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
     db.post.findFirst({
@@ -55,7 +61,10 @@ export default async function IndexPage() {
       },
     }),
     db.post.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        ...(activeCategory ? { categories: { some: { category: { slug: activeCategory } } } } : {}),
+      },
       select: {
         id: true, title: true, createdAt: true, image: true, content: true, price: true,
         avgRating: true, ratingCount: true,
@@ -63,7 +72,7 @@ export default async function IndexPage() {
         categories: { select: { category: { select: { name: true, slug: true } } } },
       },
       orderBy: { createdAt: "desc" },
-      take: 8,
+      take: 9,
     }),
     db.category.findMany({
       where: { published: true },
@@ -92,8 +101,16 @@ export default async function IndexPage() {
     return {}
   }
 
-  const featured = featuredPost ?? posts[0] ?? null
-  const others = posts.filter((p) => p.id !== featured?.id).slice(0, 6)
+  const featured = (!activeCategory ? featuredPost : null) ?? posts[0] ?? null
+  const filtered = posts.filter((p) => p.id !== featured?.id)
+  // Ưu tiên bài heo-quay lên đầu khi không filter theo category
+  const others = (!activeCategory
+    ? [
+        ...filtered.filter((p) => p.categories.some((c) => c.category.slug === "heo-quay")),
+        ...filtered.filter((p) => !p.categories.some((c) => c.category.slug === "heo-quay")),
+      ]
+    : filtered
+  ).slice(0, 6)
 
   return (
     <div className="min-h-screen">
@@ -137,6 +154,8 @@ export default async function IndexPage() {
 
       <LatestPostsSection
         posts={others}
+        categories={categories.slice(0, 6)}
+        activeCategory={activeCategory}
         bgStyle={sectionStyle("homePostsBgColor", "homePostsBgImage")}
         label={cfg.homePostsLabel}
         title={cfg.homePostsTitle}
