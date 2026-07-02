@@ -42,37 +42,25 @@ import {
   ThucDonSection,
 } from "./_components/home-sections"
 
-export default async function IndexPage({
-  searchParams,
-}: {
-  searchParams?: { category?: string }
-}) {
-  const activeCategory = searchParams?.category ?? null
+const POST_SELECT = {
+  id: true, title: true, createdAt: true, image: true, content: true, price: true,
+  avgRating: true, ratingCount: true,
+  author: { select: { name: true, image: true } },
+  categories: { select: { category: { select: { name: true, slug: true } } } },
+} as const
 
+export default async function IndexPage() {
   const [siteConfigRow, featuredPost, posts, categories, dishGroups] = await Promise.all([
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
     db.post.findFirst({
       where: { published: true, featured: true },
-      select: {
-        id: true, title: true, createdAt: true, image: true, content: true, price: true,
-        avgRating: true, ratingCount: true,
-        author: { select: { name: true, image: true } },
-        categories: { select: { category: { select: { name: true, slug: true } } } },
-      },
+      select: POST_SELECT,
     }),
     db.post.findMany({
-      where: {
-        published: true,
-        ...(activeCategory ? { categories: { some: { category: { slug: activeCategory } } } } : {}),
-      },
-      select: {
-        id: true, title: true, createdAt: true, image: true, content: true, price: true,
-        avgRating: true, ratingCount: true,
-        author: { select: { name: true, image: true } },
-        categories: { select: { category: { select: { name: true, slug: true } } } },
-      },
+      where: { published: true },
+      select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: 9,
+      take: 8,
     }),
     db.category.findMany({
       where: { published: true },
@@ -101,16 +89,15 @@ export default async function IndexPage({
     return {}
   }
 
-  const featured = (!activeCategory ? featuredPost : null) ?? posts[0] ?? null
-  const filtered = posts.filter((p) => p.id !== featured?.id)
-  // Ưu tiên bài heo-quay lên đầu khi không filter theo category
-  const others = (!activeCategory
-    ? [
-        ...filtered.filter((p) => p.categories.some((c) => c.category.slug === "heo-quay")),
-        ...filtered.filter((p) => !p.categories.some((c) => c.category.slug === "heo-quay")),
-      ]
-    : filtered
-  ).slice(0, 6)
+  const featured = featuredPost ?? posts[0] ?? null
+  const others = posts
+    .filter((p) => p.id !== featured?.id)
+    .sort((a, b) => {
+      const aHeo = a.categories.some((c) => c.category.slug === "heo-quay") ? -1 : 0
+      const bHeo = b.categories.some((c) => c.category.slug === "heo-quay") ? -1 : 0
+      return aHeo - bHeo
+    })
+    .slice(0, 6)
 
   return (
     <div className="min-h-screen">
@@ -152,22 +139,13 @@ export default async function IndexPage({
         aboutContentHtml={aboutContentHtml}
       />
 
-      <LatestPostsSection
-        posts={others}
-        categories={categories.slice(0, 6)}
-        activeCategory={activeCategory}
-        bgStyle={sectionStyle("homePostsBgColor", "homePostsBgImage")}
-        label={cfg.homePostsLabel}
-        title={cfg.homePostsTitle}
-      />
-
-      {posts.length === 0 && (
-        <section className="bg-background py-14">
-          <div className="container px-4 sm:px-6 flex flex-col items-center justify-center py-24 text-center">
-            <p className="text-lg font-medium mb-2">Chưa có bài viết nào</p>
-            <p className="text-sm text-muted-foreground">Hãy tạo bài viết đầu tiên trong dashboard.</p>
-          </div>
-        </section>
+      {others.length > 0 && (
+        <LatestPostsSection
+          posts={others}
+          bgStyle={sectionStyle("homePostsBgColor", "homePostsBgImage")}
+          label={cfg.homePostsLabel}
+          title={cfg.homePostsTitle}
+        />
       )}
 
       <ThucDonSection groups={dishGroups} />

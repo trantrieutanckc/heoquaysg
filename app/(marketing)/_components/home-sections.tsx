@@ -11,7 +11,6 @@ import {
 } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
-import { CategoryFilterTabs } from "./category-filter-tabs"
 
 // ── Shared helpers ──────────────────────────────────────────────────
 
@@ -177,6 +176,7 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
                   src={image.url}
                   alt={image.alt ?? post.title}
                   fill
+                  priority
                   sizes="(max-width: 768px) 100vw, 45vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   placeholder="blur"
@@ -423,15 +423,13 @@ interface PostItem {
 
 interface LatestPostsSectionProps {
   posts: PostItem[]
-  categories?: { slug: string; name: string }[]
-  activeCategory?: string | null
   bgStyle?: React.CSSProperties
   label?: string
   title?: string
 }
 
-export function LatestPostsSection({ posts, categories, activeCategory, bgStyle, label, title }: LatestPostsSectionProps) {
-  if (posts.length === 0 && !activeCategory) return null
+export function LatestPostsSection({ posts, bgStyle, label, title }: LatestPostsSectionProps) {
+  if (posts.length === 0) return null
 
   return (
     <section className="py-14 lg:py-20" style={{ backgroundColor: "var(--background)", ...bgStyle }}>
@@ -449,9 +447,6 @@ export function LatestPostsSection({ posts, categories, activeCategory, bgStyle,
           />
         </SlideInLeft>
 
-        {posts.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-12 text-center">Chưa có bài viết nào trong danh mục này.</p>
-        ) : (
         <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const image = img(post.image)
@@ -511,7 +506,6 @@ export function LatestPostsSection({ posts, categories, activeCategory, bgStyle,
             )
           })}
         </StaggerContainer>
-        )}
       </div>
     </section>
   )
