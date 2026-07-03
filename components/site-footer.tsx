@@ -115,6 +115,7 @@ export function SiteFooter({
                 { href: "/", label: "Trang chủ" },
                 { href: "/blog", label: "Bài viết" },
                 { href: "/categories", label: "Danh mục" },
+                { href: "/thuc-don", label: "Thực đơn" },
                 { href: "/about", label: "Giới thiệu" },
                 { href: "/lien-he", label: "Liên hệ" },
               ].map(({ href, label }) => (
