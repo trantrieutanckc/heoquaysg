@@ -15,6 +15,10 @@ export const marketingConfig: MarketingConfig = {
       href: "/categories",
     },
     {
+      title: "Thực đơn",
+      href: "/thuc-don",
+    },
+    {
       title: "Về chúng tôi",
       href: "/about",
     },
