@@ -283,8 +283,12 @@ npx prisma db push
 
 - [x] **Profile page 2 cột** — trái: avatar + info + form chỉnh thông tin; phải: ảnh heo quay Unsplash + lời chào tên user + stats (số bài viết, thành viên từ) + message nhỏ; cột phải sticky trên desktop
 
-## Version 6 — còn lại
-- [ ] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish`; dashboard `/dashboard/thuc-don`; trang public `/thuc-don`
+## Version 6 ✅ — hoàn thành 01/07/2026
+
+- [x] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish` (Prisma); API CRUD `/api/dish-groups`, `/api/dish-groups/[groupId]`, `/api/dishes`, `/api/dishes/[dishId]`; dashboard `/dashboard/thuc-don` (thêm/sửa/xóa nhóm + món, toggle có sẵn/hết); trang public `/thuc-don` (hero banner, sticky category nav, dish list theo nhóm, CTA đặt lịch + số điện thoại từ Settings)
+- [x] **Block T7/CN trong form đặt lịch** — `nextWeekday()` thay `tomorrow()` (tự nhảy qua weekend); validate khi user chọn ngày; hint text "Giao hàng Thứ 2 – Thứ 6"
+
+## Version 7 — còn lại
 - [ ] **Newsletter** — model `Subscriber`; form đăng ký nhúng footer; API `/api/subscribe` + `/api/unsubscribe`; dashboard `/dashboard/subscribers` (danh sách + export CSV)
 
 ---
