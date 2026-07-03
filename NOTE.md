@@ -288,15 +288,29 @@ npx prisma db push
 - [x] **Thực đơn / Bảng giá** — model `DishGroup` + `Dish` (Prisma); API CRUD `/api/dish-groups`, `/api/dish-groups/[groupId]`, `/api/dishes`, `/api/dishes/[dishId]`; dashboard `/dashboard/thuc-don` (thêm/sửa/xóa nhóm + món, toggle có sẵn/hết); trang public `/thuc-don` (hero banner, sticky category nav, dish list theo nhóm, CTA đặt lịch + số điện thoại từ Settings)
 - [x] **Block T7/CN trong form đặt lịch** — `nextWeekday()` thay `tomorrow()` (tự nhảy qua weekend); validate khi user chọn ngày; hint text "Giao hàng Thứ 2 – Thứ 6"
 
-## Version 7 — còn lại
-- [ ] **Newsletter** — model `Subscriber`; form đăng ký nhúng footer; API `/api/subscribe` + `/api/unsubscribe`; dashboard `/dashboard/subscribers` (danh sách + export CSV)
+## Version 7 ✅ — hoàn thành 03/07/2026
+
+- [x] **Newsletter** — model `Subscriber` (email, name, token, active, subscribedAt, unsubscribedAt); `components/newsletter-form.tsx` nhúng trong footer; API `/api/newsletter/subscribe` (POST, reactivate nếu đã hủy) + `/api/newsletter/unsubscribe` (GET via token) + `/api/newsletter/subscribers` (GET, ADMIN/EDITOR) + `/api/newsletter/subscribers/[id]` (DELETE) + `/api/newsletter/export` (CSV); dashboard `/dashboard/subscribers` (filter active/inactive/all, export CSV, hủy đăng ký)
+
+## Content — 03/07/2026
+
+- 6 bài blog đầy đủ nội dung + SEO (TipTap JSON format), seed qua `prisma/seed-posts-v2.js`:
+  - Heo Quay Lá Mắc Mật — Đặc Sản Giao Thoa Hai Miền (Món Quay, wide)
+  - Gà Quay Mật Ong — Da Giòn, Thịt Ngọt, Không Bở (Công Thức, standard)
+  - Tại Sao Da Heo Quay Không Giòn? 7 Lỗi Thường Gặp (Mẹo Nấu Ăn, standard)
+  - Đặt Heo Quay Cúng Giỗ — Những Điều Cần Biết (Món Quay, minimal)
+  - Bảo Quản Heo Quay — Giữ Da Giòn Cả Ngày Không Lo (Mẹo Nấu Ăn, standard)
+  - Heo Quay Bình Tân — Câu Chuyện Từ Bếp Lửa Gia Đình (Món Quay, wide)
 
 ---
 
 ## Khi go live cần làm thêm
-- [ ] **Bật lại robots index** — hiện `robots.ts` đang `disallow: "/"` (block toàn bộ Google). Khi go live: đổi thành `allow: "/"` + thêm `disallow` cho các trang private (`/dashboard`, `/editor`, `/profile`, `/login`, `/api`)
-- [x] **Cập nhật sitemap** — `/about` và `/lien-he` đã có trong `sitemap.ts`
+- [x] **robots index** — `app/robots.txt/route.ts` đọc từ DB (`siteConfig.data.robotsTxtContent`); default đã là `Allow: /`, chặn `/dashboard/` và `/api/`. Không cần sửa code — nếu muốn tuỳ chỉnh thì vào Dashboard → Settings → Robots.txt
+- [x] **Cập nhật sitemap** — đã có `/about`, `/lien-he`, `/thuc-don`, `/dat-lic`, tất cả posts, categories, pages
 - [x] **Cập nhật metadata** trong `app/layout.tsx` — `locale: "vi_VN"`, keywords tiếng Việt, authors/creator lấy từ `siteName` động
+- [x] **Thực đơn trên public nav** — `config/marketing.ts` đã có "Thực đơn" → `/thuc-don`
+- [ ] **Điền siteName trong Dashboard → Settings** — hiện đang `undefined`, footer và metadata dùng fallback hardcode
+- [ ] **Kiểm tra số điện thoại** — DB đang lưu `091121237` (9 số, có thể thiếu 1 số). Vào Dashboard → Settings → Số điện thoại để sửa
 
 ---
 
