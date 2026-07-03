@@ -14,32 +14,62 @@ const DEFAULT_DOCS = [
     content: `# Hướng dẫn tạo bài viết
 
 ## Tạo bài mới
-1. Vào Dashboard → nhấn nút "Tạo bài viết" góc phải trên
-2. Nhập tiêu đề, nội dung bằng editor
-3. Chọn danh mục bằng nút Category trên toolbar
-4. Thêm ảnh bìa ở cột bên phải
-5. Nhấn "Lưu" để lưu nháp, hoặc "Publish" để đăng bài
+1. Vào **Dashboard → Bài viết** → nhấn **"Tạo bài viết"** góc phải trên
+2. Nhập tiêu đề bài
+3. Soạn nội dung trong ô editor (xem hướng dẫn định dạng bên dưới)
+4. Chọn danh mục bằng nút **Category** trên toolbar editor
+5. Thêm ảnh bìa ở cột phải → nhập URL hoặc nhấn "Tải lên"
+6. Nhấn **"Lưu"** để lưu nháp, hoặc bật **"Đã đăng"** để hiển thị trên web
 
-## Định dạng nội dung
-- Heading: gõ /heading hoặc nhấn # ở đầu dòng
-- Danh sách: gõ /list
-- Ảnh: gõ /image → nhập URL hoặc tải lên
-- Trích dẫn: gõ /quote
-- Code: gõ /code
+## Định dạng nội dung (TipTap editor)
+
+Chọn văn bản rồi nhấn icon trên toolbar để định dạng:
+
+| Định dạng | Cách làm |
+|---|---|
+| Tiêu đề H2, H3 | Toolbar → H2 / H3 |
+| In đậm | Ctrl+B hoặc toolbar **B** |
+| In nghiêng | Ctrl+I hoặc toolbar *I* |
+| Gạch chân | Ctrl+U hoặc toolbar U |
+| Danh sách chấm | Toolbar → danh sách • |
+| Danh sách số | Toolbar → danh sách 1. |
+| Chèn ảnh | Toolbar → icon ảnh → nhập URL hoặc tải lên |
+| Chèn link | Chọn text → toolbar → icon link → dán URL |
+| Trích dẫn (blockquote) | Toolbar → icon " |
+| Bảng | Toolbar → icon bảng |
+| 2 cột | Toolbar → icon 2 cột |
+| Xóa định dạng | Toolbar → icon tẩy |
+
+## Tags (nhãn bài viết)
+- Mở accordion **"Tags"** bên phải editor
+- Nhấn tag có sẵn để gán, hoặc gõ tên mới → Enter để tạo và gán ngay
+- Tags giúp khách lọc bài theo chủ đề tại `/blog?tag=...`
 
 ## Bài liên quan
-- Mở panel "Bài liên quan" bên phải khi soạn thảo
-- Tìm và chọn tối đa 4 bài để gợi ý cuối trang
+- Mở accordion **"Bài liên quan"** bên phải
+- Tìm và chọn tối đa 4 bài để gợi ý cuối trang bài viết
+
+## SEO
+- Mở accordion **"SEO"** bên phải
+- Điền **SEO Title** (50–60 ký tự), **Mô tả** (150–160 ký tự), **Từ khoá** (5–10 từ ngăn cách bằng dấu phẩy)
+- SEO Image: URL ảnh hiển thị khi chia sẻ lên Facebook/Zalo
 
 ## Template bài viết
-- Standard: bố cục thông thường
-- Wide: nội dung rộng hơn, phù hợp ảnh nhiều
-- Minimal: ẩn tác giả, danh mục — dùng cho trang đặc biệt
+| Template | Khi nào dùng |
+|---|---|
+| Standard | Bài thông thường |
+| Wide | Bài có nhiều ảnh, cần không gian rộng |
+| Minimal | Ẩn tác giả và danh mục — dùng cho trang đặc biệt |
+
+## Đặt lịch đăng tự động
+- Mở accordion **"Lên lịch"** bên phải
+- Chọn ngày và giờ muốn đăng
+- Bài sẽ tự động publish vào giờ đó (cron chạy mỗi giờ)
 
 ## Lưu ý
-- Bài chưa publish sẽ không hiện trên trang công khai
-- Dùng "Featured" để ghim bài lên trang chủ
-- SEO: điền đầy đủ title/description để tối ưu Google`,
+- Bài chưa publish **không hiện** trên trang công khai
+- Dùng **"Nổi bật"** (Featured) để ghim bài lên khu vực đặc biệt trang chủ
+- Nên điền đủ SEO trước khi đăng`,
   },
   {
     key: "categories",
@@ -99,32 +129,162 @@ const DEFAULT_DOCS = [
 - Tên menu ngắn gọn (1-3 từ) để hiển thị đẹp trên mobile`,
   },
   {
+    key: "thuc-don",
+    title: "Thực đơn",
+    content: `# Hướng dẫn quản lý Thực đơn
+
+Trang public: **/thuc-don** — hiển thị toàn bộ nhóm món và giá cho khách.
+
+## Cấu trúc
+- **Nhóm món** (DishGroup): ví dụ "Heo Quay", "Gà Quay", "Vịt Quay"
+- **Món ăn** (Dish): thuộc một nhóm, có tên, giá, mô tả, trạng thái có sẵn/hết
+
+## Thêm nhóm món
+1. Vào **Dashboard → Thực đơn**
+2. Nhấn **"Thêm nhóm"**
+3. Nhập tên nhóm → Lưu
+4. Kéo thả để sắp xếp thứ tự các nhóm
+
+## Thêm món vào nhóm
+1. Nhấn **"Thêm món"** trong nhóm tương ứng
+2. Điền:
+   - **Tên món** (bắt buộc)
+   - **Giá** (VND, để trống nếu chưa có giá)
+   - **Mô tả** (ngắn gọn, 1–2 dòng)
+   - **Ảnh** (URL ảnh món)
+3. Lưu
+
+## Cập nhật giá
+- Nhấn icon chỉnh sửa ✏️ bên cạnh tên món
+- Sửa giá → Lưu
+- Thay đổi hiển thị trên web ngay lập tức
+
+## Đánh dấu hết hàng
+- Toggle **"Có sẵn / Hết"** bên cạnh từng món
+- Khi **Hết**: món vẫn hiển thị trên web nhưng có nhãn "Hết" màu đỏ
+- Khi có lại hàng: bật toggle trở lại
+
+## Xóa nhóm / món
+- Xóa món: icon thùng rác bên cạnh tên món
+- Xóa nhóm: nhấn "Xóa nhóm" — **xóa nhóm sẽ xóa toàn bộ món trong nhóm**
+
+## Lưu ý
+- Giá hiển thị định dạng: 250.000 ₫
+- Số điện thoại đặt hàng lấy từ **Dashboard → Settings → Số điện thoại**
+- Trang /thuc-don có CTA "Đặt hàng ngay" liên kết đến /dat-lich`,
+  },
+  {
+    key: "newsletter",
+    title: "Newsletter",
+    content: `# Hướng dẫn quản lý Newsletter
+
+## Khách đăng ký như thế nào?
+- Form **"Đăng ký nhận tin"** nằm ở footer của website
+- Khách nhập email → nhấn "Đăng ký"
+- Hệ thống tự lưu vào danh sách subscribers
+
+## Xem danh sách subscribers
+1. Vào **Dashboard → Subscribers**
+2. Lọc theo tab:
+   - **Đang đăng ký**: email đang hoạt động
+   - **Đã hủy**: đã bấm hủy đăng ký
+   - **Tất cả**: toàn bộ
+3. Header hiển thị tổng số người đang đăng ký
+
+## Hủy đăng ký cho một người
+- Nhấn **"Hủy đăng ký"** ở cuối hàng
+- Email vẫn còn trong hệ thống nhưng chuyển sang trạng thái "Đã hủy"
+- Nếu người đó đăng ký lại, hệ thống tự kích hoạt lại
+
+## Xuất danh sách (Export CSV)
+- Nhấn **"Xuất CSV"** góc phải trên
+- File tải về gồm: Email, Tên, Ngày đăng ký
+- Chỉ xuất danh sách **đang hoạt động** (không bao gồm đã hủy)
+- Dùng file này để gửi email marketing qua Mailchimp, GetResponse...
+
+## Lưu ý
+- Hệ thống **không tự gửi email newsletter** — chỉ quản lý danh sách
+- Để gửi email hàng loạt: xuất CSV → import vào công cụ email marketing
+- Khách có thể tự hủy qua link trong email (nếu bạn thêm link /api/newsletter/unsubscribe?token=...)`,
+  },
+  {
+    key: "settings",
+    title: "Cài đặt",
+    content: `# Hướng dẫn Cài đặt & Go Live
+
+## Cấu hình cơ bản (bắt buộc điền trước khi go live)
+
+Vào **Dashboard → Settings** để điền:
+
+| Trường | Mô tả | Ví dụ |
+|---|---|---|
+| Tên website | Hiển thị trên tab trình duyệt và footer | Heo Quay Bình Tân |
+| Mô tả ngắn | Tagline hiển thị footer | Chuyên heo quay, vịt quay... |
+| Logo URL | URL ảnh logo (nên là ảnh vuông, tối thiểu 200x200px) | https://... |
+| Số điện thoại | Hiển thị trên form đặt lịch và trang thực đơn | 0911 212 370 |
+| Email liên hệ | Hiển thị trang liên hệ | heoquay47@gmail.com |
+| Địa chỉ | Địa chỉ cửa hàng | 47 Đường ABC, Bình Tân, TP.HCM |
+| Giờ mở cửa | Hiển thị trang liên hệ | Thứ 2 – Thứ 6, 7:00 – 18:00 |
+| Facebook / Zalo / Instagram | URL trang mạng xã hội | https://facebook.com/... |
+
+## Giao diện trang chủ
+Vào **Dashboard → Giao diện** để chỉnh:
+- Ảnh nền, màu sắc từng section
+- Text tiêu đề, mô tả section "Về chúng tôi"
+- Nội dung rich text phần giới thiệu
+
+## Robots.txt (kiểm soát Google)
+- Mặc định: Google **được phép** index toàn bộ trang công khai
+- Không cần thay đổi gì nếu muốn Google tìm thấy website
+- Nếu cần chặn trang nào đó: vào Settings → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
+
+## Sitemap
+- Tự động tạo tại: **https://taxonomy-ebon.vercel.app/sitemap.xml**
+- Bao gồm: trang chủ, blog, danh mục, thực đơn, đặt lịch, tất cả bài viết đã đăng
+- Gửi URL sitemap lên **Google Search Console** sau khi go live
+
+## Checklist go live
+- [ ] Điền đầy đủ Settings (tên, SĐT, địa chỉ, logo)
+- [ ] Upload logo thật vào Settings → Logo URL
+- [ ] Kiểm tra số điện thoại đúng 10 số
+- [ ] Đăng bài viết đầu tiên (published = true)
+- [ ] Thêm ít nhất 3–5 món vào Thực đơn
+- [ ] Gửi sitemap lên Google Search Console
+- [ ] Test form đặt lịch — nhận email xác nhận chưa`,
+  },
+  {
     key: "general",
     title: "Chung",
     content: `# Hướng dẫn chung
 
 ## Tài khoản
-- Thay đổi tên và ảnh đại diện tại trang Profile
+- Thay đổi tên và ảnh đại diện tại trang **Profile** (nhấn avatar góc phải dashboard)
 - Đổi mật khẩu tại Profile → mật khẩu phải có 8+ ký tự, chữ hoa, số, ký tự đặc biệt
-- Session tự hết hạn sau 1 ngày, cần đăng nhập lại
+- Quên mật khẩu: dùng **"Quên mật khẩu"** ở trang đăng nhập → nhận email reset
 
 ## Upload ảnh
-- Hỗ trợ JPG, PNG, WebP, GIF — tối đa 5MB
-- Ảnh bìa bài viết nên tỷ lệ 16:9
-- Hoặc dùng URL ảnh từ nguồn ngoài
+- Hỗ trợ: JPG, PNG, WebP — tối đa 5MB
+- Ảnh bìa bài viết nên tỷ lệ **16:9** (ví dụ: 1200×675px)
+- Ảnh avatar nên tỷ lệ **1:1** (vuông)
+- Có thể dùng URL ảnh từ nguồn ngoài thay vì tải lên
 
 ## Bình luận
-- Vào Dashboard → Comments để duyệt/xóa bình luận
-- Bình luận của người dùng không cần đăng nhập
-- Hệ thống hỗ trợ rating (đánh giá sao) kèm bình luận
+- Vào **Dashboard → Bình luận** để xem và xóa bình luận từ khách
+- Khách không cần đăng nhập để bình luận
+- Có thể lọc bình luận theo trạng thái
 
 ## Thông báo
-- Chuông thông báo ở góc phải header dashboard
-- Tự động cập nhật mỗi 60 giây
-- Có thông báo khi: có đặt lịch mới, bình luận mới, bài viết được đăng theo lịch
+- Chuông 🔔 ở góc phải header dashboard tự cập nhật mỗi 30 giây
+- Sẽ có thông báo khi: bình luận mới, bài viết đăng theo lịch thành công
+- Nhấn chuông → xem tất cả thông báo
 
-## Tìm kiếm
-- Thanh tìm kiếm ở góc phải dashboard tìm nhanh bài viết`,
+## Đặt lịch (Bookings)
+- Vào **Dashboard → Đặt lịch** để xem đơn hàng từ khách
+- Mỗi đơn gồm: tên, SĐT, địa chỉ, món chọn, ngày giao
+- Chỉ nhận đơn giao **Thứ 2 – Thứ 6** (hệ thống tự chặn T7/CN)
+
+## Tìm kiếm nhanh
+- Thanh tìm kiếm 🔍 ở góc phải dashboard → tìm nhanh bài viết theo tiêu đề`,
   },
   {
     key: "permissions",
