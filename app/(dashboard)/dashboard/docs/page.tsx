@@ -129,6 +129,42 @@ Chọn văn bản rồi nhấn icon trên toolbar để định dạng:
 - Tên menu ngắn gọn (1-3 từ) để hiển thị đẹp trên mobile`,
   },
   {
+    key: "tags",
+    title: "Tags",
+    content: `# Hướng dẫn quản lý Tags
+
+Tags (nhãn) giúp phân loại bài viết chi tiết hơn danh mục. Khách có thể lọc bài theo tag tại trang /blog hoặc /tags/[slug].
+
+## Tạo tag mới
+1. Vào **Dashboard → Tags** → nhấn **"Tạo tag"**
+2. Nhập tên tag → Lưu
+3. Slug tự tạo từ tên (ví dụ: "Heo Quay" → slug "heo-quay")
+
+## Gán tag vào bài viết
+1. Vào editor bài viết
+2. Mở accordion **"Tags"** ở cột phải
+3. Nhấn tag có sẵn để gán (nhấn lại để bỏ gán)
+4. Hoặc gõ tên tag mới → nhấn **Enter** → tag được tạo và gán ngay
+
+## Xóa tag
+- Vào Dashboard → Tags → nhấn icon thùng rác
+- Chỉ **ADMIN** mới xóa được tag
+- Xóa tag **không xóa bài viết**, chỉ gỡ nhãn khỏi tất cả bài đang dùng tag đó
+
+## Tags hiển thị ở đâu?
+| Vị trí | Mô tả |
+|---|---|
+| Trang /blog | Hiển thị pills lọc theo tag bên dưới filter danh mục |
+| Trang /tags/[slug] | Danh sách bài viết theo tag |
+| Kết quả tìm kiếm | Hiển thị tag badges trên mỗi kết quả |
+| Trang bài viết | Tags hiển thị cuối bài |
+
+## Lưu ý
+- Tên tag nên ngắn gọn, 1–3 từ
+- Không tạo quá nhiều tag trùng nghĩa (ví dụ: "Heo Quay" và "heo-quay" là khác nhau)
+- Một bài viết có thể gán nhiều tag cùng lúc`,
+  },
+  {
     key: "thuc-don",
     title: "Thực đơn",
     content: `# Hướng dẫn quản lý Thực đơn
