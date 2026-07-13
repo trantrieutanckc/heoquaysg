@@ -1,4 +1,4 @@
-import { Playfair_Display } from "next/font/google"
+import { Nunito } from "next/font/google"
 import Script from "next/script"
 import { cache } from "react"
 
@@ -19,11 +19,10 @@ const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
   return (config?.data ?? {}) as Record<string, string>
 })
 
-const fontHeading = Playfair_Display({
+const fontHeading = Nunito({
   subsets: ["latin", "vietnamese"],
   variable: "--font-heading",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["400", "600", "700", "800"],
 })
 
 interface RootLayoutProps {
