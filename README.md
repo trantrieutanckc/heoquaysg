@@ -80,4 +80,4 @@ pnpm dev
 
 ## License
 
-Licensed under the [MIT license](https://github.com/shadcn/taxonomy/blob/main/LICENSE.md).
+Licensed under the [MIT license](https://github.com/trantrieutanckc/heoquaysg/blob/main/LICENSE.md).
