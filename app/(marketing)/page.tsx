@@ -60,10 +60,13 @@ export default async function IndexPage() {
       select: POST_SELECT,
     }),
     db.post.findMany({
-      where: { published: true },
+      where: {
+        published: true,
+        categories: { some: { category: { slug: { in: ["heo-quay", "vit-quay", "ga-quay"] } } } },
+      },
       select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: homePostsCount,
+      take: homePostsCount * 4,
     }),
     db.category.findMany({
       where: { published: true },
@@ -146,6 +149,7 @@ export default async function IndexPage() {
           bgStyle={sectionStyle("homePostsBgColor", "homePostsBgImage")}
           label={cfg.homePostsLabel}
           title={cfg.homePostsTitle}
+          maxShow={homePostsCount}
         />
       )}
 

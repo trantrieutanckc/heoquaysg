@@ -415,6 +415,10 @@ export function AboutSection({ siteName, siteDescription, heroImage, contactAddr
 
 // ── Section: Latest Posts ───────────────────────────────────────────
 
+export type { } // keep module boundary
+
+import { LatestPostsTabs } from "./latest-posts-tabs"
+
 interface PostItem {
   id: string
   title: string
@@ -433,9 +437,10 @@ interface LatestPostsSectionProps {
   bgStyle?: React.CSSProperties
   label?: string
   title?: string
+  maxShow?: number
 }
 
-export function LatestPostsSection({ posts, bgStyle, label, title }: LatestPostsSectionProps) {
+export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }: LatestPostsSectionProps) {
   if (posts.length === 0) return null
 
   return (
@@ -453,69 +458,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title }: LatestPosts
             }
           />
         </SlideInLeft>
-
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => {
-            const image = img(post.image)
-            return (
-              <StaggerItem key={post.id} hover>
-                <Link
-                  href={`/posts/${post.id}`}
-                  className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                    {image?.url ? (
-                      <Image
-                        src={image.url}
-                        alt={image.alt ?? post.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        placeholder="blur"
-                        blurDataURL={BLUR_PLACEHOLDER}
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-2.5 p-5 flex-1">
-                    {post.categories.length > 0 && (
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
-                        {post.categories[0].category.name}
-                      </span>
-                    )}
-                    <h3 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    {post.seoDescription && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
-                    )}
-                    {post.price != null && (
-                      <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
-                        {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                      </span>
-                    )}
-                    {post.avgRating != null && post.ratingCount > 0 && (
-                      <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
-                    )}
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
-                      {post.author?.image ? (
-                        <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />
-                      ) : (
-                        <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold">
-                          {post.author?.name?.[0]?.toUpperCase() ?? "?"}
-                        </div>
-                      )}
-                      <span>{post.author?.name}</span>
-                      <span>·</span>
-                      <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
-                    </div>
-                  </div>
-                </Link>
-              </StaggerItem>
-            )
-          })}
-        </StaggerContainer>
+        <LatestPostsTabs posts={posts} maxShow={maxShow} />
       </div>
     </section>
   )
