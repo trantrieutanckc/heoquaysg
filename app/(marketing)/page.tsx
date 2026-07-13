@@ -44,7 +44,7 @@ import {
 
 const POST_SELECT = {
   id: true, title: true, createdAt: true, image: true, content: true, price: true,
-  avgRating: true, ratingCount: true,
+  avgRating: true, ratingCount: true, seoDescription: true,
   author: { select: { name: true, image: true } },
   categories: { select: { category: { select: { name: true, slug: true } } } },
 } as const

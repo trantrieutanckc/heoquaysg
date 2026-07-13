@@ -417,6 +417,7 @@ interface PostItem {
   price: number | null
   avgRating: number | null
   ratingCount: number
+  seoDescription?: string | null
   author: { name: string | null; image: string | null } | null
   categories: { category: { name: string; slug: string } }[]
 }
@@ -480,6 +481,9 @@ export function LatestPostsSection({ posts, bgStyle, label, title }: LatestPosts
                     <h3 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h3>
+                    {post.seoDescription && (
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
+                    )}
                     {post.price != null && (
                       <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
                         {new Intl.NumberFormat("vi-VN").format(post.price)} đ
