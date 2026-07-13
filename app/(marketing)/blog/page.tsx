@@ -73,6 +73,7 @@ export default async function BlogPage({
         createdAt: true,
         avgRating: true,
         ratingCount: true,
+        seoDescription: true,
         author: { select: { name: true, image: true } },
         categories: { select: { category: { select: { name: true, slug: true } } } },
         tags: { select: { tag: { select: { name: true, slug: true } } } },
@@ -211,6 +212,10 @@ export default async function BlogPage({
                     <h2 className="relative font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2 after:absolute after:-bottom-[2px] after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:w-0 after:transition-[width] after:duration-500 group-hover:after:w-full">
                       {post.title}
                     </h2>
+
+                    {post.seoDescription && (
+                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
+                    )}
 
                     {post.price != null && (
                       <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
