@@ -305,12 +305,35 @@ npx prisma db push
 ---
 
 ## Khi go live cần làm thêm
-- [x] **robots index** — `app/robots.txt/route.ts` đọc từ DB (`siteConfig.data.robotsTxtContent`); default đã là `Allow: /`, chặn `/dashboard/` và `/api/`. Không cần sửa code — nếu muốn tuỳ chỉnh thì vào Dashboard → Settings → Robots.txt
-- [x] **Cập nhật sitemap** — đã có `/about`, `/lien-he`, `/thuc-don`, `/dat-lic`, tất cả posts, categories, pages
-- [x] **Cập nhật metadata** trong `app/layout.tsx` — `locale: "vi_VN"`, keywords tiếng Việt, authors/creator lấy từ `siteName` động
-- [x] **Thực đơn trên public nav** — `config/marketing.ts` đã có "Thực đơn" → `/thuc-don`
-- [ ] **Điền siteName trong Dashboard → Settings** — hiện đang `undefined`, footer và metadata dùng fallback hardcode
-- [ ] **Kiểm tra số điện thoại** — DB đang lưu `091121237` (9 số, có thể thiếu 1 số). Vào Dashboard → Settings → Số điện thoại để sửa
+
+### Code ✅ (đã xong)
+- [x] robots index, sitemap, metadata, thực đơn nav
+- [x] Số điện thoại `0987 054 231` đã lưu DB (13/07/2026)
+- [x] Đổi tên project từ taxonomy → heoquaybinhtan toàn bộ codebase
+
+### Chờ khách chọn domain `heoquaybinhtan.com` hoặc `.vn`
+
+### Checklist khi có domain (làm theo thứ tự)
+
+**Bước 1 — Vercel Dashboard**
+- [ ] Settings → General → Project Name → đổi thành `heoquaybinhtan`
+- [ ] Settings → Domains → thêm domain mới
+- [ ] Settings → Environment Variables → cập nhật:
+  - `NEXT_PUBLIC_APP_URL` = `https://heoquaybinhtan.com` (hoặc .vn)
+  - `NEXTAUTH_URL` = `https://heoquaybinhtan.com` (hoặc .vn)
+- [ ] Redeploy
+
+**Bước 2 — DNS (tại nơi mua domain)**
+- [ ] Copy A record / CNAME từ Vercel → dán vào DNS
+
+**Bước 3 — Dashboard site**
+- [ ] Settings → Tên site → điền "Heo Quay Bình Tân"
+- [ ] Settings → Phân tích & SEO → bật robots index
+
+**Bước 4 — Test**
+- [ ] Mở domain, kiểm tra load
+- [ ] Đặt lịch thử → nhận email
+- [ ] Form liên hệ → nhận email
 
 ---
 
