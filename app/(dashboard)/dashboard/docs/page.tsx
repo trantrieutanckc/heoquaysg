@@ -275,7 +275,7 @@ Vào **Dashboard → Giao diện** để chỉnh:
 - Nếu cần chặn trang nào đó: vào Settings → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
 
 ## Sitemap
-- Tự động tạo tại: **https://taxonomy-ebon.vercel.app/sitemap.xml**
+- Tự động tạo tại: **https://heoquaybinhtan.vercel.app/sitemap.xml**
 - Bao gồm: trang chủ, blog, danh mục, thực đơn, đặt lịch, tất cả bài viết đã đăng
 - Gửi URL sitemap lên **Google Search Console** sau khi go live
 

@@ -9,7 +9,7 @@
 | **Auth** | NextAuth.js · CredentialsProvider (email + password) |
 | **Deploy** | Vercel |
 | **URL local** | http://localhost:3000 |
-| **URL Vercel** | https://taxonomy-ebon.vercel.app |
+| **URL Vercel** | https://heoquaybinhtan.vercel.app |
 
 ---
 
@@ -202,8 +202,8 @@ DIRECT_URL="postgresql://postgres:[PASSWORD]@db.vpdqxefnmbxklonhnlbs.supabase.co
 
 ### Vercel (đã cấu hình)
 ```
-NEXT_PUBLIC_APP_URL=https://taxonomy-ebon.vercel.app
-NEXTAUTH_URL=https://taxonomy-ebon.vercel.app
+NEXT_PUBLIC_APP_URL=https://heoquaybinhtan.vercel.app
+NEXTAUTH_URL=https://heoquaybinhtan.vercel.app
 NEXTAUTH_SECRET=<encrypted trên Vercel>
 DATABASE_URL=postgresql://postgres.vpdqxefnmbxklonhnlbs:[PASSWORD]@aws-1-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true
 ```
