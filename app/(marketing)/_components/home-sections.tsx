@@ -50,15 +50,19 @@ export function getExcerpt(content: unknown, maxLength = 160): string {
 export const img = (image: unknown) => image as { url?: string; alt?: string } | null
 
 const ArrowRight = () => (
-  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
+  <span className="transition-transform duration-200 group-hover:translate-x-1.5 shrink-0">
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  </span>
 )
 
 const ArrowRightSm = () => (
-  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
+  <span className="transition-transform duration-200 group-hover:translate-x-1 shrink-0">
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
+  </span>
 )
 
 // ── Section: Hero Banner ─────────────────────────────────────────────
@@ -113,16 +117,18 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/blog"
-                className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3.5 text-sm font-semibold transition-colors shadow-xl shadow-primary/30 uppercase tracking-wider"
+                className="group inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3.5 text-sm font-semibold transition-colors shadow-xl shadow-primary/30 uppercase tracking-wider"
               >
                 Xem thực đơn
                 <ArrowRight />
               </Link>
               <Link
                 href="/dat-lich"
-                className="inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-3.5 text-sm font-semibold transition-colors backdrop-blur-sm uppercase tracking-wider"
+                className="group inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-3.5 text-sm font-semibold transition-colors backdrop-blur-sm uppercase tracking-wider"
               >
-                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span className="transition-transform duration-200 group-hover:scale-110 shrink-0">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
                 Đặt lịch ngay
               </Link>
             </div>
@@ -259,7 +265,7 @@ export function CategoriesSection({ categories, showViewAll, bgStyle, label, tit
             title={title || "Danh mục món"}
             right={
               showViewAll ? (
-                <Link href="/categories" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
+                <Link href="/categories" className="group text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
                   Xem tất cả
                   <ArrowRightSm />
                 </Link>
@@ -369,7 +375,7 @@ export function AboutSection({ siteName, siteDescription, heroImage, contactAddr
                 <div className="flex flex-wrap gap-3 pt-1">
                   <Link
                     href="/about"
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
+                    className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
                   >
                     Về chúng tôi
                     <ArrowRightSm />
@@ -440,7 +446,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title }: LatestPosts
             label={label || "Khám phá"}
             title={title || "Bài viết mới nhất"}
             right={
-              <Link href="/blog" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
+              <Link href="/blog" className="group text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
                 Xem tất cả
                 <ArrowRightSm />
               </Link>
@@ -569,7 +575,7 @@ export function BookingCtaSection({
             </Link>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-4 text-sm font-semibold uppercase tracking-wider transition-colors"
+              className="group inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-4 text-sm font-semibold uppercase tracking-wider transition-colors"
             >
               Xem thực đơn
               <ArrowRight />
@@ -710,7 +716,7 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
             label="Thực đơn & Bảng giá"
             title="Các món chúng tôi cung cấp"
             right={
-              <Link href="/thuc-don" className="text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
+              <Link href="/thuc-don" className="group text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
                 Xem đầy đủ
                 <ArrowRightSm />
               </Link>
@@ -766,7 +772,7 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
         <FadeUp className="mt-10 text-center">
           <Link
             href="/thuc-don"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-sm font-bold uppercase tracking-wider transition-colors"
+            className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-sm font-bold uppercase tracking-wider transition-colors"
           >
             Xem thực đơn & bảng giá đầy đủ
             <ArrowRightSm />
