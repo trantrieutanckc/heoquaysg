@@ -22,7 +22,7 @@ const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
 const fontHeading = Nunito({
   subsets: ["latin", "vietnamese"],
   variable: "--font-heading",
-  weight: ["400", "600", "700", "800"],
+  weight: ["300", "400", "500", "600"],
 })
 
 interface RootLayoutProps {
