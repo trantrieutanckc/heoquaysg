@@ -455,3 +455,29 @@ Nếu có lỗi ở một số dòng, các dòng hợp lệ vẫn được tạo
   - `.env`: đổi `DATABASE_URL` sang pooler `port 6543` với `?pgbouncer=true`, thêm `DIRECT_URL` giữ nguyên direct `port 5432`
   - `prisma/schema.prisma`: thêm `directUrl = env("DIRECT_URL")` để migration vẫn dùng direct connection
 - **Lưu ý**: Nếu lỗi tái diễn, vào Supabase Dashboard → SQL Editor → chạy `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'postgres' AND pid <> pg_backend_pid() AND state IN ('idle', 'idle in transaction');`. Nếu SQL Editor cũng không vào được → pause rồi resume project.
+
+---
+
+### 13/07/2026 — Pre-demo cleanup & go-live prep
+
+#### Đã làm
+- **Fix heoquaybinhtan.vercel.app**: project đổi tên trên Vercel nhưng alias chưa đổi → `vercel alias set` + `vercel domains add heoquaybinhtan.vercel.app`
+- **Deploy workflow**: xác nhận GitHub đã connect Vercel → chỉ cần `git push`, KHÔNG dùng `vercel --prod`
+- **sanitize-html ESM fix**: v2.17.6 build lỗi webpack → thêm `"sanitize-html"` vào `serverComponentsExternalPackages` trong `next.config.mjs`
+- **Bỏ italic toàn site**: Nunito không đẹp italic → xóa tất cả class `italic` trong `home-sections.tsx`
+- **seoDescription hiển thị**: thêm dưới tiêu đề ở trang category, blog, homepage
+- **Điền content 21 bài trống**: dùng Prisma script viết TipTap JSON trực tiếp vào DB
+- **Dọn post library**: publish 14 bài liên quan, xóa 8 bài không liên quan, đổi "Heo Quay 47" → "Heo Quay Bình Tân"
+- **Button arrow animation**: `group-hover:translate-x-1.5` trên tất cả icon arrow
+- **Tab filter homepage**: component `LatestPostsTabs` (client) — Tất cả / Heo Quay / Vịt Quay / Gà Quay, filter client-side không reload trang
+- **Dashboard overview**: thêm stat card "Đặt lịch" (tổng + pending), card link thẳng `/dashboard/dat-lich`, viền đỏ khi có đơn chờ
+- **Cron keep-alive**: `app/api/cron/ping/route.ts` + schedule `0 */12 * * *` trong `vercel.json` → giữ Supabase không bị pause (free tier pause sau 7 ngày inactive)
+- **About section ẩn khi trống**: homepage chỉ render AboutSection khi có `contactAddress` / `contactPhone` / `aboutContentHtml`
+
+#### Cần làm trước go-live
+- [ ] Dashboard → Cài đặt: **bật toggle "Cho phép Google index"** (`robotsIndex = true`)
+- [ ] Dashboard → Liên hệ: điền SĐT thật, địa chỉ, giờ mở cửa, Facebook page
+- [ ] Dashboard → Cài đặt: thêm URL sitemap vào robots.txt: `Sitemap: https://heoquaybinhtan.vercel.app/sitemap.xml`
+- [ ] Đổi ảnh thumbnail các bài dùng stock photo không liên quan (thịt bò, gà chiên)
+- [ ] Kiểm tra `CRON_SECRET` đã set trong Vercel env vars (bảo vệ route `/api/cron/*`)
+- [ ] Nếu Supabase project bị pause trước demo → vào site 1-2 tiếng trước để wake up
