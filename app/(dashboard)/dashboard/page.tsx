@@ -42,13 +42,15 @@ export default async function DashboardPage() {
   sixMonthsAgo.setDate(1)
   sixMonthsAgo.setHours(0, 0, 0, 0)
 
-  const [totalPosts, publishedPosts, totalComments, pendingComments, totalUsers, recentPosts, recentComments] =
+  const [totalPosts, publishedPosts, totalComments, pendingComments, totalUsers, pendingBookings, totalBookings, recentPosts, recentComments] =
     await Promise.all([
       db.post.count({ where: isAdmin ? {} : postWhere }),
       db.post.count({ where: isAdmin ? { published: true } : { ...postWhere, published: true } }),
       db.comment.count(),
       db.comment.count({ where: { approved: false } }),
       isAdmin ? db.user.count() : Promise.resolve(0),
+      isAdmin ? db.booking.count({ where: { status: "pending" } }) : Promise.resolve(0),
+      isAdmin ? db.booking.count() : Promise.resolve(0),
       db.post.findMany({
         where: { createdAt: { gte: sixMonthsAgo }, ...(isAdmin ? {} : postWhere) },
         select: { createdAt: true },
@@ -64,7 +66,7 @@ export default async function DashboardPage() {
       <DashboardHeader heading="Dashboard" text="Tổng quan hoạt động của website." />
 
       <DashboardOverview
-        stats={{ totalPosts, publishedPosts, pendingComments, totalComments, totalUsers, isAdmin }}
+        stats={{ totalPosts, publishedPosts, pendingComments, totalComments, totalUsers, pendingBookings, totalBookings, isAdmin }}
         postsByMonth={buildMonthChart(recentPosts)}
         commentsByMonth={buildMonthChart(recentComments)}
       />

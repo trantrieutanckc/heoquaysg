@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import {
   BarChart,
   Bar,
@@ -16,6 +17,8 @@ interface Stats {
   pendingComments: number
   totalComments: number
   totalUsers: number
+  pendingBookings: number
+  totalBookings: number
   isAdmin: boolean
 }
 
@@ -82,6 +85,18 @@ const STAT_CONFIGS = [
       </svg>
     ),
   },
+  {
+    key: "bookings",
+    label: "Đặt lịch",
+    gradient: "from-rose-500 to-pink-600",
+    bg: "bg-rose-50 dark:bg-rose-950/40",
+    href: "/dashboard/dat-lich",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+      </svg>
+    ),
+  },
 ]
 
 export default function DashboardOverview({ stats, postsByMonth, commentsByMonth }: Props) {
@@ -92,29 +107,44 @@ export default function DashboardOverview({ stats, postsByMonth, commentsByMonth
     { value: stats.totalComments, sub: stats.pendingComments > 0 ? `${stats.pendingComments} chờ duyệt` : "Tất cả đã duyệt" },
     { value: stats.publishedPosts, sub: `${stats.totalPosts > 0 ? Math.round((stats.publishedPosts / stats.totalPosts) * 100) : 0}% tổng bài viết` },
     { value: stats.isAdmin ? stats.totalUsers : stats.pendingComments, sub: stats.isAdmin ? "Tổng tài khoản hệ thống" : "Bình luận cần xem xét" },
+    { value: stats.totalBookings, sub: stats.pendingBookings > 0 ? `${stats.pendingBookings} đơn chờ xác nhận` : "Không có đơn chờ" },
   ]
 
   return (
     <div className="space-y-5">
       {/* ── Stat cards ─────────────────────────────────────────── */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {STAT_CONFIGS.map((cfg, i) => (
-          <div key={cfg.key} className="rounded-xl border bg-card overflow-hidden">
-            <div className={`h-1.5 w-full bg-gradient-to-r ${cfg.gradient}`} />
-            <div className="p-5 flex items-start gap-4">
-              <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 bg-gradient-to-br ${cfg.gradient}`}>
-                {cfg.icon}
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        {STAT_CONFIGS.map((cfg, i) => {
+          const hasPendingBookings = cfg.key === "bookings" && stats.pendingBookings > 0
+          const inner = (
+            <>
+              <div className={`h-1.5 w-full bg-gradient-to-r ${cfg.gradient}`} />
+              <div className="p-5 flex items-start gap-4">
+                <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 bg-gradient-to-br ${cfg.gradient}`}>
+                  {cfg.icon}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-2xl font-bold leading-none tracking-tight">
+                    {statValues[i].value.toLocaleString("vi-VN")}
+                  </p>
+                  <p className="text-sm font-medium mt-1 text-foreground">{cfg.label}</p>
+                  <p className={`text-xs mt-0.5 ${hasPendingBookings ? "text-rose-500 font-semibold" : "text-muted-foreground"}`}>
+                    {statValues[i].sub}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold leading-none tracking-tight">
-                  {statValues[i].value.toLocaleString("vi-VN")}
-                </p>
-                <p className="text-sm font-medium mt-1 text-foreground">{cfg.label}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{statValues[i].sub}</p>
-              </div>
+            </>
+          )
+          return (cfg as any).href ? (
+            <Link key={cfg.key} href={(cfg as any).href} className={`block rounded-xl border bg-card overflow-hidden hover:shadow-md transition-shadow ${hasPendingBookings ? "ring-2 ring-rose-400" : ""}`}>
+              {inner}
+            </Link>
+          ) : (
+            <div key={cfg.key} className="rounded-xl border bg-card overflow-hidden">
+              {inner}
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* ── Charts ─────────────────────────────────────────────── */}
