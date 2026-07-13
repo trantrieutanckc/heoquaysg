@@ -43,7 +43,7 @@ Chọn văn bản rồi nhấn icon trên toolbar để định dạng:
 ## Tags (nhãn bài viết)
 - Mở accordion **"Tags"** bên phải editor
 - Nhấn tag có sẵn để gán, hoặc gõ tên mới → Enter để tạo và gán ngay
-- Tags giúp khách lọc bài theo chủ đề tại `/blog?tag=...`
+- Tags giúp khách lọc bài theo chủ đề tại \`/blog?tag=...\`
 
 ## Bài liên quan
 - Mở accordion **"Bài liên quan"** bên phải
