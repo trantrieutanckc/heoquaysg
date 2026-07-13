@@ -131,17 +131,19 @@ export default async function IndexPage() {
         />
       )}
 
-      <AboutSection
-        siteName={siteName}
-        siteDescription={siteDescription}
-        heroImage={heroImage}
-        contactAddress={cfg.contactAddress}
-        businessHours={cfg.businessHours}
-        contactPhone={cfg.contactPhone}
-        label={cfg.homeAboutLabel}
-        bgStyle={sectionStyle("homeAboutBgColor", "homeAboutBgImage")}
-        aboutContentHtml={aboutContentHtml}
-      />
+      {(cfg.contactAddress || cfg.contactPhone || aboutContentHtml) && (
+        <AboutSection
+          siteName={siteName}
+          siteDescription={siteDescription}
+          heroImage={heroImage}
+          contactAddress={cfg.contactAddress}
+          businessHours={cfg.businessHours}
+          contactPhone={cfg.contactPhone}
+          label={cfg.homeAboutLabel}
+          bgStyle={sectionStyle("homeAboutBgColor", "homeAboutBgImage")}
+          aboutContentHtml={aboutContentHtml}
+        />
+      )}
 
       {others.length > 0 && (
         <LatestPostsSection
