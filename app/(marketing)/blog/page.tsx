@@ -34,12 +34,23 @@ export async function generateMetadata() {
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: { category?: string; tag?: string }
+  searchParams: { category?: string; tag?: string; page?: string }
 }) {
   const selectedSlug = searchParams.category?.trim() || null
   const selectedTag = searchParams.tag?.trim() || null
+  const page = Math.max(1, parseInt(searchParams.page ?? "1") || 1)
 
-  const [categories, tags, posts] = await Promise.all([
+  const configRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (configRow?.data ?? {}) as Record<string, string>
+  const pageSize = Math.max(3, parseInt(cfg.blogPageSize ?? "12") || 12)
+
+  const postWhere = {
+    published: true,
+    ...(selectedSlug ? { categories: { some: { category: { slug: selectedSlug } } } } : {}),
+    ...(selectedTag ? { tags: { some: { tag: { slug: selectedTag } } } } : {}),
+  }
+
+  const [categories, tags, posts, total] = await Promise.all([
     db.category.findMany({
       where: { published: true },
       orderBy: { order: "asc" },
@@ -50,12 +61,10 @@ export default async function BlogPage({
       select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
     }),
     db.post.findMany({
-      where: {
-        published: true,
-        ...(selectedSlug ? { categories: { some: { category: { slug: selectedSlug } } } } : {}),
-        ...(selectedTag ? { tags: { some: { tag: { slug: selectedTag } } } } : {}),
-      },
+      where: postWhere,
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       select: {
         id: true,
         title: true,
@@ -69,7 +78,10 @@ export default async function BlogPage({
         tags: { select: { tag: { select: { name: true, slug: true } } } },
       },
     }),
+    db.post.count({ where: postWhere }),
   ])
+
+  const totalPages = Math.ceil(total / pageSize)
 
   const selectedCategory = categories.find((c) => c.slug === selectedSlug)
   const selectedTagObj = tags.find((t) => t.slug === selectedTag)
@@ -238,6 +250,30 @@ export default async function BlogPage({
           {selectedSlug && (
             <Link href="/blog" className="mt-4 text-sm text-primary hover:underline">
               Xem tất cả bài viết →
+            </Link>
+          )}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 py-10">
+          {page > 1 && (
+            <Link
+              href={`/blog?${new URLSearchParams({ ...(selectedSlug ? { category: selectedSlug } : {}), ...(selectedTag ? { tag: selectedTag } : {}), page: String(page - 1) })}`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium hover:bg-muted transition-colors"
+            >
+              ← Trang trước
+            </Link>
+          )}
+          <span className="text-sm text-muted-foreground px-2">
+            {page} / {totalPages}
+          </span>
+          {page < totalPages && (
+            <Link
+              href={`/blog?${new URLSearchParams({ ...(selectedSlug ? { category: selectedSlug } : {}), ...(selectedTag ? { tag: selectedTag } : {}), page: String(page + 1) })}`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium hover:bg-muted transition-colors"
+            >
+              Trang sau →
             </Link>
           )}
         </div>

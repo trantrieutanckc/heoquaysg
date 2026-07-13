@@ -50,8 +50,11 @@ const POST_SELECT = {
 } as const
 
 export default async function IndexPage() {
-  const [siteConfigRow, featuredPost, posts, categories, dishGroups] = await Promise.all([
-    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
+  const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "8") || 8)
+
+  const [featuredPost, posts, categories, dishGroups] = await Promise.all([
     db.post.findFirst({
       where: { published: true, featured: true },
       select: POST_SELECT,
@@ -60,7 +63,7 @@ export default async function IndexPage() {
       where: { published: true },
       select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: 8,
+      take: homePostsCount,
     }),
     db.category.findMany({
       where: { published: true },
@@ -73,8 +76,6 @@ export default async function IndexPage() {
       include: { dishes: { orderBy: { order: "asc" } } },
     }),
   ])
-
-  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
   const aboutContentHtml = tiptapToHtml(cfg.homeAboutContent)
   const heroImage = cfg.heroImage?.trim()
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"

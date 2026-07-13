@@ -14,6 +14,16 @@ export const dashboardConfig: DashboardConfig = {
       icon: "post",
     },
     {
+      title: "Bài theo lịch",
+      href: "/dashboard/scheduled",
+      icon: "clock",
+    },
+    {
+      title: "Thông báo",
+      href: "/dashboard/notifications",
+      icon: "bell",
+    },
+    {
       title: "Đặt lịch",
       href: "/dashboard/dat-lich",
       icon: "clock",

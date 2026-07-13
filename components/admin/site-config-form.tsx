@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { ImagePickerInput } from "@/components/admin/image-picker-input"
 import { SaveOverlay } from "@/components/ui/save-overlay"
+import { SliderNumber } from "@/components/ui/slider-number"
 
 export interface SiteConfigData {
   siteName?: string
@@ -54,6 +55,9 @@ export interface SiteConfigData {
   aboutCommit3Desc?: string
   aboutCommit4Title?: string
   aboutCommit4Desc?: string
+  // Hiển thị nội dung
+  homePostsCount?: string   // số bài trang chủ, default 8
+  blogPageSize?: string     // số bài mỗi trang blog, default 12
   // SEO robots
   robotsIndex?: string  // "true" = cho phép index, "false" = noindex
   robotsTxtContent?: string
@@ -238,6 +242,27 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
           <p className="text-xs text-muted-foreground">
             Paste nguyên code block từ FB / Google — hệ thống tự inject vào đúng vị trí.
           </p>
+        </Field>
+      </Section>
+
+      <Section title="Hiển thị nội dung">
+        <Field label="Số bài viết hiển thị trang chủ" id="homePostsCount">
+          <SliderNumber
+            min={2}
+            max={20}
+            value={parseInt(data.homePostsCount ?? "8")}
+            onChange={(v) => setData((prev) => ({ ...prev, homePostsCount: String(v) }))}
+            unit="bài"
+          />
+        </Field>
+        <Field label="Số bài mỗi trang Blog" id="blogPageSize">
+          <SliderNumber
+            min={3}
+            max={30}
+            value={parseInt(data.blogPageSize ?? "12")}
+            onChange={(v) => setData((prev) => ({ ...prev, blogPageSize: String(v) }))}
+            unit="bài / trang"
+          />
         </Field>
       </Section>
 

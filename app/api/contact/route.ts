@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import * as z from "zod"
 import { sendContactEmail } from "@/lib/mailer"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 const contactSchema = z.object({
   name: z.string().min(1, "Tên không được để trống").max(100),
@@ -10,6 +11,11 @@ const contactSchema = z.object({
 })
 
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"
+  if (!checkRateLimit(`contact:${ip}`, 3, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." }, { status: 429 })
+  }
+
   try {
     const json = await req.json()
     const body = contactSchema.parse(json)

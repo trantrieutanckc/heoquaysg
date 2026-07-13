@@ -1,6 +1,20 @@
 // In-memory rate limiter — resets on server restart (acceptable for this use case)
 const loginAttempts = new Map<string, { count: number; firstAt: number; lockedUntil?: number }>()
 
+const genericBuckets = new Map<string, { count: number; firstAt: number }>()
+
+export function checkRateLimit(key: string, maxCount: number, windowMs: number): boolean {
+  const now = Date.now()
+  const rec = genericBuckets.get(key)
+  if (!rec || now - rec.firstAt > windowMs) {
+    genericBuckets.set(key, { count: 1, firstAt: now })
+    return true
+  }
+  if (rec.count >= maxCount) return false
+  rec.count++
+  return true
+}
+
 const MAX_ATTEMPTS = 5
 const WINDOW_MS = 15 * 60 * 1000
 const LOCKOUT_MS = 15 * 60 * 1000
