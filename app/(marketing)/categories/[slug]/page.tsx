@@ -56,6 +56,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               published: true,
               avgRating: true,
               ratingCount: true,
+              seoDescription: true,
             },
           },
         },
@@ -106,6 +107,9 @@ function PostCard({ post }: { post: any }) {
         <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
           {post.title}
         </h2>
+        {post.seoDescription && (
+          <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
+        )}
         {post.avgRating != null && post.ratingCount > 0 && (
           <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
         )}
