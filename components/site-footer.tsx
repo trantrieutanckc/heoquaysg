@@ -59,7 +59,7 @@ export function SiteFooter({
                 </div>
               )}
               <div>
-                <span className="font-heading text-lg font-semibold text-stone-100 italic">{name}</span>
+                <span className="font-heading text-lg font-semibold text-stone-100">{name}</span>
                 <div className="flex items-center gap-1 mt-0.5">
                   <div className="h-px w-6 bg-primary/70" />
                   <div className="h-px w-3 bg-primary/40" />

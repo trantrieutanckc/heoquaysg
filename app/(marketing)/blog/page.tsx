@@ -93,7 +93,7 @@ export default async function BlogPage({
         <div className="container px-4 sm:px-6 py-10 lg:py-14">
           <PageEntrance>
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">Khám phá</p>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl">
               {selectedCategory ? selectedCategory.name : selectedTagObj ? `#${selectedTagObj.name}` : "Bài viết & Thực đơn"}
             </h1>
             <div className="flex items-center gap-1.5 mt-3">

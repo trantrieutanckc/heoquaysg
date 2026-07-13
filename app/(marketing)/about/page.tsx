@@ -102,7 +102,7 @@ export default async function AboutPage() {
             <p className={`text-xs font-bold uppercase tracking-[0.25em] mb-2 ${heroImage ? "text-orange-200" : "text-primary"}`}>
               {siteName}
             </p>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic mb-3">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-3">
               Về chúng tôi
             </h1>
             <div className="flex items-center gap-1.5 mb-4">
@@ -123,7 +123,7 @@ export default async function AboutPage() {
           <section className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
             <div className="space-y-4">
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Câu chuyện của chúng tôi</p>
-              <h2 className="font-heading text-2xl sm:text-3xl leading-snug italic">{siteName}</h2>
+              <h2 className="font-heading text-2xl sm:text-3xl leading-snug">{siteName}</h2>
               <div className="flex items-center gap-1.5">
                 <div className="h-0.5 w-10 bg-primary rounded-full" />
                 <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
@@ -186,7 +186,7 @@ export default async function AboutPage() {
           <section className="space-y-5">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Bí quyết</p>
-              <h2 className="font-heading text-2xl sm:text-3xl italic">Từ nguyên liệu đến bàn ăn</h2>
+              <h2 className="font-heading text-2xl sm:text-3xl">Từ nguyên liệu đến bàn ăn</h2>
               <div className="flex items-center gap-1.5 mt-2.5">
                 <div className="h-0.5 w-10 bg-primary rounded-full" />
                 <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
@@ -195,7 +195,7 @@ export default async function AboutPage() {
             <div className="grid gap-px bg-border sm:grid-cols-4">
               {aboutSteps.map((item) => (
                 <div key={item.step} className="bg-card p-6 space-y-2">
-                  <div className="font-heading text-3xl font-bold text-primary/30 italic">{item.step}</div>
+                  <div className="font-heading text-3xl font-bold text-primary/30">{item.step}</div>
                   <div className="font-semibold text-sm">{item.title}</div>
                   <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                 </div>
@@ -209,7 +209,7 @@ export default async function AboutPage() {
           <section className="space-y-5">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Chất lượng</p>
-              <h2 className="font-heading text-2xl sm:text-3xl italic">Cam kết của chúng tôi</h2>
+              <h2 className="font-heading text-2xl sm:text-3xl">Cam kết của chúng tôi</h2>
               <div className="flex items-center gap-1.5 mt-2.5">
                 <div className="h-0.5 w-10 bg-primary rounded-full" />
                 <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
@@ -241,7 +241,7 @@ export default async function AboutPage() {
             <section className="space-y-5">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Liên lạc</p>
-                <h2 className="font-heading text-2xl sm:text-3xl italic">Thông tin liên hệ</h2>
+                <h2 className="font-heading text-2xl sm:text-3xl">Thông tin liên hệ</h2>
                 <div className="flex items-center gap-1.5 mt-2.5">
                   <div className="h-0.5 w-10 bg-primary rounded-full" />
                   <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
@@ -292,7 +292,7 @@ export default async function AboutPage() {
         <FadeUp>
           <section className="border bg-card p-8 lg:p-12 text-center">
             <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">Liên hệ ngay</p>
-            <h2 className="font-heading text-2xl sm:text-3xl italic mb-2">Sẵn sàng thưởng thức?</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl mb-2">Sẵn sàng thưởng thức?</h2>
             <div className="flex items-center justify-center gap-1.5 mb-5">
               <div className="h-0.5 w-8 bg-primary rounded-full" />
               <div className="h-0.5 w-4 bg-primary/40 rounded-full" />

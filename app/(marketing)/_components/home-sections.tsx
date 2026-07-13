@@ -97,7 +97,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription 
               <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.3em] text-orange-200">{siteName}</p>
               <div className="h-px w-10 bg-orange-300/60" />
             </div>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold max-w-3xl leading-tight mb-6 italic">
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold max-w-3xl leading-tight mb-6">
               {siteTagline}
             </h1>
             <div className="flex items-center justify-center gap-2 mb-7">
@@ -107,7 +107,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription 
               </svg>
               <div className="h-px w-8 bg-orange-400/60" />
             </div>
-            <p className="font-heading text-white/70 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-relaxed text-center italic">
+            <p className="font-heading text-white/70 text-base sm:text-lg max-w-xl mx-auto mb-10 leading-relaxed text-center">
               {siteDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -332,7 +332,7 @@ export function AboutSection({ siteName, siteDescription, heroImage, contactAddr
               <div className="flex flex-col justify-center gap-5 p-8 lg:p-12 order-2 md:order-1">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">{label || "Câu chuyện của chúng tôi"}</p>
-                  <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl leading-tight italic">{siteName}</h2>
+                  <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl leading-tight">{siteName}</h2>
                   <div className="flex items-center gap-1.5 mt-3">
                     <div className="h-0.5 w-10 bg-primary rounded-full" />
                     <div className="h-0.5 w-4 bg-primary/40 rounded-full" />

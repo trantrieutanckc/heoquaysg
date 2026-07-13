@@ -134,7 +134,7 @@ export default async function DatLichPage({
                       ) : <span className="text-muted-foreground text-xs">—</span>
                     })()}
                     {b.note && (
-                      <p className="text-xs text-muted-foreground italic truncate max-w-[160px] mt-1">{b.note}</p>
+                      <p className="text-xs text-muted-foreground truncate max-w-[160px] mt-1">{b.note}</p>
                     )}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">

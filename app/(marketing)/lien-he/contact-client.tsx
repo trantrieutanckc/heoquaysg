@@ -48,7 +48,7 @@ export function ContactClient({ siteName, contactPhone, contactEmail, contactAdd
       <div className="border-b bg-card">
         <div className="container px-4 sm:px-6 py-14 sm:py-20">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">Liên hệ</p>
-          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl italic mb-4">{siteName} — Đặt hàng & Tư vấn</h1>
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-4">{siteName} — Đặt hàng & Tư vấn</h1>
           <div className="flex items-center gap-1.5 mb-5">
             <div className="h-0.5 w-10 bg-primary" />
             <div className="h-0.5 w-4 bg-primary/40" />

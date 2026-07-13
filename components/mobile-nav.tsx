@@ -52,7 +52,7 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
                   {(siteName ?? "H")[0]}
                 </div>
               )}
-              {siteName && <span className="font-heading text-sm font-semibold italic">{siteName}</span>}
+              {siteName && <span className="font-heading text-sm font-semibold">{siteName}</span>}
             </div>
 
             {/* Nav links */}

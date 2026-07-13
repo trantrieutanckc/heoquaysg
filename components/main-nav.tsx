@@ -65,7 +65,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
           </div>
         )}
         {siteName && (
-          <span className="font-heading font-semibold text-sm leading-none hidden sm:block italic">
+          <span className="font-heading font-semibold text-sm leading-none hidden sm:block">
             {siteName}
           </span>
         )}
