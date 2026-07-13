@@ -15,6 +15,32 @@ function Overlay() {
   }, [pathname, searchParams])
 
   React.useEffect(() => {
+    if (visible) {
+      const scrollY = window.scrollY
+      document.body.style.overflow = "hidden"
+      document.body.style.position = "fixed"
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = "100%"
+    } else {
+      const top = document.body.style.top
+      document.body.style.overflow = ""
+      document.body.style.position = ""
+      document.body.style.top = ""
+      document.body.style.width = ""
+      window.scrollTo(0, parseInt(top || "0") * -1)
+    }
+    return () => {
+      const top = document.body.style.top
+      document.body.style.overflow = ""
+      document.body.style.position = ""
+      document.body.style.top = ""
+      document.body.style.width = ""
+      if (top) window.scrollTo(0, parseInt(top) * -1)
+    }
+  }, [visible])
+
+  React.useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>
     const handleClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest("a")
       if (!anchor) return
@@ -23,9 +49,13 @@ function Overlay() {
       if (anchor.target === "_blank") return
       if (href.startsWith("http://") || href.startsWith("https://")) return
       setVisible(true)
+      timeout = setTimeout(() => setVisible(false), 8000)
     }
     document.addEventListener("click", handleClick)
-    return () => document.removeEventListener("click", handleClick)
+    return () => {
+      document.removeEventListener("click", handleClick)
+      clearTimeout(timeout)
+    }
   }, [])
 
   if (!visible) return null
