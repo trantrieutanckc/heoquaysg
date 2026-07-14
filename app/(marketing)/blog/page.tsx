@@ -116,11 +116,11 @@ export default async function BlogPage({
 
         {/* Category filter tabs */}
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-6 border-b">
+          <div className="flex overflow-x-auto scrollbar-none gap-1 mt-6 border-b">
             <Link
               href="/blog"
               className={cn(
-                "relative inline-flex items-center px-4 py-2 text-sm font-semibold transition-colors",
+                "relative shrink-0 inline-flex items-center px-4 py-2 text-sm font-semibold transition-colors",
                 "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                 !selectedSlug
                   ? "text-primary after:w-full"
@@ -134,7 +134,7 @@ export default async function BlogPage({
                 key={cat.slug}
                 href={`/blog?category=${cat.slug}`}
                 className={cn(
-                  "relative inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-colors",
+                  "relative shrink-0 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold transition-colors",
                   "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
                   selectedSlug === cat.slug
                     ? "text-primary after:w-full"

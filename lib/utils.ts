@@ -10,8 +10,8 @@ export function cn(...inputs: ClassValue[]) {
 export function formatDate(input: string | number): string {
   const date = new Date(input)
   return date.toLocaleDateString("vi-VN", {
-    day: "numeric",
-    month: "long",
+    day: "2-digit",
+    month: "2-digit",
     year: "numeric",
   })
 }

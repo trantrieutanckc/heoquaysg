@@ -84,11 +84,16 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
                   )}
                 </div>
                 <div className="flex flex-col gap-2.5 p-5 flex-1">
-                  {post.categories.length > 0 && (
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
-                      {post.categories[0].category.name}
-                    </span>
-                  )}
+                  <div className="flex items-center justify-between text-[11px]">
+                    {post.categories.length > 0 ? (
+                      <span className="font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
+                    ) : (
+                      <span />
+                    )}
+                    <time dateTime={post.createdAt.toISOString()} className="text-muted-foreground">
+                      {formatDate(post.createdAt.toISOString())}
+                    </time>
+                  </div>
                   <h3 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
                     {post.title}
                   </h3>
@@ -103,9 +108,6 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
                   {post.avgRating != null && post.ratingCount > 0 && (
                     <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
                   )}
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
-                    <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
-                  </div>
                 </div>
               </Link>
             )

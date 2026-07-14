@@ -74,7 +74,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
       {/* Desktop nav */}
       {items?.length ? (
         <nav className={cn(
-          "hidden md:flex items-center gap-1",
+          "hidden lg:flex items-center gap-1",
           centered && "absolute left-1/2 -translate-x-1/2"
         )}>
           {visibleItems.map((item, index) => (
@@ -143,7 +143,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
       {/* Mobile hamburger */}
       <button
         type="button"
-        className="flex md:hidden items-center justify-center h-9 w-9 border bg-background hover:bg-muted transition-colors"
+        className="flex lg:hidden items-center justify-center h-9 w-9 border bg-background hover:bg-muted transition-colors"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
         aria-label="Toggle menu"
         aria-expanded={showMobileMenu}
