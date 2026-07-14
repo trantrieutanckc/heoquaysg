@@ -110,6 +110,7 @@ export default async function IndexPage() {
         siteName={siteName}
         siteTagline={siteTagline}
         siteDescription={siteDescription}
+        contactPhone={cfg.contactPhone}
       />
 
       {featured && (
@@ -162,6 +163,7 @@ export default async function IndexPage() {
         label={cfg.homeBookingLabel}
         title={cfg.homeBookingTitle}
         desc={cfg.homeBookingDesc}
+        contactPhone={cfg.contactPhone}
       />
 
       {cfg.contactAddress && (

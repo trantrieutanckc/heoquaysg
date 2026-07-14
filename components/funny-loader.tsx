@@ -70,7 +70,7 @@ export function FunnyLoader() {
   const [msg] = React.useState(() => MESSAGES[Math.floor(Math.random() * MESSAGES.length)])
 
   return (
-    <div className="flex flex-col items-center gap-4 select-none">
+    <div className="flex flex-col items-center gap-4 select-none" style={{ transform: "scale(0.75)", transformOrigin: "center top", marginBottom: "-45px" }}>
 
       {/* Smoke */}
       <div className="flex gap-5 h-7 items-end">

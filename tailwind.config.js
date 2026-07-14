@@ -18,6 +18,10 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        sm: ['1rem', { lineHeight: '1.5rem' }],
+        base: ['1.125rem', { lineHeight: '1.75rem' }],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

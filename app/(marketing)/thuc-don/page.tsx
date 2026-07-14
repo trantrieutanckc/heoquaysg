@@ -167,12 +167,14 @@ export default async function ThucDonPage() {
             Liên hệ trực tiếp để được tư vấn và báo giá tốt nhất cho sự kiện của bạn.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/dat-lich"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
-            >
-              📅 Đặt lịch ngay
-            </Link>
+            {contactPhone && (
+              <a
+                href={`tel:${contactPhone.replace(/\s/g, "")}`}
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                📞 {contactPhone}
+              </a>
+            )}
             {contactPhone && (
               <a
                 href={`tel:${contactPhone.replace(/\s/g, "")}`}
