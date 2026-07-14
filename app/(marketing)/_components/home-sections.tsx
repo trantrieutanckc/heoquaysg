@@ -213,15 +213,6 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
                 <StarDisplay rating={post.avgRating} size="md" showNumber count={post.ratingCount} />
               )}
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                {post.author?.image ? (
-                  <img src={post.author.image} alt="" className="h-7 w-7 rounded-full object-cover ring-2 ring-border" />
-                ) : (
-                  <div className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-xs font-bold">
-                    {post.author?.name?.[0]?.toUpperCase() ?? "?"}
-                  </div>
-                )}
-                <span className="font-medium">{post.author?.name}</span>
-                <span>·</span>
                 <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
               </div>
               <div>

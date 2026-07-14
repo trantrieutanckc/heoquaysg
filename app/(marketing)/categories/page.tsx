@@ -21,13 +21,18 @@ export default async function CategoriesPage() {
     <div className="min-h-screen">
       {/* Header */}
       <FadeUp>
-        <div className="border-b bg-muted/30">
+        <div className="border-b bg-card">
           <div className="container px-4 sm:px-6 py-12 lg:py-16">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-2">Thực đơn</p>
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight mb-3">
-              Danh mục
+              Danh mục món ăn
             </h1>
-            <p className="text-muted-foreground text-lg">
-              Khám phá nội dung theo từng chủ đề.
+            <div className="flex items-center gap-1.5 mb-4">
+              <div className="h-0.5 w-10 bg-primary rounded-full" />
+              <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+            </div>
+            <p className="text-muted-foreground max-w-md">
+              Khám phá heo quay, vịt quay, gà quay và các món đặc sản theo từng chủ đề.
             </p>
           </div>
         </div>

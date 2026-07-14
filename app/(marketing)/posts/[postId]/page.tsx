@@ -161,38 +161,12 @@ export default async function PostPage({ params }: PostPageProps) {
 
             {template !== "minimal" && (
               <div className="flex items-center gap-3 border-t pt-4">
-                {post.author && (
-                  <>
-                    {post.author.image ? (
-                      <img
-                        src={post.author.image}
-                        alt={post.author.name ?? ""}
-                        className="h-10 w-10 rounded-full object-cover ring-2 ring-border shrink-0"
-                      />
-                    ) : (
-                      <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-bold ring-2 ring-border shrink-0">
-                        {post.author.name?.[0]?.toUpperCase() ?? "?"}
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-sm font-semibold leading-none">{post.author.name}</p>
-                      <time
-                        dateTime={post.createdAt.toISOString()}
-                        className="text-xs text-muted-foreground mt-0.5 block"
-                      >
-                        {formatDate(post.createdAt.toISOString())}
-                      </time>
-                    </div>
-                  </>
-                )}
-                {!post.author && (
-                  <time
-                    dateTime={post.createdAt.toISOString()}
-                    className="text-sm text-muted-foreground"
-                  >
-                    {formatDate(post.createdAt.toISOString())}
-                  </time>
-                )}
+                <time
+                  dateTime={post.createdAt.toISOString()}
+                  className="text-sm text-muted-foreground"
+                >
+                  {formatDate(post.createdAt.toISOString())}
+                </time>
               </div>
             )}
           </header>

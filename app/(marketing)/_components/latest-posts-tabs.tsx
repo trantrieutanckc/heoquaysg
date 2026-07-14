@@ -104,15 +104,6 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
                     <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
                   )}
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
-                    {post.author?.image ? (
-                      <img src={post.author.image} alt="" className="h-5 w-5 rounded-full object-cover" />
-                    ) : (
-                      <div className="h-5 w-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold">
-                        {post.author?.name?.[0]?.toUpperCase() ?? "?"}
-                      </div>
-                    )}
-                    <span>{post.author?.name}</span>
-                    <span>·</span>
                     <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
                   </div>
                 </div>
