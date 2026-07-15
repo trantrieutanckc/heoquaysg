@@ -1,33 +1,27 @@
-import sanitizeHtml from "sanitize-html"
+import xss from "xss"
 
-const ALLOWED: sanitizeHtml.IOptions = {
-  allowedTags: ["b", "strong", "i", "em", "u", "s", "code", "a", "mark", "span", "br"],
-  allowedAttributes: {
+const xssOptions = {
+  whiteList: {
+    b: [], strong: [], i: [], em: [], u: [], s: [], code: [], br: [],
     a: ["href", "target", "rel"],
     span: ["class"],
     mark: ["class"],
+  } as Record<string, string[]>,
+  onTagAttr: (tag: string, name: string, value: string) => {
+    if (tag === "a" && name === "href") {
+      if (!value.startsWith("https://") && !value.startsWith("http://") && !value.startsWith("mailto:")) return ""
+    }
   },
-  allowedSchemes: ["https", "http", "mailto"],
-  // Force noopener noreferrer on external links to prevent reverse tabnapping
-  transformTags: {
-    a: (tagName, attribs) => {
-      const href = attribs.href ?? ""
-      const isExternal = href.startsWith("http") || href.startsWith("//")
-      return {
-        tagName,
-        attribs: {
-          ...attribs,
-          ...(isExternal
-            ? { target: "_blank", rel: "noopener noreferrer" }
-            : {}),
-        },
-      }
-    },
+  onTag: (tag: string, html: string, options: any) => {
+    if (tag === "a" && !options.isClosing) {
+      // Inject noopener noreferrer cho external links
+      return html.replace(/>$/, ' rel="noopener noreferrer">')
+    }
   },
 }
 
 function safe(html: string): string {
-  return sanitizeHtml(html ?? "", ALLOWED)
+  return xss(html ?? "", xssOptions)
 }
 
 interface Block {

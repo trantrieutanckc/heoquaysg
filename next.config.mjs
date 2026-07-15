@@ -56,7 +56,7 @@ const nextConfig = {
   },
   experimental: {
     appDir: true,
-    serverComponentsExternalPackages: ["@prisma/client", "sanitize-html"],
+    serverComponentsExternalPackages: ["@prisma/client"],
   },
   async headers() {
     return [
