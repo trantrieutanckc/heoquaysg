@@ -146,33 +146,44 @@ function StandardTemplate({ category, image, posts, banner, bookingProps }: any)
   return (
     <div className="min-h-screen">
       <PageEntrance>
-        <div className="border-b bg-muted/30">
-          <div className="container px-4 sm:px-6 py-12 lg:py-16">
-            {image?.url && (
-              <div className="relative mb-6 overflow-hidden rounded-2xl" style={{ height: 260 }}>
-                <Image
-                  src={image.url}
-                  alt={image.alt ?? category.name}
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 1280px"
-                  className="object-cover"
-                  priority
-                  placeholder="blur"
-                  blurDataURL={BLUR_PLACEHOLDER}
-                />
+        {image?.url ? (
+          <div className="relative w-full overflow-hidden border-b" style={{ height: 340 }}>
+            <Image
+              src={image.url}
+              alt={image.alt ?? category.name}
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 container px-4 sm:px-6 pb-8">
+              <Link href="/categories" className="text-xs text-white/70 hover:text-white transition-colors mb-2 inline-block">
+                ← Danh mục
+              </Link>
+              <div className="flex items-end justify-between gap-4 flex-wrap">
+                <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight text-white">{category.name}</h1>
+                <span className="text-sm text-white/70 shrink-0">{posts.length} bài viết</span>
               </div>
-            )}
-            <div className="flex items-end justify-between gap-4 flex-wrap">
-              <div>
-                <Link href="/categories" className="text-xs text-muted-foreground hover:text-foreground transition-colors mb-2 inline-block">
-                  ← Danh mục
-                </Link>
-                <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">{category.name}</h1>
-              </div>
-              <span className="text-sm text-muted-foreground shrink-0">{posts.length} bài viết</span>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="border-b bg-muted/30">
+            <div className="container px-4 sm:px-6 py-12 lg:py-16">
+              <div className="flex items-end justify-between gap-4 flex-wrap">
+                <div>
+                  <Link href="/categories" className="text-xs text-muted-foreground hover:text-foreground transition-colors mb-2 inline-block">
+                    ← Danh mục
+                  </Link>
+                  <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl tracking-tight">{category.name}</h1>
+                </div>
+                <span className="text-sm text-muted-foreground shrink-0">{posts.length} bài viết</span>
+              </div>
+            </div>
+          </div>
+        )}
       </PageEntrance>
 
       <div className="container px-4 sm:px-6 py-10 lg:py-14">
