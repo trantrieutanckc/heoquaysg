@@ -508,7 +508,7 @@ export function BookingCtaSection({
               Đặt lịch ngay
             </a>
             <Link
-              href="/blog"
+              href="/thuc-don"
               className="group inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-4 text-sm font-semibold uppercase tracking-wider transition-colors"
             >
               Xem thực đơn
