@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
+import { BookingCtaSection } from "@/app/(marketing)/_components/home-sections"
 
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
@@ -281,6 +282,7 @@ export default async function BlogPage({
         </div>
       )}
       </div>
+      <BookingCtaSection contactPhone={cfg.contactPhone} />
     </div>
   )
 }
