@@ -211,29 +211,8 @@ export default async function PostPage({ params }: PostPageProps) {
               </svg>
             </div>
             <div className="relative flex flex-col sm:flex-row items-center gap-5 p-6 sm:p-8">
-              <div className="shrink-0 h-14 w-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg viewBox="0 0 48 48" className="h-9 w-9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* xiên ngang */}
-                  <line x1="2" y1="24" x2="46" y2="24" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                  {/* thân heo */}
-                  <ellipse cx="24" cy="24" rx="13" ry="9" fill="#fff" fillOpacity="0.9"/>
-                  {/* đầu */}
-                  <circle cx="37" cy="22" r="6" fill="#fff" fillOpacity="0.9"/>
-                  {/* mõm */}
-                  <ellipse cx="41.5" cy="23" rx="2.5" ry="2" fill="#fca5a5"/>
-                  {/* mắt */}
-                  <circle cx="38" cy="20.5" r="1" fill="#7c2d12"/>
-                  {/* tai */}
-                  <ellipse cx="37.5" cy="17" rx="2" ry="2.5" fill="#fff" fillOpacity="0.9" transform="rotate(-15 37.5 17)"/>
-                  {/* chân trước */}
-                  <line x1="19" y1="33" x2="17" y2="40" stroke="white" strokeOpacity="0.9" strokeWidth="2.5" strokeLinecap="round"/>
-                  <line x1="25" y1="33" x2="24" y2="40" stroke="white" strokeOpacity="0.9" strokeWidth="2.5" strokeLinecap="round"/>
-                  {/* chân sau */}
-                  <line x1="31" y1="32" x2="30" y2="39" stroke="white" strokeOpacity="0.9" strokeWidth="2.5" strokeLinecap="round"/>
-                  <line x1="13" y1="32" x2="12" y2="39" stroke="white" strokeOpacity="0.9" strokeWidth="2.5" strokeLinecap="round"/>
-                  {/* đuôi */}
-                  <path d="M11 22 Q7 18 9 14" stroke="white" strokeOpacity="0.9" strokeWidth="2" strokeLinecap="round" fill="none"/>
-                </svg>
+              <div className="shrink-0 h-16 w-16 drop-shadow-lg">
+                <Image src="/images/heo-quay.png" alt="Heo Quay Bình Tân" width={64} height={64} className="h-full w-full object-contain" />
               </div>
               <div className="flex-1 text-center sm:text-left text-white">
                 <h2 className="font-heading text-xl sm:text-2xl font-bold leading-snug mb-1">
