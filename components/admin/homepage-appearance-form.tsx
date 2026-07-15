@@ -199,12 +199,12 @@ export function HomepageAppearanceForm({ initialData }: Props) {
 
         <TabsContent value="homepage" className="space-y-6 mt-6">
           <Section
-            title="Section 1 — Bài viết nổi bật"
+            title="Section 1 — Sản phẩm nổi bật"
             desc="Tiêu đề và background"
           >
             <div className="grid sm:grid-cols-2 gap-3">
               <TextField label='Nhãn nhỏ (label)' fieldKey="homeFeaturedLabel" placeholder="Nổi bật" data={data} set={set} />
-              <TextField label='Tiêu đề (title)' fieldKey="homeFeaturedTitle" placeholder="Bài viết nổi bật" data={data} set={set} />
+              <TextField label='Tiêu đề (title)' fieldKey="homeFeaturedTitle" placeholder="Sản phẩm nổi bật" data={data} set={set} />
             </div>
             <BgField label="Background" colorKey="homeFeaturedBgColor" imageKey="homeFeaturedBgImage" data={data} set={set} />
           </Section>

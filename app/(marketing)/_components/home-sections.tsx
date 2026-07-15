@@ -171,7 +171,7 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
       <div className="container px-4 sm:px-6">
         <ScaleIn>
           <SlideInLeft>
-            <SectionTitle label={label || "Nổi bật"} title={title || "Bài viết nổi bật"} />
+            <SectionTitle label={label || "Nổi bật"} title={title || "Sản phẩm nổi bật"} />
           </SlideInLeft>
           <Link
             href={`/posts/${post.id}`}
@@ -441,7 +441,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
         <SlideInLeft>
           <SectionTitle
             label={label || "Khám phá"}
-            title={title || "Bài viết mới nhất"}
+            title={title || "Sản phẩm mới nhất"}
             right={
               <Link href="/blog" className="group text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
                 Xem tất cả
