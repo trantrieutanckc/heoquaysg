@@ -37,6 +37,7 @@ export default async function AboutPage() {
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const siteDescription = cfg.siteDescription?.trim() || "Chuyên heo quay, vịt quay, gà quay — công thức bí truyền, nguyên liệu tươi sạch."
   const heroImage = cfg.heroImage?.trim() || null
+  const aboutImage = cfg.aboutImage?.trim() || heroImage
   const contactPhone = cfg.contactPhone?.trim() || null
   const contactEmail = cfg.contactEmail?.trim() || null
   const contactAddress = cfg.contactAddress?.trim() || null
@@ -147,9 +148,9 @@ export default async function AboutPage() {
               </div>
             </div>
             <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-              {heroImage ? (
+              {aboutImage ? (
                 <Image
-                  src={heroImage}
+                  src={aboutImage}
                   alt={siteName}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"

@@ -136,7 +136,7 @@ export default async function IndexPage() {
         <AboutSection
           siteName={siteName}
           siteDescription={siteDescription}
-          heroImage={heroImage}
+          aboutImage={cfg.aboutImage?.trim() || heroImage}
           contactAddress={cfg.contactAddress}
           businessHours={cfg.businessHours}
           contactPhone={cfg.contactPhone}

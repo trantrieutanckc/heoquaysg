@@ -311,7 +311,7 @@ export function CategoriesSection({ categories, showViewAll, bgStyle, label, tit
 interface AboutSectionProps {
   siteName: string
   siteDescription: string
-  heroImage?: string
+  aboutImage?: string
   contactAddress?: string
   businessHours?: string
   contactPhone?: string
@@ -320,7 +320,7 @@ interface AboutSectionProps {
   aboutContentHtml?: string | null
 }
 
-export function AboutSection({ siteName, siteDescription, heroImage, contactAddress, businessHours, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
+export function AboutSection({ siteName, siteDescription, aboutImage, contactAddress, businessHours, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
   return (
     <section className="py-14 lg:py-20 border-b border-border/40" style={{ backgroundColor: "#fdf8f0", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
@@ -381,9 +381,9 @@ export function AboutSection({ siteName, siteDescription, heroImage, contactAddr
                 </div>
               </div>
               <div className="relative aspect-[4/3] md:aspect-auto min-h-[260px] overflow-hidden order-1 md:order-2">
-                {heroImage ? (
+                {aboutImage ? (
                   <Image
-                    src={heroImage}
+                    src={aboutImage}
                     alt={siteName}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"

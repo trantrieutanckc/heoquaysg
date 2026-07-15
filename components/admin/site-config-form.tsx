@@ -16,6 +16,7 @@ export interface SiteConfigData {
   siteDescription?: string
   logoUrl?: string
   heroImage?: string
+  aboutImage?: string
   contactPhone?: string
   contactZalo?: string
   contactEmail?: string
@@ -170,7 +171,16 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
             value={data.heroImage ?? ""}
             onChange={(url) => setData((prev) => ({ ...prev, heroImage: url }))}
             previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
-            placeholder="https://... (URL ảnh nền hero)"
+            placeholder="https://..."
+          />
+        </Field>
+        <Field label="Ảnh section Về chúng tôi (homepage)" id="aboutImage">
+          <ImagePickerInput
+            id="aboutImage"
+            value={data.aboutImage ?? ""}
+            onChange={(url) => setData((prev) => ({ ...prev, aboutImage: url }))}
+            previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
+            placeholder="https://..."
           />
         </Field>
       </Section>
