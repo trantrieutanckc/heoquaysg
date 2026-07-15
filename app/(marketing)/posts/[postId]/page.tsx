@@ -199,7 +199,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <ShareButton title={post.title} />
         </FadeUp>
 
-        {phone && (
+        {phone && post.ctaEnabled !== false && (
           <FadeUp className="my-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-500">
             {/* dot pattern */}
             <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
@@ -211,20 +211,17 @@ export default async function PostPage({ params }: PostPageProps) {
               </svg>
             </div>
             <div className="relative flex flex-col sm:flex-row items-center gap-5 p-6 sm:p-8">
-              {/* icon */}
               <div className="shrink-0 h-14 w-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-3xl select-none">
                 🐷
               </div>
-              {/* text */}
               <div className="flex-1 text-center sm:text-left text-white">
                 <h2 className="font-heading text-xl sm:text-2xl font-bold leading-snug mb-1">
-                  Muốn đặt món hoặc hỏi thêm?
+                  {post.ctaTitle?.trim() || "Muốn đặt món hoặc hỏi thêm?"}
                 </h2>
                 <p className="text-white/80 text-sm leading-relaxed">
-                  Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất.
+                  {post.ctaDesc?.trim() || "Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất."}
                 </p>
               </div>
-              {/* buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0">
                 <a
                   href={`tel:${phone}`}

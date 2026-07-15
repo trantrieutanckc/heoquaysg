@@ -62,6 +62,9 @@ export default async function EditorPage({ params }: EditorPageProps) {
         price: post.price,
         scheduledAt: post.scheduledAt,
         bookable: post.bookable,
+        ctaEnabled: post.ctaEnabled,
+        ctaTitle: post.ctaTitle,
+        ctaDesc: post.ctaDesc,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

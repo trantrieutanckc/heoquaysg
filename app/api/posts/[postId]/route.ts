@@ -21,6 +21,9 @@ const postPatchSchema = z.object({
   price: z.number().nullable().optional(),
   scheduledAt: z.string().datetime().nullable().optional(),
   bookable: z.boolean().optional(),
+  ctaEnabled: z.boolean().optional(),
+  ctaTitle: z.string().nullable().optional(),
+  ctaDesc: z.string().nullable().optional(),
 })
 
 export async function PATCH(
@@ -69,6 +72,9 @@ export async function PATCH(
         ...(body.relatedPostIds !== undefined && { relatedPostIds: body.relatedPostIds === null ? Prisma.JsonNull : body.relatedPostIds }),
         ...(body.price !== undefined && { price: body.price }),
         ...(body.bookable !== undefined && { bookable: body.bookable }),
+        ...(body.ctaEnabled !== undefined && { ctaEnabled: body.ctaEnabled }),
+        ...(body.ctaTitle !== undefined && { ctaTitle: body.ctaTitle }),
+        ...(body.ctaDesc !== undefined && { ctaDesc: body.ctaDesc }),
         ...(body.scheduledAt !== undefined && {
           scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
         }),

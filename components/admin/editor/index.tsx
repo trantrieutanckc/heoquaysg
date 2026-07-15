@@ -33,6 +33,7 @@ import { EditorImageSection } from "./image-section"
 import { EditorTemplateSection } from "./template-section"
 import { EditorBannerSection } from "./banner-section"
 import { EditorSeoSection } from "./seo-section"
+import { EditorCtaSection } from "./cta-section"
 
 interface Category {
   id: string
@@ -59,6 +60,9 @@ interface EditorProps {
     price?: number | null
     scheduledAt?: Date | string | null
     bookable?: boolean
+    ctaEnabled?: boolean
+    ctaTitle?: string | null
+    ctaDesc?: string | null
   }
   categories: Category[]
   postCategoryIds: string[]
@@ -112,6 +116,9 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
 
   // Đặt lịch
   const [bookable, setBookable] = React.useState(post.bookable ?? false)
+  const [ctaEnabled, setCtaEnabled] = React.useState(post.ctaEnabled ?? true)
+  const [ctaTitle, setCtaTitle] = React.useState(post.ctaTitle ?? "")
+  const [ctaDesc, setCtaDesc] = React.useState(post.ctaDesc ?? "")
   const [isSavingBookable, setIsSavingBookable] = React.useState(false)
 
   // Ảnh bìa
@@ -266,6 +273,9 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           template: postTemplate,
           relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
           price: price !== "" ? parseFloat(price) : null,
+          ctaEnabled,
+          ctaTitle: ctaTitle.trim() || null,
+          ctaDesc: ctaDesc.trim() || null,
         }),
       })
       if (!res?.ok) {
@@ -441,6 +451,14 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             bookable={bookable}
             isSaving={isSavingBookable}
             onToggle={handleBookableToggle}
+          />
+          <EditorCtaSection
+            ctaEnabled={ctaEnabled}
+            ctaTitle={ctaTitle}
+            ctaDesc={ctaDesc}
+            onToggle={() => setCtaEnabled((v) => !v)}
+            onTitleChange={setCtaTitle}
+            onDescChange={setCtaDesc}
           />
           <EditorImageSection
             imageTab={imageTab}

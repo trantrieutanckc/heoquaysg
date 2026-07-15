@@ -105,6 +105,9 @@ model Post {
   relatedPostIds Json?
   scheduledAt    DateTime?
   bookable       Boolean   @default(false)
+  ctaEnabled     Boolean   @default(true)
+  ctaTitle       String?
+  ctaDesc        String?
   avgRating      Float?
   ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])
