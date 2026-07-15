@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client")
 const db = new PrismaClient()
 
-const ADMIN_ID = "cmqowl0w40000h98etnodtd00"
+const ADMIN_ID = "cmrlnetjs0000h9ri0mx0cwfp"
 
 // ── TipTap JSON helpers ───────────────────────────────────────────────────────
 
