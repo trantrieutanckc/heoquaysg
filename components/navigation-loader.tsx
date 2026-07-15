@@ -7,15 +7,27 @@ import { FunnyLoader } from "@/components/funny-loader"
 function Overlay() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const deferredPathname = React.useDeferredValue(pathname)
   const [visible, setVisible] = React.useState(false)
 
-  // Hide only after deferred pathname catches up (Suspense resolved) + small buffer
+  // Tắt loader khi browser idle sau khi pathname đổi (page đã render + paint xong)
   React.useEffect(() => {
     if (!visible) return
-    const t = setTimeout(() => setVisible(false), 300)
-    return () => clearTimeout(t)
-  }, [deferredPathname, searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
+    let id: number
+    let fallback: ReturnType<typeof setTimeout>
+    const hide = () => {
+      fallback = setTimeout(() => setVisible(false), 150)
+    }
+    if (typeof requestIdleCallback !== "undefined") {
+      id = requestIdleCallback(hide, { timeout: 3000 })
+    } else {
+      // Safari fallback: đợi 2 animation frame (đảm bảo đã paint)
+      requestAnimationFrame(() => requestAnimationFrame(hide))
+    }
+    return () => {
+      if (typeof cancelIdleCallback !== "undefined") cancelIdleCallback(id)
+      clearTimeout(fallback)
+    }
+  }, [pathname, searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
     if (visible) {
