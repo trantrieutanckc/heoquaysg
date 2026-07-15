@@ -65,6 +65,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         ctaEnabled: post.ctaEnabled,
         ctaTitle: post.ctaTitle,
         ctaDesc: post.ctaDesc,
+        ctaImage: post.ctaImage,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

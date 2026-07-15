@@ -212,7 +212,7 @@ export default async function PostPage({ params }: PostPageProps) {
             </div>
             <div className="relative flex flex-col sm:flex-row items-center gap-5 p-6 sm:p-8">
               <div className="shrink-0 h-16 w-16 drop-shadow-lg">
-                <Image src="/images/heo-quay.png" alt="Heo Quay Bình Tân" width={64} height={64} className="h-full w-full object-contain" />
+                <Image src={post.ctaImage?.trim() || "/images/heo-quay.png"} alt="Heo Quay Bình Tân" width={64} height={64} className="h-full w-full object-contain" />
               </div>
               <div className="flex-1 text-center sm:text-left text-white">
                 <h2 className="font-heading text-xl sm:text-2xl font-bold leading-snug mb-1">

@@ -63,6 +63,7 @@ interface EditorProps {
     ctaEnabled?: boolean
     ctaTitle?: string | null
     ctaDesc?: string | null
+    ctaImage?: string | null
   }
   categories: Category[]
   postCategoryIds: string[]
@@ -119,6 +120,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
   const [ctaEnabled, setCtaEnabled] = React.useState(post.ctaEnabled ?? true)
   const [ctaTitle, setCtaTitle] = React.useState(post.ctaTitle ?? "")
   const [ctaDesc, setCtaDesc] = React.useState(post.ctaDesc ?? "")
+  const [ctaImage, setCtaImage] = React.useState(post.ctaImage ?? "")
   const [isSavingBookable, setIsSavingBookable] = React.useState(false)
 
   // Ảnh bìa
@@ -276,6 +278,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           ctaEnabled,
           ctaTitle: ctaTitle.trim() || null,
           ctaDesc: ctaDesc.trim() || null,
+          ctaImage: ctaImage.trim() || null,
         }),
       })
       if (!res?.ok) {
@@ -456,9 +459,11 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             ctaEnabled={ctaEnabled}
             ctaTitle={ctaTitle}
             ctaDesc={ctaDesc}
+            ctaImage={ctaImage}
             onToggle={() => setCtaEnabled((v) => !v)}
             onTitleChange={setCtaTitle}
             onDescChange={setCtaDesc}
+            onImageChange={setCtaImage}
           />
           <EditorImageSection
             imageTab={imageTab}

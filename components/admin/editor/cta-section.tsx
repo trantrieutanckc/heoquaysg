@@ -8,12 +8,14 @@ interface Props {
   ctaEnabled: boolean
   ctaTitle: string
   ctaDesc: string
+  ctaImage: string
   onToggle: () => void
   onTitleChange: (v: string) => void
   onDescChange: (v: string) => void
+  onImageChange: (v: string) => void
 }
 
-export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, onToggle, onTitleChange, onDescChange }: Props) {
+export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, ctaImage, onToggle, onTitleChange, onDescChange, onImageChange }: Props) {
   return (
     <AccordionItem value="cta">
       <AccordionTrigger className="text-base font-medium">
@@ -56,6 +58,20 @@ export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, onToggle, onTi
                   placeholder="Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất."
                   className="text-sm"
                 />
+              </div>
+              <div className="grid gap-1.5">
+                <Label className="text-xs">Ảnh minh hoạ <span className="text-muted-foreground font-normal">(URL — để trống dùng ảnh heo quay mặc định)</span></Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    value={ctaImage}
+                    onChange={(e) => onImageChange(e.target.value)}
+                    placeholder="https://... hoặc /images/..."
+                    className="text-sm flex-1"
+                  />
+                  {ctaImage && (
+                    <img src={ctaImage} alt="" className="h-10 w-10 rounded object-cover border shrink-0" onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }} />
+                  )}
+                </div>
               </div>
             </div>
           )}

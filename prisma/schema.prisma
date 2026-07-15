@@ -108,6 +108,7 @@ model Post {
   ctaEnabled     Boolean   @default(true)
   ctaTitle       String?
   ctaDesc        String?
+  ctaImage       String?
   avgRating      Float?
   ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])

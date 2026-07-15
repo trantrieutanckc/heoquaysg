@@ -24,6 +24,7 @@ const postPatchSchema = z.object({
   ctaEnabled: z.boolean().optional(),
   ctaTitle: z.string().nullable().optional(),
   ctaDesc: z.string().nullable().optional(),
+  ctaImage: z.string().nullable().optional(),
 })
 
 export async function PATCH(
@@ -75,6 +76,7 @@ export async function PATCH(
         ...(body.ctaEnabled !== undefined && { ctaEnabled: body.ctaEnabled }),
         ...(body.ctaTitle !== undefined && { ctaTitle: body.ctaTitle }),
         ...(body.ctaDesc !== undefined && { ctaDesc: body.ctaDesc }),
+        ...(body.ctaImage !== undefined && { ctaImage: body.ctaImage }),
         ...(body.scheduledAt !== undefined && {
           scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
         }),
