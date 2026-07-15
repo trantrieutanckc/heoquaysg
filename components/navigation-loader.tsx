@@ -7,12 +7,15 @@ import { FunnyLoader } from "@/components/funny-loader"
 function Overlay() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const deferredPathname = React.useDeferredValue(pathname)
   const [visible, setVisible] = React.useState(false)
 
+  // Hide only after deferred pathname catches up (Suspense resolved) + small buffer
   React.useEffect(() => {
-    const t = setTimeout(() => setVisible(false), 400)
+    if (!visible) return
+    const t = setTimeout(() => setVisible(false), 300)
     return () => clearTimeout(t)
-  }, [pathname, searchParams])
+  }, [deferredPathname, searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
 
   React.useEffect(() => {
     if (visible) {
