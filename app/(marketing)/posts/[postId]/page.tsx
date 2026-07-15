@@ -200,19 +200,48 @@ export default async function PostPage({ params }: PostPageProps) {
         </FadeUp>
 
         {phone && (
-          <FadeUp className="my-2 rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/30 p-8 text-center">
-            <h2 className="font-heading text-xl sm:text-2xl mb-2">Muốn đặt món hoặc hỏi thêm?</h2>
-            <p className="text-sm text-muted-foreground mb-6">Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất.</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <a
-                href={`tel:${phone}`}
-                className="inline-flex items-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 transition-colors"
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-                Gọi ngay — {phone}
-              </a>
+          <FadeUp className="my-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-500">
+            {/* dot pattern */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+              <svg width="100%" height="100%">
+                <pattern id="post-cta-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.2" fill="white" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#post-cta-dots)" />
+              </svg>
+            </div>
+            <div className="relative flex flex-col sm:flex-row items-center gap-5 p-6 sm:p-8">
+              {/* icon */}
+              <div className="shrink-0 h-14 w-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-3xl select-none">
+                🐷
+              </div>
+              {/* text */}
+              <div className="flex-1 text-center sm:text-left text-white">
+                <h2 className="font-heading text-xl sm:text-2xl font-bold leading-snug mb-1">
+                  Muốn đặt món hoặc hỏi thêm?
+                </h2>
+                <p className="text-white/80 text-sm leading-relaxed">
+                  Liên hệ với chúng tôi để được tư vấn và đặt hàng nhanh nhất.
+                </p>
+              </div>
+              {/* buttons */}
+              <div className="flex flex-col sm:flex-row items-center gap-2 shrink-0">
+                <a
+                  href={`tel:${phone}`}
+                  className="inline-flex items-center gap-2 rounded-full bg-white text-orange-600 hover:bg-orange-50 font-bold px-6 py-3 text-sm transition-colors shadow-lg whitespace-nowrap"
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                  Gọi ngay
+                </a>
+                <a
+                  href="/dat-lich"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/50 hover:bg-white/10 text-white font-semibold px-6 py-3 text-sm transition-colors whitespace-nowrap"
+                >
+                  Đặt lịch online
+                </a>
+              </div>
             </div>
           </FadeUp>
         )}
