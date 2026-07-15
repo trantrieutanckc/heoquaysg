@@ -153,13 +153,13 @@ export default async function BlogPage({
 
         {/* Tag filter */}
         {tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-3">
+          <div className="flex flex-nowrap overflow-x-auto scrollbar-none sm:flex-wrap sm:overflow-x-visible gap-1.5 mt-3 pb-1 sm:pb-0">
             {tags.map((tag) => (
               <a
                 key={tag.slug}
                 href={selectedTag === tag.slug ? "/blog" : `/blog?tag=${tag.slug}`}
                 className={cn(
-                  "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium border transition-colors",
+                  "inline-flex shrink-0 items-center gap-1 rounded-full px-3 py-1 text-xs font-medium border transition-colors",
                   selectedTag === tag.slug
                     ? "bg-primary text-primary-foreground border-primary"
                     : "border-border text-muted-foreground hover:border-primary hover:text-primary"
