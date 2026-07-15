@@ -11,10 +11,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Icons } from "@/components/icons"
 import { toast } from "@/components/ui/use-toast"
+import { ImagePickerInput } from "@/components/admin/image-picker-input"
 
 interface PostAddImageButtonProps {
   postId: string
@@ -62,19 +61,17 @@ export function PostAddImageButton({ postId }: PostAddImageButtonProps) {
           <DialogHeader>
             <DialogTitle>Thêm ảnh cho bài viết</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-2 py-2">
-            <Label htmlFor="image-url">URL ảnh</Label>
-            <Input
-              id="image-url"
-              placeholder="https://example.com/image.jpg"
+          <div className="grid gap-3 py-2">
+            <ImagePickerInput
+              id="post-image"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={setUrl}
+              previewClass="h-32 w-full rounded-lg object-cover border"
+              placeholder="https://..."
             />
           </div>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setOpen(false)}>
-              Huỷ
-            </Button>
+            <Button variant="ghost" onClick={() => setOpen(false)}>Huỷ</Button>
             <Button onClick={handleSave} disabled={!url || isSaving}>
               {isSaving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
               Lưu

@@ -10,6 +10,7 @@ import { SaveOverlay } from "@/components/ui/save-overlay"
 import { MiniTiptapEditor } from "@/components/admin/mini-tiptap-editor"
 import { Icons } from "@/components/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { ImagePickerInput } from "@/components/admin/image-picker-input"
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -93,26 +94,16 @@ function BgField({
           <p className="text-[11px] text-muted-foreground">Màu hex, rgb, hoặc tên màu CSS</p>
         </div>
 
-        {/* Image URL */}
+        {/* Image Upload */}
         <div className="grid gap-1.5">
-          <Label className="text-xs">Ảnh nền (URL) — ưu tiên hơn màu</Label>
-          <div className="flex gap-2 items-center">
-            <Input
-              value={image}
-              onChange={(e) => set(imageKey, e.target.value)}
-              placeholder="https://... (để trống nếu dùng màu)"
-              className="flex-1 text-xs"
-            />
-            {image && (
-              <button
-                type="button"
-                onClick={() => set(imageKey, "")}
-                className="text-muted-foreground hover:text-foreground"
-              >
-                <Icons.close className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
+          <Label className="text-xs">Ảnh nền — ưu tiên hơn màu</Label>
+          <ImagePickerInput
+            id={imageKey}
+            value={image}
+            onChange={(url) => set(imageKey, url)}
+            previewClass="h-16 w-full rounded-lg object-cover border"
+            placeholder="https://... (hoặc upload ảnh)"
+          />
           <p className="text-[11px] text-muted-foreground">Ảnh sẽ phủ toàn section</p>
         </div>
       </div>
