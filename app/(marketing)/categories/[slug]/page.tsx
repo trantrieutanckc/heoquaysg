@@ -11,6 +11,7 @@ import { parseBanner } from "@/lib/banner"
 import { BannerDisplay } from "@/components/banner-display"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { StarDisplay } from "@/components/star-display"
+import { BookingCtaSection } from "@/app/(marketing)/_components/home-sections"
 
 interface CategoryPageProps {
   params: { slug: string }
@@ -71,13 +72,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const template = (category.template ?? "standard") as CategoryTemplate
   const banner = parseBanner(category.banner)
 
+  const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+
   if (template === "hero") {
-    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} />
+    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
   }
   if (template === "grid") {
-    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} />
+    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
   }
-  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} />
+  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
 }
 
 // ─── Shared post card (vertical) ─────────────────────────────────────────────
@@ -120,7 +124,7 @@ function PostCard({ post }: { post: any }) {
 }
 
 // ─── Standard template ────────────────────────────────────────────────────────
-function StandardTemplate({ category, image, posts, banner }: any) {
+function StandardTemplate({ category, image, posts, banner, contactPhone }: any) {
   return (
     <div className="min-h-screen">
       <PageEntrance>
@@ -170,12 +174,13 @@ function StandardTemplate({ category, image, posts, banner }: any) {
           </FadeUp>
         )}
       </div>
+      <BookingCtaSection contactPhone={contactPhone} />
     </div>
   )
 }
 
 // ─── Hero template ────────────────────────────────────────────────────────────
-function HeroTemplate({ category, image, posts, banner }: any) {
+function HeroTemplate({ category, image, posts, banner, contactPhone }: any) {
   return (
     <div className="min-h-screen">
       <div className="relative h-72 w-full overflow-hidden lg:h-[420px]">
@@ -224,6 +229,7 @@ function HeroTemplate({ category, image, posts, banner }: any) {
           </FadeUp>
         )}
       </div>
+      <BookingCtaSection contactPhone={contactPhone} />
     </div>
   )
 }
