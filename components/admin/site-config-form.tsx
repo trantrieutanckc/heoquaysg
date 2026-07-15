@@ -72,6 +72,10 @@ export interface SiteConfigData {
   homeBookingLabel?: string
   homeBookingTitle?: string
   homeBookingDesc?: string
+  homeBookingBtn1Text?: string
+  homeBookingBtn1Link?: string
+  homeBookingBtn2Text?: string
+  homeBookingBtn2Link?: string
   // Rich content (TipTap JSON serialized)
   homeAboutContent?: string
   homeBookingContent?: string

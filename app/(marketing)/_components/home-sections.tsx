@@ -464,13 +464,24 @@ export function BookingCtaSection({
   title,
   desc,
   contactPhone,
+  btn1Text,
+  btn1Link,
+  btn2Text,
+  btn2Link,
 }: {
   bgStyle?: React.CSSProperties
   label?: string
   title?: string
   desc?: string
   contactPhone?: string
+  btn1Text?: string
+  btn1Link?: string
+  btn2Text?: string
+  btn2Link?: string
 }) {
+  const resolvedBtn1Link = btn1Link?.trim() || (contactPhone ? `tel:${contactPhone}` : "/dat-lich")
+  const resolvedBtn2Link = btn2Link?.trim() || "/thuc-don"
+
   return (
     <section
       className="py-16 lg:py-24 relative overflow-hidden"
@@ -499,19 +510,19 @@ export function BookingCtaSection({
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href={`tel:${contactPhone}`}
+              href={resolvedBtn1Link}
               className="inline-flex items-center justify-center gap-2.5 bg-white text-orange-600 hover:bg-orange-50 px-10 py-4 text-sm font-bold uppercase tracking-wider transition-colors shadow-xl"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
-              Đặt lịch ngay
+              {btn1Text?.trim() || "Đặt lịch ngay"}
             </a>
             <Link
-              href="/thuc-don"
+              href={resolvedBtn2Link}
               className="group inline-flex items-center justify-center gap-2 border border-white/50 hover:bg-white/10 text-white px-10 py-4 text-sm font-semibold uppercase tracking-wider transition-colors"
             >
-              Xem thực đơn
+              {btn2Text?.trim() || "Xem thực đơn"}
               <ArrowRight />
             </Link>
           </div>

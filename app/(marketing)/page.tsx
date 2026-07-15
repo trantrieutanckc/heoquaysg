@@ -164,6 +164,10 @@ export default async function IndexPage() {
         title={cfg.homeBookingTitle}
         desc={cfg.homeBookingDesc}
         contactPhone={cfg.contactPhone}
+        btn1Text={cfg.homeBookingBtn1Text}
+        btn1Link={cfg.homeBookingBtn1Link}
+        btn2Text={cfg.homeBookingBtn2Text}
+        btn2Link={cfg.homeBookingBtn2Link}
       />
 
       {cfg.contactAddress && (

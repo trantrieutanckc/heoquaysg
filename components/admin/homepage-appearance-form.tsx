@@ -272,6 +272,20 @@ export function HomepageAppearanceForm({ initialData }: Props) {
               <TextField label='Tiêu đề (title)' fieldKey="homeBookingTitle" placeholder="Đặt lịch ngay hôm nay" data={data} set={set} />
               <TextField label='Mô tả ngắn' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
             </div>
+            <div className="grid gap-3 border rounded-lg p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nút 1 (trái)</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <TextField label='Text' fieldKey="homeBookingBtn1Text" placeholder="Đặt lịch ngay" data={data} set={set} />
+                <TextField label='Link' fieldKey="homeBookingBtn1Link" placeholder="/dat-lich" data={data} set={set} />
+              </div>
+            </div>
+            <div className="grid gap-3 border rounded-lg p-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nút 2 (phải)</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <TextField label='Text' fieldKey="homeBookingBtn2Text" placeholder="Xem thực đơn" data={data} set={set} />
+                <TextField label='Link' fieldKey="homeBookingBtn2Link" placeholder="/thuc-don" data={data} set={set} />
+              </div>
+            </div>
             <BgField
               label="Background (mặc định: gradient cam)"
               colorKey="homeBookingBgColor"
