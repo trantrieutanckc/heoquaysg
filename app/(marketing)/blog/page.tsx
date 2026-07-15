@@ -282,7 +282,19 @@ export default async function BlogPage({
         </div>
       )}
       </div>
-      <BookingCtaSection contactPhone={cfg.contactPhone} />
+      <BookingCtaSection
+        label={cfg.homeBookingLabel}
+        title={cfg.homeBookingTitle}
+        desc={cfg.homeBookingDesc}
+        contactPhone={cfg.contactPhone}
+        bgStyle={(() => {
+          const img = cfg.homeBookingBgImage?.trim()
+          const color = cfg.homeBookingBgColor?.trim()
+          if (img) return { backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }
+          if (color) return { backgroundColor: color }
+          return undefined
+        })()}
+      />
     </div>
   )
 }

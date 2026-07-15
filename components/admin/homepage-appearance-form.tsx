@@ -9,6 +9,7 @@ import type { SiteConfigData } from "@/components/admin/site-config-form"
 import { SaveOverlay } from "@/components/ui/save-overlay"
 import { MiniTiptapEditor } from "@/components/admin/mini-tiptap-editor"
 import { Icons } from "@/components/icons"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -190,86 +191,97 @@ export function HomepageAppearanceForm({ initialData }: Props) {
         Ảnh nền sẽ được ưu tiên hơn màu nếu cả hai đều được điền.
       </p>
 
-      <Section
-        title="Section 1 — Bài viết nổi bật"
-        desc="Tiêu đề và background"
-      >
-        <div className="grid sm:grid-cols-2 gap-3">
-          <TextField label='Nhãn nhỏ (label)' fieldKey="homeFeaturedLabel" placeholder="Nổi bật" data={data} set={set} />
-          <TextField label='Tiêu đề (title)' fieldKey="homeFeaturedTitle" placeholder="Bài viết nổi bật" data={data} set={set} />
-        </div>
-        <BgField label="Background" colorKey="homeFeaturedBgColor" imageKey="homeFeaturedBgImage" data={data} set={set} />
-      </Section>
+      <Tabs defaultValue="homepage">
+        <TabsList>
+          <TabsTrigger value="homepage">Trang chủ</TabsTrigger>
+          <TabsTrigger value="booking">Đặt lịch</TabsTrigger>
+        </TabsList>
 
-      <Section
-        title="Section 2 — Danh mục món"
-        desc="Tiêu đề và background"
-      >
-        <div className="grid sm:grid-cols-2 gap-3">
-          <TextField label='Nhãn nhỏ (label)' fieldKey="homeCategoriesLabel" placeholder="Thực đơn" data={data} set={set} />
-          <TextField label='Tiêu đề (title)' fieldKey="homeCategoriesTitle" placeholder="Danh mục món" data={data} set={set} />
-        </div>
-        <BgField label="Background" colorKey="homeCategoriesBgColor" imageKey="homeCategoriesBgImage" data={data} set={set} />
-      </Section>
+        <TabsContent value="homepage" className="space-y-6 mt-6">
+          <Section
+            title="Section 1 — Bài viết nổi bật"
+            desc="Tiêu đề và background"
+          >
+            <div className="grid sm:grid-cols-2 gap-3">
+              <TextField label='Nhãn nhỏ (label)' fieldKey="homeFeaturedLabel" placeholder="Nổi bật" data={data} set={set} />
+              <TextField label='Tiêu đề (title)' fieldKey="homeFeaturedTitle" placeholder="Bài viết nổi bật" data={data} set={set} />
+            </div>
+            <BgField label="Background" colorKey="homeFeaturedBgColor" imageKey="homeFeaturedBgImage" data={data} set={set} />
+          </Section>
 
-      <Section
-        title="Section 3 — Về chúng tôi"
-        desc="Nhãn nhỏ, nội dung và background"
-      >
-        <TextField label='Nhãn nhỏ (label)' fieldKey="homeAboutLabel" placeholder="Câu chuyện của chúng tôi" data={data} set={set} />
-        <div className="grid gap-1.5">
-          <Label className="text-xs">Nội dung (rich text)</Label>
-          <MiniTiptapEditor
-            value={data.homeAboutContent}
-            onChange={(val) => setContent("homeAboutContent", val)}
-            placeholder="Viết câu chuyện thương hiệu, điểm nổi bật..."
-          />
-          <p className="text-[11px] text-muted-foreground">Hỗ trợ in đậm, in nghiêng, danh sách, link. Nếu để trống sẽ dùng Mô tả ngắn từ Cài đặt.</p>
-        </div>
-        <BgField label="Background" colorKey="homeAboutBgColor" imageKey="homeAboutBgImage" data={data} set={set} />
-      </Section>
+          <Section
+            title="Section 2 — Danh mục món"
+            desc="Tiêu đề và background"
+          >
+            <div className="grid sm:grid-cols-2 gap-3">
+              <TextField label='Nhãn nhỏ (label)' fieldKey="homeCategoriesLabel" placeholder="Thực đơn" data={data} set={set} />
+              <TextField label='Tiêu đề (title)' fieldKey="homeCategoriesTitle" placeholder="Danh mục món" data={data} set={set} />
+            </div>
+            <BgField label="Background" colorKey="homeCategoriesBgColor" imageKey="homeCategoriesBgImage" data={data} set={set} />
+          </Section>
 
-      <Section
-        title="Section 4 — Bài viết mới nhất"
-        desc="Tiêu đề và background"
-      >
-        <div className="grid sm:grid-cols-2 gap-3">
-          <TextField label='Nhãn nhỏ (label)' fieldKey="homePostsLabel" placeholder="Khám phá" data={data} set={set} />
-          <TextField label='Tiêu đề (title)' fieldKey="homePostsTitle" placeholder="Bài viết mới nhất" data={data} set={set} />
-        </div>
-        <BgField label="Background" colorKey="homePostsBgColor" imageKey="homePostsBgImage" data={data} set={set} />
-      </Section>
+          <Section
+            title="Section 3 — Về chúng tôi"
+            desc="Nhãn nhỏ, nội dung và background"
+          >
+            <TextField label='Nhãn nhỏ (label)' fieldKey="homeAboutLabel" placeholder="Câu chuyện của chúng tôi" data={data} set={set} />
+            <div className="grid gap-1.5">
+              <Label className="text-xs">Nội dung (rich text)</Label>
+              <MiniTiptapEditor
+                value={data.homeAboutContent}
+                onChange={(val) => setContent("homeAboutContent", val)}
+                placeholder="Viết câu chuyện thương hiệu, điểm nổi bật..."
+              />
+              <p className="text-[11px] text-muted-foreground">Hỗ trợ in đậm, in nghiêng, danh sách, link. Nếu để trống sẽ dùng Mô tả ngắn từ Cài đặt.</p>
+            </div>
+            <BgField label="Background" colorKey="homeAboutBgColor" imageKey="homeAboutBgImage" data={data} set={set} />
+          </Section>
 
-      <Section
-        title="Section 5 — Đặt lịch ngay"
-        desc="Nội dung text và background (mặc định: gradient cam)"
-      >
-        <TextField label='Nhãn nhỏ (label)' fieldKey="homeBookingLabel" placeholder="Giao hàng tận nơi" data={data} set={set} />
-        <div className="grid sm:grid-cols-2 gap-3">
-          <TextField label='Tiêu đề (title)' fieldKey="homeBookingTitle" placeholder="Đặt lịch ngay hôm nay" data={data} set={set} />
-          <TextField label='Mô tả ngắn (plain text)' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
-        </div>
-        <BgField
-          label="Background"
-          colorKey="homeBookingBgColor"
-          imageKey="homeBookingBgImage"
-          data={data}
-          set={set}
-        />
-      </Section>
+          <Section
+            title="Section 4 — Bài viết mới nhất"
+            desc="Tiêu đề và background"
+          >
+            <div className="grid sm:grid-cols-2 gap-3">
+              <TextField label='Nhãn nhỏ (label)' fieldKey="homePostsLabel" placeholder="Khám phá" data={data} set={set} />
+              <TextField label='Tiêu đề (title)' fieldKey="homePostsTitle" placeholder="Bài viết mới nhất" data={data} set={set} />
+            </div>
+            <BgField label="Background" colorKey="homePostsBgColor" imageKey="homePostsBgImage" data={data} set={set} />
+          </Section>
 
-      <Section
-        title="Section 6 — Bản đồ"
-        desc="Background phía sau section bản đồ và địa chỉ"
-      >
-        <BgField
-          label="Bản đồ"
-          colorKey="homeMapBgColor"
-          imageKey="homeMapBgImage"
-          data={data}
-          set={set}
-        />
-      </Section>
+          <Section
+            title="Section 5 — Bản đồ"
+            desc="Background phía sau section bản đồ và địa chỉ"
+          >
+            <BgField
+              label="Bản đồ"
+              colorKey="homeMapBgColor"
+              imageKey="homeMapBgImage"
+              data={data}
+              set={set}
+            />
+          </Section>
+        </TabsContent>
+
+        <TabsContent value="booking" className="space-y-6 mt-6">
+          <Section
+            title="Banner Đặt lịch"
+            desc="Hiển thị ở cuối trang chủ, trang blog và trang danh mục"
+          >
+            <TextField label='Nhãn nhỏ (label)' fieldKey="homeBookingLabel" placeholder="Giao hàng tận nơi" data={data} set={set} />
+            <div className="grid sm:grid-cols-2 gap-3">
+              <TextField label='Tiêu đề (title)' fieldKey="homeBookingTitle" placeholder="Đặt lịch ngay hôm nay" data={data} set={set} />
+              <TextField label='Mô tả ngắn' fieldKey="homeBookingDesc" placeholder="Chọn món, chọn ngày giao..." data={data} set={set} />
+            </div>
+            <BgField
+              label="Background (mặc định: gradient cam)"
+              colorKey="homeBookingBgColor"
+              imageKey="homeBookingBgImage"
+              data={data}
+              set={set}
+            />
+          </Section>
+        </TabsContent>
+      </Tabs>
 
       <div className="flex justify-end">
         <Button onClick={handleSave} disabled={saving}>

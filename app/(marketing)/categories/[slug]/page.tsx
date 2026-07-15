@@ -75,13 +75,27 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
 
+  const bookingProps = {
+    label: cfg.homeBookingLabel,
+    title: cfg.homeBookingTitle,
+    desc: cfg.homeBookingDesc,
+    contactPhone: cfg.contactPhone,
+    bgStyle: (() => {
+      const img = cfg.homeBookingBgImage?.trim()
+      const color = cfg.homeBookingBgColor?.trim()
+      if (img) return { backgroundImage: `url(${img})`, backgroundSize: "cover", backgroundPosition: "center" }
+      if (color) return { backgroundColor: color }
+      return undefined
+    })(),
+  }
+
   if (template === "hero") {
-    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
+    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
   }
   if (template === "grid") {
-    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
+    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
   }
-  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} contactPhone={cfg.contactPhone} />
+  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
 }
 
 // ─── Shared post card (vertical) ─────────────────────────────────────────────
@@ -124,7 +138,7 @@ function PostCard({ post }: { post: any }) {
 }
 
 // ─── Standard template ────────────────────────────────────────────────────────
-function StandardTemplate({ category, image, posts, banner, contactPhone }: any) {
+function StandardTemplate({ category, image, posts, banner, bookingProps }: any) {
   return (
     <div className="min-h-screen">
       <PageEntrance>
@@ -174,13 +188,13 @@ function StandardTemplate({ category, image, posts, banner, contactPhone }: any)
           </FadeUp>
         )}
       </div>
-      <BookingCtaSection contactPhone={contactPhone} />
+      <BookingCtaSection {...bookingProps} />
     </div>
   )
 }
 
 // ─── Hero template ────────────────────────────────────────────────────────────
-function HeroTemplate({ category, image, posts, banner, contactPhone }: any) {
+function HeroTemplate({ category, image, posts, banner, bookingProps }: any) {
   return (
     <div className="min-h-screen">
       <div className="relative h-72 w-full overflow-hidden lg:h-[420px]">
@@ -229,7 +243,7 @@ function HeroTemplate({ category, image, posts, banner, contactPhone }: any) {
           </FadeUp>
         )}
       </div>
-      <BookingCtaSection contactPhone={contactPhone} />
+      <BookingCtaSection {...bookingProps} />
     </div>
   )
 }
