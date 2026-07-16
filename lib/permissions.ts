@@ -36,6 +36,7 @@ const ROLE_PERMISSIONS: Record<Role, string[]> = {
     "/dashboard/subscribers",
     "/dashboard/about",
     "/dashboard/lien-he",
+    "/dashboard/docs",
   ],
   CONTRIBUTOR: [],
 }
