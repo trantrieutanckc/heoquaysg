@@ -11,6 +11,7 @@ export const metadata = { title: "Trang tĩnh" }
 export default async function PagesPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
+  if (user.role !== "ADMIN") redirect("/dashboard")
 
   const pages = await db.page.findMany({
     orderBy: { updatedAt: "desc" },
