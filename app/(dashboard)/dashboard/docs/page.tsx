@@ -268,6 +268,7 @@ Vào **Dashboard → Giao diện** để chỉnh:
 - Ảnh nền, màu sắc từng section
 - Text tiêu đề, mô tả section "Về chúng tôi"
 - Nội dung rich text phần giới thiệu
+- **Nhóm món hiển thị trên trang chủ**: tick chọn nhóm nào xuất hiện trong section Thực đơn & Bảng giá (các nhóm không chọn vẫn hiển thị đầy đủ tại /thuc-don)
 
 ## Robots.txt (kiểm soát Google)
 - Mặc định: Google **được phép** index toàn bộ trang công khai
@@ -317,7 +318,7 @@ Vào **Dashboard → Giao diện** để chỉnh:
 ## Đặt lịch (Bookings)
 - Vào **Dashboard → Đặt lịch** để xem đơn hàng từ khách
 - Mỗi đơn gồm: tên, SĐT, địa chỉ, món chọn, ngày giao
-- Chỉ nhận đơn giao **Thứ 2 – Thứ 6** (hệ thống tự chặn T7/CN)
+- Chỉ nhận đơn giao **Thứ 2 – Thứ 7** (hệ thống tự chặn Chủ nhật)
 
 ## Tìm kiếm nhanh
 - Thanh tìm kiếm 🔍 ở góc phải dashboard → tìm nhanh bài viết theo tiêu đề`,
@@ -378,22 +379,30 @@ Vào **Dashboard → Giao diện** để chỉnh:
 | Duyệt / Bỏ duyệt bình luận | ✅ | ✅ | ❌ |
 | Xoá bình luận | ✅ | ✅ | ❌ |
 
+### Thực đơn & Tags
+
+| Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
+|---|:---:|:---:|:---:|
+| Xem / quản lý nhóm món và món | ✅ | ✅ | ❌ |
+| Quản lý Tags | ✅ | ✅ | ❌ |
+| Quản lý Subscribers | ✅ | ✅ | ❌ |
+
 ### Menu & Trang tĩnh
 
 | Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
 |---|:---:|:---:|:---:|
 | Quản lý menu điều hướng | ✅ | ✅ | ❌ |
-| Tạo / sửa / xoá trang tĩnh | ✅ | ✅ | ❌ |
+| Tạo / sửa / xoá trang tĩnh | ✅ | ❌ | ❌ |
 
 ### Giao diện & Cấu hình
 
 | Chức năng | ADMIN | EDITOR | CONTRIBUTOR |
 |---|:---:|:---:|:---:|
 | Cấu hình site (tên, logo, hotline...) | ✅ | ❌ | ❌ |
-| Giao diện homepage (màu, ảnh nền) | ✅ | ❌ | ❌ |
-| Trang Về chúng tôi / Liên hệ | ✅ | ❌ | ❌ |
-| Hướng dẫn sử dụng (Docs) | ✅ | ❌ | ❌ |
-| Liên kết nhanh (Docs edit) | ✅ | ❌ | ❌ |
+| Giao diện homepage (màu, ảnh nền, nhóm món) | ✅ | ❌ | ❌ |
+| Trang Về chúng tôi / Liên hệ | ✅ | ✅ | ❌ |
+| Hướng dẫn sử dụng (Docs) — đọc | ✅ | ✅ | ❌ |
+| Hướng dẫn sử dụng (Docs) — chỉnh sửa | ✅ | ❌ | ❌ |
 
 ### Quản lý người dùng
 
