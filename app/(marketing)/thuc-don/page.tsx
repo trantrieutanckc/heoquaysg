@@ -175,14 +175,6 @@ export default async function ThucDonPage() {
                 📞 {contactPhone}
               </a>
             )}
-            {contactPhone && (
-              <a
-                href={`tel:${contactPhone.replace(/\s/g, "")}`}
-                className="inline-flex items-center gap-2 border border-border px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-muted transition-colors"
-              >
-                📞 {contactPhone}
-              </a>
-            )}
           </div>
         </div>
       </div>
