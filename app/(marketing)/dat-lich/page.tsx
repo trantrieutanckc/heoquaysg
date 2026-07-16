@@ -17,14 +17,22 @@ const HIGHLIGHTS = [
 ]
 
 export default async function DatLichPage() {
-  const [products, siteConfigRow] = await Promise.all([
-    db.post.findMany({
-      where: { bookable: true, published: true },
-      select: { id: true, title: true, price: true, image: true },
-      orderBy: { createdAt: "asc" },
+  const [dishes, siteConfigRow] = await Promise.all([
+    db.dish.findMany({
+      where: { available: true },
+      select: { id: true, name: true, price: true, unit: true, image: true },
+      orderBy: [{ group: { order: "asc" } }, { order: "asc" }],
     }),
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
   ])
+
+  const products = dishes.map((d) => ({
+    id: d.id,
+    title: d.name,
+    price: d.price,
+    unit: d.unit,
+    image: d.image ? { url: d.image } : null,
+  }))
 
   const data = (siteConfigRow?.data ?? {}) as Record<string, string>
   const heroImage = data.heroImage?.trim() || null

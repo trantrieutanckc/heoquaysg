@@ -8,6 +8,7 @@ interface Product {
   id: string
   title: string
   price: number | null
+  unit?: string
   image?: unknown
 }
 
@@ -264,7 +265,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
                         onClick={(e) => { e.stopPropagation(); setQty(p.id, 1) }}
                         className="h-7 w-7 rounded-lg border bg-background flex items-center justify-center hover:bg-muted transition-colors text-base font-bold leading-none"
                       >+</button>
-                      <span className="text-xs text-muted-foreground ml-0.5">con</span>
+                      <span className="text-xs text-muted-foreground ml-0.5">{p.unit ?? "con"}</span>
                     </div>
                   </div>
                 )}
@@ -387,7 +388,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
               <div key={item.id} className="flex items-center justify-between text-sm">
                 <span className="text-foreground">{item.title}</span>
                 <span className="font-medium text-muted-foreground">
-                  {item.quantity} con
+                  {item.quantity} {product?.unit ?? "con"}
                   {product?.price ? (
                     <span className="ml-1.5 text-foreground">· {new Intl.NumberFormat("vi-VN").format(product.price * item.quantity)}đ</span>
                   ) : null}
