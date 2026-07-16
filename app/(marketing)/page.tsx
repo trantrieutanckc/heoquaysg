@@ -62,11 +62,11 @@ export default async function IndexPage() {
     db.post.findMany({
       where: {
         published: true,
-        categories: { some: { category: { slug: { in: ["heo-quay", "vit-quay", "ga-quay"] } } } },
+        categories: { some: { category: { slug: "heo-quay" } } },
       },
       select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: homePostsCount * 4,
+      take: homePostsCount,
     }),
     db.category.findMany({
       where: { published: true },
@@ -94,14 +94,7 @@ export default async function IndexPage() {
   }
 
   const featured = featuredPost ?? posts[0] ?? null
-  const others = posts
-    .filter((p) => p.id !== featured?.id)
-    .sort((a, b) => {
-      const aHeo = a.categories.some((c) => c.category.slug === "heo-quay") ? -1 : 0
-      const bHeo = b.categories.some((c) => c.category.slug === "heo-quay") ? -1 : 0
-      return aHeo - bHeo
-    })
-    .slice(0, 6)
+  const others = posts.filter((p) => p.id !== featured?.id)
 
   return (
     <div className="min-h-screen">
