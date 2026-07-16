@@ -141,9 +141,10 @@ function TextField({
 
 interface Props {
   initialData: SiteConfigData
+  dishGroups: { id: string; name: string }[]
 }
 
-export function HomepageAppearanceForm({ initialData }: Props) {
+export function HomepageAppearanceForm({ initialData, dishGroups }: Props) {
   const [data, setData] = React.useState<SiteConfigData>(initialData)
   const [saving, setSaving] = React.useState(false)
 
@@ -238,6 +239,42 @@ export function HomepageAppearanceForm({ initialData }: Props) {
             </div>
             <BgField label="Background" colorKey="homePostsBgColor" imageKey="homePostsBgImage" data={data} set={set} />
           </Section>
+
+          {dishGroups.length > 0 && (
+            <Section
+              title="Section Thực đơn — Nhóm món hiển thị"
+              desc="Chọn các nhóm món sẽ xuất hiện trong section Thực đơn & Bảng giá trên trang chủ."
+            >
+              <div className="grid gap-2">
+                {dishGroups.map((g) => {
+                  const selected = (data.homeDishGroupNames ?? "Heo Quay|Heo Sữa Quay|Heo Cúng")
+                    .split("|")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                  const checked = selected.includes(g.name)
+                  return (
+                    <label key={g.id} className="flex items-center gap-3 cursor-pointer rounded-lg border px-4 py-3 hover:bg-muted/40 transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => {
+                          const next = checked
+                            ? selected.filter((n) => n !== g.name)
+                            : [...selected, g.name]
+                          set("homeDishGroupNames", next.join("|"))
+                        }}
+                        className="h-4 w-4 accent-primary"
+                      />
+                      <span className="text-sm font-medium">{g.name}</span>
+                    </label>
+                  )
+                })}
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Các nhóm không chọn vẫn hiển thị đầy đủ trên trang <strong>/thuc-don</strong>.
+              </p>
+            </Section>
+          )}
 
           <Section
             title="Section 5 — Bản đồ"

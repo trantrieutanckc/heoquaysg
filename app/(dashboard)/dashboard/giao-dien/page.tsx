@@ -13,7 +13,10 @@ export default async function HomepageAppearancePage() {
   if (!user) redirect("/login")
   if (user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
-  const config = await db.siteConfig.findUnique({ where: { id: "default" } })
+  const [config, dishGroups] = await Promise.all([
+    db.siteConfig.findUnique({ where: { id: "default" } }),
+    db.dishGroup.findMany({ orderBy: { order: "asc" }, select: { id: true, name: true } }),
+  ])
   const data = (config?.data ?? {}) as SiteConfigData
 
   return (
@@ -22,7 +25,7 @@ export default async function HomepageAppearancePage() {
         heading="Giao diện Homepage"
         text="Chỉnh nội dung text và màu nền / ảnh nền cho từng section trên trang chủ."
       />
-      <HomepageAppearanceForm initialData={data} />
+      <HomepageAppearanceForm initialData={data} dishGroups={dishGroups} />
     </DashboardShell>
   )
 }
