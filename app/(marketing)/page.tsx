@@ -156,7 +156,7 @@ export default async function IndexPage() {
         />
       )}
 
-      <ThucDonSection groups={dishGroups} />
+      <ThucDonSection groups={dishGroups.filter(g => ["Heo Quay", "Heo Sữa Quay", "Heo Cúng"].includes(g.name))} />
 
       <BookingCtaSection
         bgStyle={sectionStyle("homeBookingBgColor", "homeBookingBgImage")}
