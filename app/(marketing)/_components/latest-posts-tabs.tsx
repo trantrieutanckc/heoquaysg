@@ -28,7 +28,7 @@ const TABS = [
 ]
 
 export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; maxShow?: number }) {
-  const [active, setActive] = useState<string | null>(null)
+  const [active, setActive] = useState<string | null>("heo-quay")
 
   const filtered = active
     ? posts.filter((p) => p.categories.some((c) => c.category.slug === active))
