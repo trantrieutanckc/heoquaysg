@@ -51,12 +51,8 @@ export function SiteFooter({
           {/* Brand */}
           <div className="flex flex-col space-y-5 sm:col-span-2 md:col-span-2">
             <div className="flex items-center gap-4">
-              {logoUrl ? (
+              {logoUrl && (
                 <img src={logoUrl} alt={name} className="h-16 w-16 object-contain shrink-0" />
-              ) : (
-                <div className="h-11 w-11 bg-primary/20 flex items-center justify-center text-primary font-bold text-lg select-none border border-primary/30 shrink-0">
-                  {name[0]}
-                </div>
               )}
               <div>
                 <span className="font-heading text-lg font-semibold text-stone-100">{name}</span>

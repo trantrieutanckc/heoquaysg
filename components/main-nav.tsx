@@ -54,19 +54,21 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
       {/* Logo + site name */}
       <Link href="/" className="flex items-center gap-2.5 shrink-0">
         {logoUrl ? (
-          <img
-            src={logoUrl}
-            alt={siteName ?? "Logo"}
-            className="h-14 w-14 object-cover"
-          />
+          <>
+            <img
+              src={logoUrl}
+              alt={siteName ?? "Logo"}
+              className="h-14 w-14 object-cover"
+            />
+            {siteName && (
+              <span className="font-heading font-semibold text-sm leading-none hidden sm:block">
+                {siteName}
+              </span>
+            )}
+          </>
         ) : (
-          <div className="h-9 w-9 bg-primary/10 flex items-center justify-center text-primary font-bold text-sm select-none border border-primary/20">
-            {(siteName ?? "H")[0]}
-          </div>
-        )}
-        {siteName && (
-          <span className="font-heading font-semibold text-sm leading-none hidden sm:block">
-            {siteName}
+          <span className="font-heading font-bold text-base leading-tight">
+            {siteName ?? "Heo Quay Bình Tân"}
           </span>
         )}
       </Link>
