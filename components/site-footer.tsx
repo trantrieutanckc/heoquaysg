@@ -52,7 +52,7 @@ export function SiteFooter({
           <div className="flex flex-col space-y-5 sm:col-span-2 md:col-span-2">
             <div className="flex items-center gap-4">
               {logoUrl && (
-                <img src={logoUrl} alt={name} className="h-16 w-16 object-contain shrink-0" />
+                <img src={logoUrl} alt={name} className="h-14 w-auto object-contain shrink-0" />
               )}
               <div>
                 <span className="font-heading text-lg font-semibold text-stone-100">{name}</span>

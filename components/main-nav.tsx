@@ -58,13 +58,8 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
             <img
               src={logoUrl}
               alt={siteName ?? "Logo"}
-              className="h-14 w-14 object-cover"
+              className="h-12 w-auto object-contain"
             />
-            {siteName && (
-              <span className="font-heading font-semibold text-sm leading-none hidden sm:block">
-                {siteName}
-              </span>
-            )}
           </>
         ) : (
           <span className="font-heading font-bold text-base leading-tight">
