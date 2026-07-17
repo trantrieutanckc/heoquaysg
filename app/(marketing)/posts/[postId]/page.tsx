@@ -245,7 +245,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
         {relatedPosts.length > 0 && (
           <FadeUp className="border-t pt-10 mt-2">
-            <h2 className="font-heading text-xl sm:text-2xl mb-6">Bài viết liên quan</h2>
+            <h2 className="font-heading text-xl sm:text-2xl mb-6">Sản phẩm liên quan</h2>
             <RelatedPostsCarousel posts={relatedPosts} />
           </FadeUp>
         )}
