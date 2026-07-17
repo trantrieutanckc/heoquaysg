@@ -447,7 +447,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
         <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
           {visible.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
-            const excerpt = post.seoDescription || getExcerpt(post.content, 100)
+            const excerpt = (post.seoDescription || getExcerpt(post.content, 100))?.replace(/\n+/g, " ").trim()
             return (
               <StaggerItem key={post.id} hover>
                 <Link
@@ -472,14 +472,19 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                   </div>
                   <div className="flex flex-col p-3 sm:p-4 flex-1">
                     <div className="flex-1 flex flex-col gap-1.5 mb-3">
-                      {post.categories.length > 0 && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
-                      )}
+                      <div className="flex items-center justify-between gap-2">
+                        {post.categories.length > 0 && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
+                        )}
+                        <time className="text-[10px] text-muted-foreground/70 shrink-0" dateTime={post.createdAt.toISOString()}>
+                          {formatDate(post.createdAt.toISOString())}
+                        </time>
+                      </div>
                       <h3 className="font-heading text-sm sm:text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       {excerpt && (
-                        <p className="text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
                       )}
                       {post.price != null && (
                         <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
