@@ -21,7 +21,6 @@ export interface SiteConfigData {
   contactZalo?: string
   contactEmail?: string
   contactAddress?: string
-  businessHours?: string
   contactIntro?: string
   socialFacebook?: string
   socialInstagram?: string

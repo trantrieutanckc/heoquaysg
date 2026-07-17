@@ -9,12 +9,11 @@ interface Props {
   contactPhone?: string
   contactEmail?: string
   contactAddress?: string
-  businessHours?: string
   contactZalo?: string
   contactIntro?: string
 }
 
-export function ContactClient({ siteName, contactPhone, contactEmail, contactAddress, businessHours, contactZalo, contactIntro }: Props) {
+export function ContactClient({ siteName, contactPhone, contactEmail, contactAddress, contactZalo, contactIntro }: Props) {
   const [saving, setSaving] = React.useState(false)
   const [form, setForm] = React.useState({ name: "", email: "", phone: "", message: "" })
 
@@ -136,19 +135,6 @@ export function ContactClient({ siteName, contactPhone, contactEmail, contactAdd
                 </div>
               )}
 
-              {businessHours && (
-                <div className="flex gap-4 items-start">
-                  <div className="h-10 w-10 bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-primary" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground mb-0.5">Giờ mở cửa</p>
-                    <p className="text-muted-foreground">{businessHours}</p>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Map */}

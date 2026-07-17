@@ -12,7 +12,6 @@ interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   contactPhone?: string
   contactEmail?: string
   contactAddress?: string
-  businessHours?: string
   socialFacebook?: string
   socialInstagram?: string
   socialYoutube?: string
@@ -27,7 +26,6 @@ export function SiteFooter({
   contactPhone,
   contactEmail,
   contactAddress,
-  businessHours,
   socialFacebook,
   socialInstagram,
   socialYoutube,
@@ -39,7 +37,7 @@ export function SiteFooter({
     "Chuyên heo quay, vịt quay, gà quay chất lượng cao. Phục vụ tận tâm, giao hàng tận nơi."
 
   const hasSocial = contactZalo || socialFacebook || socialInstagram || socialYoutube
-  const hasContact = contactPhone || contactEmail || contactAddress || businessHours
+  const hasContact = contactPhone || contactEmail || contactAddress
 
   return (
     <footer className={cn("bg-stone-900 text-stone-300", className)}>
@@ -168,14 +166,6 @@ export function SiteFooter({
                       </svg>
                       {contactAddress}
                     </a>
-                  </li>
-                )}
-                {businessHours && (
-                  <li className="flex items-start gap-2">
-                    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 mt-0.5 text-primary/70" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-                    {businessHours}
                   </li>
                 )}
               </ul>

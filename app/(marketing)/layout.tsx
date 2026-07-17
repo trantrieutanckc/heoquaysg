@@ -192,7 +192,6 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
         contactPhone={cfg.contactPhone?.trim()}
         contactEmail={cfg.contactEmail?.trim()}
         contactAddress={cfg.contactAddress?.trim()}
-        businessHours={cfg.businessHours?.trim()}
         socialFacebook={cfg.socialFacebook?.trim()}
         socialInstagram={cfg.socialInstagram?.trim()}
         socialYoutube={cfg.socialYoutube?.trim()}

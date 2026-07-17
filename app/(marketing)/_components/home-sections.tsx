@@ -313,14 +313,13 @@ interface AboutSectionProps {
   siteDescription: string
   aboutImage?: string
   contactAddress?: string
-  businessHours?: string
   contactPhone?: string
   label?: string
   bgStyle?: React.CSSProperties
   aboutContentHtml?: string | null
 }
 
-export function AboutSection({ siteName, siteDescription, aboutImage, contactAddress, businessHours, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
+export function AboutSection({ siteName, siteDescription, aboutImage, contactAddress, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
   return (
     <section className="py-14 lg:py-20 border-b border-border/40" style={{ backgroundColor: "#fdf8f0", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
@@ -349,12 +348,6 @@ export function AboutSection({ siteName, siteDescription, aboutImage, contactAdd
                     <div className="flex items-start gap-2">
                       <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 mt-0.5 text-primary/70" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                       <span>{contactAddress}</span>
-                    </div>
-                  )}
-                  {businessHours && (
-                    <div className="flex items-start gap-2">
-                      <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 mt-0.5 text-primary/70" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                      <span>{businessHours}</span>
                     </div>
                   )}
                   {contactPhone && (
@@ -590,12 +583,11 @@ export function BookingCtaSection({
 
 interface MapSectionProps {
   contactAddress: string
-  businessHours?: string
   contactPhone?: string
   bgStyle?: React.CSSProperties
 }
 
-export function MapSection({ contactAddress, businessHours, contactPhone, bgStyle }: MapSectionProps) {
+export function MapSection({ contactAddress, contactPhone, bgStyle }: MapSectionProps) {
   return (
     <section className="py-14 lg:py-20 border-t border-border/40" style={{ backgroundColor: "#f8f7f5", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
@@ -622,18 +614,6 @@ export function MapSection({ contactAddress, businessHours, contactPhone, bgStyl
                     <p>{contactAddress}</p>
                   </div>
                 </div>
-                {businessHours && (
-                  <div className="flex gap-3">
-                    <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 mt-0.5 text-primary/70" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <div>
-                      <p className="font-medium text-foreground mb-0.5">Giờ mở cửa</p>
-                      <p>{businessHours}</p>
-                    </div>
-                  </div>
-                )}
                 {contactPhone && (
                   <div className="flex gap-3">
                     <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0 mt-0.5 text-primary/70" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">

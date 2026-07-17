@@ -131,7 +131,6 @@ export default async function IndexPage() {
           siteDescription={siteDescription}
           aboutImage={cfg.aboutImage?.trim() || heroImage}
           contactAddress={cfg.contactAddress}
-          businessHours={cfg.businessHours}
           contactPhone={cfg.contactPhone}
           label={cfg.homeAboutLabel}
           bgStyle={sectionStyle("homeAboutBgColor", "homeAboutBgImage")}
@@ -172,7 +171,6 @@ export default async function IndexPage() {
       {cfg.contactAddress && (
         <MapSection
           contactAddress={cfg.contactAddress}
-          businessHours={cfg.businessHours}
           contactPhone={cfg.contactPhone}
           bgStyle={sectionStyle("homeMapBgColor", "homeMapBgImage")}
         />
