@@ -64,7 +64,19 @@ export default async function DatLichPage({
       <DashboardHeader
         heading="Đặt lịch giao hàng"
         text={pendingCount > 0 ? `${pendingCount} đơn đang chờ xác nhận` : `${totalCount} đơn tổng cộng`}
-      />
+      >
+        <a
+          href="/api/bookings/export"
+          className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-muted transition-colors"
+        >
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Export CSV
+        </a>
+      </DashboardHeader>
 
       {/* Tabs */}
       <div className="flex gap-1 border-b mb-4 overflow-x-auto">

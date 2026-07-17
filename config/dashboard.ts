@@ -89,6 +89,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "page",
     },
     {
+      title: "Import / Export",
+      href: "/dashboard/import-export",
+      icon: "laptop",
+    },
+    {
       title: "Cài đặt",
       href: "/dashboard/settings",
       icon: "settings",

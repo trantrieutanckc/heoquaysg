@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { ImageUploader } from "@/components/admin/image-uploader"
+import { DishesImportExport } from "@/components/admin/dishes-import-export"
 
 interface Dish {
   id: string
@@ -146,9 +147,12 @@ export default function ThucDonPage() {
         heading="Thực đơn & Bảng giá"
         text="Quản lý các nhóm món và giá bán"
       >
-        <Button size="sm" onClick={() => setAddingGroup(true)} className="gap-1.5">
-          <span className="text-base leading-none">+</span> Thêm nhóm
-        </Button>
+        <div className="flex items-center gap-2">
+          <DishesImportExport onImported={load} />
+          <Button size="sm" onClick={() => setAddingGroup(true)} className="gap-1.5">
+            <span className="text-base leading-none">+</span> Thêm nhóm
+          </Button>
+        </div>
       </DashboardHeader>
 
       {/* Add group form */}

@@ -93,6 +93,8 @@ export interface SiteConfigData {
   homeBookingBgImage?: string
   homeMapBgColor?: string
   homeMapBgImage?: string
+  // Thực đơn homepage
+  homeDishGroupNames?: string  // tên nhóm cách nhau bằng "|", vd: "Heo Quay|Heo Sữa Quay"
 }
 
 interface SiteConfigFormProps {
