@@ -58,6 +58,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               avgRating: true,
               ratingCount: true,
               seoDescription: true,
+              price: true,
             },
           },
         },
@@ -102,21 +103,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
 }
 
-// ─── Shared post card (vertical) ─────────────────────────────────────────────
+// ─── Shared post card ────────────────────────────────────────────────────────
 function PostCard({ post }: { post: any }) {
   const postImage = post.image as { url?: string; alt?: string } | null
+  const excerpt = post.seoDescription?.replace(/\n+/g, " ").trim()
   return (
     <Link
       href={`/posts/${post.id}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border bg-card hover:shadow-lg transition-all duration-300"
+      className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-muted">
+      <div className="w-40 shrink-0 sm:w-full sm:aspect-[4/3] relative bg-muted overflow-hidden" style={{ minHeight: "7rem" }}>
         {postImage?.url ? (
           <Image
             src={postImage.url}
             alt={postImage.alt ?? post.title}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 160px, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             placeholder="blur"
             blurDataURL={BLUR_PLACEHOLDER}
@@ -125,17 +127,30 @@ function PostCard({ post }: { post: any }) {
           <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
         )}
       </div>
-      <div className="flex flex-col gap-2 p-4">
-        <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
-          {post.title}
-        </h2>
-        {post.seoDescription && (
-          <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
-        )}
-        {post.avgRating != null && post.ratingCount > 0 && (
-          <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
-        )}
-        <time className="text-xs text-muted-foreground">{formatDate(post.createdAt.toISOString())}</time>
+      <div className="flex flex-col p-3 sm:p-4 flex-1">
+        <div className="flex-1 flex flex-col gap-1.5 mb-3">
+          <time className="text-[10px] text-muted-foreground/70">{formatDate(post.createdAt.toISOString())}</time>
+          <h2 className="font-heading text-sm sm:text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
+            {post.title}
+          </h2>
+          {excerpt && (
+            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
+          )}
+          {post.price != null && (
+            <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
+              {new Intl.NumberFormat("vi-VN").format(post.price)} đ
+            </span>
+          )}
+          {post.avgRating != null && post.ratingCount > 0 && (
+            <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
+          )}
+        </div>
+        <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit">
+          Xem chi tiết
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </span>
       </div>
     </Link>
   )
@@ -189,7 +204,7 @@ function StandardTemplate({ category, image, posts, banner, bookingProps }: any)
       <div className="container px-4 sm:px-6 py-10 lg:py-14">
         {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
-          <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
               <StaggerItem key={post.id} hover>
                 <PostCard post={post} />
@@ -244,7 +259,7 @@ function HeroTemplate({ category, image, posts, banner, bookingProps }: any) {
       <div className="container px-4 sm:px-6 py-10 lg:py-14 pb-20 lg:pb-28">
         {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
-          <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
               <StaggerItem key={post.id} hover>
                 <PostCard post={post} />
