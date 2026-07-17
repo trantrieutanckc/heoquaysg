@@ -26,7 +26,7 @@ export default async function CategoriesPage({
     db.category.findMany({
       orderBy: { order: "asc" },
       select: {
-        id: true, name: true, slug: true, published: true, order: true, image: true, template: true, banner: true,
+        id: true, name: true, slug: true, description: true, published: true, order: true, image: true, template: true, banner: true,
         seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true,
         _count: { select: { posts: true } },
       },

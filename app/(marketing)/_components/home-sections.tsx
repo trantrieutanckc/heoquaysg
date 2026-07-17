@@ -443,14 +443,14 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
           />
         </SlideInLeft>
 
-        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {visible.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
             return (
-              <StaggerItem key={post.id}>
+              <StaggerItem key={post.id} hover>
                 <Link
                   href={`/posts/${post.id}`}
-                  className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
+                  className="group flex flex-col overflow-hidden rounded-xl border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     {image?.url ? (
@@ -458,7 +458,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                         src={image.url}
                         alt={image.alt ?? post.title}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         placeholder="blur"
                         blurDataURL={BLUR_PLACEHOLDER}
@@ -467,31 +467,21 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                       <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
                     )}
                   </div>
-                  <div className="flex flex-col gap-2.5 p-5 flex-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      {post.categories.length > 0 ? (
-                        <span className="font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
-                      ) : (
-                        <span />
-                      )}
-                      <time dateTime={post.createdAt.toISOString()} className="text-muted-foreground">
-                        {formatDate(post.createdAt.toISOString())}
-                      </time>
-                    </div>
-                    <h3 className="font-heading text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                  <div className="flex flex-col gap-1.5 p-3 sm:p-4 flex-1">
+                    {post.categories.length > 0 && (
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
+                    )}
+                    <h3 className="font-heading text-sm sm:text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    {post.seoDescription && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
-                    )}
                     {post.price != null && (
-                      <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
+                      <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
                         {new Intl.NumberFormat("vi-VN").format(post.price)} đ
                       </span>
                     )}
-                    {post.avgRating != null && post.ratingCount > 0 && (
-                      <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
-                    )}
+                    <span className="inline-flex items-center gap-1 mt-auto pt-1 text-[11px] font-semibold text-primary group-hover:underline">
+                      Xem chi tiết <ArrowRightSm />
+                    </span>
                   </div>
                 </Link>
               </StaggerItem>

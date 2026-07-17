@@ -1,72 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
-  <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="40%" r="70%">
-      <stop offset="0%" stop-color="#8B1A10"/>
-      <stop offset="100%" stop-color="#4A0808"/>
-    </radialGradient>
-    <path id="topArc" d="M 26,120 A 94,94 0 0,1 214,120"/>
-    <path id="botArc" d="M 48,120 A 72,72 0 0,0 192,120"/>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <circle cx="50" cy="50" r="50" fill="#8C1912"/>
 
-  <!-- Badge background -->
-  <circle cx="120" cy="120" r="120" fill="url(#bgGrad)"/>
+  <!-- Gold border -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#E8B84B" stroke-width="3"/>
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#E8B84B" stroke-width="0.8" opacity="0.5"/>
 
-  <!-- Gold outer ring -->
-  <circle cx="120" cy="120" r="116" fill="none" stroke="#E8B84B" stroke-width="3.5"/>
-  <!-- Gold inner ring -->
-  <circle cx="120" cy="120" r="107" fill="none" stroke="#E8B84B" stroke-width="1.2" opacity="0.6"/>
+  <!-- Left ear -->
+  <circle cx="28" cy="25" r="12" fill="white"/>
+  <circle cx="28" cy="28" r="6.5" fill="#C47A1A"/>
 
-  <!-- Top curved text -->
-  <text font-family="'Arial Black', Impact, sans-serif" font-size="13.5" font-weight="900"
-        fill="#E8B84B" letter-spacing="2.8">
-    <textPath href="#topArc" startOffset="50%" text-anchor="middle">HEO QUAY BÌNH TÂN</textPath>
-  </text>
-
-  <!-- Top separator dots -->
-  <circle cx="120" cy="100" r="2" fill="#E8B84B" opacity="0.8"/>
-  <circle cx="109" cy="101" r="1.5" fill="#E8B84B" opacity="0.5"/>
-  <circle cx="131" cy="101" r="1.5" fill="#E8B84B" opacity="0.5"/>
-
-  <!-- PIG — flat gold style -->
-  <!-- Left ear outer -->
-  <ellipse cx="85" cy="97" rx="20" ry="24" fill="#E8B84B"/>
-  <!-- Left ear inner -->
-  <ellipse cx="85" cy="100" rx="11" ry="14" fill="#C4891A"/>
-
-  <!-- Right ear outer -->
-  <ellipse cx="155" cy="97" rx="20" ry="24" fill="#E8B84B"/>
-  <!-- Right ear inner -->
-  <ellipse cx="155" cy="100" rx="11" ry="14" fill="#C4891A"/>
+  <!-- Right ear -->
+  <circle cx="72" cy="25" r="12" fill="white"/>
+  <circle cx="72" cy="28" r="6.5" fill="#C47A1A"/>
 
   <!-- Face -->
-  <circle cx="120" cy="133" r="47" fill="#E8B84B"/>
+  <circle cx="50" cy="57" r="32" fill="white"/>
 
   <!-- Eyes -->
-  <circle cx="104" cy="124" r="7" fill="#3D0606"/>
-  <circle cx="136" cy="124" r="7" fill="#3D0606"/>
-  <!-- Eye shine -->
-  <circle cx="107" cy="121" r="2.8" fill="white" opacity="0.85"/>
-  <circle cx="139" cy="121" r="2.8" fill="white" opacity="0.85"/>
+  <circle cx="38" cy="50" r="5" fill="#2A0606"/>
+  <circle cx="62" cy="50" r="5" fill="#2A0606"/>
+  <circle cx="40" cy="47.5" r="2" fill="white"/>
+  <circle cx="64" cy="47.5" r="2" fill="white"/>
 
   <!-- Snout -->
-  <ellipse cx="120" cy="149" rx="23" ry="17" fill="#C4891A"/>
-  <!-- Nostrils -->
-  <circle cx="111" cy="150" r="5.5" fill="#3D0606"/>
-  <circle cx="129" cy="150" r="5.5" fill="#3D0606"/>
-  <!-- Nostril shine -->
-  <circle cx="112.5" cy="148" r="1.8" fill="white" opacity="0.4"/>
-  <circle cx="130.5" cy="148" r="1.8" fill="white" opacity="0.4"/>
+  <ellipse cx="50" cy="65" rx="14" ry="10" fill="#C47A1A"/>
+  <circle cx="44" cy="66" r="3.5" fill="#2A0606"/>
+  <circle cx="56" cy="66" r="3.5" fill="#2A0606"/>
 
   <!-- Smile -->
-  <path d="M 107,164 C 113,173 127,173 133,164"
-        fill="none" stroke="#3D0606" stroke-width="3" stroke-linecap="round"/>
-
-  <!-- Bottom curved text -->
-  <text font-family="Arial, sans-serif" font-size="10" fill="#E8B84B"
-        letter-spacing="3" opacity="0.75">
-    <textPath href="#botArc" startOffset="50%" text-anchor="middle">✦  QUÁN ĂN  ✦</textPath>
-  </text>
-
-  <!-- Bottom separator -->
-  <line x1="72" y1="200" x2="168" y2="200" stroke="#E8B84B" stroke-width="1" opacity="0.4"/>
+  <path d="M 39,77 C 44,84 56,84 61,77"
+        fill="none" stroke="#2A0606" stroke-width="2.5" stroke-linecap="round"/>
 </svg>

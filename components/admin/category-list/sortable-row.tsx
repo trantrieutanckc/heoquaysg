@@ -20,6 +20,7 @@ export interface Category {
   id: string
   name: string
   slug: string
+  description?: string | null
   published: boolean
   order: number
   template: string
@@ -39,12 +40,13 @@ interface Props {
   onEditImage: (cat: Category) => void
   onTemplate: (cat: Category) => void
   onBanner: (cat: Category) => void
+  onDescription: (cat: Category) => void
   deleting: string | null
   checked: boolean
   onCheck: (id: string) => void
 }
 
-export function SortableRow({ cat, onDelete, onSeo, onEditImage, onTemplate, onBanner, deleting, checked, onCheck }: Props) {
+export function SortableRow({ cat, onDelete, onSeo, onEditImage, onTemplate, onBanner, onDescription, deleting, checked, onCheck }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cat.id })
 
   const style = {
@@ -116,6 +118,9 @@ export function SortableRow({ cat, onDelete, onSeo, onEditImage, onTemplate, onB
           <Icons.layers className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onTemplate(cat)} title="Template">
+          <Icons.page className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => onDescription(cat)} title="Mô tả" className={cat.description ? "text-primary" : ""}>
           <Icons.page className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onSeo(cat)} title="SEO">

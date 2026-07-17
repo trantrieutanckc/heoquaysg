@@ -23,7 +23,7 @@ import { BannerEditor } from "@/components/admin/banner-editor"
 import { type BannerConfig, parseBanner } from "@/lib/banner"
 
 import { SortableRow, type Category } from "./sortable-row"
-import { CategoryTemplateDialog, CategoryImageDialog, CategorySeoDialog } from "./dialogs"
+import { CategoryTemplateDialog, CategoryImageDialog, CategorySeoDialog, CategoryDescriptionDialog } from "./dialogs"
 
 const BULK_ACTIONS = [
   { label: "Đăng tất cả", action: "publish", variant: "default" as const },
@@ -57,6 +57,7 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
   const [imageCategory, setImageCategory] = React.useState<Category | null>(null)
   const [seoCategory, setSeoCategory] = React.useState<Category | null>(null)
   const [bannerCategory, setBannerCategory] = React.useState<Category | null>(null)
+  const [descriptionCategory, setDescriptionCategory] = React.useState<Category | null>(null)
   const [savingBanner, setSavingBanner] = React.useState(false)
 
   async function handleBannerSave(config: BannerConfig | null) {
@@ -146,6 +147,7 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
                   onEditImage={setImageCategory}
                   onTemplate={setTemplateCategory}
                   onBanner={setBannerCategory}
+                  onDescription={setDescriptionCategory}
                   deleting={deleting}
                   checked={selected.has(cat.id)}
                   onCheck={toggle}
@@ -193,6 +195,14 @@ export function CategoryList({ categories: initialCategories }: { categories: Ca
         category={seoCategory}
         onClose={() => setSeoCategory(null)}
         onSaved={() => {}}
+      />
+
+      <CategoryDescriptionDialog
+        category={descriptionCategory}
+        onClose={() => setDescriptionCategory(null)}
+        onSaved={(id, description) => setCategories((prev) =>
+          prev.map((c) => c.id === id ? { ...c, description } : c)
+        )}
       />
     </>
   )

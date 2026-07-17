@@ -7,12 +7,76 @@ import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { SeoPanel } from "@/components/admin/seo-panel"
 import { ImageUploader } from "@/components/admin/image-uploader"
 import { CATEGORY_TEMPLATES, type CategoryTemplate } from "@/lib/templates"
 import { type Category } from "./sortable-row"
+
+// ── Description Dialog ───────────────────────────────────────────────
+
+interface DescriptionDialogProps {
+  category: Category | null
+  onClose: () => void
+  onSaved: (id: string, description: string | null) => void
+}
+
+export function CategoryDescriptionDialog({ category, onClose, onSaved }: DescriptionDialogProps) {
+  const [description, setDescription] = React.useState("")
+  const [saving, setSaving] = React.useState(false)
+
+  React.useEffect(() => {
+    if (category) setDescription(category.description ?? "")
+  }, [category])
+
+  async function handleSave() {
+    if (!category) return
+    setSaving(true)
+    const res = await fetch(`/api/categories/${category.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: description.trim() || null }),
+    })
+    setSaving(false)
+    if (!res.ok) {
+      toast({ title: "Lỗi", description: "Không thể lưu mô tả.", variant: "destructive" })
+      return
+    }
+    toast({ variant: "success", description: "Đã cập nhật mô tả." })
+    onSaved(category.id, description.trim() || null)
+    onClose()
+  }
+
+  return (
+    <Dialog open={!!category} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Mô tả — {category?.name}</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-2 py-2">
+          <Label htmlFor="cat-description">Mô tả danh mục</Label>
+          <Textarea
+            id="cat-description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Nhập mô tả ngắn cho danh mục này..."
+            className="min-h-[120px] resize-y"
+          />
+          <p className="text-xs text-muted-foreground">Hiển thị trên trang /catdes và trang danh mục.</p>
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>Huỷ</Button>
+          <Button onClick={handleSave} disabled={saving}>
+            {saving && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+            Lưu
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 // ── Template Dialog ──────────────────────────────────────────────────
 
