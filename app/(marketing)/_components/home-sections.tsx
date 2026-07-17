@@ -443,22 +443,23 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
           />
         </SlideInLeft>
 
-        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
           {visible.map((post) => {
             const image = post.image as { url?: string; alt?: string } | null
             return (
               <StaggerItem key={post.id} hover>
                 <Link
                   href={`/posts/${post.id}`}
-                  className="group flex flex-col overflow-hidden rounded-xl border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
+                  className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  {/* Mobile: ảnh nhỏ bên trái | Tablet+: ảnh full width trên đầu */}
+                  <div className="w-40 shrink-0 sm:w-full sm:aspect-[4/3] relative bg-muted overflow-hidden" style={{ minHeight: '7rem' }}>
                     {image?.url ? (
                       <Image
                         src={image.url}
                         alt={image.alt ?? post.title}
                         fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                        sizes="(max-width: 640px) 160px, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         placeholder="blur"
                         blurDataURL={BLUR_PLACEHOLDER}
@@ -467,7 +468,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                       <div className="h-full w-full bg-gradient-to-br from-muted to-muted-foreground/10" />
                     )}
                   </div>
-                  <div className="flex flex-col gap-1.5 p-3 sm:p-4 flex-1">
+                  <div className="flex flex-col gap-1.5 p-3 sm:p-4 flex-1 justify-center sm:justify-start">
                     {post.categories.length > 0 && (
                       <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
                     )}
