@@ -3,6 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { LazyMotion, domAnimation, m } from "framer-motion"
 
 import { MainNavItem } from "types"
 import { cn } from "@/lib/utils"
@@ -27,58 +28,60 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
   }
 
   return (
-    <>
+    <LazyMotion features={domAnimation}>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 top-16 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+        className="md:hidden"
+        style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 40, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
         onClick={onClose}
         aria-hidden
       />
 
-      {/* Drawer */}
-      <div className="fixed left-0 right-0 top-16 z-50 md:hidden animate-in slide-in-from-top-2 duration-200">
-        <div className="container px-4 sm:px-6 pt-2 pb-4">
-          <div className="border bg-background shadow-lg overflow-hidden">
-            {/* Logo row */}
-            <div className="flex items-center gap-2.5 px-4 py-3 border-b">
-              {logoUrl ? (
-                <img
-                  src={logoUrl}
-                  alt={siteName ?? "Logo"}
-                  className="h-7 w-7 object-cover"
-                />
-              ) : (
-                <div className="h-7 w-7 bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs select-none">
-                  {(siteName ?? "H")[0]}
-                </div>
-              )}
-              {siteName && <span className="font-heading text-sm font-semibold">{siteName}</span>}
-            </div>
-
-            {/* Nav links */}
-            <nav className="py-1">
-              {items.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.disabled ? "#" : item.href}
-                  onClick={onClose}
-                  className={cn(
-                    "flex items-center px-4 py-2.5 text-sm font-medium transition-colors border-l-2",
-                    isActive(item.href)
-                      ? "border-primary text-primary bg-primary/5"
-                      : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
-                    item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </nav>
-
-            {children && <div className="border-t p-3">{children}</div>}
+      {/* Sidebar trái */}
+      <m.div
+        className="fixed left-0 top-0 h-screen z-50 md:hidden w-72 bg-background shadow-2xl flex flex-col"
+        initial={{ x: "-100%" }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Header sidebar */}
+        <div className="flex items-center justify-between px-4 py-4 border-b">
+          <div className="flex items-center gap-2.5">
+            {logoUrl && <img src={logoUrl} alt={siteName ?? "Logo"} className="h-10 w-auto object-contain" />}
+            {siteName && <span className="font-heading font-semibold text-sm">{siteName}</span>}
           </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-muted transition-colors"
+            aria-label="Đóng menu"
+          >
+            <Icons.close className="h-4 w-4" />
+          </button>
         </div>
-      </div>
-    </>
+
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto py-2">
+          {items.map((item, index) => (
+            <Link
+              key={index}
+              href={item.disabled ? "#" : item.href}
+              onClick={onClose}
+              className={cn(
+                "flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors border-l-[3px]",
+                isActive(item.href)
+                  ? "border-primary text-primary bg-primary/5"
+                  : "border-transparent text-foreground hover:bg-muted hover:text-foreground",
+                item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
+              )}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </nav>
+
+        {children && <div className="border-t p-4">{children}</div>}
+      </m.div>
+    </LazyMotion>
   )
 }

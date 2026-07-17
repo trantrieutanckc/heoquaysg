@@ -52,7 +52,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
   return (
     <div className="flex items-center gap-4 md:gap-6">
       {/* Logo + site name */}
-      <Link href="/" className="flex items-center gap-2.5 shrink-0">
+      <Link href="/" className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 flex items-center gap-2.5 shrink-0">
         {logoUrl && (
           <img
             src={logoUrl}
@@ -60,7 +60,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
             className="h-14 w-auto object-contain"
           />
         )}
-        <span className="font-heading font-bold text-base leading-tight">
+        <span className="hidden lg:block font-heading font-bold text-base leading-tight">
           {siteName ?? "Heo Quay Bình Tân"}
         </span>
       </Link>
