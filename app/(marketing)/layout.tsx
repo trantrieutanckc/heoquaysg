@@ -63,15 +63,18 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             <ul className="flex items-center gap-4 text-muted-foreground">
               {contactPhone && (
                 <li>
-                  <a
-                    href={`tel:${contactPhone.replace(/\s/g, "")}`}
-                    className="flex items-center gap-1.5 hover:text-foreground transition-colors"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
-                    </svg>
-                    {contactPhone}
-                  </a>
+                  <div className="relative inline-flex">
+                    <span className="absolute inset-1 inline-flex rounded-full bg-green-500 opacity-50 animate-ping-sm" />
+                    <a
+                      href={`tel:${contactPhone.replace(/\s/g, "")}`}
+                      className="relative flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors text-xs font-bold tracking-wide"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
+                      </svg>
+                      Gọi ngay
+                    </a>
+                  </div>
                 </li>
               )}
               {contactAddress && (
@@ -97,7 +100,7 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
               {contactZalo && (
                 <li>
                   <div className="relative inline-flex">
-                    <span className="absolute inset-1 inline-flex rounded-full bg-[#0068FF] opacity-50 animate-ping" />
+                    <span className="absolute inset-1 inline-flex rounded-full bg-[#0068FF] opacity-50 animate-ping-md" />
                     <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="relative flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
                       <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" fill="currentColor" aria-hidden>
                         <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
@@ -187,6 +190,36 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
         socialYoutube={cfg.socialYoutube?.trim()}
         contactZalo={cfg.contactZalo?.trim()}
       />
+
+      {/* Mobile bottom bar */}
+      {(contactPhone || contactZalo) && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 flex sm:hidden border-t bg-background/95 backdrop-blur-sm">
+          {contactPhone && (
+            <a
+              href={`tel:${contactPhone.replace(/\s/g, "")}`}
+              className="flex flex-1 items-center justify-center gap-2 py-3 bg-green-500 text-white text-sm font-bold hover:bg-green-600 transition-colors"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/>
+              </svg>
+              Gọi ngay
+            </a>
+          )}
+          {contactZalo && (
+            <a
+              href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-2 py-3 bg-[#0068FF] text-white text-sm font-bold hover:bg-[#0050CC] transition-colors"
+            >
+              <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+                <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
+              </svg>
+              Zalo
+            </a>
+          )}
+        </div>
+      )}
     </div>
   )
 }
