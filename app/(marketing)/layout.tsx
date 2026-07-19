@@ -96,11 +96,11 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             <ul className="flex items-center gap-3 text-muted-foreground">
               {contactZalo && (
                 <li>
-                  <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="hover:text-blue-500 transition-colors">
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-                      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 13.5h-1.25v-4h1.25v4zm-2.75 0H12.5V10h1.25v5.5zm-2.75 0H9.75v-2.75H8.5V10h1.25v2.75h.25v2.75zm-2.75-5.5H7v5.5H5.75v-5.5z"/>
+                  <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
+                    <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" fill="currentColor" aria-hidden>
+                      <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
                     </svg>
-                    <span className="sr-only">Zalo</span>
+                    Zalo
                   </a>
                 </li>
               )}

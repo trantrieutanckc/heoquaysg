@@ -470,7 +470,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                     <div className="flex-1 flex flex-col gap-1.5 mb-3">
                       <div className="flex items-center justify-between gap-2">
                         {post.categories.length > 0 && (
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
+                          <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-0.5 text-xs font-semibold">{post.categories[0].category.name}</span>
                         )}
                         <time className="text-[10px] text-muted-foreground/70 shrink-0" dateTime={post.createdAt.toISOString()}>
                           {formatDate(post.createdAt.toISOString())}

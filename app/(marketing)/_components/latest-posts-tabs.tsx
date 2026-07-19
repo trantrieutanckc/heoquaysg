@@ -85,7 +85,7 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
                 <div className="flex flex-col gap-2.5 p-5 flex-1">
                   <div className="flex items-center justify-between text-[11px]">
                     {post.categories.length > 0 ? (
-                      <span className="font-bold uppercase tracking-wider text-primary">{post.categories[0].category.name}</span>
+                      <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-0.5 text-xs font-semibold">{post.categories[0].category.name}</span>
                     ) : (
                       <span />
                     )}
