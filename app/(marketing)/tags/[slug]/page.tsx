@@ -98,8 +98,6 @@ export default async function TagPage({ params }: Props) {
                         {post.title}
                       </h2>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-3 border-t border-border/60">
-                        {post.author?.name && <span>{post.author.name}</span>}
-                        {post.author?.name && <span>·</span>}
                         <time dateTime={post.createdAt.toISOString()}>
                           {formatDate(post.createdAt.toISOString())}
                         </time>

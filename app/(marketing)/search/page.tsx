@@ -120,10 +120,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                           #{tag.name}
                         </span>
                       ))}
-                      {post.author?.name && (
-                        <span className="text-xs text-muted-foreground">{post.author.name}</span>
-                      )}
-                      <span className="text-xs text-muted-foreground">·</span>
                       <span className="text-xs text-muted-foreground">{formatDate(post.createdAt.toISOString())}</span>
                     </div>
                   </div>
