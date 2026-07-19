@@ -115,13 +115,13 @@ export function SortableRow({ cat, onDelete, onSeo, onEditImage, onTemplate, onB
       <div className="flex items-center gap-1 shrink-0">
         <PublishToggle id={cat.id} published={cat.published} endpoint="categories" />
         <Button variant="ghost" size="sm" onClick={() => onBanner(cat)} title="Banner" className={parseBanner(cat.banner) ? "text-primary" : ""}>
-          <Icons.layers className="h-4 w-4" />
+          <Icons.media className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onTemplate(cat)} title="Template">
           <Icons.page className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onDescription(cat)} title="Mô tả" className={cat.description ? "text-primary" : ""}>
-          <Icons.page className="h-4 w-4" />
+          <Icons.post className="h-4 w-4" />
         </Button>
         <Button variant="ghost" size="sm" onClick={() => onSeo(cat)} title="SEO">
           <Icons.search className="h-4 w-4" />
