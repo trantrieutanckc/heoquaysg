@@ -4,10 +4,28 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { Icons } from "@/components/icons"
 
+const FUNNY_MESSAGES = [
+  "Đang hỏi heo...",
+  "Đang quay heo...",
+  "Heo đang suy nghĩ...",
+  "Chờ xíu nha...",
+  "Sắp ra lò rồi...",
+]
+
 export function SearchInput({ defaultValue = "", logQuery = false }: { defaultValue?: string; logQuery?: boolean }) {
   const router = useRouter()
   const [value, setValue] = React.useState(defaultValue)
   const [isPending, startTransition] = React.useTransition()
+  const [msgIndex, setMsgIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    if (!isPending) return
+    setMsgIndex(0)
+    const interval = setInterval(() => {
+      setMsgIndex((i) => (i + 1) % FUNNY_MESSAGES.length)
+    }, 600)
+    return () => clearInterval(interval)
+  }, [isPending])
 
   React.useEffect(() => {
     if (logQuery && defaultValue.length >= 3) {
@@ -48,7 +66,7 @@ export function SearchInput({ defaultValue = "", logQuery = false }: { defaultVa
         ) : (
           <Icons.search className="h-3 w-3" />
         )}
-        {isPending ? "Đang tìm..." : "Tìm"}
+        {isPending ? FUNNY_MESSAGES[msgIndex] : "Tìm"}
       </button>
     </form>
   )
