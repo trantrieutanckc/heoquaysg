@@ -134,7 +134,7 @@ export default async function ThucDonPage() {
                         )}
                         {dish.post && (
                           <Link href={`/posts/${dish.post.id}`} className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1 hover:underline">
-                            Xem bài viết
+                            Xem chi tiết
                             <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5}><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                           </Link>
                         )}
