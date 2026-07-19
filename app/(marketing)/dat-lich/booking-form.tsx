@@ -56,8 +56,11 @@ function StepLabel({ num, children }: { num: string; children: React.ReactNode }
   )
 }
 
+const OCCASIONS = ["Giỗ chạp", "Đám tiệc / Đám cưới", "Sinh nhật", "Liên hoan công ty", "Khác"]
+
 export function BookingForm({ products, contactPhone }: BookingFormProps) {
   const [items, setItems] = React.useState<SelectedItem[]>([])
+  const [occasion, setOccasion] = React.useState("")
   const [name, setName] = React.useState("")
   const [phone, setPhone] = React.useState("")
   const [address, setAddress] = React.useState("")
@@ -99,7 +102,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
         body: JSON.stringify({
           name, phone, address, items,
           deliveryDate: `${date}T${time}:00`,
-          note,
+          note: occasion ? `Dịp: ${occasion}${note ? `\n\n${note}` : ""}` : note,
           _formLoadedAt: formLoadedAt.current,
         }),
       })
@@ -260,9 +263,31 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
         </div>
       </section>
 
-      {/* 2. Thời gian */}
+      {/* 2. Dịp sự kiện */}
       <section>
-        <StepLabel num="2">Thời gian giao hàng</StepLabel>
+        <StepLabel num="2">Dịp sự kiện</StepLabel>
+        <div className="flex flex-wrap gap-2">
+          {OCCASIONS.map((o) => (
+            <button
+              key={o}
+              type="button"
+              onClick={() => setOccasion(occasion === o ? "" : o)}
+              className={cn(
+                "rounded-full border px-4 py-1.5 text-sm font-medium transition-all",
+                occasion === o
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border hover:border-primary/60 hover:text-primary"
+              )}
+            >
+              {o}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Thời gian */}
+      <section>
+        <StepLabel num="3">Thời gian giao hàng</StepLabel>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelCls} htmlFor="date">
@@ -304,9 +329,9 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
         </div>
       </section>
 
-      {/* 3. Thông tin liên hệ */}
+      {/* 4. Thông tin liên hệ */}
       <section>
-        <StepLabel num="3">Thông tin liên hệ</StepLabel>
+        <StepLabel num="4">Thông tin liên hệ</StepLabel>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className={labelCls} htmlFor="name">
@@ -350,9 +375,9 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
         </div>
       </section>
 
-      {/* 4. Ghi chú */}
+      {/* 5. Ghi chú */}
       <section>
-        <StepLabel num="4">Ghi chú thêm</StepLabel>
+        <StepLabel num="5">Ghi chú thêm</StepLabel>
         <textarea
           id="note"
           value={note}
@@ -410,7 +435,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
           ) : "Xác nhận đặt lịch"}
         </button>
         <p className="text-xs text-muted-foreground text-center">
-          Sau khi đặt, chúng tôi sẽ gọi xác nhận trong vòng 30 phút.
+          Chúng tôi sẽ liên hệ lại trong vòng 2 giờ để xác nhận đơn và báo giá.
         </p>
       </div>
 
