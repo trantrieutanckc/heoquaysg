@@ -117,6 +117,7 @@ model Post {
   categories     PostCategory[]
   tags           PostTag[]
   comments       Comment[]
+  dishes         Dish[]
 
   @@index([authorId])
   @@index([published, updatedAt])
@@ -341,6 +342,8 @@ model Dish {
   price       Float
   unit        String    @default("phần")
   image       String?
+  postId      String?
+  post        Post?     @relation(fields: [postId], references: [id], onDelete: SetNull)
   available   Boolean   @default(true)
   order       Int       @default(0)
   groupId     String

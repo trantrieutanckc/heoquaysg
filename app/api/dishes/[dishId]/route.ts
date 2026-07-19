@@ -9,6 +9,7 @@ const patchSchema = z.object({
   price: z.number().min(0).optional(),
   unit: z.string().optional(),
   image: z.string().nullable().optional(),
+  postId: z.string().nullable().optional(),
   available: z.boolean().optional(),
   order: z.number().optional(),
 })

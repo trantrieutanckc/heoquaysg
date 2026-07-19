@@ -10,6 +10,7 @@ const createSchema = z.object({
   price: z.number().min(0),
   unit: z.string().default("phần"),
   image: z.string().optional(),
+  postId: z.string().nullable().optional(),
   available: z.boolean().default(true),
 })
 

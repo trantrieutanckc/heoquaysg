@@ -14,7 +14,7 @@ export default async function ThucDonPage() {
   const [groups, siteConfigRow] = await Promise.all([
     db.dishGroup.findMany({
       orderBy: { order: "asc" },
-      include: { dishes: { orderBy: { order: "asc" } } },
+      include: { dishes: { orderBy: { order: "asc" }, include: { post: { select: { id: true } } } } },
     }),
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
   ])
@@ -131,6 +131,12 @@ export default async function ThucDonPage() {
                         </div>
                         {dish.description && (
                           <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{dish.description}</p>
+                        )}
+                        {dish.post && (
+                          <Link href={`/posts/${dish.post.id}`} className="inline-flex items-center gap-1 text-xs text-primary font-medium mt-1 hover:underline">
+                            Xem bài viết
+                            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5}><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                          </Link>
                         )}
                       </div>
 

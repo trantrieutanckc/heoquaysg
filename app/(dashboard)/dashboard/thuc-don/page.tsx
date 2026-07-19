@@ -17,8 +17,14 @@ interface Dish {
   price: number
   unit: string
   image: string | null
+  postId: string | null
   available: boolean
   order: number
+}
+
+interface PostOption {
+  id: string
+  title: string
 }
 
 interface DishGroup {
@@ -34,6 +40,7 @@ function formatPrice(p: number) {
 
 export default function ThucDonPage() {
   const [groups, setGroups] = React.useState<DishGroup[]>([])
+  const [posts, setPosts] = React.useState<PostOption[]>([])
   const [loading, setLoading] = React.useState(true)
   const [newGroupName, setNewGroupName] = React.useState("")
   const [addingGroup, setAddingGroup] = React.useState(false)
@@ -41,14 +48,19 @@ export default function ThucDonPage() {
   const [editGroupName, setEditGroupName] = React.useState("")
 
   const [addingDishFor, setAddingDishFor] = React.useState<string | null>(null)
-  const [newDish, setNewDish] = React.useState({ name: "", price: "", unit: "phần", description: "", image: "" })
+  const [newDish, setNewDish] = React.useState({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" })
 
   const [editDishId, setEditDishId] = React.useState<string | null>(null)
-  const [editDish, setEditDish] = React.useState({ name: "", price: "", unit: "", description: "", image: "" })
+  const [editDish, setEditDish] = React.useState({ name: "", price: "", unit: "", description: "", image: "", postId: "" })
 
   async function load() {
-    const res = await fetch("/api/dish-groups")
-    setGroups(await res.json())
+    const [groupsRes, postsRes] = await Promise.all([
+      fetch("/api/dish-groups"),
+      fetch("/api/posts"),
+    ])
+    setGroups(await groupsRes.json())
+    const postsData = await postsRes.json()
+    setPosts(Array.isArray(postsData) ? postsData : (postsData.posts ?? []))
     setLoading(false)
   }
 
@@ -98,11 +110,12 @@ export default function ThucDonPage() {
         unit: newDish.unit || "phần",
         description: newDish.description || null,
         image: newDish.image || null,
+        postId: newDish.postId || null,
       }),
     })
     if (res.ok) {
       setAddingDishFor(null)
-      setNewDish({ name: "", price: "", unit: "phần", description: "", image: "" })
+      setNewDish({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" })
       load()
       toast({ description: "Đã thêm món." })
     }
@@ -127,6 +140,7 @@ export default function ThucDonPage() {
         unit: editDish.unit,
         description: editDish.description || null,
         image: editDish.image || null,
+        postId: editDish.postId || null,
       }),
     })
     setEditDishId(null)
@@ -284,6 +298,19 @@ export default function ThucDonPage() {
                             className="max-w-[200px]"
                           />
                         </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1.5">Liên kết bài viết (tuỳ chọn)</p>
+                          <select
+                            value={editDish.postId}
+                            onChange={e => setEditDish(d => ({ ...d, postId: e.target.value }))}
+                            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                          >
+                            <option value="">-- Không liên kết --</option>
+                            {posts.map(p => (
+                              <option key={p.id} value={p.id}>{p.title}</option>
+                            ))}
+                          </select>
+                        </div>
                         <div className="flex gap-2">
                           <Button size="sm" className="h-7 text-xs" onClick={() => updateDish(dish.id)}>Lưu</Button>
                           <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setEditDishId(null)}>Hủy</Button>
@@ -303,7 +330,14 @@ export default function ThucDonPage() {
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm">{dish.name}</p>
+                          <div className="flex items-center gap-1.5">
+                            <p className="font-medium text-sm">{dish.name}</p>
+                            {dish.postId && (
+                              <a href={`/posts/${dish.postId}`} target="_blank" rel="noreferrer" title="Xem bài viết liên kết" className="text-primary/60 hover:text-primary transition-colors shrink-0">
+                                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></svg>
+                              </a>
+                            )}
+                          </div>
                           {dish.description && (
                             <p className="text-xs text-muted-foreground truncate mt-0.5">{dish.description}</p>
                           )}
@@ -333,7 +367,7 @@ export default function ThucDonPage() {
                             title="Sửa món"
                             onClick={() => {
                               setEditDishId(dish.id)
-                              setEditDish({ name: dish.name, price: String(dish.price), unit: dish.unit, description: dish.description ?? "", image: dish.image ?? "" })
+                              setEditDish({ name: dish.name, price: String(dish.price), unit: dish.unit, description: dish.description ?? "", image: dish.image ?? "", postId: dish.postId ?? "" })
                             }}
                           >
                             ✏️
@@ -391,11 +425,24 @@ export default function ThucDonPage() {
                         className="max-w-[200px]"
                       />
                     </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-1.5">Liên kết bài viết (tuỳ chọn)</p>
+                      <select
+                        value={newDish.postId}
+                        onChange={e => setNewDish(d => ({ ...d, postId: e.target.value }))}
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      >
+                        <option value="">-- Không liên kết --</option>
+                        {posts.map(p => (
+                          <option key={p.id} value={p.id}>{p.title}</option>
+                        ))}
+                      </select>
+                    </div>
                     <div className="flex gap-2">
                       <Button size="sm" className="h-8 text-xs" onClick={() => addDish(group.id)}>+ Thêm món</Button>
                       <Button
                         size="sm" variant="ghost" className="h-8 text-xs"
-                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", price: "", unit: "phần", description: "", image: "" }) }}
+                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" }) }}
                       >
                         Hủy
                       </Button>
