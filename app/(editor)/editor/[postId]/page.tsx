@@ -6,11 +6,13 @@ import { Post, User } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
+import { isAdmin } from "@/lib/permissions"
+import type { Role } from "@/lib/permissions"
 import { Editor } from "@/components/admin/editor"
 
-async function getPostForUser(postId: Post["id"], userId: User["id"]) {
+async function getPostForUser(postId: Post["id"], userId: User["id"], admin: boolean) {
   return await db.post.findFirst({
-    where: { id: postId, authorId: userId },
+    where: admin ? { id: postId } : { id: postId, authorId: userId },
     include: {
       categories: { select: { categoryId: true } },
       tags: { select: { tagId: true } },
@@ -31,7 +33,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
   }
 
   const [post, categories, allPosts, tags] = await Promise.all([
-    getPostForUser(params.postId, user.id),
+    getPostForUser(params.postId, user.id, isAdmin((user.role ?? "CONTRIBUTOR") as Role)),
     db.category.findMany({ orderBy: { name: "asc" } }),
     db.post.findMany({ select: { id: true, title: true }, orderBy: { createdAt: "desc" } }),
     db.tag.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, slug: true } }),
@@ -66,6 +68,8 @@ export default async function EditorPage({ params }: EditorPageProps) {
         ctaTitle: post.ctaTitle,
         ctaDesc: post.ctaDesc,
         ctaImage: post.ctaImage,
+        ctaBtn2Label: post.ctaBtn2Label,
+        ctaBtn2Url: post.ctaBtn2Url,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}

@@ -3,7 +3,8 @@ import * as z from "zod"
 
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
-import { isEditor } from "@/lib/permissions"
+import { isAdmin, isEditor } from "@/lib/permissions"
+import type { Role } from "@/lib/permissions"
 
 const postCreateSchema = z.object({
   title: z.string(),
@@ -18,9 +19,11 @@ export async function GET() {
       return new Response("Unauthorized", { status: 403 })
     }
 
+    const admin = isAdmin(session.user.role as Role)
+
     const posts = await db.post.findMany({
       select: { id: true, title: true, published: true, createdAt: true },
-      where: { authorId: session.user.id },
+      where: admin ? {} : { authorId: session.user.id },
       orderBy: { createdAt: "desc" },
       take: 200,
     })

@@ -1,6 +1,8 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
+import { isAdmin } from "@/lib/permissions"
+import type { Role } from "@/lib/permissions"
 
 function esc(v: string) {
   return `"${v.replace(/"/g, '""')}"`
@@ -10,8 +12,10 @@ export async function GET() {
   const session = await getServerSession(authOptions)
   if (!session) return new Response("Unauthorized", { status: 403 })
 
+  const admin = isAdmin(session.user.role as Role)
+
   const posts = await db.post.findMany({
-    where: { authorId: session.user.id },
+    where: admin ? {} : { authorId: session.user.id },
     select: {
       id: true,
       title: true,

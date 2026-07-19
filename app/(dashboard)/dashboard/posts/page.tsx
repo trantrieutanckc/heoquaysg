@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
-import { isEditor } from "@/lib/permissions"
+import { isAdmin, isEditor } from "@/lib/permissions"
 import { EmptyPlaceholder } from "@/components/admin/empty-placeholder"
 import { DashboardHeader } from "@/components/admin/header"
 import { PostCreateButton } from "@/components/admin/post-create-button"
@@ -26,7 +26,7 @@ export default async function PostsPage({
 
   const canCreate = isEditor(user.role)
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
-  const postWhere = { authorId: user.id }
+  const postWhere = isAdmin(user.role) ? {} : { authorId: user.id }
 
   const [total, posts, allCategories] = await Promise.all([
     db.post.count({ where: postWhere }),

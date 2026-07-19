@@ -109,6 +109,8 @@ model Post {
   ctaTitle       String?
   ctaDesc        String?
   ctaImage       String?
+  ctaBtn2Label   String?
+  ctaBtn2Url     String?
   avgRating      Float?
   ratingCount    Int            @default(0)
   author         User           @relation(fields: [authorId], references: [id])

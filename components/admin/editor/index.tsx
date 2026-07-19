@@ -64,6 +64,8 @@ interface EditorProps {
     ctaTitle?: string | null
     ctaDesc?: string | null
     ctaImage?: string | null
+    ctaBtn2Label?: string | null
+    ctaBtn2Url?: string | null
   }
   categories: Category[]
   postCategoryIds: string[]
@@ -121,6 +123,8 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
   const [ctaTitle, setCtaTitle] = React.useState(post.ctaTitle ?? "")
   const [ctaDesc, setCtaDesc] = React.useState(post.ctaDesc ?? "")
   const [ctaImage, setCtaImage] = React.useState(post.ctaImage ?? "")
+  const [ctaBtn2Label, setCtaBtn2Label] = React.useState(post.ctaBtn2Label ?? "")
+  const [ctaBtn2Url, setCtaBtn2Url] = React.useState(post.ctaBtn2Url ?? "")
   const [isSavingBookable, setIsSavingBookable] = React.useState(false)
 
   // Ảnh bìa
@@ -279,6 +283,8 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           ctaTitle: ctaTitle.trim() || null,
           ctaDesc: ctaDesc.trim() || null,
           ctaImage: ctaImage.trim() || null,
+          ctaBtn2Label: ctaBtn2Label.trim() || null,
+          ctaBtn2Url: ctaBtn2Url.trim() || null,
         }),
       })
       if (!res?.ok) {
@@ -460,10 +466,14 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             ctaTitle={ctaTitle}
             ctaDesc={ctaDesc}
             ctaImage={ctaImage}
+            ctaBtn2Label={ctaBtn2Label}
+            ctaBtn2Url={ctaBtn2Url}
             onToggle={() => setCtaEnabled((v) => !v)}
             onTitleChange={setCtaTitle}
             onDescChange={setCtaDesc}
             onImageChange={setCtaImage}
+            onBtn2LabelChange={setCtaBtn2Label}
+            onBtn2UrlChange={setCtaBtn2Url}
           />
           <EditorImageSection
             imageTab={imageTab}

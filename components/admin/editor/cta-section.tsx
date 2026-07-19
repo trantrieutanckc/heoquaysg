@@ -3,23 +3,28 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ImageUploader } from "@/components/admin/image-uploader"
 
 interface Props {
   ctaEnabled: boolean
   ctaTitle: string
   ctaDesc: string
   ctaImage: string
+  ctaBtn2Label: string
+  ctaBtn2Url: string
   onToggle: () => void
   onTitleChange: (v: string) => void
   onDescChange: (v: string) => void
   onImageChange: (v: string) => void
+  onBtn2LabelChange: (v: string) => void
+  onBtn2UrlChange: (v: string) => void
 }
 
-export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, ctaImage, onToggle, onTitleChange, onDescChange, onImageChange }: Props) {
+export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, ctaImage, ctaBtn2Label, ctaBtn2Url, onToggle, onTitleChange, onDescChange, onImageChange, onBtn2LabelChange, onBtn2UrlChange }: Props) {
   return (
     <AccordionItem value="cta">
       <AccordionTrigger className="text-base font-medium">
-        Banner đặt lịch
+        Banner cuối bài
         <span className={`ml-2 text-xs font-normal ${ctaEnabled ? "text-green-600" : "text-muted-foreground"}`}>
           {ctaEnabled ? "Đang hiển thị" : "Đang ẩn"}
         </span>
@@ -35,7 +40,7 @@ export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, ctaImage, onTo
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${ctaEnabled ? "translate-x-6" : "translate-x-1"}`} />
             </button>
             <span className="text-sm text-muted-foreground">
-              {ctaEnabled ? "Hiển thị banner đặt lịch cuối bài" : "Ẩn banner đặt lịch"}
+              {ctaEnabled ? "Hiển thị banner cuối bài" : "Ẩn banner cuối bài"}
             </span>
           </div>
 
@@ -60,17 +65,30 @@ export function EditorCtaSection({ ctaEnabled, ctaTitle, ctaDesc, ctaImage, onTo
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label className="text-xs">Ảnh minh hoạ <span className="text-muted-foreground font-normal">(URL — để trống dùng ảnh heo quay mặc định)</span></Label>
-                <div className="flex gap-2 items-center">
-                  <Input
-                    value={ctaImage}
-                    onChange={(e) => onImageChange(e.target.value)}
-                    placeholder="https://... hoặc /images/..."
-                    className="text-sm flex-1"
-                  />
-                  {ctaImage && (
-                    <img src={ctaImage} alt="" className="h-10 w-10 rounded object-cover border shrink-0" onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }} />
-                  )}
+                <Label className="text-xs">Ảnh minh hoạ <span className="text-muted-foreground font-normal">(để trống dùng ảnh heo quay mặc định)</span></Label>
+                <ImageUploader value={ctaImage} onChange={onImageChange} />
+              </div>
+              <div className="border-t pt-3 space-y-2.5">
+                <p className="text-xs font-medium text-muted-foreground">Nút phụ (bên cạnh "Gọi ngay")</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="grid gap-1.5">
+                    <Label className="text-xs">Nhãn <span className="text-muted-foreground font-normal">(để trống = "Xem thực đơn")</span></Label>
+                    <Input
+                      value={ctaBtn2Label}
+                      onChange={(e) => onBtn2LabelChange(e.target.value)}
+                      placeholder="Xem thực đơn"
+                      className="text-sm"
+                    />
+                  </div>
+                  <div className="grid gap-1.5">
+                    <Label className="text-xs">Link <span className="text-muted-foreground font-normal">(để trống = /thuc-don)</span></Label>
+                    <Input
+                      value={ctaBtn2Url}
+                      onChange={(e) => onBtn2UrlChange(e.target.value)}
+                      placeholder="/thuc-don"
+                      className="text-sm"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

@@ -233,10 +233,13 @@ export default async function PostPage({ params }: PostPageProps) {
                   Gọi ngay
                 </a>
                 <a
-                  href="/dat-lich"
+                  href={post.ctaBtn2Url?.trim() || "/thuc-don"}
                   className="inline-flex items-center gap-2 rounded-full border border-white/50 hover:bg-white/10 text-white font-semibold px-6 py-3 text-sm transition-colors whitespace-nowrap"
                 >
-                  Đặt lịch online
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
+                  </svg>
+                  {post.ctaBtn2Label?.trim() || "Xem thực đơn"}
                 </a>
               </div>
             </div>
