@@ -1,3 +1,5 @@
+import { FunnyLoadingText } from "@/components/funny-loading-text"
+
 export default function Loading() {
   return (
     <div className="min-h-screen">
@@ -23,6 +25,7 @@ export default function Loading() {
             />
           ))}
         </div>
+        <FunnyLoadingText />
       </div>
     </div>
   )

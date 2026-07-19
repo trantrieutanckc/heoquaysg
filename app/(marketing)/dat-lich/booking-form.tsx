@@ -3,6 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { useFunnyLoading } from "@/hooks/use-funny-loading"
 
 interface Product {
   id: string
@@ -70,6 +71,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
   const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle")
   const [errorMsg, setErrorMsg] = React.useState("")
   const formLoadedAt = React.useRef(Date.now())
+  const funnyMsg = useFunnyLoading(status === "loading")
 
   function toggleProduct(product: Product) {
     setItems((prev) => {
@@ -430,7 +432,7 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M21 12a9 9 0 1 1-6.219-8.56" />
               </svg>
-              Đang gửi...
+              {funnyMsg}
             </span>
           ) : "Xác nhận đặt lịch"}
         </button>

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
 import { formatDate } from "@/lib/utils"
+import { useFunnyLoading } from "@/hooks/use-funny-loading"
 
 interface Comment {
   id: string
@@ -78,6 +79,8 @@ export function CommentSection({ postId }: { postId: string }) {
   const [comments, setComments] = React.useState<Comment[]>([])
   const [loading, setLoading] = React.useState(true)
   const [submitting, setSubmitting] = React.useState(false)
+  const funnyLoadMsg = useFunnyLoading(loading)
+  const funnySubmitMsg = useFunnyLoading(submitting)
   const [submitted, setSubmitted] = React.useState(false)
   const [name, setName] = React.useState("")
   const [email, setEmail] = React.useState("")
@@ -191,7 +194,7 @@ export function CommentSection({ postId }: { postId: string }) {
       {loading ? (
         <div className="flex items-center gap-2 text-muted-foreground text-sm py-4">
           <Icons.spinner className="h-4 w-4 animate-spin" />
-          Đang tải bình luận...
+          {funnyLoadMsg}
         </div>
       ) : comments.length === 0 ? (
         <p className="text-muted-foreground text-sm py-4">
@@ -320,7 +323,7 @@ export function CommentSection({ postId }: { postId: string }) {
                 disabled={submitting || !name.trim() || !content.trim()}
               >
                 {submitting && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                Gửi đánh giá
+                {submitting ? funnySubmitMsg : "Gửi đánh giá"}
               </Button>
             </div>
           </form>

@@ -1,3 +1,5 @@
+import { FunnyLoadingText } from "@/components/funny-loading-text"
+
 export default function Loading() {
   return (
     <div className="container py-6 lg:py-10">
@@ -15,6 +17,7 @@ export default function Loading() {
           </div>
         ))}
       </div>
+      <FunnyLoadingText />
     </div>
   )
 }

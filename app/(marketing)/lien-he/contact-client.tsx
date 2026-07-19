@@ -3,6 +3,7 @@
 import * as React from "react"
 import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { useFunnyLoading } from "@/hooks/use-funny-loading"
 
 interface Props {
   siteName: string
@@ -16,6 +17,7 @@ interface Props {
 export function ContactClient({ siteName, contactPhone, contactEmail, contactAddress, contactZalo, contactIntro }: Props) {
   const [saving, setSaving] = React.useState(false)
   const [form, setForm] = React.useState({ name: "", email: "", phone: "", message: "" })
+  const funnyMsg = useFunnyLoading(saving)
 
   function set(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -225,7 +227,7 @@ export function ContactClient({ siteName, contactPhone, contactEmail, contactAdd
                 className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider transition-colors disabled:opacity-60 w-full sm:w-auto"
               >
                 {saving && <Icons.spinner className="h-4 w-4 animate-spin" />}
-                {saving ? "Đang gửi..." : "Gửi tin nhắn"}
+                {saving ? funnyMsg : "Gửi tin nhắn"}
               </button>
             </form>
           </div>
