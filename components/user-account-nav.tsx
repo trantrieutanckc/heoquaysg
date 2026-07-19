@@ -43,7 +43,6 @@ export function UserAccountNav({ user, role }: UserAccountNavProps) {
           />
           <div className="flex flex-col min-w-0">
             {user.name && <p className="text-sm font-semibold truncate">{user.name}</p>}
-            {user.email && <p className="text-xs text-muted-foreground truncate">{user.email}</p>}
             {role && (
               <span className="mt-0.5 inline-block w-fit rounded-full bg-primary/10 text-primary text-[10px] font-semibold px-1.5 py-px">
                 {role}
