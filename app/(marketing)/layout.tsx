@@ -96,12 +96,15 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             <ul className="flex items-center gap-3 text-muted-foreground">
               {contactZalo && (
                 <li>
-                  <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
-                    <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" fill="currentColor" aria-hidden>
-                      <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
-                    </svg>
-                    Zalo
-                  </a>
+                  <div className="relative inline-flex">
+                    <span className="absolute inset-1 inline-flex rounded-full bg-[#0068FF] opacity-50 animate-ping" />
+                    <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="relative flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
+                      <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 shrink-0" fill="currentColor" aria-hidden>
+                        <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
+                      </svg>
+                      Zalo
+                    </a>
+                  </div>
                 </li>
               )}
               {socialFacebook && (

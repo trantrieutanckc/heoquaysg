@@ -66,12 +66,15 @@ export function SiteFooter({
             {hasSocial && (
               <div className="flex items-center gap-4">
                 {contactZalo && (
-                  <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="h-9 flex items-center gap-1.5 px-3 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
-                    <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
-                      <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
-                    </svg>
-                    Zalo
-                  </a>
+                  <div className="relative inline-flex">
+                    <span className="absolute inset-1 inline-flex rounded-full bg-[#0068FF] opacity-50 animate-ping" />
+                    <a href={`https://zalo.me/${contactZalo.replace(/\s/g, "")}`} target="_blank" rel="noopener noreferrer" title="Zalo" className="relative h-9 flex items-center gap-1.5 px-3 rounded-full bg-[#0068FF] text-white hover:bg-[#0050CC] transition-colors text-xs font-bold tracking-wide">
+                      <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="currentColor" aria-hidden>
+                        <path d="M10 1C5.03 1 1 4.582 1 9c0 2.418 1.185 4.575 3.043 6.016L3.5 18.5l3.9-2c.84.32 1.74.5 2.6.5 4.97 0 9-3.582 9-8S14.97 1 10 1z" />
+                      </svg>
+                      Zalo
+                    </a>
+                  </div>
                 )}
                 {socialFacebook && (
                   <a href={socialFacebook} target="_blank" rel="noopener noreferrer" title="Facebook" className="h-9 w-9 flex items-center justify-center rounded-full bg-stone-800 text-stone-400 hover:bg-blue-600 hover:text-white transition-colors">
