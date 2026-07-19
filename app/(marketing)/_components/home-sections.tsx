@@ -193,15 +193,16 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
               )}
             </div>
             <div className="flex flex-col justify-center gap-4 p-6 lg:p-10">
-              {post.categories.length > 0 && (
-                <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   {post.categories.map(({ category }) => (
                     <span key={category.slug} className="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-0.5 text-xs font-semibold">
                       {category.name}
                     </span>
                   ))}
                 </div>
-              )}
+                <time className="text-xs text-muted-foreground" dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
+              </div>
               <h2 className="font-heading text-2xl lg:text-3xl leading-snug group-hover:text-primary transition-colors">
                 {post.title}
               </h2>
@@ -211,9 +212,6 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
               {post.avgRating != null && post.ratingCount > 0 && (
                 <StarDisplay rating={post.avgRating} size="md" showNumber count={post.ratingCount} />
               )}
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <time dateTime={post.createdAt.toISOString()}>{formatDate(post.createdAt.toISOString())}</time>
-              </div>
               <div>
                 <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors">
                   Xem chi tiết
