@@ -6,12 +6,8 @@ import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 export const dynamic = "force-dynamic"
 export const metadata = {
-  title: "Thực đơn & Bảng giá",
-  description: "Xem thực đơn và bảng giá heo quay, vịt quay, gà quay tại Heo Quay Bình Tân.",
-}
-
-function formatPrice(p: number) {
-  return p.toLocaleString("vi-VN") + "đ"
+  title: "Thực đơn",
+  description: "Xem thực đơn heo quay, vịt quay, gà quay tại Heo Quay Bình Tân.",
 }
 
 export default async function ThucDonPage() {
@@ -54,16 +50,24 @@ export default async function ThucDonPage() {
         <div className="absolute bottom-0 left-0 right-0 container px-4 sm:px-6 pb-8">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/60 mb-2">{siteName}</p>
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Thực đơn & Bảng giá
+            Thực đơn
           </h1>
         </div>
       </div>
 
       <div className="container px-4 sm:px-6 py-10 lg:py-14 max-w-4xl">
         {/* ── Notice ───────────────────────────────────────── */}
-        <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 mb-10 text-sm text-amber-800">
-          <span className="text-lg mt-0.5 shrink-0">ℹ️</span>
-          <p>Giá có thể thay đổi theo thời điểm và số lượng. Vui lòng liên hệ để được báo giá chính xác nhất.</p>
+        <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 mb-8 text-sm text-foreground">
+          <span className="text-lg shrink-0">📞</span>
+          <p>Liên hệ trực tiếp để được báo giá chính xác nhất cho từng món và số lượng.</p>
+          {contactPhone && (
+            <a
+              href={`tel:${contactPhone.replace(/\s/g, "")}`}
+              className="ml-auto shrink-0 font-semibold text-primary hover:underline"
+            >
+              {contactPhone}
+            </a>
+          )}
         </div>
 
         {/* ── Sticky category nav ───────────────────────────── */}
@@ -144,13 +148,6 @@ export default async function ThucDonPage() {
                         )}
                       </div>
 
-                      {/* Giá */}
-                      <div className="text-right shrink-0">
-                        <p className="font-heading font-bold text-base sm:text-lg text-primary">
-                          {formatPrice(dish.price)}
-                        </p>
-                        <p className="text-[11px] text-muted-foreground">/{dish.unit}</p>
-                      </div>
                     </div>
                   ))}
                 </div>

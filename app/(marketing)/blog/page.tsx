@@ -70,7 +70,6 @@ export default async function BlogPage({
         id: true,
         title: true,
         image: true,
-        price: true,
         createdAt: true,
         avgRating: true,
         ratingCount: true,
@@ -213,12 +212,6 @@ export default async function BlogPage({
 
                     {post.seoDescription && (
                       <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
-                    )}
-
-                    {post.price != null && (
-                      <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
-                        {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                      </span>
                     )}
 
                     {post.avgRating != null && post.ratingCount > 0 && (

@@ -27,7 +27,6 @@ import { Accordion } from "@/components/ui/accordion"
 import { EditorCategorySection } from "./category-section"
 import { EditorTagSection } from "./tag-section"
 import { EditorRelatedSection } from "./related-section"
-import { EditorPriceSection } from "./price-section"
 import { EditorBookableSection } from "./bookable-section"
 import { EditorImageSection } from "./image-section"
 import { EditorTemplateSection } from "./template-section"
@@ -113,9 +112,6 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
   const [relatedPostIds, setRelatedPostIds] = React.useState<string[]>(
     Array.isArray(post.relatedPostIds) ? (post.relatedPostIds as string[]) : []
   )
-
-  // Giá
-  const [price, setPrice] = React.useState(post.price != null ? String(post.price) : "")
 
   // Đặt lịch
   const [bookable, setBookable] = React.useState(post.bookable ?? false)
@@ -278,7 +274,6 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           seoImage: seoImage || null,
           template: postTemplate,
           relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
-          price: price !== "" ? parseFloat(price) : null,
           ctaEnabled,
           ctaTitle: ctaTitle.trim() || null,
           ctaDesc: ctaDesc.trim() || null,
@@ -451,10 +446,6 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             currentPostId={post.id}
             relatedPostIds={relatedPostIds}
             onChange={setRelatedPostIds}
-          />
-          <EditorPriceSection
-            price={price}
-            onChange={setPrice}
           />
           <EditorBookableSection
             bookable={bookable}

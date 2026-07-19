@@ -12,7 +12,6 @@ interface PostItem {
   title: string
   createdAt: Date
   image: unknown
-  price: number | null
   avgRating: number | null
   ratingCount: number
   seoDescription?: string | null
@@ -99,11 +98,6 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
                   </h3>
                   {post.seoDescription && (
                     <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{post.seoDescription}</p>
-                  )}
-                  {post.price != null && (
-                    <span className="inline-flex items-center bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-bold w-fit">
-                      {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                    </span>
                   )}
                   {post.avgRating != null && post.ratingCount > 0 && (
                     <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />

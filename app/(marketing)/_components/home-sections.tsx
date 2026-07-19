@@ -148,7 +148,6 @@ interface FeaturedPost {
   createdAt: Date
   image: unknown
   content: unknown
-  price: number | null
   avgRating: number | null
   ratingCount: number
   author: { name: string | null; image: string | null } | null
@@ -408,7 +407,6 @@ interface PostItem {
   createdAt: Date
   image: unknown
   content: unknown
-  price: number | null
   avgRating: number | null
   ratingCount: number
   seoDescription?: string | null
@@ -485,11 +483,6 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                       </h3>
                       {excerpt && (
                         <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
-                      )}
-                      {post.price != null && (
-                        <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
-                          {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                        </span>
                       )}
                     </div>
                     <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit">
@@ -665,7 +658,6 @@ interface DishItem {
   id: string
   name: string
   description: string | null
-  price: number
   unit: string
   available: boolean
   image: string | null
@@ -682,10 +674,6 @@ interface ThucDonSectionProps {
   bgStyle?: React.CSSProperties
 }
 
-function formatPrice(p: number) {
-  return p.toLocaleString("vi-VN") + "đ"
-}
-
 export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
   const visibleGroups = groups.filter((g) => g.dishes.length > 0)
   if (visibleGroups.length === 0) return null
@@ -695,7 +683,7 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
       <div className="container px-4 sm:px-6">
         <SlideInLeft>
           <SectionTitle
-            label="Thực đơn & Bảng giá"
+            label="Thực đơn"
             title="Các món chúng tôi cung cấp"
             right={
               <Link href="/thuc-don" className="group text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5">
@@ -728,7 +716,6 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
                     {preview.map((dish) => (
                       <div key={dish.id} className={`flex items-center justify-between px-5 py-3 gap-3${!dish.available ? " opacity-40" : ""}`}>
                         <span className="text-sm truncate">{dish.name}</span>
-                        <span className="text-sm font-bold text-primary shrink-0">{formatPrice(dish.price)}</span>
                       </div>
                     ))}
                   </div>

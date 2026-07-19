@@ -145,14 +145,6 @@ export default async function PostPage({ params }: PostPageProps) {
               {post.title}
             </h1>
 
-            {post.price != null && (
-              <div className="mb-4">
-                <span className="inline-flex items-center rounded-full bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 px-4 py-1.5 text-base font-bold">
-                  {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-                </span>
-              </div>
-            )}
-
             {post.avgRating != null && post.ratingCount > 0 && (
               <div className="mb-4">
                 <StarDisplay rating={post.avgRating} size="lg" showNumber count={post.ratingCount} />

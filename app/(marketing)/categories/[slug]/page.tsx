@@ -58,7 +58,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               avgRating: true,
               ratingCount: true,
               seoDescription: true,
-              price: true,
             },
           },
         },
@@ -135,11 +134,6 @@ function PostCard({ post }: { post: any }) {
           </h2>
           {excerpt && (
             <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
-          )}
-          {post.price != null && (
-            <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
-              {new Intl.NumberFormat("vi-VN").format(post.price)} đ
-            </span>
           )}
           {post.avgRating != null && post.ratingCount > 0 && (
             <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />

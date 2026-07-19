@@ -9,7 +9,6 @@ interface RelatedPost {
   image: unknown
   createdAt: Date
   seoDescription?: string | null
-  price?: number | null
   categories: { category: { name: string; slug: string } }[]
 }
 
@@ -55,11 +54,6 @@ export function RelatedPostsCarousel({ posts }: { posts: RelatedPost[] }) {
                 </h3>
                 {excerpt && (
                   <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
-                )}
-                {p.price != null && (
-                  <span className="inline-flex items-center bg-primary/10 text-primary px-2 py-0.5 text-xs font-bold w-fit">
-                    {new Intl.NumberFormat("vi-VN").format(p.price)} đ
-                  </span>
                 )}
               </div>
               <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit">
