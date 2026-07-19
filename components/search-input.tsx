@@ -23,7 +23,7 @@ export function SearchInput({ defaultValue = "", logQuery = false }: { defaultVa
     setMsgIndex(0)
     const interval = setInterval(() => {
       setMsgIndex((i) => (i + 1) % FUNNY_MESSAGES.length)
-    }, 600)
+    }, 400)
     return () => clearInterval(interval)
   }, [isPending])
 
