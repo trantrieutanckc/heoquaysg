@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 interface Product {
   id: string
   title: string
-  price: number | null
   unit?: string
   image?: unknown
 }
@@ -84,15 +83,6 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
       )
     )
   }
-
-  const totalPrice = React.useMemo(() =>
-    items.reduce((sum, item) => {
-      const p = products.find((pr) => pr.id === item.id)
-      return sum + (p?.price ?? 0) * item.quantity
-    }, 0)
-  , [items, products])
-
-  const hasPrices = items.some((i) => (products.find((p) => p.id === i.id)?.price ?? 0) > 0)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -238,14 +228,9 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
                     </div>
                   </div>
 
-                  {/* Tên + giá */}
+                  {/* Tên */}
                   <div className="px-3 py-2.5">
                     <p className="font-semibold text-sm leading-snug line-clamp-2">{p.title}</p>
-                    {p.price != null && (
-                      <p className="text-xs text-primary font-medium mt-0.5">
-                        {new Intl.NumberFormat("vi-VN").format(p.price)}đ / con
-                      </p>
-                    )}
                   </div>
                 </button>
 
@@ -389,19 +374,10 @@ export function BookingForm({ products, contactPhone }: BookingFormProps) {
                 <span className="text-foreground">{item.title}</span>
                 <span className="font-medium text-muted-foreground">
                   {item.quantity} {product?.unit ?? "con"}
-                  {product?.price ? (
-                    <span className="ml-1.5 text-foreground">· {new Intl.NumberFormat("vi-VN").format(product.price * item.quantity)}đ</span>
-                  ) : null}
                 </span>
               </div>
             )
           })}
-          {hasPrices && (
-            <div className="flex items-center justify-between text-sm font-bold border-t border-border pt-2.5 mt-1">
-              <span>Tạm tính</span>
-              <span className="text-primary text-base">{new Intl.NumberFormat("vi-VN").format(totalPrice)}đ</span>
-            </div>
-          )}
           {date && (
             <p className="text-xs text-muted-foreground pt-1">
               Giao lúc <span className="font-medium text-foreground">{time} ngày {date.split("-").reverse().join("/")}</span>

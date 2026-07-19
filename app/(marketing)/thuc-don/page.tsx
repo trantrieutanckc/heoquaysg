@@ -56,20 +56,6 @@ export default async function ThucDonPage() {
       </div>
 
       <div className="container px-4 sm:px-6 py-10 lg:py-14 max-w-4xl">
-        {/* ── Notice ───────────────────────────────────────── */}
-        <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 mb-8 text-sm text-foreground">
-          <span className="text-lg shrink-0">📞</span>
-          <p>Liên hệ trực tiếp để được báo giá chính xác nhất cho từng món và số lượng.</p>
-          {contactPhone && (
-            <a
-              href={`tel:${contactPhone.replace(/\s/g, "")}`}
-              className="ml-auto shrink-0 font-semibold text-primary hover:underline"
-            >
-              {contactPhone}
-            </a>
-          )}
-        </div>
-
         {/* ── Sticky category nav ───────────────────────────── */}
         {visibleGroups.length > 1 && (
           <div className="sticky top-16 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3 bg-background/95 backdrop-blur border-b mb-8">

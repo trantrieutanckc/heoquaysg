@@ -20,7 +20,7 @@ export default async function DatLichPage() {
   const [dishes, siteConfigRow] = await Promise.all([
     db.dish.findMany({
       where: { available: true },
-      select: { id: true, name: true, price: true, unit: true, image: true },
+      select: { id: true, name: true, unit: true, image: true },
       orderBy: [{ group: { order: "asc" } }, { order: "asc" }],
     }),
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
@@ -29,7 +29,6 @@ export default async function DatLichPage() {
   const products = dishes.map((d) => ({
     id: d.id,
     title: d.name,
-    price: d.price,
     unit: d.unit,
     image: d.image ? { url: d.image } : null,
   }))
