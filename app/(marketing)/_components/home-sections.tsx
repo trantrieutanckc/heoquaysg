@@ -141,9 +141,9 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
   const excerpt = getExcerpt(post.content)
 
   return (
-    <section className="py-14 lg:py-20 relative overflow-hidden" style={bgStyle ?? { backgroundColor: "#1c1917" }}>
-      {/* bg decoration */}
-      {!bgStyle && (
+    <section className="py-14 lg:py-20 relative overflow-hidden" style={{ backgroundColor: "#1c1917", ...bgStyle }}>
+      {/* bg decoration — chỉ hiện khi chưa set custom bg */}
+      {!bgStyle?.backgroundColor && !bgStyle?.backgroundImage && (
         <>
           <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-orange-950/60 to-stone-900" />
           <div className="absolute inset-0 opacity-[0.06]" aria-hidden>
@@ -154,7 +154,7 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
       <div className="relative z-10 container px-4 sm:px-6">
         <ScaleIn>
           <SlideInLeft>
-            <SectionTitle label={label || "Nổi bật"} title={title || "Sản phẩm nổi bật"} light={!bgStyle} />
+            <SectionTitle label={label || "Nổi bật"} title={title || "Sản phẩm nổi bật"} light={!bgStyle?.backgroundColor && !bgStyle?.backgroundImage} />
           </SlideInLeft>
           <Link
             href={`/posts/${post.id}`}
@@ -213,7 +213,7 @@ interface CategoriesSectionProps {
 
 export function CategoriesSection({ categories, showViewAll, bgStyle, label, title }: CategoriesSectionProps) {
   return (
-    <section className="py-14 lg:py-20" style={bgStyle ?? { background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff8f0 100%)" }}>
+    <section className="py-14 lg:py-20" style={{ background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff8f0 100%)", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
         <SlideInLeft>
           <SectionTitle
@@ -269,8 +269,8 @@ interface AboutSectionProps {
 
 export function AboutSection({ siteName, siteDescription, aboutImage, contactAddress, contactPhone, label, bgStyle, aboutContentHtml }: AboutSectionProps) {
   return (
-    <section className="py-14 lg:py-20 relative overflow-hidden" style={bgStyle ?? { backgroundColor: "#fff8f0" }}>
-      {!bgStyle && (
+    <section className="py-14 lg:py-20 relative overflow-hidden" style={{ backgroundColor: "#fff8f0", ...bgStyle }}>
+      {!bgStyle?.backgroundColor && !bgStyle?.backgroundImage && (
         <div className="absolute inset-0 opacity-[0.04]" aria-hidden>
           <svg width="100%" height="100%"><pattern id="about-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#ea580c"/></pattern><rect width="100%" height="100%" fill="url(#about-dots)"/></svg>
         </div>
@@ -360,7 +360,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
   if (visible.length === 0) return null
 
   return (
-    <section className="py-14 lg:py-20" style={bgStyle ?? { backgroundColor: "var(--background)" }}>
+    <section className="py-14 lg:py-20" style={{ backgroundColor: "var(--background)", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
         <SlideInLeft>
           <SectionTitle
@@ -435,7 +435,7 @@ export function BookingCtaSection({ bgStyle, label, title, desc, contactPhone, b
 
   return (
     <section className="py-16 lg:py-24 relative overflow-hidden" style={bgStyle ?? undefined}>
-      {!bgStyle && <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500" aria-hidden />}
+      {!bgStyle?.backgroundColor && !bgStyle?.backgroundImage && <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500" aria-hidden />}
       <div className="absolute inset-0 opacity-10" aria-hidden>
         <svg width="100%" height="100%"><pattern id="booking-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="white"/></pattern><rect width="100%" height="100%" fill="url(#booking-dots)"/></svg>
       </div>
@@ -480,7 +480,7 @@ interface MapSectionProps {
 
 export function MapSection({ contactAddress, contactPhone, bgStyle }: MapSectionProps) {
   return (
-    <section className="py-14 lg:py-20" style={bgStyle ?? { background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff8f0 100%)" }}>
+    <section className="py-14 lg:py-20" style={{ background: "linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff8f0 100%)", ...bgStyle }}>
       <div className="container px-4 sm:px-6">
         <FadeUp>
           <div className="grid md:grid-cols-2 rounded-2xl overflow-hidden shadow-xl border border-orange-100 bg-white">
@@ -543,8 +543,8 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
   if (visibleGroups.length === 0) return null
 
   return (
-    <section className="py-14 lg:py-20 relative overflow-hidden" style={bgStyle ?? { backgroundColor: "#1c1917" }}>
-      {!bgStyle && (
+    <section className="py-14 lg:py-20 relative overflow-hidden" style={{ backgroundColor: "#1c1917", ...bgStyle }}>
+      {!bgStyle?.backgroundColor && !bgStyle?.backgroundImage && (
         <>
           <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-amber-950/40 to-stone-900" />
           <div className="absolute inset-0 opacity-[0.06]" aria-hidden>
@@ -557,7 +557,7 @@ export function ThucDonSection({ groups, bgStyle }: ThucDonSectionProps) {
           <SectionTitle
             label="Thực đơn"
             title="Các món chúng tôi cung cấp"
-            light={!bgStyle}
+            light={!bgStyle?.backgroundColor && !bgStyle?.backgroundImage}
             right={
               <Link href="/thuc-don" className="group text-xs font-semibold uppercase tracking-wider text-orange-300 hover:text-orange-200 transition-colors flex items-center gap-1.5">
                 Xem đầy đủ <ArrowRightSm />
