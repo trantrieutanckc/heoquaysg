@@ -45,28 +45,27 @@ export default async function AboutPage() {
   const socialFacebook = cfg.socialFacebook?.trim() || null
   const socialInstagram = cfg.socialInstagram?.trim() || null
 
-  // About page editable content (fallback to demo content)
   const aboutStory1 = cfg.aboutStory1?.trim() || `Xuất phát từ tình yêu ẩm thực và niềm đam mê bếp núc, ${siteName} được thành lập với mong muốn mang đến những mâm cỗ heo quay, vịt quay, gà quay chuẩn vị — đậm đà như cách bà nội vẫn làm mỗi dịp lễ tết.`
   const aboutStory2 = cfg.aboutStory2?.trim() || "Mỗi con heo được chọn lọc kỹ từ các trang trại uy tín, ướp qua đêm với hơn 10 loại gia vị bí truyền, rồi quay chậm bằng than hoa để da giòn tan, thịt mềm ngọt thấm đến tận xương. Không tắt lửa, không cắt góc, chỉ là sự kiên nhẫn và tâm huyết trong từng mẻ quay."
 
   const aboutStats = [
-    { number: cfg.aboutStat1Number?.trim() || "10+", label: cfg.aboutStat1Label?.trim() || "Năm kinh nghiệm", desc: cfg.aboutStat1Desc?.trim() || "Gắn bó với nghề hơn một thập kỷ" },
-    { number: cfg.aboutStat2Number?.trim() || "1000+", label: cfg.aboutStat2Label?.trim() || "Khách hàng hài lòng", desc: cfg.aboutStat2Desc?.trim() || "Phục vụ hàng nghìn lượt khách mỗi tháng" },
-    { number: cfg.aboutStat3Number?.trim() || "3", label: cfg.aboutStat3Label?.trim() || "Món đặc trưng", desc: cfg.aboutStat3Desc?.trim() || "Heo quay, Vịt quay, Gà quay" },
+    { number: cfg.aboutStat1Number?.trim() || "10+", label: cfg.aboutStat1Label?.trim() || "Năm kinh nghiệm", desc: cfg.aboutStat1Desc?.trim() || "Gắn bó với nghề hơn một thập kỷ", icon: "🔥" },
+    { number: cfg.aboutStat2Number?.trim() || "1000+", label: cfg.aboutStat2Label?.trim() || "Khách hàng hài lòng", desc: cfg.aboutStat2Desc?.trim() || "Phục vụ hàng nghìn lượt khách mỗi tháng", icon: "❤️" },
+    { number: cfg.aboutStat3Number?.trim() || "3", label: cfg.aboutStat3Label?.trim() || "Món đặc trưng", desc: cfg.aboutStat3Desc?.trim() || "Heo quay, Vịt quay, Gà quay", icon: "🍖" },
   ]
 
   const aboutSteps = [
-    { step: "01", title: cfg.aboutStep1Title?.trim() || "Chọn nguyên liệu", desc: cfg.aboutStep1Desc?.trim() || "Heo, vịt, gà tươi sống từ trang trại uy tín, kiểm tra kỹ trước khi nhận." },
-    { step: "02", title: cfg.aboutStep2Title?.trim() || "Ướp gia vị", desc: cfg.aboutStep2Desc?.trim() || "Hơn 10 loại gia vị bí truyền, ướp qua đêm để thấm đều từng thớ thịt." },
-    { step: "03", title: cfg.aboutStep3Title?.trim() || "Quay than hoa", desc: cfg.aboutStep3Desc?.trim() || "Quay chậm bằng than hoa 3–4 giờ, xoay đều tay để da vàng giòn đều." },
-    { step: "04", title: cfg.aboutStep4Title?.trim() || "Giao đến tay bạn", desc: cfg.aboutStep4Desc?.trim() || "Chặt nóng, đóng gói cẩn thận, giao tận nơi hoặc nhận trực tiếp tại cửa hàng." },
+    { step: "01", title: cfg.aboutStep1Title?.trim() || "Chọn nguyên liệu", desc: cfg.aboutStep1Desc?.trim() || "Heo, vịt, gà tươi sống từ trang trại uy tín, kiểm tra kỹ trước khi nhận.", color: "from-orange-500 to-amber-500" },
+    { step: "02", title: cfg.aboutStep2Title?.trim() || "Ướp gia vị", desc: cfg.aboutStep2Desc?.trim() || "Hơn 10 loại gia vị bí truyền, ướp qua đêm để thấm đều từng thớ thịt.", color: "from-amber-500 to-yellow-500" },
+    { step: "03", title: cfg.aboutStep3Title?.trim() || "Quay than hoa", desc: cfg.aboutStep3Desc?.trim() || "Quay chậm bằng than hoa 3–4 giờ, xoay đều tay để da vàng giòn đều.", color: "from-red-500 to-orange-500" },
+    { step: "04", title: cfg.aboutStep4Title?.trim() || "Giao đến tay bạn", desc: cfg.aboutStep4Desc?.trim() || "Chặt nóng, đóng gói cẩn thận, giao tận nơi hoặc nhận trực tiếp tại cửa hàng.", color: "from-orange-600 to-red-500" },
   ]
 
   const aboutCommitments = [
-    { title: cfg.aboutCommit1Title?.trim() || "Nguyên liệu tươi sạch", desc: cfg.aboutCommit1Desc?.trim() || "Chọn lọc từ các nhà cung cấp uy tín, đảm bảo vệ sinh an toàn thực phẩm." },
-    { title: cfg.aboutCommit2Title?.trim() || "Công thức gia truyền", desc: cfg.aboutCommit2Desc?.trim() || "Bí quyết ướp và nướng đặc biệt tạo nên hương vị độc đáo không đâu có." },
-    { title: cfg.aboutCommit3Title?.trim() || "Giao hàng tận nơi", desc: cfg.aboutCommit3Desc?.trim() || "Phục vụ đặt hàng online, giao tận nơi nhanh chóng và đúng giờ." },
-    { title: cfg.aboutCommit4Title?.trim() || "Giá cả hợp lý", desc: cfg.aboutCommit4Desc?.trim() || "Chất lượng cao với mức giá phải chăng, phù hợp với mọi nhu cầu." },
+    { title: cfg.aboutCommit1Title?.trim() || "Nguyên liệu tươi sạch", desc: cfg.aboutCommit1Desc?.trim() || "Chọn lọc từ các nhà cung cấp uy tín, đảm bảo vệ sinh an toàn thực phẩm.", icon: "🌿" },
+    { title: cfg.aboutCommit2Title?.trim() || "Công thức gia truyền", desc: cfg.aboutCommit2Desc?.trim() || "Bí quyết ướp và nướng đặc biệt tạo nên hương vị độc đáo không đâu có.", icon: "📜" },
+    { title: cfg.aboutCommit3Title?.trim() || "Giao hàng tận nơi", desc: cfg.aboutCommit3Desc?.trim() || "Phục vụ đặt hàng online, giao tận nơi nhanh chóng và đúng giờ.", icon: "🚚" },
+    { title: cfg.aboutCommit4Title?.trim() || "Giá cả hợp lý", desc: cfg.aboutCommit4Desc?.trim() || "Chất lượng cao với mức giá phải chăng, phù hợp với mọi nhu cầu.", icon: "💰" },
   ]
 
   const contactItems = [
@@ -81,86 +80,78 @@ export default async function AboutPage() {
 
       {/* Hero */}
       <PageEntrance>
-        <div className="relative overflow-hidden border-b bg-card" style={{ minHeight: 260 }}>
-          {heroImage && (
+        <div className="relative overflow-hidden" style={{ minHeight: 320 }}>
+          {heroImage ? (
             <>
-              <Image
-                src={heroImage}
-                alt={siteName}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority
-                placeholder="blur"
-                blurDataURL={BLUR_PLACEHOLDER}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10" />
+              <Image src={heroImage} alt={siteName} fill sizes="100vw" className="object-cover" priority placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
             </>
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-amber-500 to-orange-400" />
           )}
-          <div className={`relative z-10 container px-4 sm:px-6 py-14 lg:py-20 ${heroImage ? "text-white" : ""}`}>
-            <p className={`text-xs font-bold uppercase tracking-[0.25em] mb-2 ${heroImage ? "text-orange-200" : "text-primary"}`}>
-              {siteName}
-            </p>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl mb-3">
-              Về chúng tôi
-            </h1>
-            <div className="flex items-center gap-1.5 mb-4">
-              <div className={`h-0.5 w-10 rounded-full ${heroImage ? "bg-white/60" : "bg-primary"}`} />
-              <div className={`h-0.5 w-4 rounded-full ${heroImage ? "bg-white/30" : "bg-primary/40"}`} />
+          {/* dot pattern */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+            <svg width="100%" height="100%">
+              <pattern id="about-dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.5" fill="white" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#about-dots)" />
+            </svg>
+          </div>
+          <div className="relative z-10 container px-4 sm:px-6 py-16 lg:py-24 text-white">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] mb-3 text-orange-200">{siteName}</p>
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl mb-4 drop-shadow-sm">Về chúng tôi</h1>
+            <div className="flex items-center gap-2 mb-5">
+              <div className="h-1 w-12 rounded-full bg-orange-400" />
+              <div className="h-1 w-5 rounded-full bg-orange-300/50" />
             </div>
-            <p className={`text-base max-w-xl leading-relaxed ${heroImage ? "text-white/80" : "text-muted-foreground"}`}>
-              {siteDescription}
-            </p>
+            <p className="text-base sm:text-lg max-w-xl leading-relaxed text-white/85">{siteDescription}</p>
           </div>
         </div>
       </PageEntrance>
 
-      <div className="container px-4 sm:px-6 py-10 lg:py-14 space-y-14">
+      <div className="container px-4 sm:px-6 py-12 lg:py-16 space-y-16">
 
         {/* Story */}
         <FadeUp>
-          <section className="grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
-            <div className="space-y-4">
+          <section className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div className="space-y-5">
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">Câu chuyện của chúng tôi</p>
-              <h2 className="font-heading text-2xl sm:text-3xl leading-snug">{siteName}</h2>
-              <div className="flex items-center gap-1.5">
-                <div className="h-0.5 w-10 bg-primary rounded-full" />
-                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl leading-snug">{siteName}</h2>
+              <div className="flex items-center gap-2">
+                <div className="h-1 w-12 bg-primary rounded-full" />
+                <div className="h-1 w-5 bg-primary/30 rounded-full" />
               </div>
               <p className="leading-relaxed text-muted-foreground">{siteDescription}</p>
               <p className="leading-relaxed text-muted-foreground">{aboutStory1}</p>
               <p className="leading-relaxed text-muted-foreground">{aboutStory2}</p>
-              <div className="flex gap-3 pt-2">
-                <a
-                  href={`tel:${contactPhone}`}
-                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
-                >
-                  Liên hệ đặt hàng
-                </a>
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-2 border border-border hover:bg-muted text-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors"
-                >
+              <div className="flex flex-wrap gap-3 pt-2">
+                {contactPhone && (
+                  <a href={`tel:${contactPhone}`} className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-none">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Liên hệ đặt hàng
+                  </a>
+                )}
+                <Link href="/thuc-don" className="inline-flex items-center gap-2 border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 text-xs font-bold uppercase tracking-wider transition-colors rounded-none">
                   Xem thực đơn
                 </Link>
               </div>
             </div>
-            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-              {aboutImage ? (
-                <Image
-                  src={aboutImage}
-                  alt={siteName}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                  placeholder="blur"
-                  blurDataURL={BLUR_PLACEHOLDER}
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-200 via-amber-100 to-orange-300 dark:from-orange-900 dark:via-amber-950 dark:to-orange-800 flex items-center justify-center">
-                  <span className="text-8xl drop-shadow-sm select-none">🐷</span>
-                </div>
-              )}
+            <div className="relative">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+                {aboutImage ? (
+                  <Image src={aboutImage} alt={siteName} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-200 via-amber-100 to-orange-300 flex items-center justify-center">
+                    <span className="text-9xl drop-shadow-sm select-none">🐷</span>
+                  </div>
+                )}
+              </div>
+              {/* Decorative badge */}
+              <div className="absolute -bottom-4 -left-4 bg-primary text-primary-foreground px-5 py-3 shadow-xl">
+                <div className="font-heading text-2xl font-bold leading-none">10+</div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-primary-foreground/80">Năm kinh nghiệm</div>
+              </div>
             </div>
           </section>
         </FadeUp>
@@ -168,12 +159,16 @@ export default async function AboutPage() {
         {/* Stats */}
         <section>
           <StaggerContainer className="grid gap-4 sm:grid-cols-3">
-            {aboutStats.map((stat) => (
+            {aboutStats.map((stat, i) => (
               <StaggerItem key={stat.label} hover>
-                <div className="border bg-card p-6 text-center space-y-1 h-full">
-                  <div className="font-heading text-4xl font-bold text-primary">{stat.number}</div>
-                  <div className="font-semibold text-sm">{stat.label}</div>
-                  <p className="text-xs text-muted-foreground">{stat.desc}</p>
+                <div className={`relative overflow-hidden p-7 text-center space-y-2 h-full text-white ${i === 0 ? "bg-gradient-to-br from-orange-500 to-amber-500" : i === 1 ? "bg-gradient-to-br from-red-500 to-orange-500" : "bg-gradient-to-br from-amber-600 to-orange-600"}`}>
+                  <div className="text-3xl mb-1">{stat.icon}</div>
+                  <div className="font-heading text-4xl font-bold drop-shadow-sm">{stat.number}</div>
+                  <div className="font-semibold text-sm text-white/90">{stat.label}</div>
+                  <p className="text-xs text-white/70 leading-relaxed">{stat.desc}</p>
+                  {/* bg decoration */}
+                  <div className="absolute -right-4 -top-4 h-20 w-20 rounded-full bg-white/10" />
+                  <div className="absolute -left-3 -bottom-3 h-14 w-14 rounded-full bg-white/10" />
                 </div>
               </StaggerItem>
             ))}
@@ -182,21 +177,24 @@ export default async function AboutPage() {
 
         {/* Process */}
         <FadeUp>
-          <section className="space-y-5">
+          <section className="space-y-7">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Bí quyết</p>
-              <h2 className="font-heading text-2xl sm:text-3xl">Từ nguyên liệu đến bàn ăn</h2>
-              <div className="flex items-center gap-1.5 mt-2.5">
-                <div className="h-0.5 w-10 bg-primary rounded-full" />
-                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl">Từ nguyên liệu đến bàn ăn</h2>
+              <div className="flex items-center gap-2 mt-3">
+                <div className="h-1 w-12 bg-primary rounded-full" />
+                <div className="h-1 w-5 bg-primary/30 rounded-full" />
               </div>
             </div>
-            <div className="grid gap-px bg-border sm:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {aboutSteps.map((item) => (
-                <div key={item.step} className="bg-card p-6 space-y-2">
-                  <div className="font-heading text-3xl font-bold text-primary/30">{item.step}</div>
+                <div key={item.step} className="relative group overflow-hidden rounded-xl border bg-card p-6 space-y-3 hover:shadow-lg transition-shadow">
+                  <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${item.color} text-white font-heading text-lg font-bold shadow-md`}>
+                    {item.step}
+                  </div>
                   <div className="font-semibold text-sm">{item.title}</div>
                   <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${item.color} opacity-60`} />
                 </div>
               ))}
             </div>
@@ -205,27 +203,25 @@ export default async function AboutPage() {
 
         {/* Commitments */}
         <FadeUp>
-          <section className="space-y-5">
+          <section className="rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 p-8 lg:p-12 space-y-7">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Chất lượng</p>
-              <h2 className="font-heading text-2xl sm:text-3xl">Cam kết của chúng tôi</h2>
-              <div className="flex items-center gap-1.5 mt-2.5">
-                <div className="h-0.5 w-10 bg-primary rounded-full" />
-                <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+              <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl">Cam kết của chúng tôi</h2>
+              <div className="flex items-center gap-2 mt-3">
+                <div className="h-1 w-12 bg-primary rounded-full" />
+                <div className="h-1 w-5 bg-primary/30 rounded-full" />
               </div>
             </div>
             <StaggerContainer className="grid gap-4 sm:grid-cols-2">
               {aboutCommitments.map((item) => (
                 <StaggerItem key={item.title}>
-                  <div className="flex gap-4 border bg-card p-5 h-full">
-                    <div className="mt-0.5 h-6 w-6 shrink-0 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 6 9 17l-5-5" />
-                      </svg>
+                  <div className="flex gap-4 bg-white dark:bg-card rounded-xl p-5 h-full shadow-sm hover:shadow-md transition-shadow">
+                    <div className="mt-0.5 h-11 w-11 shrink-0 rounded-xl bg-primary/10 flex items-center justify-center text-2xl">
+                      {item.icon}
                     </div>
                     <div>
                       <div className="font-semibold text-sm mb-1">{item.title}</div>
-                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </StaggerItem>
@@ -234,22 +230,22 @@ export default async function AboutPage() {
           </section>
         </FadeUp>
 
-        {/* Contact info from siteConfig */}
+        {/* Contact info */}
         {contactItems.length > 0 && (
           <FadeUp>
             <section className="space-y-5">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-1.5">Liên lạc</p>
                 <h2 className="font-heading text-2xl sm:text-3xl">Thông tin liên hệ</h2>
-                <div className="flex items-center gap-1.5 mt-2.5">
-                  <div className="h-0.5 w-10 bg-primary rounded-full" />
-                  <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+                <div className="flex items-center gap-2 mt-3">
+                  <div className="h-1 w-12 bg-primary rounded-full" />
+                  <div className="h-1 w-5 bg-primary/30 rounded-full" />
                 </div>
               </div>
-              <div className="border bg-card divide-y overflow-hidden">
+              <div className="rounded-xl border bg-card overflow-hidden divide-y shadow-sm">
                 {contactItems.map((item) => (
-                  <div key={item.label} className="flex items-center gap-4 px-6 py-4">
-                    <div className="h-8 w-8 shrink-0 bg-primary/10 border border-primary/20 flex items-center justify-center">{item.icon}</div>
+                  <div key={item.label} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/40 transition-colors">
+                    <div className="h-9 w-9 shrink-0 bg-primary/10 rounded-lg flex items-center justify-center">{item.icon}</div>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 min-w-0">
                       <span className="text-sm font-semibold shrink-0">{item.label}:</span>
                       {item.href ? (
@@ -264,20 +260,19 @@ export default async function AboutPage() {
                 ))}
               </div>
 
-              {/* Social links */}
               {(socialFacebook || socialInstagram) && (
                 <div className="flex gap-3 pt-1">
                   {socialFacebook && (
                     <a href={socialFacebook} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors">
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors rounded-lg">
+                      <svg className="h-4 w-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                       Facebook
                     </a>
                   )}
                   {socialInstagram && (
                     <a href={socialInstagram} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors">
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                      className="inline-flex items-center gap-2 border border-border hover:bg-muted px-4 py-2 text-sm font-semibold transition-colors rounded-lg">
+                      <svg className="h-4 w-4 text-pink-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                       Instagram
                     </a>
                   )}
@@ -289,27 +284,34 @@ export default async function AboutPage() {
 
         {/* CTA */}
         <FadeUp>
-          <section className="border bg-card p-8 lg:p-12 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">Liên hệ ngay</p>
-            <h2 className="font-heading text-2xl sm:text-3xl mb-2">Sẵn sàng thưởng thức?</h2>
-            <div className="flex items-center justify-center gap-1.5 mb-5">
-              <div className="h-0.5 w-8 bg-primary rounded-full" />
-              <div className="h-0.5 w-4 bg-primary/40 rounded-full" />
+          <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-500 text-white p-10 lg:p-14 text-center">
+            <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+              <svg width="100%" height="100%">
+                <pattern id="about-cta-dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.2" fill="white" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#about-cta-dots)" />
+              </svg>
             </div>
-            <p className="text-muted-foreground mb-7 max-w-md mx-auto">Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi.</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href={`tel:${contactPhone}`}
-                className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider transition-colors"
-              >
-                Đặt hàng ngay
-              </a>
-              <Link
-                href="/blog"
-                className="inline-flex items-center justify-center gap-2 border border-border hover:bg-muted text-foreground px-8 py-3 text-xs font-bold uppercase tracking-wider transition-colors"
-              >
-                Xem thực đơn
-              </Link>
+            <div className="relative z-10">
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-orange-100 mb-3">Liên hệ ngay</p>
+              <h2 className="font-heading text-3xl sm:text-4xl mb-3 drop-shadow-sm">Sẵn sàng thưởng thức?</h2>
+              <div className="flex items-center justify-center gap-2 mb-6">
+                <div className="h-1 w-10 rounded-full bg-white/60" />
+                <div className="h-1 w-5 rounded-full bg-white/30" />
+              </div>
+              <p className="text-white/80 mb-8 max-w-md mx-auto leading-relaxed">Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi.</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                {contactPhone && (
+                  <a href={`tel:${contactPhone}`} className="inline-flex items-center justify-center gap-2 bg-white text-primary hover:bg-orange-50 px-8 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-full shadow-lg">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Đặt hàng ngay
+                  </a>
+                )}
+                <Link href="/thuc-don" className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:bg-white/10 text-white px-8 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-full">
+                  Xem thực đơn
+                </Link>
+              </div>
             </div>
           </section>
         </FadeUp>
