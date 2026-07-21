@@ -80,7 +80,14 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
       {heroImage ? (
         <Image src={heroImage} alt="Hero background" fill sizes="100vw" className="object-cover" priority placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-orange-950 to-stone-900" />
+        <Image
+          src="/heo-quay-img.png"
+          alt="Heo Quay Bình Tân"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/15" />
       {/* dot pattern */}
@@ -382,7 +389,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
             return (
               <StaggerItem key={post.id} hover className={isFeatured ? "sm:col-span-2 lg:col-span-1" : ""}>
                 <Link href={`/posts/${post.id}`} className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
-                  <div className={`shrink-0 relative bg-muted overflow-hidden ${isFeatured ? "w-40 sm:w-full sm:aspect-video" : "w-40 sm:w-full sm:aspect-[4/3]"}`} style={{ minHeight: "7rem" }}>
+                  <div className="shrink-0 relative bg-muted overflow-hidden w-40 sm:w-full sm:aspect-[4/3]" style={{ minHeight: "7rem" }}>
                     {image?.url ? (
                       <Image src={image.url} alt={image.alt ?? post.title} fill sizes="(max-width: 640px) 160px, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
                     ) : (
@@ -397,8 +404,8 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <div className="flex flex-col p-3 sm:p-4 flex-1">
-                    <div className="flex-1 flex flex-col gap-1.5 mb-3">
+                  <div className="flex flex-col p-3 sm:p-4 gap-3">
+                    <div className="flex flex-col gap-1.5">
                       <div className="flex items-center justify-between gap-2">
                         {post.categories.length > 0 && (
                           <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-2.5 py-0.5 text-xs font-semibold">{post.categories[0].category.name}</span>
