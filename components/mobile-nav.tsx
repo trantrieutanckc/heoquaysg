@@ -31,7 +31,7 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
     <LazyMotion features={domAnimation}>
       {/* Backdrop */}
       <div
-        className="md:hidden"
+        className="xl:hidden"
         style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 40, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
         onClick={onClose}
         aria-hidden
@@ -39,7 +39,7 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
 
       {/* Sidebar trái */}
       <m.div
-        className="fixed left-0 top-0 h-screen z-50 md:hidden w-72 bg-background shadow-2xl flex flex-col"
+        className="fixed left-0 top-0 h-screen z-50 xl:hidden w-72 bg-background shadow-2xl flex flex-col"
         initial={{ x: "-100%" }}
         animate={{ x: 0 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
@@ -80,7 +80,19 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
           ))}
         </nav>
 
-        {children && <div className="border-t p-4">{children}</div>}
+        <div className="border-t p-4 flex flex-col gap-2">
+          <Link
+            href="/dat-lich"
+            onClick={onClose}
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground py-2.5 text-sm font-bold uppercase tracking-wider transition-colors"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Đặt lịch
+          </Link>
+          {children && <div>{children}</div>}
+        </div>
       </m.div>
     </LazyMotion>
   )

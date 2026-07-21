@@ -149,16 +149,16 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="container relative flex h-20 items-center justify-between px-4 sm:px-6">
           <MainNav items={navItems} logoUrl={cfg.logoUrl?.trim()} siteName={cfg.siteName?.trim()} centered />
-          <nav className="flex items-center gap-1.5">
+          <nav className="relative z-[1] flex items-center gap-2">
             <SearchButton />
             <Link
               href="/dat-lich"
-              className="hidden sm:inline-flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors rounded-none"
+              className="inline-flex items-center justify-center h-9 w-9 xl:w-auto xl:gap-1.5 xl:px-4 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold uppercase tracking-wider transition-colors rounded-none"
             >
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
               </svg>
-              Đặt lịch
+              <span className="hidden xl:inline">Đặt lịch</span>
             </Link>
             {user ? (
               <UserAccountNav
@@ -168,9 +168,13 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
             ) : (
               <Link
                 href="/login"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "px-4 ml-1 rounded-none text-xs uppercase tracking-wider font-bold")}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-none w-9 xl:w-auto xl:px-4 justify-center")}
+                aria-label="Đăng nhập"
               >
-                Đăng nhập
+                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                </svg>
+                <span className="hidden xl:inline ml-1.5 text-xs uppercase tracking-wider font-bold">Đăng nhập</span>
               </Link>
             )}
           </nav>

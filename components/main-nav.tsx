@@ -52,7 +52,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
   return (
     <div className="flex items-center gap-4 md:gap-6">
       {/* Logo + site name */}
-      <Link href="/" className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 flex items-center gap-2.5 shrink-0">
+      <Link href="/" className="absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 flex items-center gap-2.5 shrink-0">
         {logoUrl && (
           <img
             src={logoUrl}
@@ -60,7 +60,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
             className="h-14 w-auto object-contain"
           />
         )}
-        <span className="hidden lg:block font-heading font-bold text-base leading-tight">
+        <span className="hidden xl:block font-heading font-bold text-base leading-tight">
           {siteName ?? "Heo Quay Bình Tân"}
         </span>
       </Link>
@@ -68,7 +68,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
       {/* Desktop nav */}
       {items?.length ? (
         <nav className={cn(
-          "hidden lg:flex items-center gap-1",
+          "hidden xl:flex items-center gap-1",
           centered && "absolute left-1/2 -translate-x-1/2"
         )}>
           {visibleItems.map((item, index) => (
@@ -137,7 +137,7 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
       {/* Mobile hamburger */}
       <button
         type="button"
-        className="flex lg:hidden items-center justify-center h-9 w-9 border bg-background hover:bg-muted transition-colors"
+        className="flex xl:hidden items-center justify-center h-9 w-9 border bg-background hover:bg-muted transition-colors"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
         aria-label="Toggle menu"
         aria-expanded={showMobileMenu}

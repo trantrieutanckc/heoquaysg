@@ -56,12 +56,12 @@ export function SearchButton() {
       {/* Trigger button */}
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 border bg-muted/60 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        className="inline-flex items-center justify-center h-9 w-9 xl:w-auto xl:gap-2 xl:px-3 border bg-muted/60 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         aria-label="Tìm kiếm"
       >
         <Icons.search className="h-3.5 w-3.5 shrink-0" />
-        <span className="hidden sm:inline text-xs">Tìm kiếm...</span>
-        <kbd className="hidden sm:inline-flex h-4 items-center gap-0.5 rounded border bg-background px-1 text-[10px] font-mono text-muted-foreground">
+        <span className="hidden xl:inline text-xs">Tìm kiếm...</span>
+        <kbd className="hidden xl:inline-flex h-4 items-center gap-0.5 rounded border bg-background px-1 text-[10px] font-mono text-muted-foreground">
           ⌃K
         </kbd>
       </button>
