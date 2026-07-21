@@ -69,11 +69,8 @@ export function SearchButton() {
       {/* Modal overlay */}
       {open && (
         <>
-          {/* Backdrop — cùng màu background với menu */}
-          <div
-            className="fixed inset-0 z-[100] bg-background/80"
-            onClick={() => setOpen(false)}
-          />
+          {/* Backdrop — block click, không đóng search */}
+          <div className="fixed inset-0 z-[100] bg-background/80" />
 
           {/* Dialog */}
           <div className="fixed inset-0 z-[101] flex items-start justify-center pt-16 sm:pt-24 px-4 pointer-events-none">

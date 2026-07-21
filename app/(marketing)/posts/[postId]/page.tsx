@@ -229,7 +229,7 @@ export default async function PostPage({ params }: PostPageProps) {
                   className="inline-flex items-center gap-2 rounded-full border border-white/50 hover:bg-white/10 text-white font-semibold px-6 py-3 text-sm transition-colors whitespace-nowrap"
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
+                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
                   </svg>
                   {post.ctaBtn2Label?.trim() || "Xem thực đơn"}
                 </a>
