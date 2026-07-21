@@ -53,7 +53,7 @@ export function RelatedPostsCarousel({ posts }: { posts: RelatedPost[] }) {
                   {p.title}
                 </h3>
                 {excerpt && (
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-2">{excerpt}</p>
                 )}
               </div>
               <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit">

@@ -133,7 +133,7 @@ function PostCard({ post }: { post: any }) {
             {post.title}
           </h2>
           {excerpt && (
-            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-1 sm:line-clamp-2">{excerpt}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-2">{excerpt}</p>
           )}
           {post.avgRating != null && post.ratingCount > 0 && (
             <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
