@@ -80,7 +80,7 @@ export default async function IndexPage() {
     }),
   ])
   const aboutContentHtml = tiptapToHtml(cfg.homeAboutContent)
-  const heroImage = cfg.heroImage?.trim()
+  const heroImage = cfg.heroImage?.trim() || "/images/shop/heo-quay-khay-1.jpg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const siteTagline = cfg.siteTagline?.trim() || "Hương vị gia truyền, đậm đà qua nhiều thế hệ"
   const siteDescription = cfg.siteDescription?.trim() || "Chuyên heo quay, vịt quay, gà quay — công thức bí truyền, nguyên liệu tươi sạch, phục vụ hàng ngày."
