@@ -154,6 +154,27 @@ export function AboutEditorForm({ initial }: { initial: SiteConfigData }) {
         ))}
       </Section>
 
+      {/* CTA */}
+      <Section title="CTA cuối trang" desc='Banner cam kết "Sẵn sàng thưởng thức?" ở cuối trang. Để trống → dùng mặc định.'>
+        <Field label="Tiêu đề CTA">
+          <Input value={data.aboutCtaTitle ?? ""} onChange={set("aboutCtaTitle")} placeholder="Sẵn sàng thưởng thức?" />
+        </Field>
+        <Field label="Mô tả CTA">
+          <Textarea value={data.aboutCtaDesc ?? ""} onChange={set("aboutCtaDesc")} placeholder="Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi." className="min-h-[72px] resize-y" />
+        </Field>
+        <TwoCol>
+          <Field label="Nút 1 (gọi điện) — text">
+            <Input value={data.aboutCtaBtn1 ?? ""} onChange={set("aboutCtaBtn1")} placeholder="Đặt hàng ngay" />
+          </Field>
+          <Field label="Nút 2 — text">
+            <Input value={data.aboutCtaBtn2 ?? ""} onChange={set("aboutCtaBtn2")} placeholder="Xem thực đơn" />
+          </Field>
+        </TwoCol>
+        <Field label="Nút 2 — link" hint="Mặc định: /thuc-don">
+          <Input value={data.aboutCtaBtn2Link ?? ""} onChange={set("aboutCtaBtn2Link")} placeholder="/thuc-don" />
+        </Field>
+      </Section>
+
       <Button type="submit" disabled={saving}>
         Lưu trang Về chúng tôi
       </Button>

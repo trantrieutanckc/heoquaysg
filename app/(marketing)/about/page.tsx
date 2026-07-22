@@ -295,21 +295,21 @@ export default async function AboutPage() {
             </div>
             <div className="relative z-10">
               <p className="text-xs font-bold uppercase tracking-[0.25em] text-orange-100 mb-3">Liên hệ ngay</p>
-              <h2 className="font-heading text-3xl sm:text-4xl mb-3 drop-shadow-sm">Sẵn sàng thưởng thức?</h2>
+              <h2 className="font-heading text-3xl sm:text-4xl mb-3 drop-shadow-sm">{cfg.aboutCtaTitle?.trim() || "Sẵn sàng thưởng thức?"}</h2>
               <div className="flex items-center justify-center gap-2 mb-6">
                 <div className="h-1 w-10 rounded-full bg-white/60" />
                 <div className="h-1 w-5 rounded-full bg-white/30" />
               </div>
-              <p className="text-white/80 mb-8 max-w-md mx-auto leading-relaxed">Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi.</p>
+              <p className="text-white/80 mb-8 max-w-md mx-auto leading-relaxed">{cfg.aboutCtaDesc?.trim() || "Đặt hàng ngay hôm nay và trải nghiệm hương vị gia truyền đặc sắc của chúng tôi."}</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 {contactPhone && (
                   <a href={`tel:${contactPhone}`} className="inline-flex items-center justify-center gap-2 bg-white text-primary hover:bg-orange-50 px-8 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-full shadow-lg">
                     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.98-1.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    Đặt hàng ngay
+                    {cfg.aboutCtaBtn1?.trim() || "Đặt hàng ngay"}
                   </a>
                 )}
-                <Link href="/thuc-don" className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:bg-white/10 text-white px-8 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-full">
-                  Xem thực đơn
+                <Link href={cfg.aboutCtaBtn2Link?.trim() || "/thuc-don"} className="inline-flex items-center justify-center gap-2 border-2 border-white/60 hover:bg-white/10 text-white px-8 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-full">
+                  {cfg.aboutCtaBtn2?.trim() || "Xem thực đơn"}
                 </Link>
               </div>
             </div>

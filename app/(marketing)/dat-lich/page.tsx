@@ -4,17 +4,32 @@ import { BookingForm } from "./booking-form"
 
 export const dynamic = "force-dynamic"
 
-export const metadata = {
-  title: "Đặt lịch giao hàng",
-  description: "Đặt heo quay, gà quay, vịt quay — giao tận nơi đúng giờ tại Heo Quay Bình Tân.",
+export async function generateMetadata() {
+  const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (row?.data ?? {}) as Record<string, string>
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
+  const title = cfg.datLichTitle?.trim() || "Đặt lịch giao hàng"
+  const description = `${title} — ${siteName}. Giao tận nơi đúng giờ.`
+  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} | ${siteName}`,
+      description,
+      locale: "vi_VN",
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+    },
+  }
 }
 
-const HIGHLIGHTS = [
+const DEFAULT_HIGHLIGHTS = [
   { icon: "🚗", text: "Giao tận nơi đúng giờ" },
   { icon: "📞", text: "Chúng tôi sẽ liên hệ xác nhận sớm nhất" },
   { icon: "🐷", text: "Heo quay, vịt quay, gà quay" },
   { icon: "📅", text: "Đặt trước ít nhất 1 ngày" },
 ]
+const HIGHLIGHT_ICONS = ["🚗", "📞", "🐷", "📅"]
 
 export default async function DatLichPage() {
   const [dishes, siteConfigRow] = await Promise.all([
@@ -34,9 +49,19 @@ export default async function DatLichPage() {
   }))
 
   const data = (siteConfigRow?.data ?? {}) as Record<string, string>
-  const heroImage = data.heroImage?.trim() || null
+  const heroImage = data.datLichImage?.trim() || data.heroImage?.trim() || null
   const siteName = data.siteName?.trim() || "Heo Quay Bình Tân"
   const contactPhone = data.contactPhone?.trim() || null
+
+  const datLichTitle = data.datLichTitle?.trim() || "Đặt Lịch Giao Hàng"
+  const datLichSubtitle = data.datLichSubtitle?.trim() || "Giao hàng tận nơi"
+  const datLichSectionLabel = data.datLichSectionLabel?.trim() || "Cam kết của chúng tôi"
+  const datLichFormDesc = data.datLichFormDesc?.trim() || "Điền form bên dưới, chúng tôi sẽ liên hệ xác nhận sớm nhất."
+
+  const highlights = [1, 2, 3, 4].map((n, i) => ({
+    icon: HIGHLIGHT_ICONS[i],
+    text: (data as any)[`datLichHighlight${n}`]?.trim() || DEFAULT_HIGHLIGHTS[i].text,
+  }))
 
   return (
     <div className="min-h-screen">
@@ -64,18 +89,18 @@ export default async function DatLichPage() {
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70 mb-1">Giao hàng tận nơi</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70 mb-1">{datLichSubtitle}</p>
                 <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white leading-tight">
-                  Đặt Lịch Giao Hàng
+                  {datLichTitle}
                 </h1>
               </div>
             </div>
 
             {/* Highlights */}
             <div className="rounded-xl border bg-card p-5 space-y-3">
-              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Cam kết của chúng tôi</p>
+              <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{datLichSectionLabel}</p>
               <ul className="space-y-2.5">
-                {HIGHLIGHTS.map((h) => (
+                {highlights.map((h) => (
                   <li key={h.text} className="flex items-center gap-3 text-sm">
                     <span className="text-xl w-7 text-center flex-shrink-0">{h.icon}</span>
                     <span>{h.text}</span>
@@ -107,9 +132,7 @@ export default async function DatLichPage() {
           <div className="rounded-2xl border bg-card p-6 sm:p-8 shadow-sm">
             <div className="mb-6">
               <h2 className="font-heading text-xl font-semibold">Thông tin đặt hàng</h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Điền form bên dưới, chúng tôi sẽ liên hệ xác nhận sớm nhất.
-              </p>
+              <p className="text-sm text-muted-foreground mt-1">{datLichFormDesc}</p>
             </div>
             <BookingForm products={products} contactPhone={contactPhone} />
           </div>

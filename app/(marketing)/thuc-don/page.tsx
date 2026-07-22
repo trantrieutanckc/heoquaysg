@@ -5,9 +5,24 @@ import { cn } from "@/lib/utils"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 
 export const dynamic = "force-dynamic"
-export const metadata = {
-  title: "Thực đơn",
-  description: "Xem thực đơn heo quay, vịt quay, gà quay tại Heo Quay Bình Tân.",
+
+export async function generateMetadata() {
+  const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (row?.data ?? {}) as Record<string, string>
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
+  const subtitle = cfg.thucDonSubtitle?.trim() || "Heo quay · Vịt quay · Gà quay & đặc sản"
+  const description = `Xem thực đơn ${subtitle} tại ${siteName}.`
+  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  return {
+    title: "Thực đơn",
+    description,
+    openGraph: {
+      title: `Thực đơn | ${siteName}`,
+      description,
+      locale: "vi_VN",
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+    },
+  }
 }
 
 export default async function ThucDonPage() {
@@ -20,9 +35,10 @@ export default async function ThucDonPage() {
   ])
 
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
-  const heroImage = cfg.heroImage?.trim() || "/images/shop/heo-quay-khay-1.jpg"
+  const heroImage = cfg.thucDonImage?.trim() || cfg.heroImage?.trim() || "/images/shop/heo-quay-khay-1.jpg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const contactPhone = cfg.contactPhone?.trim() || null
+  const thucDonSubtitle = cfg.thucDonSubtitle?.trim() || "Heo quay · Vịt quay · Gà quay & đặc sản"
 
   const visibleGroups = groups.filter((g) => g.dishes.length > 0)
 
@@ -50,7 +66,7 @@ export default async function ThucDonPage() {
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-xl">
             Thực đơn
           </h1>
-          <p className="text-white/55 text-sm mt-2 tracking-wide">Heo quay · Vịt quay · Gà quay &amp; đặc sản</p>
+          <p className="text-white/55 text-sm mt-2 tracking-wide">{thucDonSubtitle}</p>
           {visibleGroups.length > 0 && (
             <div className="flex items-center gap-1.5 mt-5">
               <div className="h-0.5 w-8 bg-orange-400/60 rounded-full" />

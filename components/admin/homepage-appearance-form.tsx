@@ -187,6 +187,8 @@ export function HomepageAppearanceForm({ initialData, dishGroups }: Props) {
         <TabsList>
           <TabsTrigger value="homepage">Trang chủ</TabsTrigger>
           <TabsTrigger value="booking">Đặt lịch</TabsTrigger>
+          <TabsTrigger value="dat-lich-page">Trang Đặt lịch</TabsTrigger>
+          <TabsTrigger value="thuc-don-page">Trang Thực đơn</TabsTrigger>
         </TabsList>
 
         <TabsContent value="homepage" className="space-y-6 mt-6">
@@ -321,6 +323,68 @@ export function HomepageAppearanceForm({ initialData, dishGroups }: Props) {
               data={data}
               set={set}
             />
+          </Section>
+        </TabsContent>
+
+        <TabsContent value="dat-lich-page" className="space-y-6 mt-6">
+          <Section
+            title="Trang /dat-lich — Ảnh banner"
+            desc="Để trống → dùng ảnh Hero chung từ Cài đặt"
+          >
+            <div className="grid gap-1.5">
+              <Label className="text-xs">Ảnh banner trang Đặt lịch</Label>
+              <ImagePickerInput
+                id="datLichImage"
+                value={(data.datLichImage as string) ?? ""}
+                onChange={(url) => set("datLichImage", url)}
+                previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
+                placeholder="https://... (hoặc upload ảnh)"
+              />
+            </div>
+          </Section>
+          <Section
+            title="Trang /dat-lich — Tiêu đề & mô tả"
+            desc="Text hiển thị trên hero ảnh và form đặt hàng"
+          >
+            <div className="grid sm:grid-cols-2 gap-3">
+              <TextField label="Tiêu đề chính (h1)" fieldKey="datLichTitle" placeholder="Đặt Lịch Giao Hàng" data={data} set={set} />
+              <TextField label="Nhãn nhỏ phía trên" fieldKey="datLichSubtitle" placeholder="Giao hàng tận nơi" data={data} set={set} />
+            </div>
+            <TextField label="Tiêu đề section cam kết" fieldKey="datLichSectionLabel" placeholder="Cam kết của chúng tôi" data={data} set={set} />
+            <TextField label="Mô tả form đặt hàng" fieldKey="datLichFormDesc" placeholder="Điền form bên dưới, chúng tôi sẽ liên hệ xác nhận sớm nhất." data={data} set={set} />
+          </Section>
+          <Section
+            title="Trang /dat-lich — Danh sách cam kết"
+            desc="4 dòng cam kết hiển thị bên trái form. Để trống → dùng mặc định."
+          >
+            <TextField label="🚗 Cam kết 1" fieldKey="datLichHighlight1" placeholder="Giao tận nơi đúng giờ" data={data} set={set} />
+            <TextField label="📞 Cam kết 2" fieldKey="datLichHighlight2" placeholder="Chúng tôi sẽ liên hệ xác nhận sớm nhất" data={data} set={set} />
+            <TextField label="🐷 Cam kết 3" fieldKey="datLichHighlight3" placeholder="Heo quay, vịt quay, gà quay" data={data} set={set} />
+            <TextField label="📅 Cam kết 4" fieldKey="datLichHighlight4" placeholder="Đặt trước ít nhất 1 ngày" data={data} set={set} />
+          </Section>
+        </TabsContent>
+
+        <TabsContent value="thuc-don-page" className="space-y-6 mt-6">
+          <Section
+            title="Trang /thuc-don — Ảnh banner"
+            desc="Để trống → dùng ảnh Hero chung từ Cài đặt"
+          >
+            <div className="grid gap-1.5">
+              <Label className="text-xs">Ảnh banner trang Thực đơn</Label>
+              <ImagePickerInput
+                id="thucDonImage"
+                value={(data.thucDonImage as string) ?? ""}
+                onChange={(url) => set("thucDonImage", url)}
+                previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
+                placeholder="https://... (hoặc upload ảnh)"
+              />
+            </div>
+          </Section>
+          <Section
+            title="Trang /thuc-don — Tiêu đề"
+            desc="Text hiển thị trong hero banner của trang thực đơn"
+          >
+            <TextField label="Subtitle dưới tiêu đề" fieldKey="thucDonSubtitle" placeholder="Heo quay · Vịt quay · Gà quay & đặc sản" data={data} set={set} />
           </Section>
         </TabsContent>
       </Tabs>

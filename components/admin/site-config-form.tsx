@@ -55,6 +55,25 @@ export interface SiteConfigData {
   aboutCommit3Desc?: string
   aboutCommit4Title?: string
   aboutCommit4Desc?: string
+  // About page CTA
+  aboutCtaTitle?: string
+  aboutCtaDesc?: string
+  aboutCtaBtn1?: string
+  aboutCtaBtn2?: string
+  aboutCtaBtn2Link?: string
+  // Dat-lich page
+  datLichImage?: string
+  datLichTitle?: string
+  datLichSubtitle?: string
+  datLichHighlight1?: string
+  datLichHighlight2?: string
+  datLichHighlight3?: string
+  datLichHighlight4?: string
+  datLichSectionLabel?: string
+  datLichFormDesc?: string
+  // Thuc-don page
+  thucDonImage?: string
+  thucDonSubtitle?: string
   // Hiển thị nội dung
   homePostsCount?: string   // số bài trang chủ, default 8
   blogPageSize?: string     // số bài mỗi trang blog, default 12
