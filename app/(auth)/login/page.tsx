@@ -30,7 +30,7 @@ export default function LoginPage() {
         <div className="flex flex-col space-y-2 text-center">
           <Link href="/" className="mx-auto">
             <img
-              src="/logo-v4.svg"
+              src="/logo-new.svg"
               alt="Heo Quay Bình Tân"
               className="mx-auto h-16 w-16 rounded-full object-cover"
             />
