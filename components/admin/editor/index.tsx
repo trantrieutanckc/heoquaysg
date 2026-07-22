@@ -53,6 +53,7 @@ interface PostOption {
 
 interface EditorProps {
   post: Pick<Post, "id" | "title" | "content" | "published" | "image" | "seoTitle" | "seoDescription" | "seoKeywords" | "seoImage"> & {
+    slug?: string | null
     template?: string
     banner?: unknown
     relatedPostIds?: unknown
@@ -146,6 +147,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
   const [seoDescription, setSeoDescription] = React.useState((post.seoDescription as string) ?? "")
   const [seoKeywords, setSeoKeywords] = React.useState((post.seoKeywords as string) ?? "")
   const [seoImage, setSeoImage] = React.useState((post.seoImage as string) ?? "")
+  const [slug, setSlug] = React.useState(post.slug ?? "")
 
   React.useEffect(() => {
     if (typeof window !== "undefined") setIsMounted(true)
@@ -272,6 +274,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           seoDescription: seoDescription || null,
           seoKeywords: seoKeywords || null,
           seoImage: seoImage || null,
+          slug: slug.trim() || null,
           template: postTemplate,
           relatedPostIds: relatedPostIds.length > 0 ? relatedPostIds : null,
           ctaEnabled,
@@ -495,6 +498,8 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             seoKeywords={seoKeywords}
             seoImage={seoImage}
             previewTitle={watch("title") as string}
+            slug={slug}
+            onSlugChange={setSlug}
             onChange={(field, value) => {
               if (field === "seoTitle") setSeoTitle(value)
               if (field === "seoDescription") setSeoDescription(value)

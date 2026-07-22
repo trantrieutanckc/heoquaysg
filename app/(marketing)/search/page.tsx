@@ -6,6 +6,7 @@ import { SearchInput } from "@/components/search-input"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { RecentSearches } from "@/components/recent-searches"
+import { postUrl } from "@/lib/post-url"
 
 export const metadata = { title: "Tìm kiếm" }
 
@@ -16,8 +17,10 @@ interface SearchPageProps {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const q = searchParams.q?.trim() ?? ""
 
-  const posts = q
-    ? await db.post.findMany({
+  const [configRow, posts] = await Promise.all([
+    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
+    q
+    ? db.post.findMany({
         where: {
           published: true,
           OR: [
@@ -27,6 +30,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         },
         select: {
           id: true,
+          slug: true,
           title: true,
           image: true,
           createdAt: true,
@@ -39,7 +43,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         orderBy: { createdAt: "desc" },
         take: 20,
       })
-    : []
+    : Promise.resolve([]),
+  ])
+  const cfg = (configRow?.data ?? {}) as Record<string, string>
+  const useSlugs = cfg.useSlugs === "true"
 
   // Lấy 3 từ khoá tìm kiếm gần nhất
   const recentSearches = q
@@ -83,7 +90,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             return (
               <StaggerItem key={post.id}>
                 <Link
-                  href={`/posts/${post.id}`}
+                  href={postUrl(post, useSlugs)}
                   className="group flex gap-4 p-4 bg-background hover:bg-muted/40 transition-colors"
                 >
                   {img?.url && (

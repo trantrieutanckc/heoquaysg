@@ -11,6 +11,7 @@ import {
 } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
+import { postUrl } from "@/lib/post-url"
 
 // ── Shared helpers ──────────────────────────────────────────────────
 
@@ -133,17 +134,17 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
 // ── Section: Featured Post ──────────────────────────────────────────
 
 interface FeaturedPost {
-  id: string; title: string; createdAt: Date; image: unknown; content: unknown
+  id: string; slug?: string | null; title: string; createdAt: Date; image: unknown; content: unknown
   avgRating: number | null; ratingCount: number
   author: { name: string | null; image: string | null } | null
   categories: { category: { name: string; slug: string } }[]
 }
 
 interface FeaturedSectionProps {
-  post: FeaturedPost; bgStyle?: React.CSSProperties; label?: string; title?: string
+  post: FeaturedPost; bgStyle?: React.CSSProperties; label?: string; title?: string; useSlugs?: boolean
 }
 
-export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSectionProps) {
+export function FeaturedSection({ post, bgStyle, label, title, useSlugs = false }: FeaturedSectionProps) {
   const image = img(post.image)
   const excerpt = getExcerpt(post.content)
 
@@ -164,7 +165,7 @@ export function FeaturedSection({ post, bgStyle, label, title }: FeaturedSection
             <SectionTitle label={label || "Nổi bật"} title={title || "Sản phẩm nổi bật"} light={!bgStyle?.backgroundColor && !bgStyle?.backgroundImage} />
           </SlideInLeft>
           <Link
-            href={`/posts/${post.id}`}
+            href={postUrl(post, useSlugs)}
             className="group grid md:grid-cols-[48%_52%] overflow-hidden rounded-2xl shadow-2xl hover:shadow-primary/20 transition-all duration-500 bg-card"
           >
             <div className="relative aspect-[4/3] md:aspect-auto overflow-hidden bg-muted min-h-[240px]">
@@ -352,17 +353,17 @@ export function AboutSection({ siteName, siteDescription, aboutImage, contactAdd
 export type { }
 
 interface PostItem {
-  id: string; title: string; createdAt: Date; image: unknown; content: unknown
+  id: string; slug?: string | null; title: string; createdAt: Date; image: unknown; content: unknown
   avgRating: number | null; ratingCount: number; seoDescription?: string | null
   author: { name: string | null; image: string | null } | null
   categories: { category: { name: string; slug: string } }[]
 }
 
 interface LatestPostsSectionProps {
-  posts: PostItem[]; bgStyle?: React.CSSProperties; label?: string; title?: string; maxShow?: number
+  posts: PostItem[]; bgStyle?: React.CSSProperties; label?: string; title?: string; maxShow?: number; useSlugs?: boolean
 }
 
-export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }: LatestPostsSectionProps) {
+export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6, useSlugs = false }: LatestPostsSectionProps) {
   const visible = posts.slice(0, maxShow)
   if (visible.length === 0) return null
 
@@ -388,7 +389,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6 }
             const isFeatured = index === 0
             return (
               <StaggerItem key={post.id} hover className={isFeatured ? "sm:col-span-2 lg:col-span-1" : ""}>
-                <Link href={`/posts/${post.id}`} className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
+                <Link href={postUrl(post, useSlugs)} className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full">
                   <div className="shrink-0 relative bg-muted overflow-hidden w-40 sm:w-full sm:aspect-[4/3]" style={{ minHeight: "7rem" }}>
                     {image?.url ? (
                       <Image src={image.url} alt={image.alt ?? post.title} fill sizes="(max-width: 640px) 160px, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />

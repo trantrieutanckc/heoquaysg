@@ -74,6 +74,8 @@ export interface SiteConfigData {
   // Thuc-don page
   thucDonImage?: string
   thucDonSubtitle?: string
+  // SEO URL
+  useSlugs?: string  // "true" = dùng slug, "false" = dùng id
   // Hiển thị nội dung
   homePostsCount?: string   // số bài trang chủ, default 8
   blogPageSize?: string     // số bài mỗi trang blog, default 12
@@ -206,6 +208,40 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
       </Section>
 
       <Section title="Phân tích & SEO">
+        {/* SEO-friendly URL slug toggle */}
+        <div className="flex items-start justify-between gap-4 rounded-lg border p-4">
+          <div>
+            <p className="text-sm font-medium">URL thân thiện SEO (slug)</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Bật: link bài viết dùng <code className="bg-muted px-1 rounded">/posts/heo-quay-binh-tan</code><br />
+              Tắt: link dùng ID <code className="bg-muted px-1 rounded">/posts/clx8k2j9f...</code>
+            </p>
+            <p className="text-xs mt-1.5">
+              Hiện tại:{" "}
+              <span className={data.useSlugs === "true" ? "text-green-600 font-semibold" : "text-muted-foreground font-semibold"}>
+                {data.useSlugs === "true" ? "✓ Đang dùng slug" : "✗ Đang dùng ID"}
+              </span>
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={data.useSlugs === "true"}
+            onClick={() => setData((prev) => ({ ...prev, useSlugs: prev.useSlugs === "true" ? "false" : "true" }))}
+            className={[
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+              data.useSlugs === "true" ? "bg-green-500" : "bg-muted-foreground/30",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
+                data.useSlugs === "true" ? "translate-x-5" : "translate-x-0",
+              ].join(" ")}
+            />
+          </button>
+        </div>
+
         {/* Robots index toggle */}
         <div className="flex items-start justify-between gap-4 rounded-lg border p-4">
           <div>

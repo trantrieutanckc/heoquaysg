@@ -3,6 +3,7 @@ import * as z from "zod"
 import { Prisma } from "@prisma/client"
 import { db } from "@/lib/db"
 import { getCurrentUser } from "@/lib/session"
+import { slugify } from "@/lib/post-url"
 
 const postPatchSchema = z.object({
   title: z.string().optional(),
@@ -27,6 +28,7 @@ const postPatchSchema = z.object({
   ctaImage: z.string().nullable().optional(),
   ctaBtn2Label: z.string().nullable().optional(),
   ctaBtn2Url: z.string().nullable().optional(),
+  slug: z.string().nullable().optional(),
 })
 
 export async function PATCH(
@@ -81,6 +83,9 @@ export async function PATCH(
         ...(body.ctaImage !== undefined && { ctaImage: body.ctaImage }),
         ...(body.ctaBtn2Label !== undefined && { ctaBtn2Label: body.ctaBtn2Label }),
         ...(body.ctaBtn2Url !== undefined && { ctaBtn2Url: body.ctaBtn2Url }),
+        ...(body.slug !== undefined && {
+          slug: body.slug ? slugify(body.slug) || null : body.title ? slugify(body.title) || null : null,
+        }),
         ...(body.scheduledAt !== undefined && {
           scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
         }),

@@ -22,9 +22,15 @@ interface PostPageProps {
   params: { postId: string }
 }
 
+async function findPost(ref: string) {
+  const bySlug = await db.post.findUnique({ where: { slug: ref } }).catch(() => null)
+  if (bySlug) return bySlug
+  return db.post.findUnique({ where: { id: ref } }).catch(() => null)
+}
+
 export async function generateMetadata({ params }: PostPageProps) {
-  const post = await db.post.findUnique({
-    where: { id: params.postId },
+  const post = await db.post.findFirst({
+    where: { OR: [{ slug: params.postId }, { id: params.postId }] },
     select: { title: true, seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true, image: true },
   })
   if (!post) return {}
@@ -57,8 +63,8 @@ export async function generateMetadata({ params }: PostPageProps) {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await db.post.findUnique({
-    where: { id: params.postId },
+  const post = await db.post.findFirst({
+    where: { OR: [{ slug: params.postId }, { id: params.postId }] },
     include: {
       author: { select: { name: true, image: true } },
       categories: {

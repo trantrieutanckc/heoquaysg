@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
+import { postUrl } from "@/lib/post-url"
 
 interface Props {
   params: { slug: string }
@@ -17,33 +18,39 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function TagPage({ params }: Props) {
-  const tag = await db.tag.findUnique({
-    where: { slug: params.slug },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      posts: {
-        where: { post: { published: true } },
-        orderBy: { post: { createdAt: "desc" } },
-        select: {
-          post: {
-            select: {
-              id: true,
-              title: true,
-              image: true,
-              createdAt: true,
-              author: { select: { name: true } },
-              categories: { select: { category: { select: { name: true, slug: true } } } },
+  const [configRow, tag] = await Promise.all([
+    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
+    db.tag.findUnique({
+      where: { slug: params.slug },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        posts: {
+          where: { post: { published: true } },
+          orderBy: { post: { createdAt: "desc" } },
+          select: {
+            post: {
+              select: {
+                id: true,
+                slug: true,
+                title: true,
+                image: true,
+                createdAt: true,
+                author: { select: { name: true } },
+                categories: { select: { category: { select: { name: true, slug: true } } } },
+              },
             },
           },
         },
       },
-    },
-  })
+    }),
+  ])
 
   if (!tag) notFound()
 
+  const cfg = (configRow?.data ?? {}) as Record<string, string>
+  const useSlugs = cfg.useSlugs === "true"
   const posts = tag.posts.map((p) => p.post)
 
   return (
@@ -70,7 +77,7 @@ export default async function TagPage({ params }: Props) {
               return (
                 <StaggerItem key={post.id} hover>
                   <Link
-                    href={`/posts/${post.id}`}
+                    href={postUrl(post, useSlugs)}
                     className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-muted">

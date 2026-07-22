@@ -3,6 +3,7 @@ import Link from "next/link"
 import { db } from "@/lib/db"
 import { cn } from "@/lib/utils"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
+import { postUrl } from "@/lib/post-url"
 
 export const dynamic = "force-dynamic"
 
@@ -29,12 +30,13 @@ export default async function ThucDonPage() {
   const [groups, siteConfigRow] = await Promise.all([
     db.dishGroup.findMany({
       orderBy: { order: "asc" },
-      include: { dishes: { orderBy: { order: "asc" }, include: { post: { select: { id: true } } } } },
+      include: { dishes: { orderBy: { order: "asc" }, include: { post: { select: { id: true, slug: true } } } } },
     }),
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
   ])
 
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const useSlugs = cfg.useSlugs === "true"
   const heroImage = cfg.thucDonImage?.trim() || cfg.heroImage?.trim() || "/images/shop/heo-quay-khay-1.jpg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const contactPhone = cfg.contactPhone?.trim() || null
@@ -166,7 +168,7 @@ export default async function ThucDonPage() {
                         )}
                         {dish.post && (
                           <Link
-                            href={`/posts/${dish.post.id}`}
+                            href={postUrl(dish.post, useSlugs)}
                             className="inline-flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1.5 rounded-full w-fit mt-1 transition-all duration-200 hover:gap-2.5"
                             style={{ background: "linear-gradient(90deg, #ea580c, #dc2626)" }}
                           >

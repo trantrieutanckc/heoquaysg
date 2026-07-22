@@ -7,6 +7,7 @@ import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
 import { BookingCtaSection } from "@/app/(marketing)/_components/home-sections"
+import { postUrl } from "@/lib/post-url"
 
 export async function generateMetadata() {
   const row = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
@@ -44,6 +45,7 @@ export default async function BlogPage({
   const configRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (configRow?.data ?? {}) as Record<string, string>
   const pageSize = Math.max(3, parseInt(cfg.blogPageSize ?? "12") || 12)
+  const useSlugs = cfg.useSlugs === "true"
 
   const postWhere = {
     published: true,
@@ -68,6 +70,7 @@ export default async function BlogPage({
       take: pageSize,
       select: {
         id: true,
+        slug: true,
         title: true,
         image: true,
         createdAt: true,
@@ -180,7 +183,7 @@ export default async function BlogPage({
             return (
               <StaggerItem key={post.id} hover>
                 <Link
-                  href={`/posts/${post.id}`}
+                  href={postUrl(post, useSlugs)}
                   className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-muted">

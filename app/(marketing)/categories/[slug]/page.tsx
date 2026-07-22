@@ -12,6 +12,7 @@ import { BannerDisplay } from "@/components/banner-display"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { StarDisplay } from "@/components/star-display"
 import { BookingCtaSection } from "@/app/(marketing)/_components/home-sections"
+import { postUrl } from "@/lib/post-url"
 
 interface CategoryPageProps {
   params: { slug: string }
@@ -51,6 +52,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           post: {
             select: {
               id: true,
+              slug: true,
               title: true,
               image: true,
               createdAt: true,
@@ -74,6 +76,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const useSlugs = cfg.useSlugs === "true"
 
   const bookingProps = {
     label: cfg.homeBookingLabel,
@@ -94,21 +97,21 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   if (template === "hero") {
-    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
+    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
   }
   if (template === "grid") {
-    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
+    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
   }
-  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} />
+  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
 }
 
 // ─── Shared post card ────────────────────────────────────────────────────────
-function PostCard({ post }: { post: any }) {
+function PostCard({ post, useSlugs }: { post: any; useSlugs: boolean }) {
   const postImage = post.image as { url?: string; alt?: string } | null
   const excerpt = post.seoDescription?.replace(/\n+/g, " ").trim()
   return (
     <Link
-      href={`/posts/${post.id}`}
+      href={postUrl(post, useSlugs)}
       className="group flex flex-col overflow-hidden rounded-2xl border bg-card hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 h-full"
     >
       <div className="aspect-[4/3] relative bg-muted overflow-hidden">
@@ -155,7 +158,7 @@ function PostCard({ post }: { post: any }) {
 }
 
 // ─── Standard template ────────────────────────────────────────────────────────
-function StandardTemplate({ category, image, posts, banner, bookingProps }: any) {
+function StandardTemplate({ category, image, posts, banner, bookingProps, useSlugs }: any) {
   return (
     <div className="min-h-screen">
       <PageEntrance>
@@ -204,7 +207,7 @@ function StandardTemplate({ category, image, posts, banner, bookingProps }: any)
           <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
               <StaggerItem key={post.id} hover>
-                <PostCard post={post} />
+                <PostCard post={post} useSlugs={useSlugs} />
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -221,7 +224,7 @@ function StandardTemplate({ category, image, posts, banner, bookingProps }: any)
 }
 
 // ─── Hero template ────────────────────────────────────────────────────────────
-function HeroTemplate({ category, image, posts, banner, bookingProps }: any) {
+function HeroTemplate({ category, image, posts, banner, bookingProps, useSlugs }: any) {
   return (
     <div className="min-h-screen">
       <div className="relative h-72 w-full overflow-hidden lg:h-[420px]">
@@ -259,7 +262,7 @@ function HeroTemplate({ category, image, posts, banner, bookingProps }: any) {
           <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
               <StaggerItem key={post.id} hover>
-                <PostCard post={post} />
+                <PostCard post={post} useSlugs={useSlugs} />
               </StaggerItem>
             ))}
           </StaggerContainer>

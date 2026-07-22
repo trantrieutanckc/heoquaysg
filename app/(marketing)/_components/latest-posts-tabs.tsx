@@ -6,9 +6,11 @@ import Image from "next/image"
 import { formatDate, cn } from "@/lib/utils"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
+import { postUrl } from "@/lib/post-url"
 
 interface PostItem {
   id: string
+  slug?: string | null
   title: string
   createdAt: Date
   image: unknown
@@ -26,7 +28,7 @@ const TABS = [
   { label: "Gà Quay", slug: "ga-quay" },
 ]
 
-export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; maxShow?: number }) {
+export function LatestPostsTabs({ posts, maxShow = 6, useSlugs = false }: { posts: PostItem[]; maxShow?: number; useSlugs?: boolean }) {
   const [active, setActive] = useState<string | null>("heo-quay")
 
   const filtered = active
@@ -64,7 +66,7 @@ export function LatestPostsTabs({ posts, maxShow = 6 }: { posts: PostItem[]; max
             return (
               <Link
                 key={post.id}
-                href={`/posts/${post.id}`}
+                href={postUrl(post, useSlugs)}
                 className="group flex flex-col overflow-hidden border bg-card hover:shadow-xl transition-shadow duration-300 h-full"
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-muted">

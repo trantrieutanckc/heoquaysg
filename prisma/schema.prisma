@@ -103,6 +103,7 @@ model Post {
   template       String         @default("standard")
   banner         Json?
   relatedPostIds Json?
+  slug           String?        @unique
   scheduledAt    DateTime?
   bookable       Boolean   @default(false)
   ctaEnabled     Boolean   @default(true)

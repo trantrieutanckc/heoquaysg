@@ -43,7 +43,7 @@ import {
 } from "./_components/home-sections"
 
 const POST_SELECT = {
-  id: true, title: true, createdAt: true, image: true, content: true,
+  id: true, slug: true, title: true, createdAt: true, image: true, content: true,
   avgRating: true, ratingCount: true, seoDescription: true,
   author: { select: { name: true, image: true } },
   categories: { select: { category: { select: { name: true, slug: true } } } },
@@ -53,6 +53,7 @@ export default async function IndexPage() {
   const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
   const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "8") || 8)
+  const useSlugs = cfg.useSlugs === "true"
 
   const [featuredPost, posts, categories, dishGroups] = await Promise.all([
     db.post.findFirst({
@@ -112,6 +113,7 @@ export default async function IndexPage() {
           bgStyle={sectionStyle("homeFeaturedBgColor", "homeFeaturedBgImage")}
           label={cfg.homeFeaturedLabel}
           title={cfg.homeFeaturedTitle}
+          useSlugs={useSlugs}
         />
       )}
 
@@ -145,6 +147,7 @@ export default async function IndexPage() {
           label={cfg.homePostsLabel}
           title={cfg.homePostsTitle}
           maxShow={homePostsCount}
+          useSlugs={useSlugs}
         />
       )}
 

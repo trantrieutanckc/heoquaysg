@@ -70,6 +70,7 @@ export default async function EditorPage({ params }: EditorPageProps) {
         ctaImage: post.ctaImage,
         ctaBtn2Label: post.ctaBtn2Label,
         ctaBtn2Url: post.ctaBtn2Url,
+        slug: post.slug,
       }}
       categories={categories}
       postCategoryIds={postCategoryIds}
