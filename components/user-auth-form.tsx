@@ -111,7 +111,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const role = session?.user?.role
     const raw = searchParams?.get("from") ?? ""
     const from = raw.startsWith("/") && !raw.startsWith("//") ? raw : null
-    const dest = from ?? (role === "ADMIN" || role === "EDITOR" ? "/dashboard" : "/")
+    const dest = from ?? (role === "ADMIN" || role === "EDITOR" ? "/dashboard/docs" : "/")
 
     toast({ variant: "success", description: "Đăng nhập thành công! Đang chuyển hướng..." })
     await new Promise((r) => setTimeout(r, 900))

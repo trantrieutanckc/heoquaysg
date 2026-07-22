@@ -9,6 +9,11 @@ export const dashboardConfig: DashboardConfig = {
       icon: "laptop",
     },
     {
+      title: "Tài liệu",
+      href: "/dashboard/docs",
+      icon: "page",
+    },
+    {
       title: "Bài viết",
       href: "/dashboard/posts",
       icon: "post",
@@ -82,11 +87,6 @@ export const dashboardConfig: DashboardConfig = {
       title: "Giao diện",
       href: "/dashboard/giao-dien",
       icon: "settings",
-    },
-    {
-      title: "Tài liệu",
-      href: "/dashboard/docs",
-      icon: "page",
     },
     {
       title: "Import / Export",
