@@ -23,7 +23,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
         <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2">
             <img
-              src="/logo-v4.svg"
+              src="/logo-new.svg"
               alt="Heo Quay Bình Tân"
               className="h-8 w-8 rounded-full object-cover"
             />
