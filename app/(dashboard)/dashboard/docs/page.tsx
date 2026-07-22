@@ -250,30 +250,62 @@ Trang public: **/thuc-don** — hiển thị toàn bộ nhóm món và giá cho 
 
 ## Cấu hình cơ bản (bắt buộc điền trước khi go live)
 
-Vào **Dashboard → Settings** để điền:
+Vào **Dashboard → Cài đặt** để điền:
 
 | Trường | Mô tả | Ví dụ |
 |---|---|---|
 | Tên website | Hiển thị trên tab trình duyệt và footer | Heo Quay Bình Tân |
-| Mô tả ngắn | Tagline hiển thị footer | Chuyên heo quay, vịt quay... |
-| Logo URL | URL ảnh logo (nên là ảnh vuông, tối thiểu 200x200px) | https://... |
-| Số điện thoại | Hiển thị trên form đặt lịch và trang thực đơn | 0911 212 370 |
-| Email liên hệ | Hiển thị trang liên hệ | heoquay47@gmail.com |
-| Địa chỉ | Địa chỉ cửa hàng | 47 Đường ABC, Bình Tân, TP.HCM |
-| Giờ mở cửa | Hiển thị trang liên hệ | Thứ 2 – Thứ 6, 7:00 – 18:00 |
-| Facebook / Zalo / Instagram | URL trang mạng xã hội | https://facebook.com/... |
+| Tagline | Dòng phụ bên dưới tên site | Hương vị gia truyền... |
+| Mô tả ngắn | Mô tả SEO, hiển thị khi chia sẻ link | Chuyên heo quay, vịt quay... |
+| Logo | Nhấn "Chọn ảnh" để upload logo (nên vuông, tối thiểu 200×200px) | — |
+| Ảnh Hero Banner | Ảnh nền trang chủ mặc định | — |
+| Ảnh section Về chúng tôi | Ảnh bên phải phần giới thiệu trang chủ | — |
 
-## Giao diện trang chủ
-Vào **Dashboard → Giao diện** để chỉnh:
-- Ảnh nền, màu sắc từng section
-- Text tiêu đề, mô tả section "Về chúng tôi"
-- Nội dung rich text phần giới thiệu
-- **Nhóm món hiển thị trên trang chủ**: tick chọn nhóm nào xuất hiện trong section Thực đơn & Bảng giá (các nhóm không chọn vẫn hiển thị đầy đủ tại /thuc-don)
+## Nội dung từng trang
+
+Tất cả text hiển thị trên website đều chỉnh được trong dashboard — không cần sửa code.
+
+### Trang chủ → Dashboard → Giao diện (tab "Trang chủ")
+- Tiêu đề, nhãn nhỏ, màu nền / ảnh nền cho từng section
+- Nội dung rich text "Về chúng tôi" (in đậm, danh sách, link)
+- Các nút CTA, tiêu đề banner đặt lịch cuối trang
+- Tick nhóm món muốn hiển thị trong section Thực đơn & Bảng giá
+
+### Trang /about → Dashboard → Về chúng tôi
+- **Câu chuyện**: 2 đoạn văn giới thiệu thương hiệu
+- **Thống kê**: 3 con số nổi bật (số năm, khách hàng, món đặc trưng)
+- **Quy trình**: 4 bước từ nguyên liệu đến bàn ăn
+- **Cam kết**: 4 điểm cam kết chất lượng
+- **CTA cuối trang**: tiêu đề, mô tả, text 2 nút (nút 1 gọi điện, nút 2 link tùy chỉnh)
+
+### Trang /lien-he → Dashboard → Liên hệ
+- Số điện thoại, Zalo, email, địa chỉ
+- Đoạn giới thiệu phía trên form
+- Mạng xã hội (Facebook, Instagram, YouTube)
+
+### Trang /dat-lich → Dashboard → Giao diện (tab "Trang Đặt lịch")
+- **Ảnh banner**: nhấn "Chọn ảnh" để upload ảnh riêng (để trống → dùng ảnh Hero chung)
+- **Tiêu đề chính** (h1): hiển thị trên ảnh banner
+- **Nhãn nhỏ** phía trên tiêu đề
+- **4 cam kết**: text 4 dòng cam kết giao hàng bên trái form
+- **Tiêu đề section cam kết**
+- **Mô tả form**: dòng chú thích bên dưới tiêu đề "Thông tin đặt hàng"
+
+### Trang /thuc-don → Dashboard → Giao diện (tab "Trang Thực đơn")
+- **Ảnh banner**: nhấn "Chọn ảnh" để upload ảnh riêng (để trống → dùng ảnh Hero chung)
+- **Subtitle**: dòng phụ bên dưới chữ "Thực đơn" trên hero banner
+
+## Upload ảnh
+
+Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** để upload từ máy tính:
+- Định dạng: JPG, PNG, WebP
+- Ảnh tự động lưu lên Supabase Storage
+- Để trống → dùng ảnh mặc định (thường là Ảnh Hero Banner từ Cài đặt)
 
 ## Robots.txt (kiểm soát Google)
 - Mặc định: Google **được phép** index toàn bộ trang công khai
 - Không cần thay đổi gì nếu muốn Google tìm thấy website
-- Nếu cần chặn trang nào đó: vào Settings → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
+- Nếu cần chặn trang nào đó: vào Cài đặt → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
 
 ## Sitemap
 - Tự động tạo tại: **https://heoquaybinhtan.vercel.app/sitemap.xml**
@@ -281,9 +313,11 @@ Vào **Dashboard → Giao diện** để chỉnh:
 - Gửi URL sitemap lên **Google Search Console** sau khi go live
 
 ## Checklist go live
-- [ ] Điền đầy đủ Settings (tên, SĐT, địa chỉ, logo)
-- [ ] Upload logo thật vào Settings → Logo URL
-- [ ] Kiểm tra số điện thoại đúng 10 số
+- [ ] Dashboard → Cài đặt: điền tên site, SĐT, địa chỉ, upload logo
+- [ ] Dashboard → Liên hệ: điền đầy đủ thông tin liên hệ và mạng xã hội
+- [ ] Dashboard → Về chúng tôi: viết câu chuyện thương hiệu, thống kê, quy trình
+- [ ] Dashboard → Giao diện: upload ảnh banner cho trang Đặt lịch và Thực đơn
+- [ ] Dashboard → Cài đặt → bật toggle "Cho phép Google index"
 - [ ] Đăng bài viết đầu tiên (published = true)
 - [ ] Thêm ít nhất 3–5 món vào Thực đơn
 - [ ] Gửi sitemap lên Google Search Console

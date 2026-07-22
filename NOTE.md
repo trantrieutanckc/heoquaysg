@@ -481,3 +481,36 @@ Nếu có lỗi ở một số dòng, các dòng hợp lệ vẫn được tạo
 - [ ] Đổi ảnh thumbnail các bài dùng stock photo không liên quan (thịt bò, gà chiên)
 - [ ] Kiểm tra `CRON_SECRET` đã set trong Vercel env vars (bảo vệ route `/api/cron/*`)
 - [ ] Nếu Supabase project bị pause trước demo → vào site 1-2 tiếng trước để wake up
+
+---
+
+### 22/07/2026 — Tất cả text & ảnh có thể chỉnh từ dashboard
+
+#### Tính năng
+
+**Trang /about — CTA cuối trang** (`components/admin/about-editor-form.tsx`)
+- Thêm section "CTA cuối trang" trong Dashboard → Về chúng tôi
+- 5 field mới: `aboutCtaTitle`, `aboutCtaDesc`, `aboutCtaBtn1`, `aboutCtaBtn2`, `aboutCtaBtn2Link`
+- `app/(marketing)/about/page.tsx`: đọc từ `cfg` thay vì hardcode
+
+**Trang /dat-lich — toàn bộ text + ảnh** (`components/admin/homepage-appearance-form.tsx` tab mới)
+- Tab mới "Trang Đặt lịch" trong Dashboard → Giao diện
+- `datLichImage`: ảnh banner riêng (upload, fallback về heroImage)
+- `datLichTitle`, `datLichSubtitle`: tiêu đề + nhãn trên hero ảnh
+- `datLichHighlight1–4`: 4 dòng cam kết giao hàng
+- `datLichSectionLabel`: tiêu đề section cam kết
+- `datLichFormDesc`: mô tả bên dưới tiêu đề form
+- `app/(marketing)/dat-lich/page.tsx`: chuyển `metadata` tĩnh → `generateMetadata()` động, đọc tất cả từ `cfg`
+
+**Trang /thuc-don — subtitle + ảnh** (`components/admin/homepage-appearance-form.tsx` tab mới)
+- Tab mới "Trang Thực đơn" trong Dashboard → Giao diện
+- `thucDonImage`: ảnh banner riêng (upload, fallback về heroImage)
+- `thucDonSubtitle`: dòng phụ trên hero banner
+- `app/(marketing)/thuc-don/page.tsx`: chuyển `metadata` tĩnh → `generateMetadata()` động
+
+**`SiteConfigData`** (`components/admin/site-config-form.tsx`): thêm 16 field mới cho các tính năng trên
+
+#### Điều hướng dashboard
+- `config/dashboard.ts`: "Tài liệu" chuyển lên vị trí 2 trong sidebar (ngay sau Dashboard)
+- `components/user-auth-form.tsx`: ADMIN/EDITOR sau login redirect thẳng vào `/dashboard/docs` thay vì `/dashboard`
+- `app/(dashboard)/dashboard/docs/page.tsx`: cập nhật nội dung tài liệu "Cài đặt" mô tả đầy đủ tất cả trang chỉnh được
