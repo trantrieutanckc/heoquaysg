@@ -44,7 +44,9 @@ export default async function ProfileLayout({ children }: { children: React.Reac
           </div>
         </div>
       </header>
-      <main className="flex-1 container px-4 sm:px-6 py-10">{children}</main>
+      <main className="flex-1 bg-gradient-to-br from-orange-50/50 via-white to-rose-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+        <div className="container px-4 sm:px-6 py-8">{children}</div>
+      </main>
     </div>
   )
 }
