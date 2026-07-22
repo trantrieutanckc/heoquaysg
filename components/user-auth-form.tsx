@@ -138,6 +138,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || isLocked}
+              className="focus-visible:ring-orange-400 focus-visible:border-orange-400"
               {...register("email")}
             />
             {errors?.email && (
@@ -154,6 +155,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 disabled={isLoading || isLocked}
+                className="focus-visible:ring-orange-400 focus-visible:border-orange-400"
                 {...register("password")}
               />
               <button
@@ -185,8 +187,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </p>
           )}
 
-          <button className={cn(buttonVariants())} disabled={isLoading || isLocked}>
-            {isLocked ? "Tài khoản tạm khóa" : "Đăng nhập"}
+          <button
+            className={cn(
+              "w-full h-10 rounded-md px-4 py-2 text-sm font-semibold text-white transition-all duration-200",
+              "shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
+              isLocked || isLoading
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-gradient-to-r from-orange-500 via-red-500 to-rose-600 hover:from-orange-600 hover:via-red-600 hover:to-rose-700"
+            )}
+            disabled={isLoading || isLocked}
+          >
+            {isLocked ? "🔒 Tài khoản tạm khóa" : "Đăng nhập →"}
           </button>
 
           <div className="text-center">
