@@ -158,9 +158,6 @@ export default async function ThucDonPage() {
                       )}
                       <div className="absolute bottom-0 left-0 right-0 p-3">
                         <p className="text-white font-heading font-bold text-sm leading-tight line-clamp-2">{dish.name}</p>
-                        {dish.price != null && (
-                          <p className="text-orange-300 text-xs font-bold mt-0.5">{dish.price.toLocaleString("vi-VN")}đ</p>
-                        )}
                       </div>
                       {dish.post && (
                         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
