@@ -340,7 +340,7 @@ model Dish {
   id          String    @id @default(cuid())
   name        String
   description String?
-  price       Float
+  price       Float?
   unit        String    @default("phần")
   image       String?
   postId      String?
