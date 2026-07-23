@@ -19,10 +19,13 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Invalid data" }, { status: 422 })
     }
 
+    const existing = await db.siteConfig.findUnique({ where: { id: "default" } })
+    const merged = { ...(existing?.data as object ?? {}), ...data }
+
     const config = await db.siteConfig.upsert({
       where: { id: "default" },
-      update: { data },
-      create: { id: "default", data },
+      update: { data: merged },
+      create: { id: "default", data: merged },
     })
 
     return NextResponse.json(config.data)
