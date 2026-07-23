@@ -311,27 +311,28 @@ npx prisma db push
 - [x] Số điện thoại `0987 054 231` đã lưu DB (13/07/2026)
 - [x] Đổi tên project từ taxonomy → heoquaybinhtan toàn bộ codebase
 
-### Chờ khách chọn domain `heoquaybinhtan.com` hoặc `.vn`
+### Domain đã chọn: `heoquaybinhtan.com` ✅
+
+> **Không cần migrate data** — vẫn giữ nguyên Vercel + Supabase hiện tại, chỉ gắn domain mới. Data không đi đâu hết.
 
 ### Checklist khi có domain (làm theo thứ tự)
 
 **Bước 1 — Vercel Dashboard**
-- [ ] Settings → General → Project Name → đổi thành `heoquaybinhtan`
-- [ ] Settings → Domains → thêm domain mới
+- [ ] Settings → Domains → Add `heoquaybinhtan.com`
 - [ ] Settings → Environment Variables → cập nhật:
-  - `NEXT_PUBLIC_APP_URL` = `https://heoquaybinhtan.com` (hoặc .vn)
-  - `NEXTAUTH_URL` = `https://heoquaybinhtan.com` (hoặc .vn)
+  - `NEXT_PUBLIC_APP_URL` = `https://heoquaybinhtan.com`
+  - `NEXTAUTH_URL` = `https://heoquaybinhtan.com`
 - [ ] Redeploy
 
 **Bước 2 — DNS (tại nơi mua domain)**
 - [ ] Copy A record / CNAME từ Vercel → dán vào DNS
 
 **Bước 3 — Dashboard site**
-- [ ] Settings → Tên site → điền "Heo Quay Bình Tân"
-- [ ] Settings → Phân tích & SEO → bật robots index
+- [ ] Settings → SEO → bật **"Cho phép Google index"**
+- [ ] Settings → Cập nhật sitemap URL: `https://heoquaybinhtan.com/sitemap.xml`
 
 **Bước 4 — Test**
-- [ ] Mở domain, kiểm tra load
+- [ ] Mở `heoquaybinhtan.com`, kiểm tra load
 - [ ] Đặt lịch thử → nhận email
 - [ ] Form liên hệ → nhận email
 
