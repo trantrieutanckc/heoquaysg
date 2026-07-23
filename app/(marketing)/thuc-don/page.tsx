@@ -120,65 +120,58 @@ export default async function ThucDonPage() {
                 </div>
 
                 {/* Dish grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {group.dishes.map((dish) => (
-                    <div
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {group.dishes.map((dish) => {
+                    const Wrapper = dish.post ? Link : "div"
+                    const wrapperProps = dish.post ? { href: postUrl(dish.post, useSlugs) } : {}
+                    return (
+                    <Wrapper
                       key={dish.id}
+                      {...(wrapperProps as any)}
                       className={cn(
-                        "group flex flex-col rounded-2xl overflow-hidden border bg-white dark:bg-gray-900 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300",
+                        "group relative flex overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 aspect-[3/4]",
                         !dish.available && "opacity-55"
                       )}
                     >
-                      {/* Ảnh */}
-                      <div className="relative aspect-[4/3] bg-muted overflow-hidden">
-                        {dish.image ? (
-                          <Image
-                            src={dish.image}
-                            alt={dish.name}
-                            fill
-                            className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            placeholder="blur"
-                            blurDataURL={BLUR_PLACEHOLDER}
-                          />
-                        ) : (
-                          <div className="h-full w-full flex items-center justify-center text-5xl"
-                            style={{ background: "linear-gradient(135deg, #fff7ed, #fed7aa, #fdba74)" }}
-                          >
-                            🐷
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        {!dish.available && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                            <span className="text-white text-xs font-bold uppercase tracking-widest bg-black/60 px-3 py-1.5 rounded-full">Hết món</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Nội dung */}
-                      <div className="flex flex-col gap-2 p-4 flex-1">
-                        <p className="font-heading font-bold text-base group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors leading-snug">
-                          {dish.name}
-                        </p>
-                        {dish.description && (
-                          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed flex-1">
-                            {dish.description}
-                          </p>
-                        )}
-                        {dish.post && (
-                          <Link
-                            href={postUrl(dish.post, useSlugs)}
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1.5 rounded-full w-fit mt-1 transition-all duration-200 hover:gap-2.5"
-                            style={{ background: "linear-gradient(90deg, #ea580c, #dc2626)" }}
-                          >
-                            Xem chi tiết
-                            <svg viewBox="0 0 24 24" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5}><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                          </Link>
+                      {dish.image ? (
+                        <Image
+                          src={dish.image}
+                          alt={dish.name}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          placeholder="blur"
+                          blurDataURL={BLUR_PLACEHOLDER}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-5xl"
+                          style={{ background: "linear-gradient(135deg, #fff7ed, #fed7aa, #fdba74)" }}
+                        >
+                          🐷
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      {!dish.available && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                          <span className="text-white text-xs font-bold uppercase tracking-widest bg-black/60 px-3 py-1.5 rounded-full">Hết món</span>
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 p-3">
+                        <p className="text-white font-heading font-bold text-sm leading-tight line-clamp-2">{dish.name}</p>
+                        {dish.price != null && (
+                          <p className="text-orange-300 text-xs font-bold mt-0.5">{dish.price.toLocaleString("vi-VN")}đ</p>
                         )}
                       </div>
-                    </div>
-                  ))}
+                      {dish.post && (
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <div className="bg-primary text-primary-foreground rounded-full p-1.5 shadow-lg">
+                            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                          </div>
+                        </div>
+                      )}
+                    </Wrapper>
+                    )
+                  })}
                 </div>
               </section>
             ))}
