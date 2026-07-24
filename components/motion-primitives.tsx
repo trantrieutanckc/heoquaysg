@@ -86,6 +86,28 @@ export function SlideInLeft({
   )
 }
 
+export function SlideInRight({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={className}
+        initial={{ opacity: 0, x: 18 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
+  )
+}
+
 export function StaggerContainer({
   children,
   className,

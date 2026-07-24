@@ -39,6 +39,7 @@ export default async function ContactPage() {
       contactAddress={cfg.contactAddress?.trim()}
       contactZalo={cfg.contactZalo?.trim()}
       contactIntro={cfg.contactIntro?.trim()}
+      heroImage={cfg.heroImage?.trim()}
     />
   )
 }
