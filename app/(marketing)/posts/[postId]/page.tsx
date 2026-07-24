@@ -221,13 +221,6 @@ export default async function PostPage({ params }: PostPageProps) {
         {/* Content + TOC */}
         <div className="flex gap-12 items-start">
           <FadeUp delay={0.1} className="min-w-0 flex-1">
-            {/* Accent bar trên content */}
-            <div className="flex items-center gap-2 mb-8">
-              <div className="h-1 w-10 rounded-full bg-primary" />
-              <div className="h-1 w-5 rounded-full bg-primary/40" />
-              <div className="h-1 w-3 rounded-full bg-primary/20" />
-            </div>
-
             {isTiptap
               ? <TiptapRenderer
                   content={post.content}
