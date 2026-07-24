@@ -21,7 +21,6 @@ export async function GET() {
       title: true,
       published: true,
       featured: true,
-      price: true,
       likes: true,
       createdAt: true,
       categories: { select: { category: { select: { name: true } } } },
@@ -29,13 +28,12 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
   })
 
-  const header = "id,title,published,featured,price,categories,likes,createdAt"
+  const header = "id,title,published,featured,categories,likes,createdAt"
   const rows = posts.map((p) => [
     esc(p.id),
     esc(p.title),
     p.published ? "true" : "false",
     p.featured ? "true" : "false",
-    p.price ?? "",
     esc(p.categories.map((c) => c.category.name).join("|")),
     p.likes,
     p.createdAt.toISOString(),

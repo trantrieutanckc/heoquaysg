@@ -14,7 +14,6 @@ interface Dish {
   id: string
   name: string
   description: string | null
-  price: number
   unit: string
   image: string | null
   postId: string | null
@@ -34,10 +33,6 @@ interface DishGroup {
   dishes: Dish[]
 }
 
-function formatPrice(p: number) {
-  return p.toLocaleString("vi-VN") + "đ"
-}
-
 export default function ThucDonPage() {
   const [groups, setGroups] = React.useState<DishGroup[]>([])
   const [posts, setPosts] = React.useState<PostOption[]>([])
@@ -48,10 +43,10 @@ export default function ThucDonPage() {
   const [editGroupName, setEditGroupName] = React.useState("")
 
   const [addingDishFor, setAddingDishFor] = React.useState<string | null>(null)
-  const [newDish, setNewDish] = React.useState({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" })
+  const [newDish, setNewDish] = React.useState({ name: "", unit: "phần", description: "", image: "", postId: "" })
 
   const [editDishId, setEditDishId] = React.useState<string | null>(null)
-  const [editDish, setEditDish] = React.useState({ name: "", price: "", unit: "", description: "", image: "", postId: "" })
+  const [editDish, setEditDish] = React.useState({ name: "", unit: "", description: "", image: "", postId: "" })
 
   async function load() {
     const [groupsRes, postsRes] = await Promise.all([
@@ -99,14 +94,13 @@ export default function ThucDonPage() {
   }
 
   async function addDish(groupId: string) {
-    if (!newDish.name.trim() || !newDish.price) return
+    if (!newDish.name.trim()) return
     const res = await fetch("/api/dishes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         groupId,
         name: newDish.name.trim(),
-        price: parseFloat(newDish.price),
         unit: newDish.unit || "phần",
         description: newDish.description || null,
         image: newDish.image || null,
@@ -115,7 +109,7 @@ export default function ThucDonPage() {
     })
     if (res.ok) {
       setAddingDishFor(null)
-      setNewDish({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" })
+      setNewDish({ name: "", unit: "phần", description: "", image: "", postId: "" })
       load()
       toast({ description: "Đã thêm món." })
     }
@@ -136,7 +130,6 @@ export default function ThucDonPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: editDish.name,
-        price: parseFloat(editDish.price),
         unit: editDish.unit,
         description: editDish.description || null,
         image: editDish.image || null,
@@ -269,21 +262,11 @@ export default function ThucDonPage() {
                             onChange={e => setEditDish(d => ({ ...d, name: e.target.value }))}
                             autoFocus
                           />
-                          <div className="flex gap-2">
-                            <Input
-                              placeholder="Giá (đ) *"
-                              type="number"
-                              value={editDish.price}
-                              onChange={e => setEditDish(d => ({ ...d, price: e.target.value }))}
-                              className="flex-1"
-                            />
-                            <Input
-                              placeholder="Đơn vị"
-                              value={editDish.unit}
-                              onChange={e => setEditDish(d => ({ ...d, unit: e.target.value }))}
-                              className="w-24 shrink-0"
-                            />
-                          </div>
+                          <Input
+                            placeholder="Đơn vị"
+                            value={editDish.unit}
+                            onChange={e => setEditDish(d => ({ ...d, unit: e.target.value }))}
+                          />
                         </div>
                         <Input
                           placeholder="Mô tả (tuỳ chọn)"
@@ -344,10 +327,7 @@ export default function ThucDonPage() {
                         </div>
 
                         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                          <span className="font-heading font-bold text-sm text-primary">
-                            {formatPrice(dish.price)}
-                            <span className="font-normal text-muted-foreground text-xs ml-0.5">/{dish.unit}</span>
-                          </span>
+                          <span className="text-xs text-muted-foreground">{dish.unit}</span>
 
                           <button
                             onClick={() => toggleAvailable(dish)}
@@ -367,7 +347,7 @@ export default function ThucDonPage() {
                             title="Sửa món"
                             onClick={() => {
                               setEditDishId(dish.id)
-                              setEditDish({ name: dish.name, price: String(dish.price), unit: dish.unit, description: dish.description ?? "", image: dish.image ?? "", postId: dish.postId ?? "" })
+                              setEditDish({ name: dish.name, unit: dish.unit, description: dish.description ?? "", image: dish.image ?? "", postId: dish.postId ?? "" })
                             }}
                           >
                             ✏️
@@ -396,21 +376,11 @@ export default function ThucDonPage() {
                         onChange={e => setNewDish(d => ({ ...d, name: e.target.value }))}
                         autoFocus
                       />
-                      <div className="flex gap-2">
-                        <Input
-                          placeholder="Giá (đ) *"
-                          type="number"
-                          value={newDish.price}
-                          onChange={e => setNewDish(d => ({ ...d, price: e.target.value }))}
-                          className="flex-1"
-                        />
-                        <Input
-                          placeholder="Đơn vị"
-                          value={newDish.unit}
-                          onChange={e => setNewDish(d => ({ ...d, unit: e.target.value }))}
-                          className="w-24 shrink-0"
-                        />
-                      </div>
+                      <Input
+                        placeholder="Đơn vị"
+                        value={newDish.unit}
+                        onChange={e => setNewDish(d => ({ ...d, unit: e.target.value }))}
+                      />
                     </div>
                     <Input
                       placeholder="Mô tả ngắn (tuỳ chọn)"
@@ -442,7 +412,7 @@ export default function ThucDonPage() {
                       <Button size="sm" className="h-8 text-xs" onClick={() => addDish(group.id)}>+ Thêm món</Button>
                       <Button
                         size="sm" variant="ghost" className="h-8 text-xs"
-                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", price: "", unit: "phần", description: "", image: "", postId: "" }) }}
+                        onClick={() => { setAddingDishFor(null); setNewDish({ name: "", unit: "phần", description: "", image: "", postId: "" }) }}
                       >
                         Hủy
                       </Button>

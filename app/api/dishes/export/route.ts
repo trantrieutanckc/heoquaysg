@@ -18,7 +18,7 @@ export async function GET() {
     orderBy: { order: "asc" },
   })
 
-  const header = "group,name,description,price,unit,available,order"
+  const header = "group,name,description,unit,available,order"
   const rows: string[] = []
 
   for (const g of groups) {
@@ -27,7 +27,6 @@ export async function GET() {
         esc(g.name),
         esc(d.name),
         esc(d.description ?? ""),
-        d.price,
         esc(d.unit),
         d.available ? "true" : "false",
         d.order,

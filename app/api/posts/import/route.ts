@@ -78,9 +78,6 @@ export async function POST(req: Request) {
       continue
     }
 
-    const rawPrice = row.price?.trim()
-    const price = rawPrice ? parseFloat(rawPrice.replace(/[^0-9.]/g, "")) : null
-
     const categoryNames = row.categories
       ? row.categories.split("|").map((s) => s.trim()).filter(Boolean)
       : []
@@ -99,7 +96,6 @@ export async function POST(req: Request) {
           title,
           published: false,
           authorId: session.user.id,
-          price: price !== null && !isNaN(price) ? price : null,
           ...(categoryIds.length
             ? { categories: { create: categoryIds.map((categoryId) => ({ categoryId })) } }
             : {}),

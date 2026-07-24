@@ -95,7 +95,6 @@ model Post {
   authorId       String
   image          Json?
   likes          Int            @default(0)
-  price          Float?
   seoTitle       String?
   seoDescription String?
   seoKeywords    String?
@@ -340,7 +339,6 @@ model Dish {
   id          String    @id @default(cuid())
   name        String
   description String?
-  price       Float?
   unit        String    @default("phần")
   image       String?
   postId      String?

@@ -5,10 +5,10 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
-const TEMPLATE_CSV = `group,name,description,price,unit,available,order
-"Heo Quay","Heo Quay Nguyên Con","Heo quay nguyên con phục vụ tiệc cúng",1500000,"con",true,1
-"Heo Quay","Heo Quay Nửa Con","",800000,"nửa con",true,2
-"Món Phụ","Cơm Trắng","Cơm trắng dẻo ăn kèm",15000,"phần",true,1
+const TEMPLATE_CSV = `group,name,description,unit,available,order
+"Heo Quay","Heo Quay Nguyên Con","Heo quay nguyên con phục vụ tiệc cúng","con",true,1
+"Heo Quay","Heo Quay Nửa Con","","nửa con",true,2
+"Món Phụ","Cơm Trắng","Cơm trắng dẻo ăn kèm","phần",true,1
 `
 
 export function DishesImportExport({ onImported }: { onImported?: () => void }) {

@@ -57,7 +57,6 @@ interface EditorProps {
     template?: string
     banner?: unknown
     relatedPostIds?: unknown
-    price?: number | null
     scheduledAt?: Date | string | null
     bookable?: boolean
     ctaEnabled?: boolean

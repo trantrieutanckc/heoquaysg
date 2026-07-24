@@ -6,7 +6,6 @@ import { getCurrentUser } from "@/lib/session"
 const patchSchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().nullable().optional(),
-  price: z.number().min(0).optional(),
   unit: z.string().optional(),
   image: z.string().nullable().optional(),
   postId: z.string().nullable().optional(),

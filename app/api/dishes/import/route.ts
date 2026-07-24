@@ -94,13 +94,6 @@ export async function POST(req: Request) {
     if (!groupName) { errors.push(`Dòng ${i + 2}: thiếu tên nhóm (cột "group")`); continue }
     if (!name) { errors.push(`Dòng ${i + 2}: thiếu tên món (cột "name")`); continue }
 
-    const rawPrice = row.price?.trim()
-    const price = rawPrice ? parseFloat(rawPrice.replace(/[^0-9.]/g, "")) : NaN
-    if (isNaN(price) || price < 0) {
-      errors.push(`Dòng ${i + 2}: giá không hợp lệ — "${rawPrice}"`)
-      continue
-    }
-
     const unit = row.unit?.trim() || "phần"
     const description = row.description?.trim() || null
     const available = row.available?.trim().toLowerCase() !== "false"
@@ -109,7 +102,7 @@ export async function POST(req: Request) {
     try {
       const groupId = await getOrCreateGroup(groupName)
       await db.dish.create({
-        data: { name, description, price, unit, available, order, groupId },
+        data: { name, description, unit, available, order, groupId },
       })
       created++
     } catch {

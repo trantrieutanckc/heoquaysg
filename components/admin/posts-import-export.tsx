@@ -6,10 +6,10 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
-const TEMPLATE_CSV = `title,price,categories
-"Heo Quay Lá Mắc Mật",250000,"Món Quay|Đặc Sản"
-"Vịt Quay Bắc Kinh",320000,"Vịt Quay"
-"Gà Quay Mật Ong",180000,""
+const TEMPLATE_CSV = `title,categories
+"Heo Quay Lá Mắc Mật","Món Quay|Đặc Sản"
+"Vịt Quay Bắc Kinh","Vịt Quay"
+"Gà Quay Mật Ong",""
 `
 
 export function PostsImportExport() {
