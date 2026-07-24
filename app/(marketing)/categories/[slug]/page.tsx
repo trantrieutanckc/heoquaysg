@@ -143,10 +143,7 @@ function PostCard({ post, useSlugs }: { post: any; useSlugs: boolean }) {
             <StarDisplay rating={post.avgRating} size="sm" showNumber count={post.ratingCount} />
           )}
         </div>
-        <span
-          className="inline-flex items-center gap-2 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider w-fit rounded-full shadow-sm transition-all duration-200 group-hover:shadow-md group-hover:gap-3"
-          style={{ background: "linear-gradient(90deg, #ea580c, #dc2626)" }}
-        >
+        <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 text-xs font-bold uppercase tracking-wider w-fit rounded-full shadow-sm shadow-primary/20 group-hover:bg-primary/90 transition-colors">
           Xem chi tiết
           <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
             <path d="M5 12h14M12 5l7 7-7 7" />
