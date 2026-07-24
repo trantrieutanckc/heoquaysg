@@ -133,7 +133,7 @@ function PostCard({ post, useSlugs }: { post: any; useSlugs: boolean }) {
       <div className="flex flex-col p-4 gap-3 flex-1">
         <div className="flex flex-col gap-1.5 flex-1">
           <time className="text-[10px] text-muted-foreground/60 uppercase tracking-wide">{formatDate(post.createdAt.toISOString())}</time>
-          <h2 className="font-heading text-base leading-snug group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-2">
+          <h2 className="font-heading text-base leading-snug group-hover:text-primary transition-colors line-clamp-2">
             {post.title}
           </h2>
           {excerpt && (
