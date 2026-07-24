@@ -240,9 +240,6 @@ export default async function PostPage({ params }: PostPageProps) {
           {/* TOC */}
           <div className="hidden lg:block w-60 shrink-0">
             <div className="sticky top-24">
-              <div className="border-l-4 border-primary pl-4 mb-3">
-                <p className="text-xs font-bold uppercase tracking-widest text-primary">Mục lục</p>
-              </div>
               <TableOfContents headings={headings} />
             </div>
           </div>
