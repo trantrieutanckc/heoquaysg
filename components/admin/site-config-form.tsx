@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -140,6 +141,7 @@ function Field({ label, id, children }: { label: string; id: string; children: R
 }
 
 export function SiteConfigForm({ initial }: SiteConfigFormProps) {
+  const router = useRouter()
   const [data, setData] = React.useState<SiteConfigData>(initial)
   const [saving, setSaving] = React.useState(false)
 
@@ -159,6 +161,7 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
     setSaving(false)
     if (res.ok) {
       toast({ variant: "success", description: "Đã lưu cấu hình." })
+      router.refresh()
     } else {
       toast({ description: "Có lỗi xảy ra.", variant: "destructive" })
     }
