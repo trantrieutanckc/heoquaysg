@@ -1,14 +1,13 @@
 import { MetadataRoute } from "next"
 import { db } from "@/lib/db"
-import { env } from "@/env.mjs"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "")
 
-  const [posts, categories, pages] = await Promise.all([
+  const [posts, categories, tags, pages, cfg] = await Promise.all([
     db.post.findMany({
       where: { published: true },
-      select: { id: true, updatedAt: true },
+      select: { id: true, slug: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
     }),
     db.category.findMany({
@@ -16,28 +15,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
     }),
+    db.tag.findMany({
+      select: { slug: true, createdAt: true },
+    }),
     db.page.findMany({
       where: { published: true },
       select: { slug: true, updatedAt: true },
     }),
+    db.siteConfig.findUnique({ where: { id: "default" } }),
   ])
 
+  const useSlugs = ((cfg?.data as Record<string, string>)?.useSlugs) === "true"
+
   const staticPages: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/categories`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/thuc-don`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/dat-lich`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/lien-he`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: baseUrl,                         lastModified: new Date(), changeFrequency: "daily",   priority: 1 },
+    { url: `${baseUrl}/blog`,               lastModified: new Date(), changeFrequency: "daily",   priority: 0.9 },
+    { url: `${baseUrl}/thuc-don`,           lastModified: new Date(), changeFrequency: "weekly",  priority: 0.9 },
+    { url: `${baseUrl}/dat-lich`,           lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/categories`,         lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${baseUrl}/about`,              lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/lien-he`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ]
 
-  const postPages: MetadataRoute.Sitemap = posts.map((p) => ({
-    url: `${baseUrl}/posts/${p.id}`,
-    lastModified: p.updatedAt,
-    changeFrequency: "weekly",
-    priority: 0.6,
-  }))
+  const postPages: MetadataRoute.Sitemap = posts.map((p) => {
+    const postId = useSlugs && p.slug ? p.slug : p.id
+    return {
+      url: `${baseUrl}/posts/${postId}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }
+  })
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
     url: `${baseUrl}/categories/${c.slug}`,
@@ -46,12 +54,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }))
 
-  const staticPageRoutes: MetadataRoute.Sitemap = pages.map((p) => ({
-    url: `${baseUrl}/pages/${p.slug}`,
-    lastModified: p.updatedAt,
-    changeFrequency: "monthly" as const,
+  const tagPages: MetadataRoute.Sitemap = tags.map((t) => ({
+    url: `${baseUrl}/tags/${t.slug}`,
+    lastModified: t.createdAt,
+    changeFrequency: "weekly",
     priority: 0.5,
   }))
 
-  return [...staticPages, ...categoryPages, ...postPages, ...staticPageRoutes]
+  const pageRoutes: MetadataRoute.Sitemap = pages.map((p) => ({
+    url: `${baseUrl}/pages/${p.slug}`,
+    lastModified: p.updatedAt,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }))
+
+  return [...staticPages, ...categoryPages, ...postPages, ...tagPages, ...pageRoutes]
 }
