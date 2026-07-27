@@ -83,6 +83,7 @@ export default async function PostsPage({
             currentPage={page}
             totalPages={totalPages}
             basePath="/dashboard/posts"
+            extraParams={q ? { q } : undefined}
           />
         </>
       ) : (
