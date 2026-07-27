@@ -71,7 +71,7 @@ export function ImagePickerInput({ id, value, onChange, previewClass, placeholde
         <span className="text-xs text-muted-foreground">hoặc</span>
         <input
           id={id}
-          type="url"
+          type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder ?? "https://..."}
