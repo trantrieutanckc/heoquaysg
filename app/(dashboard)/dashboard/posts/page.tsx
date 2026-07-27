@@ -11,6 +11,7 @@ import { PostList } from "@/components/admin/post-list"
 import { DashboardShell } from "@/components/admin/shell"
 import { DashboardPagination } from "@/components/admin/dashboard-pagination"
 import { PostsImportExport } from "@/components/admin/posts-import-export"
+import { PostsSearchInput } from "@/components/admin/posts-search-input"
 
 export const metadata = { title: "Bài viết" }
 
@@ -19,14 +20,18 @@ const PAGE_SIZE = 6
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams: { page?: string }
+  searchParams: { page?: string; q?: string }
 }) {
   const user = await getCurrentUser()
   if (!user) redirect(authOptions?.pages?.signIn || "/login")
 
   const canCreate = isEditor(user.role)
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
-  const postWhere = isAdmin(user.role) ? {} : { authorId: user.id }
+  const q = searchParams.q?.trim() ?? ""
+  const postWhere = {
+    ...(isAdmin(user.role) ? {} : { authorId: user.id }),
+    ...(q ? { title: { contains: q } } : {}),
+  }
 
   const [total, posts, allCategories] = await Promise.all([
     db.post.count({ where: postWhere }),
@@ -60,8 +65,12 @@ export default async function PostsPage({
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Bài viết" text={`${total} bài viết.`}>
+      <DashboardHeader
+        heading="Bài viết"
+        text={q ? `${total} kết quả cho "${q}"` : `${total} bài viết.`}
+      >
         <div className="flex items-center gap-2">
+          <PostsSearchInput defaultValue={q} />
           {canCreate && <PostsImportExport />}
           {canCreate && <PostCreateButton />}
         </div>
