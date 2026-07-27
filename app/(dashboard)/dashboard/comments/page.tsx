@@ -6,6 +6,7 @@ import { DashboardHeader } from "@/components/admin/header"
 import { DashboardShell } from "@/components/admin/shell"
 import { CommentList } from "@/components/admin/comment-list"
 import { DashboardPagination } from "@/components/admin/dashboard-pagination"
+import { DashboardSearchInput } from "@/components/admin/dashboard-search-input"
 import { cn } from "@/lib/utils"
 
 export const metadata = { title: "Bình luận" }
@@ -15,20 +16,25 @@ const PAGE_SIZE = 20
 export default async function CommentsPage({
   searchParams,
 }: {
-  searchParams: { page?: string; status?: string }
+  searchParams: { page?: string; status?: string; q?: string }
 }) {
   const user = await getCurrentUser()
   if (!user || user.role !== "ADMIN" && user.role !== "EDITOR") redirect("/dashboard")
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
   const status = searchParams.status // "pending" | "approved" | undefined (all)
+  const q = searchParams.q?.trim() ?? ""
 
-  const where =
+  const statusFilter =
     status === "pending"
       ? { approved: false }
       : status === "approved"
       ? { approved: true }
       : {}
+
+  const where = q
+    ? { ...statusFilter, author: { contains: q } }
+    : statusFilter
 
   const [total, pendingCount, comments] = await Promise.all([
     db.comment.count({ where }),
@@ -64,11 +70,14 @@ export default async function CommentsPage({
       <DashboardHeader
         heading="Bình luận"
         text={
+          q ? `${total} kết quả cho "${q}"` :
           pendingCount > 0
             ? `${pendingCount} bình luận đang chờ duyệt`
             : `${total} bình luận`
         }
-      />
+      >
+        <DashboardSearchInput placeholder="Tìm tên người bình luận..." />
+      </DashboardHeader>
 
       {/* Filter tabs */}
       <div className="flex gap-1 border-b pb-0 mb-4">
@@ -101,7 +110,11 @@ export default async function CommentsPage({
       <DashboardPagination
         currentPage={page}
         totalPages={totalPages}
-        basePath={status ? `/dashboard/comments?status=${status}` : "/dashboard/comments"}
+        basePath="/dashboard/comments"
+        extraParams={{
+          ...(status ? { status } : {}),
+          ...(q ? { q } : {}),
+        }}
       />
     </DashboardShell>
   )

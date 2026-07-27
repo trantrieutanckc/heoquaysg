@@ -6,6 +6,7 @@ import { DashboardShell } from "@/components/admin/shell"
 import { UserList } from "@/components/admin/user-list"
 import { UserCreateButton } from "@/components/admin/user-create-button"
 import { DashboardPagination } from "@/components/admin/dashboard-pagination"
+import { DashboardSearchInput } from "@/components/admin/dashboard-search-input"
 
 export const metadata = { title: "Users" }
 
@@ -14,16 +15,22 @@ const PAGE_SIZE = 20
 export default async function UsersPage({
   searchParams,
 }: {
-  searchParams: { page?: string }
+  searchParams: { page?: string; q?: string }
 }) {
   const user = await getCurrentUser()
   if (!user || user.role !== "ADMIN") redirect("/dashboard")
 
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
+  const q = searchParams.q?.trim() ?? ""
+
+  const where = q
+    ? { OR: [{ name: { contains: q } }, { email: { contains: q } }] }
+    : {}
 
   const [total, users] = await Promise.all([
-    db.user.count(),
+    db.user.count({ where }),
     db.user.findMany({
+      where,
       orderBy: { createdAt: "asc" },
       select: {
         id: true,
@@ -43,14 +50,21 @@ export default async function UsersPage({
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Người dùng" text={`${total} tài khoản.`}>
-        <UserCreateButton />
+      <DashboardHeader
+        heading="Người dùng"
+        text={q ? `${total} kết quả cho "${q}"` : `${total} tài khoản.`}
+      >
+        <div className="flex items-center gap-2">
+          <DashboardSearchInput placeholder="Tìm tên, email..." />
+          <UserCreateButton />
+        </div>
       </DashboardHeader>
       <UserList users={users} />
       <DashboardPagination
         currentPage={page}
         totalPages={totalPages}
         basePath="/dashboard/users"
+        extraParams={q ? { q } : undefined}
       />
     </DashboardShell>
   )
