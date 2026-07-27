@@ -83,6 +83,8 @@ export interface SiteConfigData {
   // SEO robots
   robotsIndex?: string  // "true" = cho phép index, "false" = noindex
   robotsTxtContent?: string
+  // Coming soon
+  comingSoon?: string  // "true" = bật, visitor thấy coming soon
   // Homepage section text
   homeFeaturedLabel?: string
   homeFeaturedTitle?: string
@@ -273,6 +275,40 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
               className={[
                 "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
                 data.robotsIndex === "true" ? "translate-x-5" : "translate-x-0",
+              ].join(" ")}
+            />
+          </button>
+        </div>
+
+        {/* Coming soon toggle */}
+        <div className="flex items-start justify-between gap-4 rounded-lg border p-4">
+          <div>
+            <p className="text-sm font-medium">Chế độ Coming Soon</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Bật: khách thấy trang "Sắp ra mắt" thay vì nội dung thật.<br />
+              Admin đã đăng nhập vẫn xem được bình thường.
+            </p>
+            <p className="text-xs mt-1.5">
+              Hiện tại:{" "}
+              <span className={data.comingSoon === "true" ? "text-orange-500 font-semibold" : "text-green-600 font-semibold"}>
+                {data.comingSoon === "true" ? "⚠ Đang bật Coming Soon" : "✓ Site đang hoạt động bình thường"}
+              </span>
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={data.comingSoon === "true"}
+            onClick={() => setData((prev) => ({ ...prev, comingSoon: prev.comingSoon === "true" ? "false" : "true" }))}
+            className={[
+              "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200",
+              data.comingSoon === "true" ? "bg-orange-500" : "bg-muted-foreground/30",
+            ].join(" ")}
+          >
+            <span
+              className={[
+                "pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200",
+                data.comingSoon === "true" ? "translate-x-5" : "translate-x-0",
               ].join(" ")}
             />
           </button>
