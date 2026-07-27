@@ -11,7 +11,7 @@ import { SiteFooter } from "@/components/site-footer"
 import { SearchButton } from "@/components/search-button"
 import { getCurrentUser } from "@/lib/session"
 import { UserAccountNav } from "@/components/user-account-nav"
-import { ComingSoon } from "@/components/coming-soon"
+import { ComingSoonPopup } from "@/components/coming-soon-popup"
 
 interface MarketingLayoutProps {
   children: React.ReactNode
@@ -34,20 +34,6 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
     cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
   } catch {
     // DB unreachable — fallback to static nav
-  }
-
-  // Coming soon mode — show to non-authenticated visitors only
-  if (cfg.comingSoon === "true" && !user) {
-    return (
-      <ComingSoon
-        siteName={cfg.siteName?.trim()}
-        logoUrl={cfg.logoUrl?.trim()}
-        siteDescription={cfg.siteDescription?.trim()}
-        contactPhone={cfg.contactPhone?.trim()}
-        contactZalo={cfg.contactZalo?.trim()}
-        socialFacebook={cfg.socialFacebook?.trim()}
-      />
-    )
   }
 
   const navItems = dbMenuItems.length
@@ -209,6 +195,18 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
         socialYoutube={cfg.socialYoutube?.trim()}
         contactZalo={cfg.contactZalo?.trim()}
       />
+
+      {/* Coming soon popup */}
+      {cfg.comingSoon === "true" && (
+        <ComingSoonPopup
+          siteName={cfg.siteName?.trim()}
+          logoUrl={cfg.logoUrl?.trim()}
+          siteDescription={cfg.siteDescription?.trim()}
+          contactPhone={cfg.contactPhone?.trim()}
+          contactZalo={cfg.contactZalo?.trim()}
+          socialFacebook={cfg.socialFacebook?.trim()}
+        />
+      )}
 
       {/* Mobile bottom bar */}
       {(contactPhone || contactZalo) && (
