@@ -1,5 +1,4 @@
 import { Nunito } from "next/font/google"
-import Script from "next/script"
 import { cache } from "react"
 
 import "@/styles/globals.css"
@@ -9,6 +8,7 @@ import NextTopLoader from "nextjs-toploader"
 import { NavigationLoader } from "@/components/navigation-loader"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@/components/analytics"
+import { TrackingScripts } from "@/components/tracking-scripts"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { db } from "@/lib/db"
@@ -86,10 +86,6 @@ export async function generateMetadata() {
 export default async function RootLayout({ children }: RootLayoutProps) {
   const data = await getSiteConfigData()
   const trackingCode = data.trackingCode?.trim() ?? ""
-  const scriptContent = trackingCode
-    .replace(/<script[^>]*>/gi, "")
-    .replace(/<\/script>/gi, "")
-    .trim()
 
   return (
     <html lang="vi" suppressHydrationWarning>
@@ -108,13 +104,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <Toaster />
           <TailwindIndicator />
         </ThemeProvider>
-        {scriptContent && (
-          <Script
-            id="site-tracking"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{ __html: scriptContent }}
-          />
-        )}
+        <TrackingScripts code={trackingCode} />
       </body>
     </html>
   )
