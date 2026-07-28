@@ -210,6 +210,15 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
             placeholder="https://..."
           />
         </Field>
+        <Field label="Ảnh trang Đặt Lịch Giao Hàng" id="datLichImage">
+          <ImagePickerInput
+            id="datLichImage"
+            value={data.datLichImage ?? ""}
+            onChange={(url) => setData((prev) => ({ ...prev, datLichImage: url }))}
+            previewClass="h-28 w-full max-w-sm rounded-lg object-cover border"
+            placeholder="/images/shop/giao-hang-1.jpg"
+          />
+        </Field>
       </Section>
 
       <Section title="Phân tích & SEO">
