@@ -1,7 +1,11 @@
+import { writeFile, mkdir } from "fs/promises"
+import path from "path"
 import { NextResponse } from "next/server"
 import { randomUUID } from "crypto"
 import { getCurrentUser } from "@/lib/session"
-import { uploadToStorage } from "@/lib/supabase"
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "images", "uploads")
+const UPLOAD_BASE_URL = process.env.UPLOAD_BASE_URL ?? "/images/uploads"
 
 const MIME_TO_EXT: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -35,8 +39,11 @@ export async function POST(req: Request) {
 
     const filename = `${randomUUID()}.${ext}`
     const buffer = Buffer.from(await file.arrayBuffer())
-    const publicUrl = await uploadToStorage(buffer, filename, file.type)
 
+    await mkdir(UPLOAD_DIR, { recursive: true })
+    await writeFile(path.join(UPLOAD_DIR, filename), buffer)
+
+    const publicUrl = `${UPLOAD_BASE_URL}/${filename}`
     return NextResponse.json({ success: 1, url: publicUrl, file: { url: publicUrl } })
   } catch (err) {
     console.error("[upload]", err)
