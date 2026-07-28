@@ -24,8 +24,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         where: {
           published: true,
           OR: [
-            { title: { contains: q, mode: "insensitive" } },
-            { tags: { some: { tag: { name: { contains: q, mode: "insensitive" } } } } },
+            { title: { contains: q, mode: "default" } },
+            { tags: { some: { tag: { name: { contains: q, mode: "default" } } } } },
           ],
         },
         select: {

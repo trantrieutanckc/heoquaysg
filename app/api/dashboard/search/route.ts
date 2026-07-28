@@ -12,21 +12,21 @@ export async function GET(req: Request) {
 
   const [posts, categories, users] = await Promise.all([
     db.post.findMany({
-      where: { title: { contains: q, mode: "insensitive" } },
+      where: { title: { contains: q, mode: "default" } },
       select: { id: true, title: true, published: true },
       take: 5,
       orderBy: { updatedAt: "desc" },
     }),
     db.category.findMany({
-      where: { name: { contains: q, mode: "insensitive" } },
+      where: { name: { contains: q, mode: "default" } },
       select: { id: true, name: true, slug: true },
       take: 3,
     }),
     db.user.findMany({
       where: {
         OR: [
-          { name: { contains: q, mode: "insensitive" } },
-          { email: { contains: q, mode: "insensitive" } },
+          { name: { contains: q, mode: "default" } },
+          { email: { contains: q, mode: "default" } },
         ],
       },
       select: { id: true, name: true, email: true },
