@@ -119,6 +119,7 @@ export async function POST(
         content: cleanContent,
         authorName: cleanName,
         authorEmail: body.authorEmail || undefined,
+        ip,
         postId: params.postId,
         rating: body.rating ?? null,
         approved: false, // requires admin moderation

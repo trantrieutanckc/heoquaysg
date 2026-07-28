@@ -16,6 +16,7 @@ interface CommentWithPost {
   content: string
   authorName: string
   authorEmail: string | null
+  ip: string | null
   approved: boolean
   rating: number | null
   createdAt: Date
@@ -148,6 +149,11 @@ export function CommentList({ comments: initialComments }: { comments: CommentWi
                 <span className="font-medium text-sm">{comment.authorName}</span>
                 {comment.authorEmail && (
                   <span className="text-xs text-muted-foreground">{comment.authorEmail}</span>
+                )}
+                {comment.ip && (
+                  <span className="text-xs text-muted-foreground font-mono" title="Địa chỉ IP">
+                    {comment.ip}
+                  </span>
                 )}
                 {comment.rating != null && <StarRating rating={comment.rating} />}
                 <span className="text-xs text-muted-foreground">·</span>

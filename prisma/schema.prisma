@@ -131,6 +131,7 @@ model Comment {
   content     String
   authorName  String
   authorEmail String?
+  ip          String?
   postId      String
   approved    Boolean  @default(false)
   rating      Int?

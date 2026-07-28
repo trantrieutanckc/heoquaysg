@@ -42,7 +42,15 @@ export default async function CommentsPage({
     db.comment.findMany({
       where,
       orderBy: { createdAt: "desc" },
-      include: {
+      select: {
+        id: true,
+        content: true,
+        authorName: true,
+        authorEmail: true,
+        ip: true,
+        approved: true,
+        rating: true,
+        createdAt: true,
         post: { select: { id: true, title: true } },
       },
       skip: (page - 1) * PAGE_SIZE,
