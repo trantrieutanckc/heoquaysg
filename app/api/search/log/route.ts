@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+import { getCurrentUser } from "@/lib/session"
 
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
@@ -11,6 +12,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
+  const user = await getCurrentUser()
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
   const recent = await db.searchQuery.findMany({
     orderBy: { createdAt: "desc" },
     take: 3,
