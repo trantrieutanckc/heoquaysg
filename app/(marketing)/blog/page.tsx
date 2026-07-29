@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { db } from "@/lib/db"
@@ -40,6 +41,15 @@ export default async function BlogPage({
   const selectedSlug = searchParams.category?.trim() || null
   const selectedTag = searchParams.tag?.trim() || null
   const page = Math.max(1, parseInt(searchParams.page ?? "1") || 1)
+
+  // Redirect ?page=N sang /blog/N
+  if (page > 1) {
+    const qs = new URLSearchParams({
+      ...(selectedSlug ? { category: selectedSlug } : {}),
+      ...(selectedTag ? { tag: selectedTag } : {}),
+    }).toString()
+    redirect(qs ? `/blog/${page}?${qs}` : `/blog/${page}`)
+  }
 
   const configRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (configRow?.data ?? {}) as Record<string, string>
@@ -246,20 +256,15 @@ export default async function BlogPage({
 
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 py-10">
-          {page > 1 && (
-            <Link
-              href={`/blog?${new URLSearchParams({ ...(selectedSlug ? { category: selectedSlug } : {}), ...(selectedTag ? { tag: selectedTag } : {}), page: String(page - 1) })}`}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium hover:bg-muted transition-colors"
-            >
-              ← Trang trước
-            </Link>
-          )}
           <span className="text-sm text-muted-foreground px-2">
             {page} / {totalPages}
           </span>
           {page < totalPages && (
             <Link
-              href={`/blog?${new URLSearchParams({ ...(selectedSlug ? { category: selectedSlug } : {}), ...(selectedTag ? { tag: selectedTag } : {}), page: String(page + 1) })}`}
+              href={(() => {
+                const qs = new URLSearchParams({ ...(selectedSlug ? { category: selectedSlug } : {}), ...(selectedTag ? { tag: selectedTag } : {}) }).toString()
+                return qs ? `/blog/2?${qs}` : "/blog/2"
+              })()}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium hover:bg-muted transition-colors"
             >
               Trang sau →
