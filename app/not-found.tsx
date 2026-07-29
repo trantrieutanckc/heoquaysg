@@ -1,6 +1,20 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
+
+export const metadata: Metadata = {
+  title: "404 — Trang không tồn tại | Heo Quay Bình Tân",
+  icons: {
+    icon: [
+      { url: "/favicons/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicons/favicon.ico",
+    apple: "/favicons/apple-touch-icon.png",
+  },
+}
 
 export default function NotFound() {
   return (
