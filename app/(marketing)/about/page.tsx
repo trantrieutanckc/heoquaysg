@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
+import { ogUrl } from "@/lib/utils"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 
@@ -11,7 +12,7 @@ export async function generateMetadata() {
   const cfg = (row?.data ?? {}) as Record<string, string>
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = cfg.siteDescription?.trim() || "Chuyên cung cấp heo quay, vịt quay, gà quay chất lượng cao."
-  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   return {
     title: `Về chúng tôi`,
     description,
@@ -19,13 +20,13 @@ export async function generateMetadata() {
       title: `Về chúng tôi | ${siteName}`,
       description,
       locale: "vi_VN",
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
       card: "summary_large_image",
       title: `Về chúng tôi | ${siteName}`,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage],
     },
   }
 }

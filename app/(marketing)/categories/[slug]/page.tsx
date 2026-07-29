@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
-import { formatDate } from "@/lib/utils"
+import { formatDate, ogUrl } from "@/lib/utils"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import type { CategoryTemplate } from "@/lib/templates"
 import { parseBanner } from "@/lib/banner"
@@ -25,10 +25,11 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   const title = category.seoTitle || category.name
   const description = category.seoDescription ?? undefined
   const coverImage = category.image as { url?: string } | null
-  const ogImageUrl =
+  const ogImageUrl = ogUrl(
     (category.seoImage as string | null) ||
     coverImage?.url ||
     `/api/og?heading=${encodeURIComponent(title)}&type=Guide&mode=dark`
+  )
 
   return {
     title,

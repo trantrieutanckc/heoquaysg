@@ -19,3 +19,10 @@ export function formatDate(input: string | number): string {
 export function absoluteUrl(path: string) {
   return `${env.NEXT_PUBLIC_APP_URL}${path}`
 }
+
+// Đảm bảo og:image luôn là absolute URL (Google yêu cầu)
+export function ogUrl(url: string): string {
+  if (!url) return absoluteUrl("/opengraph-image.jpg")
+  if (url.startsWith("http://") || url.startsWith("https://")) return url
+  return absoluteUrl(url)
+}

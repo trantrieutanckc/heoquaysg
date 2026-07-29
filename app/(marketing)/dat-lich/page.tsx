@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { db } from "@/lib/db"
+import { ogUrl } from "@/lib/utils"
 import { BookingForm } from "./booking-form"
 
 export const dynamic = "force-dynamic"
@@ -10,7 +11,7 @@ export async function generateMetadata() {
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const title = cfg.datLichTitle?.trim() || "Đặt lịch giao hàng"
   const description = `${title} — ${siteName}. Giao tận nơi đúng giờ.`
-  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   return {
     title,
     description,
@@ -18,7 +19,7 @@ export async function generateMetadata() {
       title: `${title} | ${siteName}`,
       description,
       locale: "vi_VN",
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
   }
 }

@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
+import { ogUrl } from "@/lib/utils"
 import { ContactClient } from "./contact-client"
 
 export async function generateMetadata() {
@@ -8,7 +9,7 @@ export async function generateMetadata() {
   const cfg = (row?.data ?? {}) as Record<string, string>
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = `Liên hệ với ${siteName} — đặt hàng, tư vấn thực đơn hoặc gửi góp ý.`
-  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   return {
     title: "Liên hệ",
     description,
@@ -16,13 +17,13 @@ export async function generateMetadata() {
       title: `Liên hệ | ${siteName}`,
       description,
       locale: "vi_VN",
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
       card: "summary_large_image",
       title: `Liên hệ | ${siteName}`,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage],
     },
   }
 }

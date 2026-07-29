@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/db"
-import { formatDate } from "@/lib/utils"
+import { formatDate, ogUrl } from "@/lib/utils"
 import { EditorJsRenderer, extractHeadings } from "@/components/editorjs-renderer"
 import { TiptapRenderer, extractHeadingsTiptap } from "@/components/tiptap-renderer"
 import { TableOfContents } from "@/components/table-of-contents"
@@ -38,10 +38,11 @@ export async function generateMetadata({ params }: PostPageProps) {
   const coverImage = post.image as { url?: string } | null
   const title = post.seoTitle || post.title
   const description = post.seoDescription ?? undefined
-  const ogImageUrl =
+  const ogImageUrl = ogUrl(
     post.seoImage ||
     coverImage?.url ||
     `/api/og?heading=${encodeURIComponent(title)}&type=Post&mode=dark`
+  )
 
   return {
     title,

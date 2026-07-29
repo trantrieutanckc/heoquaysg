@@ -3,7 +3,7 @@ import { cache } from "react"
 
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
-import { absoluteUrl, cn } from "@/lib/utils"
+import { absoluteUrl, cn, ogUrl } from "@/lib/utils"
 import NextTopLoader from "nextjs-toploader"
 import { NavigationLoader } from "@/components/navigation-loader"
 import { Toaster } from "@/components/ui/toaster"
@@ -34,7 +34,7 @@ export async function generateMetadata() {
   const googleVerification = data.googleVerification?.trim()
   const siteName = data.siteName?.trim() || siteConfig.name
   const description = data.siteDescription?.trim() || siteConfig.description
-  const ogImage = data.heroImage?.trim() || data.logoUrl?.trim() || null
+  const ogImage = ogUrl(data.heroImage?.trim() || data.logoUrl?.trim() || "/opengraph-image.jpg")
   const appUrl = process.env.NEXT_PUBLIC_APP_URL?.replace("http://localhost:3000", siteConfig.url) || siteConfig.url
 
   return {
@@ -57,13 +57,13 @@ export async function generateMetadata() {
       title: siteName,
       description,
       siteName,
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
       card: "summary_large_image",
       title: siteName,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage],
     },
     robots: {
       index: data.robotsIndex === "true",

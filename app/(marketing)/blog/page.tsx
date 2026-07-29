@@ -1,8 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { db } from "@/lib/db"
-import { formatDate } from "@/lib/utils"
-import { cn } from "@/lib/utils"
+import { formatDate, cn, ogUrl } from "@/lib/utils"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
@@ -14,7 +13,7 @@ export async function generateMetadata() {
   const cfg = (row?.data ?? {}) as Record<string, string>
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = `Các món heo quay, vịt quay, gà quay và ẩm thực từ ${siteName}.`
-  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   return {
     title: "Thực đơn & Món ăn",
     description,
@@ -22,13 +21,13 @@ export async function generateMetadata() {
       title: `Thực đơn | ${siteName}`,
       description,
       locale: "vi_VN",
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
       card: "summary_large_image",
       title: `Thực đơn | ${siteName}`,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage],
     },
   }
 }

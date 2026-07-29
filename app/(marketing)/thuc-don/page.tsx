@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
-import { cn } from "@/lib/utils"
+import { cn, ogUrl } from "@/lib/utils"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { postUrl } from "@/lib/post-url"
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
@@ -14,7 +14,7 @@ export async function generateMetadata() {
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const subtitle = cfg.thucDonSubtitle?.trim() || "Heo quay · Vịt quay · Gà quay & đặc sản"
   const description = `Xem thực đơn ${subtitle} tại ${siteName}.`
-  const ogImage = cfg.heroImage?.trim() || cfg.logoUrl?.trim() || null
+  const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   return {
     title: "Thực đơn",
     description,
@@ -22,7 +22,7 @@ export async function generateMetadata() {
       title: `Thực đơn | ${siteName}`,
       description,
       locale: "vi_VN",
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
   }
 }
