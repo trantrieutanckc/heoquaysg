@@ -17,7 +17,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
     db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
   ])
   const cfg = (cfgRow?.data ?? {}) as Record<string, string>
-  const logoUrl = cfg.logoUrl?.trim() || "/logo-new.svg"
+  const logoUrl = cfg.logoUrl?.trim() || "/images/logo-new.svg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
 
   if (!user) redirect("/login")

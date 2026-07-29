@@ -20,7 +20,7 @@ const slides = [
 export default async function LoginPage() {
   const cfgRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (cfgRow?.data ?? {}) as Record<string, string>
-  const logoUrl = cfg.logoUrl?.trim() || "/logo-new.svg"
+  const logoUrl = cfg.logoUrl?.trim() || "/images/logo-new.svg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
