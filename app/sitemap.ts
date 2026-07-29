@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "")
 
-  const [posts, categories, tags, pages, cfg] = await Promise.all([
+  const [posts, categories, tags, pages] = await Promise.all([
     db.post.findMany({
       where: { published: true },
       select: { id: true, slug: true, updatedAt: true },
@@ -22,10 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       where: { published: true },
       select: { slug: true, updatedAt: true },
     }),
-    db.siteConfig.findUnique({ where: { id: "default" } }),
   ])
-
-  const useSlugs = ((cfg?.data as Record<string, string>)?.useSlugs) === "true"
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl,                         lastModified: new Date(), changeFrequency: "daily",   priority: 1 },
@@ -37,15 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/lien-he`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
   ]
 
-  const postPages: MetadataRoute.Sitemap = posts.map((p) => {
-    const postId = useSlugs && p.slug ? p.slug : p.id
-    return {
-      url: `${baseUrl}/posts/${postId}`,
-      lastModified: p.updatedAt,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }
-  })
+  const postPages: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${baseUrl}/posts/${p.slug || p.id}`,
+    lastModified: p.updatedAt,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }))
 
   const categoryPages: MetadataRoute.Sitemap = categories.map((c) => ({
     url: `${baseUrl}/categories/${c.slug}`,
