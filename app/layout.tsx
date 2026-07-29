@@ -12,6 +12,7 @@ import { TrackingScripts } from "@/components/tracking-scripts"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { db } from "@/lib/db"
+import { faviconMetadata } from "@/lib/favicon"
 
 // Deduplicate DB call — cả generateMetadata và RootLayout đều dùng chung 1 query/request
 const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
@@ -69,16 +70,7 @@ export async function generateMetadata() {
       index: data.robotsIndex === "true",
       follow: data.robotsIndex === "true",
     },
-    icons: {
-      icon: [
-        { url: "/favicons/favicon.svg", type: "image/svg+xml" },
-        { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-        { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-        { url: "/favicons/favicon.ico", type: "image/x-icon" },
-      ],
-      shortcut: "/favicons/favicon.ico",
-      apple: "/favicons/apple-touch-icon.png",
-    },
+    icons: faviconMetadata,
     manifest: "/favicons/site.webmanifest",
     ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   }
