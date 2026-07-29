@@ -1,5 +1,5 @@
 import { Nunito } from "next/font/google"
-import { cache } from "react"
+import { cache, Suspense } from "react"
 
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
@@ -101,7 +101,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <NextTopLoader color="hsl(22 82% 40%)" height={3} showSpinner={false} />
           <NavigationLoader />
           {children}
-          <Analytics />
+          <Suspense fallback={null}><Analytics /></Suspense>
           <Toaster />
           <TailwindIndicator />
         </ThemeProvider>
