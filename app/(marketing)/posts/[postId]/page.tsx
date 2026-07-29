@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { formatDate, ogUrl } from "@/lib/utils"
@@ -75,6 +75,9 @@ export default async function PostPage({ params }: PostPageProps) {
   })
 
   if (!post) notFound()
+
+  // Redirect ID -> slug để Google index đúng URL
+  if (post.slug && params.postId !== post.slug) redirect(`/posts/${post.slug}`)
 
   const postImage = post.image as { url?: string; alt?: string; title?: string } | null
   const template = (post.template ?? "standard") as PostTemplate
