@@ -4,10 +4,12 @@ import Link from "next/link"
 import { Icons } from "@/components/icons"
 import { UserAuthForm } from "@/components/user-auth-form"
 import { db } from "@/lib/db"
+import { faviconMetadata } from "@/lib/favicon"
 
 export const metadata: Metadata = {
   title: "Đăng nhập | Heo Quay Bình Tân",
   description: "Đăng nhập vào tài khoản quản lý",
+  icons: faviconMetadata,
 }
 
 const slides = [

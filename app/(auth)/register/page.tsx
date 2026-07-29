@@ -4,10 +4,12 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { UserAuthForm } from "@/components/user-auth-form"
+import { faviconMetadata } from "@/lib/favicon"
 
 export const metadata = {
-  title: "Create an account",
-  description: "Create an account to get started.",
+  title: "Đăng ký | Heo Quay Bình Tân",
+  description: "Đăng ký tài khoản.",
+  icons: faviconMetadata,
 }
 
 export default function RegisterPage() {
