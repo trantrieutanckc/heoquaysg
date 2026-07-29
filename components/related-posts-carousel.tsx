@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/utils"
 
 interface RelatedPost {
   id: string
+  slug: string | null
   title: string
   image: unknown
   createdAt: Date
@@ -21,7 +22,7 @@ export function RelatedPostsCarousel({ posts }: { posts: RelatedPost[] }) {
         return (
           <Link
             key={p.id}
-            href={`/posts/${p.id}`}
+            href={`/posts/${p.slug || p.id}`}
             className="group flex flex-row sm:flex-col overflow-hidden rounded-xl border bg-card hover:shadow-lg transition-shadow duration-300 h-full"
           >
             <div className="w-40 shrink-0 sm:w-full sm:aspect-[4/3] relative bg-muted overflow-hidden" style={{ minHeight: "7rem" }}>
