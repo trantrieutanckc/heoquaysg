@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { getCurrentUser } from "@/lib/session"
+import { db } from "@/lib/db"
 import { UserAccountNav } from "@/components/user-account-nav"
 import { ModeToggle } from "@/components/mode-toggle"
 import { buttonVariants } from "@/components/ui/button"
@@ -11,7 +12,14 @@ import { cn } from "@/lib/utils"
 import { type Role } from "@/lib/permissions"
 
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
-  const user = await getCurrentUser()
+  const [user, cfgRow] = await Promise.all([
+    getCurrentUser(),
+    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
+  ])
+  const cfg = (cfgRow?.data ?? {}) as Record<string, string>
+  const logoUrl = cfg.logoUrl?.trim() || "/logo-new.svg"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
+
   if (!user) redirect("/login")
 
   const role = user.role as Role | undefined
@@ -23,11 +31,11 @@ export default async function ProfileLayout({ children }: { children: React.Reac
         <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2">
             <img
-              src="/logo-new.svg"
-              alt="Heo Quay Bình Tân"
+              src={logoUrl}
+              alt={siteName}
               className="h-8 w-8 rounded-full object-cover"
             />
-            <span className="font-heading font-bold text-sm hidden sm:block">Heo Quay Bình Tân</span>
+            <span className="font-heading font-bold text-sm hidden sm:block">{siteName}</span>
           </Link>
           <div className="flex items-center gap-2">
             {canAccessDashboard && (

@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation"
 import { dashboardConfig } from "@/config/dashboard"
 import { getCurrentUser } from "@/lib/session"
 import { canAccess, isAdmin, type Role } from "@/lib/permissions"
+import { db } from "@/lib/db"
 import { MainNav } from "@/components/main-nav"
 import { DashboardNav } from "@/components/admin/nav"
 import { DashboardSearch } from "@/components/admin/dashboard-search"
@@ -19,7 +20,13 @@ interface DashboardLayoutProps {
 export default async function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
-  const user = await getCurrentUser()
+  const [user, cfgRow] = await Promise.all([
+    getCurrentUser(),
+    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
+  ])
+  const cfg = (cfgRow?.data ?? {}) as Record<string, string>
+  const logoUrl = cfg.logoUrl?.trim() || "/logo-new.svg"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
 
   if (!user) redirect("/login")
 
@@ -32,7 +39,7 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
-          <MainNav items={dashboardConfig.mainNav} logoUrl="/logo-new.svg" siteName="Heo Quay Bình Tân" />
+          <MainNav items={dashboardConfig.mainNav} logoUrl={logoUrl} siteName={siteName} />
           <div className="flex items-center gap-3">
             <DashboardSearch />
             <NotificationBell />

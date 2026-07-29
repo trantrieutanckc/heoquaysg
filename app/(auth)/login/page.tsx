@@ -3,6 +3,7 @@ import Link from "next/link"
 
 import { Icons } from "@/components/icons"
 import { UserAuthForm } from "@/components/user-auth-form"
+import { db } from "@/lib/db"
 
 export const metadata: Metadata = {
   title: "Đăng nhập | Heo Quay Bình Tân",
@@ -16,7 +17,11 @@ const slides = [
   "/images/shop/heo-quay-can-1.jpg",
 ]
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const cfgRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
+  const cfg = (cfgRow?.data ?? {}) as Record<string, string>
+  const logoUrl = cfg.logoUrl?.trim() || "/logo-new.svg"
+  const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       <style>{`
@@ -65,11 +70,11 @@ export default function LoginPage() {
             <div className="absolute inset-0 rounded-full bg-orange-500/40 blur-2xl scale-125" />
             <div className="absolute inset-0 rounded-full bg-amber-300/20 blur-xl scale-110" />
             <div className="relative w-full h-full rounded-full overflow-hidden border-[3px] border-white/50 shadow-2xl">
-              <img src="/logo-new.svg" alt="Heo Quay Bình Tân" className="w-full h-full object-cover" />
+              <img src={logoUrl} alt={siteName} className="w-full h-full object-cover" />
             </div>
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-wide drop-shadow-xl">
-            Heo Quay Bình Tân
+            {siteName}
           </h1>
           <p className="text-xs text-orange-200/80 mt-1.5 tracking-widest uppercase">
             Hương vị đậm đà · Truyền thống Việt
