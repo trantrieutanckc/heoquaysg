@@ -11,12 +11,16 @@ export async function generateMetadata() {
   const description = cfg.siteDescription?.trim() || siteConfig.description
   const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
   const siteUrl = siteConfig.url
+  // Nếu siteName ngắn (chưa có địa điểm/từ khoá), thêm suffix để đủ ~55 ký tự
+  const homeTitle = siteName.length <= 20
+    ? `${siteName} — Heo Quay, Vịt Quay, Gà Quay TP.HCM`
+    : siteName
   return {
-    title: { absolute: siteName },
+    title: { absolute: homeTitle },
     description,
     alternates: { canonical: siteUrl },
     openGraph: {
-      title: siteName,
+      title: homeTitle,
       description,
       locale: "vi_VN",
       type: "website",
@@ -26,7 +30,7 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: siteName,
+      title: homeTitle,
       description,
       images: [ogImage],
     },

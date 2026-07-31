@@ -113,8 +113,28 @@ export default async function PostPage({ params }: PostPageProps) {
         take: 8,
       })
 
+  const articleUrl = `${siteConfig.url}/posts/${post.slug || params.postId}`
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    ...(post.seoDescription ? { description: post.seoDescription } : {}),
+    url: articleUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+    datePublished: post.createdAt.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    author: { "@type": "Person", name: post.author?.name || "Heo Quay Bình Tân" },
+    publisher: {
+      "@type": "Organization",
+      name: "Heo Quay Bình Tân",
+      logo: { "@type": "ImageObject", url: `${siteConfig.url}/favicons/apple-touch-icon.png` },
+    },
+    ...(postImage?.url ? { image: postImage.url } : {}),
+  }
+
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
 
       {/* ── Hero — ảnh + title đè lên ─────────────────────────── */}
       {postImage?.url ? (

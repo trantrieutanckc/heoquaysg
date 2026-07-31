@@ -24,7 +24,8 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   if (!category) return {}
 
   const title = category.seoTitle || category.name
-  const description = category.seoDescription ?? undefined
+  const description = category.seoDescription ||
+    `Xem các sản phẩm ${category.name} chất lượng cao tại Heo Quay Bình Tân. Công thức gia truyền, nguyên liệu tươi sạch, giao hàng tận nơi tại TP.HCM.`
   const coverImage = category.image as { url?: string } | null
   const ogImageUrl = ogUrl(
     (category.seoImage as string | null) ||
