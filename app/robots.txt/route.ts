@@ -5,7 +5,7 @@ Disallow: /dashboard/
 Disallow: /api/
 Allow: /
 
-Sitemap: ${process.env.NEXT_PUBLIC_APP_URL || "https://example.com"}/sitemap.xml`
+Sitemap: ${process.env.NEXT_PUBLIC_APP_URL || "https://heoquaybinhtan.com"}/sitemap.xml`
 
 export async function GET() {
   const config = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)

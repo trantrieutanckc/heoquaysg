@@ -16,9 +16,17 @@ export async function generateMetadata({ params }: Props) {
   const tag = await db.tag.findUnique({ where: { slug: params.slug }, select: { name: true } })
   if (!tag) return {}
   const tagUrl = `${siteConfig.url}/tags/${params.slug}`
+  const description = `Các bài viết được gắn thẻ #${tag.name} tại Heo Quay Bình Tân.`
   return {
     title: `#${tag.name}`,
+    description,
     alternates: { canonical: tagUrl },
+    openGraph: {
+      title: `#${tag.name} | Heo Quay Bình Tân`,
+      description,
+      url: tagUrl,
+    },
+    twitter: { card: "summary_large_image", title: `#${tag.name}`, description },
   }
 }
 

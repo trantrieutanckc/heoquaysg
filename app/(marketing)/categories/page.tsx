@@ -5,9 +5,17 @@ import Link from "next/link"
 import { db } from "@/lib/db"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
+import { siteConfig } from "@/config/site"
 
 export const metadata = {
   title: "Danh mục",
+  description: "Khám phá các danh mục món ăn tại Heo Quay Bình Tân — heo quay, vịt quay, gà quay và đặc sản.",
+  alternates: { canonical: `${siteConfig.url}/categories` },
+  openGraph: {
+    title: "Danh mục | Heo Quay Bình Tân",
+    description: "Khám phá các danh mục món ăn tại Heo Quay Bình Tân — heo quay, vịt quay, gà quay và đặc sản.",
+    url: `${siteConfig.url}/categories`,
+  },
 }
 
 export default async function CategoriesPage() {

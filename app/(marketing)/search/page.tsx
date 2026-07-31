@@ -8,7 +8,10 @@ import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { RecentSearches } from "@/components/recent-searches"
 import { postUrl } from "@/lib/post-url"
 
-export const metadata = { title: "Tìm kiếm" }
+export const metadata = {
+  title: "Tìm kiếm",
+  robots: { index: false, follow: false },
+}
 
 interface SearchPageProps {
   searchParams: { q?: string }

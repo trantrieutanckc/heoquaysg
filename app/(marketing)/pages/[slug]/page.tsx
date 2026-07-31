@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
+import { siteConfig } from "@/config/site"
 import { EditorJsRenderer } from "@/components/editorjs-renderer"
 import { TiptapRenderer } from "@/components/tiptap-renderer"
 
@@ -15,7 +16,15 @@ export async function generateMetadata({ params }: Props) {
     select: { title: true },
   })
   if (!page) return {}
-  return { title: page.title }
+  const pageUrl = `${siteConfig.url}/pages/${params.slug}`
+  return {
+    title: page.title,
+    alternates: { canonical: pageUrl },
+    openGraph: {
+      title: page.title,
+      url: pageUrl,
+    },
+  }
 }
 
 export default async function StaticPage({ params }: Props) {
