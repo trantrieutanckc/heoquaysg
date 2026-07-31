@@ -10,14 +10,18 @@ export async function generateMetadata() {
   const siteName = cfg.siteName?.trim() || siteConfig.name
   const description = cfg.siteDescription?.trim() || siteConfig.description
   const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
+  const siteUrl = siteConfig.url
   return {
     title: { absolute: siteName },
     description,
+    alternates: { canonical: siteUrl },
     openGraph: {
       title: siteName,
       description,
       locale: "vi_VN",
       type: "website",
+      url: siteUrl,
+      siteName,
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
@@ -98,8 +102,27 @@ export default async function IndexPage() {
   const featured = featuredPost ?? posts[0] ?? null
   const others = posts.filter((p) => p.id !== featured?.id)
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FoodEstablishment",
+    name: siteName,
+    description: siteDescription,
+    url: siteConfig.url,
+    ...(cfg.contactPhone ? { telephone: cfg.contactPhone.trim() } : {}),
+    ...(cfg.contactAddress ? {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: cfg.contactAddress.trim(),
+        addressCountry: "VN",
+      },
+    } : {}),
+    image: ogUrl(heroImage),
+    servesCuisine: "Vietnamese",
+  }
+
   return (
     <div className="min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <HeroSection
         heroImage={heroImage}
         siteName={siteName}

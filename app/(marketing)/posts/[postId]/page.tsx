@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { formatDate, ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { EditorJsRenderer, extractHeadings } from "@/components/editorjs-renderer"
 import { TiptapRenderer, extractHeadingsTiptap } from "@/components/tiptap-renderer"
 import { TableOfContents } from "@/components/table-of-contents"
@@ -31,7 +32,7 @@ async function findPost(ref: string) {
 export async function generateMetadata({ params }: PostPageProps) {
   const post = await db.post.findFirst({
     where: { OR: [{ slug: params.postId }, { id: params.postId }] },
-    select: { title: true, seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true, image: true },
+    select: { title: true, slug: true, seoTitle: true, seoDescription: true, seoKeywords: true, seoImage: true, image: true },
   })
   if (!post) return {}
 
@@ -43,15 +44,18 @@ export async function generateMetadata({ params }: PostPageProps) {
     coverImage?.url ||
     `/api/og?heading=${encodeURIComponent(title)}&type=Post&mode=dark`
   )
+  const postUrl = `${siteConfig.url}/posts/${post.slug || params.postId}`
 
   return {
     title,
     description,
     keywords: post.seoKeywords ?? undefined,
+    alternates: { canonical: postUrl },
     openGraph: {
       title,
       description,
       type: "article",
+      url: postUrl,
       images: [{ url: ogImageUrl, width: 1200, height: 630 }],
     },
     twitter: {

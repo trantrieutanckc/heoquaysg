@@ -3,6 +3,7 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { postUrl } from "@/lib/post-url"
@@ -14,7 +15,11 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const tag = await db.tag.findUnique({ where: { slug: params.slug }, select: { name: true } })
   if (!tag) return {}
-  return { title: `#${tag.name}` }
+  const tagUrl = `${siteConfig.url}/tags/${params.slug}`
+  return {
+    title: `#${tag.name}`,
+    alternates: { canonical: tagUrl },
+  }
 }
 
 export default async function TagPage({ params }: Props) {

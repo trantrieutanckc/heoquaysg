@@ -5,6 +5,7 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import { formatDate, ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import type { CategoryTemplate } from "@/lib/templates"
 import { parseBanner } from "@/lib/banner"
@@ -31,13 +32,16 @@ export async function generateMetadata({ params }: CategoryPageProps) {
     `/api/og?heading=${encodeURIComponent(title)}&type=Guide&mode=dark`
   )
 
+  const catUrl = `${siteConfig.url}/categories/${params.slug}`
   return {
     title,
     description,
     keywords: category.seoKeywords ?? undefined,
+    alternates: { canonical: catUrl },
     openGraph: {
       title,
       description,
+      url: catUrl,
       images: [{ url: ogImageUrl, width: 1200, height: 630 }],
     },
     twitter: { card: "summary_large_image", title, description, images: [ogImageUrl] },

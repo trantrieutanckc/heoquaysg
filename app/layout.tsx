@@ -66,6 +66,9 @@ export async function generateMetadata() {
       description,
       images: [ogImage],
     },
+    alternates: {
+      canonical: appUrl,
+    },
     robots: {
       index: data.robotsIndex === "true",
       follow: data.robotsIndex === "true",

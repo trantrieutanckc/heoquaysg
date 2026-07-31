@@ -3,6 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { db } from "@/lib/db"
 import { formatDate, cn, ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { PageEntrance, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { StarDisplay } from "@/components/star-display"
@@ -15,13 +16,16 @@ export async function generateMetadata() {
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
   const description = `Các món heo quay, vịt quay, gà quay và ẩm thực từ ${siteName}.`
   const ogImage = ogUrl(cfg.heroImage?.trim() || cfg.logoUrl?.trim() || "/opengraph-image.jpg")
+  const blogUrl = `${siteConfig.url}/blog`
   return {
     title: "Thực đơn & Món ăn",
     description,
+    alternates: { canonical: blogUrl },
     openGraph: {
       title: `Thực đơn | ${siteName}`,
       description,
       locale: "vi_VN",
+      url: blogUrl,
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
