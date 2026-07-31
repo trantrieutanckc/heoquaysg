@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { PageEntrance, FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 
@@ -16,8 +17,10 @@ export async function generateMetadata() {
   return {
     title: `Về chúng tôi`,
     description,
+    alternates: { canonical: `${siteConfig.url}/about` },
     openGraph: {
       title: `Về chúng tôi | ${siteName}`,
+      url: `${siteConfig.url}/about`,
       description,
       locale: "vi_VN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],

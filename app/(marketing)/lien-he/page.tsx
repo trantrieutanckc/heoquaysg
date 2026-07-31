@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
 import { ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { ContactClient } from "./contact-client"
 
 export async function generateMetadata() {
@@ -13,8 +14,10 @@ export async function generateMetadata() {
   return {
     title: "Liên hệ",
     description,
+    alternates: { canonical: `${siteConfig.url}/lien-he` },
     openGraph: {
       title: `Liên hệ | ${siteName}`,
+      url: `${siteConfig.url}/lien-he`,
       description,
       locale: "vi_VN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],

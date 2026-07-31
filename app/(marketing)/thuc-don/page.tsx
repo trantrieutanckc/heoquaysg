@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/lib/db"
 import { cn, ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { BLUR_PLACEHOLDER } from "@/lib/image"
 import { postUrl } from "@/lib/post-url"
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primitives"
@@ -18,8 +19,10 @@ export async function generateMetadata() {
   return {
     title: "Thực đơn",
     description,
+    alternates: { canonical: `${siteConfig.url}/thuc-don` },
     openGraph: {
       title: `Thực đơn | ${siteName}`,
+      url: `${siteConfig.url}/thuc-don`,
       description,
       locale: "vi_VN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],

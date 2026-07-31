@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { db } from "@/lib/db"
 import { ogUrl } from "@/lib/utils"
+import { siteConfig } from "@/config/site"
 import { BookingForm } from "./booking-form"
 
 export const dynamic = "force-dynamic"
@@ -15,8 +16,10 @@ export async function generateMetadata() {
   return {
     title,
     description,
+    alternates: { canonical: `${siteConfig.url}/dat-lich` },
     openGraph: {
       title: `${title} | ${siteName}`,
+      url: `${siteConfig.url}/dat-lich`,
       description,
       locale: "vi_VN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: siteName }],
