@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: { params: { page: string } })
   return {
     title: `Bài viết & Thực đơn — Trang ${pageNum}`,
     description,
+    alternates: { canonical: `${process.env.NEXT_PUBLIC_APP_URL || "https://heoquaybinhtan.com"}/blog/${pageNum}` },
     openGraph: {
       title: `Thực đơn | ${siteName}`,
       description,

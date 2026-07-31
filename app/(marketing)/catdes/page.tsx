@@ -8,6 +8,7 @@ import { FadeUp, StaggerContainer, StaggerItem } from "@/components/motion-primi
 
 export const metadata = {
   title: "Danh mục & Mô tả",
+  robots: { index: false, follow: false },
 }
 
 export default async function CatDesPage() {
