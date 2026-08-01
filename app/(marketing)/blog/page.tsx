@@ -70,11 +70,11 @@ export default async function BlogPage({
     db.category.findMany({
       where: { published: true },
       orderBy: { order: "asc" },
-      select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
+      select: { id: true, name: true, slug: true, _count: { select: { posts: { where: { post: { published: true } } } } } },
     }),
     db.tag.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, name: true, slug: true, _count: { select: { posts: true } } },
+      select: { id: true, name: true, slug: true, _count: { select: { posts: { where: { post: { published: true } } } } } },
     }),
     db.post.findMany({
       where: postWhere,
