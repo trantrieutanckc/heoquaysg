@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     await writeFile(path.join(UPLOAD_DIR, filename), buffer)
 
     const publicUrl = `${UPLOAD_BASE_URL}/${filename}`
-    return NextResponse.json({ success: 1, url: publicUrl, file: { url: publicUrl } })
+    return NextResponse.json({ success: 1, url: publicUrl, file: { url: publicUrl }, _debug: { cwd: process.cwd(), uploadDir: UPLOAD_DIR } })
   } catch (err) {
     console.error("[upload]", err)
     return NextResponse.json({ error: "Upload failed" }, { status: 500 })
