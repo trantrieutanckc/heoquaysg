@@ -1,10 +1,21 @@
-import { writeFile, mkdir } from "fs/promises"
+import { writeFile, mkdir, access } from "fs/promises"
 import path from "path"
+import os from "os"
 import { NextResponse } from "next/server"
 import { randomUUID } from "crypto"
 import { getCurrentUser } from "@/lib/session"
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "images", "uploads")
+async function exists(p: string) {
+  try { await access(p); return true } catch { return false }
+}
+
+async function getUploadDir() {
+  if (process.env.UPLOAD_DIR) return process.env.UPLOAD_DIR
+  const cpanelDir = path.join(os.homedir(), "public_html", "images", "uploads")
+  if (await exists(path.join(os.homedir(), "public_html"))) return cpanelDir
+  return path.join(process.cwd(), "public", "images", "uploads")
+}
+
 const UPLOAD_BASE_URL = process.env.UPLOAD_BASE_URL ?? "/images/uploads"
 
 const MIME_TO_EXT: Record<string, string> = {
@@ -40,8 +51,9 @@ export async function POST(req: Request) {
     const filename = `${randomUUID()}.${ext}`
     const buffer = Buffer.from(await file.arrayBuffer())
 
-    await mkdir(UPLOAD_DIR, { recursive: true })
-    await writeFile(path.join(UPLOAD_DIR, filename), buffer)
+    const uploadDir = await getUploadDir()
+    await mkdir(uploadDir, { recursive: true })
+    await writeFile(path.join(uploadDir, filename), buffer)
 
     const publicUrl = `${UPLOAD_BASE_URL}/${filename}`
     return NextResponse.json({ success: 1, url: publicUrl, file: { url: publicUrl } })

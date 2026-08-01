@@ -20,20 +20,32 @@ export function ImageUploader({ value, onChange, className }: ImageUploaderProps
     setError(null)
     setUploading(true)
 
-    const form = new FormData()
-    form.append("file", file)
+    try {
+      const form = new FormData()
+      form.append("file", file)
 
-    const res = await fetch("/api/upload", { method: "POST", body: form })
-    const data = await res.json()
+      const res = await fetch("/api/upload", { method: "POST", body: form })
+      let data: { url?: string; error?: string } = {}
+      try {
+        data = await res.json()
+      } catch {
+        setError(`Server lỗi (${res.status})`)
+        setUploading(false)
+        return
+      }
 
-    setUploading(false)
+      if (!res.ok || data.error) {
+        setError(data.error ?? `Upload thất bại (${res.status})`)
+        setUploading(false)
+        return
+      }
 
-    if (!res.ok || data.error) {
-      setError(data.error ?? "Upload thất bại")
-      return
+      onChange(data.url ?? "")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Không kết nối được đến server")
+    } finally {
+      setUploading(false)
     }
-
-    onChange(data.url)
   }
 
   function handleFiles(files: FileList | null) {
