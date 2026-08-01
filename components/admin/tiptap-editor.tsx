@@ -16,6 +16,7 @@ import Highlight from "@tiptap/extension-highlight"
 import { TextStyle } from "@tiptap/extension-text-style"
 import Color from "@tiptap/extension-color"
 import { cn } from "@/lib/utils"
+import { toast } from "@/components/ui/use-toast"
 
 // ── Custom 2-column extension ──────────────────────────────────────────────
 import { Node, mergeAttributes } from "@tiptap/core"
@@ -147,10 +148,16 @@ export function TiptapEditor({
   async function handleImageFile(file: File) {
     const form = new FormData()
     form.append("file", file)
-    const res = await fetch("/api/upload", { method: "POST", body: form })
-    const data = await res.json()
-    if (data?.success && data?.file?.url) {
-      editor.chain().focus().setImage({ src: data.file.url }).run()
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: form })
+      const data = await res.json()
+      if (data?.success && data?.file?.url) {
+        editor.chain().focus().setImage({ src: data.file.url }).run()
+      } else {
+        toast({ title: "Upload thất bại", description: data?.error ?? "Không thể tải ảnh lên.", variant: "destructive" })
+      }
+    } catch {
+      toast({ title: "Upload thất bại", description: "Lỗi kết nối, thử lại sau.", variant: "destructive" })
     }
   }
 

@@ -40,6 +40,8 @@ next-env.d.ts
 
 # uploaded files
 /public/uploads/
+/public/images/uploads/*
+!/public/images/uploads/.gitkeep
 
 # package-lock (project uses pnpm)
 package-lock.json
