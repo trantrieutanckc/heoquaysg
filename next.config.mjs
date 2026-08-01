@@ -19,13 +19,13 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // Next.js requires unsafe-inline for hydration scripts; unsafe-eval for some libs
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://static.hotjar.com https://va.vercel-scripts.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://static.hotjar.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Allow images from anywhere over HTTPS (Supabase Storage, avatars, etc.)
       "img-src 'self' data: blob: https:",
       "font-src 'self' https://fonts.gstatic.com data:",
       // API connections: Supabase Storage + common analytics endpoints
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.facebook.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.facebook.com",
       // Allow YouTube/Maps embeds in EditorJS content
       "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://maps.google.com https://www.google.com",
       // CRITICAL: prevent this site from being embedded anywhere (anti-clickjacking)
