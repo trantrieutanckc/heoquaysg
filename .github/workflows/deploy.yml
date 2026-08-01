@@ -16,12 +16,13 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            set -e
             mkdir -p ~/uploads
             cd ~/app
             git pull origin main
             npm install --legacy-peer-deps
             npx prisma db push --accept-data-loss
-            npm run build
+            NODE_OPTIONS="--max-old-space-size=512" npm run build
             pm2 restart heoquaybinhtan
             rsync -a --update ~/app/public/images/ ~/public_html/images/
 
