@@ -1,10 +1,11 @@
 import { writeFile, mkdir } from "fs/promises"
 import path from "path"
+import os from "os"
 import { NextResponse } from "next/server"
 import { randomUUID } from "crypto"
 import { getCurrentUser } from "@/lib/session"
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "images", "uploads")
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(os.homedir(), "uploads")
 const UPLOAD_BASE_URL = "/api/images"
 
 const MIME_TO_EXT: Record<string, string> = {

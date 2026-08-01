@@ -16,6 +16,7 @@ jobs:
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
           script: |
+            mkdir -p ~/uploads
             cd ~/app
             git pull origin main
             npm install --legacy-peer-deps

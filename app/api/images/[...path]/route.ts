@@ -1,8 +1,9 @@
 import { readFile } from "fs/promises"
 import path from "path"
+import os from "os"
 import { NextResponse } from "next/server"
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public", "images", "uploads")
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(os.homedir(), "uploads")
 
 const MIME: Record<string, string> = {
   jpg: "image/jpeg",
