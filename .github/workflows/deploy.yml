@@ -22,8 +22,8 @@ jobs:
             git pull origin main
             npm install --legacy-peer-deps
             npx prisma db push --accept-data-loss
-            NODE_OPTIONS="--max-old-space-size=512" npm run build
-            pm2 restart heoquaybinhtan
+            npm run build
+            pm2 restart 0
             rsync -a --update ~/app/public/images/ ~/public_html/images/
 
             # Setup cron job auto-publish (chỉ thêm 1 lần, idempotent)
