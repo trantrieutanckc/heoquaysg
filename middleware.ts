@@ -90,10 +90,20 @@ const authMiddleware = withAuth(
 
 // ── Combined middleware ───────────────────────────────────────────────────────
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  // HTTP → HTTPS redirect (behind Apache reverse proxy)
+  const proto = req.headers.get("x-forwarded-proto")
+  if (proto === "http") {
+    const url = req.nextUrl.clone()
+    url.protocol = "https:"
+    return NextResponse.redirect(url, { status: 301 })
+  }
+
+  const { pathname } = req.nextUrl
+
   // Rate-limit credentials login endpoint
   if (
     req.method === "POST" &&
-    req.nextUrl.pathname === "/api/auth/callback/credentials"
+    pathname === "/api/auth/callback/credentials"
   ) {
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
@@ -116,15 +126,20 @@ export default function middleware(req: NextRequest, event: NextFetchEvent) {
     }
   }
 
-  return (authMiddleware as any)(req, event)
+  const isAuthPath =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/editor") ||
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/register") ||
+    pathname === "/api/auth/callback/credentials"
+
+  if (isAuthPath) {
+    return (authMiddleware as any)(req, event)
+  }
+
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/editor/:path*",
-    "/login",
-    "/register",
-    "/api/auth/callback/credentials",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 }
