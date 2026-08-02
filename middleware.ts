@@ -93,7 +93,7 @@ export default function middleware(req: NextRequest, event: NextFetchEvent) {
   // HTTP → HTTPS redirect (behind Apache reverse proxy)
   const proto = req.headers.get("x-forwarded-proto")
   if (proto === "http") {
-    const host = req.headers.get("host") ?? req.nextUrl.host
+    const host = req.headers.get("x-forwarded-host") ?? "heoquaybinhtan.com"
     const url = new URL(`https://${host}${req.nextUrl.pathname}${req.nextUrl.search}`)
     return NextResponse.redirect(url, { status: 301 })
   }
