@@ -228,7 +228,6 @@ function StandardTemplate({ category, image, posts, banner, bookingProps, useSlu
             <p className="text-sm text-muted-foreground">Danh mục này chưa có bài viết nào được đăng.</p>
           </FadeUp>
         )}
-        {banner && <FadeUp className="mt-10"><BannerDisplay banner={banner} /></FadeUp>}
       </div>
       <BookingCtaSection {...bookingProps} />
     </div>
@@ -283,7 +282,6 @@ function HeroTemplate({ category, image, posts, banner, bookingProps, useSlugs }
             <p className="text-sm text-muted-foreground">Danh mục này chưa có bài viết nào được đăng.</p>
           </FadeUp>
         )}
-        {banner && <FadeUp className="mt-10"><BannerDisplay banner={banner} /></FadeUp>}
       </div>
       <BookingCtaSection {...bookingProps} />
     </div>
