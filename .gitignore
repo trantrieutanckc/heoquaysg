@@ -43,5 +43,5 @@ next-env.d.ts
 /public/images/uploads/*
 !/public/images/uploads/.gitkeep
 
-# package-lock (project uses pnpm)
-package-lock.json
+# contentlayer build artifacts
+.contentlayer
