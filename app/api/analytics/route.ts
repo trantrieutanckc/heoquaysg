@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/session"
 
 function getClient() {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON?.replace(/^'|'$/g, "").replace(/^"|"$/g, "")
   if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON not set")
   const credentials = JSON.parse(raw)
   return new BetaAnalyticsDataClient({ credentials })
