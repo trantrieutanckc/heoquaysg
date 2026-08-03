@@ -19,6 +19,7 @@ jobs:
             set -e
             mkdir -p ~/uploads
             cd ~/app
+            git checkout -- package-lock.json
             git pull origin main
             npm install --legacy-peer-deps
             npx prisma db push --accept-data-loss
