@@ -20,4 +20,6 @@ jobs:
             git pull
             npm install --legacy-peer-deps
             npm run build
-            pm2 reload ecosystem.config.js --update-env
+            fuser -k 3000/tcp || true
+            pm2 delete all 2>/dev/null || true
+            pm2 start npm --name "heoquaybinhtan" -- start
