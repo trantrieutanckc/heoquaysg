@@ -102,13 +102,22 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     })(),
   }
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Trang chủ", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Danh mục", item: `${siteConfig.url}/categories` },
+      { "@type": "ListItem", position: 3, name: category.name, item: `${siteConfig.url}/categories/${params.slug}` },
+    ],
+  }
+
+  const templateProps = { category, image, posts, banner, bookingProps, useSlugs }
+
   if (template === "hero") {
-    return <HeroTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} /><HeroTemplate {...templateProps} /></>
   }
-  if (template === "grid") {
-    return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
-  }
-  return <StandardTemplate category={category} image={image} posts={posts} banner={banner} bookingProps={bookingProps} useSlugs={useSlugs} />
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} /><StandardTemplate {...templateProps} /></>
 }
 
 // ─── Shared post card ────────────────────────────────────────────────────────

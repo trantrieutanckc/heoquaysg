@@ -114,6 +114,16 @@ export default async function PostPage({ params }: PostPageProps) {
       })
 
   const articleUrl = `${siteConfig.url}/posts/${post.slug || params.postId}`
+  const firstCategory = post.categories[0]?.category
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Trang chủ", item: siteConfig.url },
+      ...(firstCategory ? [{ "@type": "ListItem", position: 2, name: firstCategory.name, item: `${siteConfig.url}/categories/${firstCategory.slug}` }] : []),
+      { "@type": "ListItem", position: firstCategory ? 3 : 2, name: post.title, item: articleUrl },
+    ],
+  }
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -135,6 +145,7 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <div className="min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       {/* ── Hero — ảnh + title đè lên ─────────────────────────── */}
       {postImage?.url ? (

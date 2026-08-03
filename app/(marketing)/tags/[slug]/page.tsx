@@ -66,8 +66,19 @@ export default async function TagPage({ params }: Props) {
   const useSlugs = cfg.useSlugs === "true"
   const posts = tag.posts.map((p) => p.post)
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Trang chủ", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Tags", item: `${siteConfig.url}/tags` },
+      { "@type": "ListItem", position: 3, name: `#${tag.name}`, item: `${siteConfig.url}/tags/${tag.slug}` },
+    ],
+  }
+
   return (
     <div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="border-b bg-card">
         <div className="container px-4 sm:px-6 py-10 lg:py-14">
           <PageEntrance>
