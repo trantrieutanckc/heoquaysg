@@ -1,9 +1,24 @@
-import { readFile } from "fs/promises"
+import { readFile, access } from "fs/promises"
 import path from "path"
-import os from "os"
 import { NextResponse } from "next/server"
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public/images/uploads")
+// Tìm project root từ __dirname (không phụ thuộc process.cwd() hay pm2 env)
+function findProjectRoot(dir: string): string {
+  const fs = require("fs")
+  for (let i = 0; i < 8; i++) {
+    if (fs.existsSync(path.join(dir, "package.json"))) return dir
+    const parent = path.dirname(dir)
+    if (parent === dir) break
+    dir = parent
+  }
+  return process.cwd()
+}
+
+const PROJECT_ROOT = process.env.UPLOAD_DIR
+  ? path.dirname(path.dirname(process.env.UPLOAD_DIR))
+  : findProjectRoot(__dirname)
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(PROJECT_ROOT, "public/images/uploads")
 
 const MIME: Record<string, string> = {
   jpg: "image/jpeg",

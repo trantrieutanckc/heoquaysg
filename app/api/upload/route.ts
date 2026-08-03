@@ -1,11 +1,25 @@
 import { writeFile, mkdir } from "fs/promises"
 import path from "path"
-import os from "os"
 import { NextResponse } from "next/server"
 import { randomUUID } from "crypto"
 import { getCurrentUser } from "@/lib/session"
 
-const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(process.cwd(), "public/images/uploads")
+function findProjectRoot(dir: string): string {
+  const fs = require("fs")
+  for (let i = 0; i < 8; i++) {
+    if (fs.existsSync(path.join(dir, "package.json"))) return dir
+    const parent = path.dirname(dir)
+    if (parent === dir) break
+    dir = parent
+  }
+  return process.cwd()
+}
+
+const PROJECT_ROOT = process.env.UPLOAD_DIR
+  ? path.dirname(path.dirname(process.env.UPLOAD_DIR))
+  : findProjectRoot(__dirname)
+
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join(PROJECT_ROOT, "public/images/uploads")
 const UPLOAD_BASE_URL = "/api/images"
 
 const MIME_TO_EXT: Record<string, string> = {
