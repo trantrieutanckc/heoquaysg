@@ -244,6 +244,86 @@ Trang public: **/thuc-don** — hiển thị toàn bộ nhóm món và giá cho 
 - Khách có thể tự hủy qua link trong email (nếu bạn thêm link /api/newsletter/unsubscribe?token=...)`,
   },
   {
+    key: "seo",
+    title: "SEO",
+    content: `# SEO & Structured Data
+
+## Những gì đã được tích hợp sẵn
+
+Hệ thống tự động xử lý SEO — không cần cài thêm plugin hay chỉnh code.
+
+### Metadata (thẻ meta)
+- Mỗi trang có **title**, **description**, **canonical URL** riêng
+- Hỗ trợ đầy đủ **Open Graph** (Facebook, Zalo) và **Twitter Card**
+- Bài viết có thể chỉnh SEO Title, Mô tả, Từ khoá, SEO Image riêng trong accordion "SEO" ở editor
+
+### Sitemap
+- Tự động tại: **https://heoquaybinhtan.com/sitemap.xml**
+- Bao gồm tất cả trang, danh mục, bài viết, tags đã published
+- Cập nhật ngay khi thêm bài/danh mục mới
+
+### Robots.txt
+- Tự động tại: **https://heoquaybinhtan.com/robots.txt**
+- Mặc định: cho phép Google index toàn bộ trang công khai, chặn /dashboard và /api
+- Có thể tuỳ chỉnh tại Dashboard → Cài đặt → Robots.txt
+
+### Structured Data (JSON-LD)
+Google dùng dữ liệu này để hiển thị rich results (kết quả nổi bật) trong tìm kiếm.
+
+| Trang | Schema |
+|---|---|
+| Trang chủ | FoodEstablishment (tên quán, địa chỉ, SĐT, ảnh, ẩm thực) |
+| Bài viết | Article + BreadcrumbList |
+| Danh mục | BreadcrumbList |
+| Tags | BreadcrumbList |
+
+## Kiểm tra SEO sau khi đăng
+1. Vào [Google Rich Results Test](https://search.google.com/test/rich-results) → nhập URL trang
+2. Xác nhận structured data được nhận diện đúng
+3. Vào **Google Search Console** → Sitemap → Submit \`https://heoquaybinhtan.com/sitemap.xml\`
+
+## Điền đầy đủ thông tin để SEO hiệu quả
+- Dashboard → **Cài đặt**: tên site, SĐT, địa chỉ (dùng cho FoodEstablishment schema)
+- Mỗi bài viết: điền đủ **SEO Title** (50–60 ký tự) + **Mô tả** (150–160 ký tự)
+- Mỗi danh mục: điền SEO Title + Description riêng`,
+  },
+  {
+    key: "ip-block",
+    title: "Chặn IP",
+    content: `# Chặn IP (IP Block)
+
+Tính năng giúp chặn các địa chỉ IP spam, bot hoặc khách hàng cố tình gửi form nhiều lần.
+
+## Vào trang quản lý
+Dashboard → **Chặn IP** (chỉ ADMIN mới thấy mục này)
+
+## Giao diện gồm 2 panel
+
+### Panel trái — Top IP truy cập nhiều nhất
+- Hiển thị 50 IP có số lần request cao nhất
+- Mỗi hàng: địa chỉ IP, số lần, lần cuối truy cập
+- Nhấn **"Chặn"** để chặn IP đó ngay
+
+### Panel phải — Danh sách IP đang bị chặn
+- Hiển thị tất cả IP đã bị chặn + lý do
+- Nhấn **"Bỏ chặn"** để gỡ bỏ
+
+## Chặn IP thủ công
+- Nhập địa chỉ IP vào ô "Nhập IP cần chặn"
+- Nhập lý do (tuỳ chọn)
+- Nhấn **"Chặn"**
+
+## Cơ chế hoạt động
+- IP bị chặn sẽ nhận lỗi **403 Forbidden** khi gọi các API endpoint
+- Hệ thống tự động ghi log mọi request vào bảng RequestLog
+- Log được nhóm theo IP + path — xem được path nào bị gọi nhiều nhất
+
+## Lưu ý
+- Chặn IP chỉ ảnh hưởng đến API, không ảnh hưởng đến trang công khai
+- Nếu chặn nhầm IP của khách thật: vào panel phải → nhấn "Bỏ chặn" ngay
+- IP động (thay đổi mỗi lần kết nối) thì chặn IP không hiệu quả lâu dài`,
+  },
+  {
     key: "settings",
     title: "Cài đặt",
     content: `# Hướng dẫn Cài đặt & Go Live
@@ -298,8 +378,8 @@ Tất cả text hiển thị trên website đều chỉnh được trong dashboa
 ## Upload ảnh
 
 Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** để upload từ máy tính:
-- Định dạng: JPG, PNG, WebP
-- Ảnh tự động lưu lên Supabase Storage
+- Định dạng: JPG, PNG, WebP — tối đa 5MB
+- Ảnh lưu trên server tại thư mục \`/public/images/uploads/\`
 - Để trống → dùng ảnh mặc định (thường là Ảnh Hero Banner từ Cài đặt)
 
 ## Robots.txt (kiểm soát Google)
@@ -308,7 +388,7 @@ Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** đ
 - Nếu cần chặn trang nào đó: vào Cài đặt → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
 
 ## Sitemap
-- Tự động tạo tại: **https://heoquaybinhtan.vercel.app/sitemap.xml**
+- Tự động tạo tại: **https://heoquaybinhtan.com/sitemap.xml**
 - Bao gồm: trang chủ, blog, danh mục, thực đơn, đặt lịch, tất cả bài viết đã đăng
 - Gửi URL sitemap lên **Google Search Console** sau khi go live
 
@@ -355,7 +435,12 @@ Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** đ
 - Chỉ nhận đơn giao **Thứ 2 – Thứ 7** (hệ thống tự chặn Chủ nhật)
 
 ## Tìm kiếm nhanh
-- Thanh tìm kiếm 🔍 ở góc phải dashboard → tìm nhanh bài viết theo tiêu đề`,
+- Thanh tìm kiếm 🔍 ở góc phải dashboard → tìm nhanh bài viết theo tiêu đề
+
+## Thống kê người dùng (Google Analytics)
+- Dashboard → **Dashboard** (trang chủ) → xem biểu đồ Users & Sessions 30 ngày gần nhất
+- Dữ liệu lấy từ Google Analytics 4 qua service account
+- Nếu biểu đồ không hiện: kiểm tra file \`service-account.json\` và biến môi trường \`GOOGLE_SERVICE_ACCOUNT_FILE\` trên server`,
   },
   {
     key: "permissions",
