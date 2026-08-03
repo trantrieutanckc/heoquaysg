@@ -22,6 +22,7 @@ const ROLE_PERMISSIONS: Record<Role, string[]> = {
     "/dashboard/docs",
     "/dashboard/settings",
     "/dashboard/import-export",
+    "/dashboard/ip-block",
   ],
   EDITOR: [
     "/dashboard",

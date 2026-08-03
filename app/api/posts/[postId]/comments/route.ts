@@ -3,6 +3,7 @@ import * as z from "zod"
 import { db } from "@/lib/db"
 import { sendCommentNotification } from "@/lib/mailer"
 import { createCommentNotification } from "@/lib/notifications"
+import { isIpBlocked, logRequest } from "@/lib/ip-guard"
 
 // ── Rate limiter: 5 comments per IP per hour ──────────────────────────────────
 const commentRateMap = new Map<string, { count: number; resetAt: number }>()
@@ -74,11 +75,15 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { postId: string } }
 ) {
-  // Rate limit
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
     "unknown"
+
+  if (await isIpBlocked(ip)) {
+    return NextResponse.json({ error: "Yêu cầu bị từ chối." }, { status: 403 })
+  }
+  logRequest(ip, "/api/comments").catch(() => null)
 
   if (!checkCommentRate(ip)) {
     return NextResponse.json(

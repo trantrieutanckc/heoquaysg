@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import * as z from "zod"
 import { db } from "@/lib/db"
 import { createBookingNotification } from "@/lib/notifications"
+import { isIpBlocked, logRequest } from "@/lib/ip-guard"
 
 const RATE_LIMIT_MINUTES = 10
 const MIN_FORM_SECONDS = 5
@@ -23,6 +24,12 @@ const bookingSchema = z.object({
 })
 
 export async function POST(req: Request) {
+  const ip = (req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? req.headers.get("x-real-ip") ?? "unknown")
+  if (await isIpBlocked(ip)) {
+    return NextResponse.json({ error: "Yêu cầu bị từ chối." }, { status: 403 })
+  }
+  logRequest(ip, "/api/bookings").catch(() => null)
+
   try {
     const body = bookingSchema.parse(await req.json())
 

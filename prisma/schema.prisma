@@ -335,6 +335,27 @@ model DishGroup {
   @@map(name: "dish_groups")
 }
 
+model BlockedIp {
+  id        String   @id @default(cuid())
+  ip        String   @unique
+  reason    String?
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  @@map(name: "blocked_ips")
+}
+
+model RequestLog {
+  id       String   @id @default(cuid())
+  ip       String
+  path     String
+  count    Int      @default(1)
+  lastSeen DateTime @default(now()) @map(name: "last_seen")
+
+  @@unique([ip, path])
+  @@index([count])
+  @@map(name: "request_logs")
+}
+
 model Dish {
   id          String    @id @default(cuid())
   name        String

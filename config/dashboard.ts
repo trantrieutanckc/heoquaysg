@@ -98,5 +98,11 @@ export const dashboardConfig: DashboardConfig = {
       href: "/dashboard/settings",
       icon: "settings",
     },
+    {
+      title: "Chặn IP",
+      href: "/dashboard/ip-block",
+      icon: "settings",
+      adminOnly: true,
+    },
   ],
 }
