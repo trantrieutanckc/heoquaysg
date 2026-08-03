@@ -1,9 +1,12 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import {
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -99,8 +102,37 @@ const STAT_CONFIGS = [
   },
 ]
 
+interface AnalyticsDay {
+  date: string
+  users: number
+  sessions: number
+}
+
+interface AnalyticsSummary {
+  users: number
+  sessions: number
+  pageviews: number
+}
+
 export default function DashboardOverview({ stats, postsByMonth, commentsByMonth }: Props) {
   const draftPosts = stats.totalPosts - stats.publishedPosts
+
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsDay[]>([])
+  const [analyticsSummary, setAnalyticsSummary] = useState<AnalyticsSummary | null>(null)
+  const [analyticsError, setAnalyticsError] = useState<string | null>(null)
+  const [analyticsLoading, setAnalyticsLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/analytics")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.error) { setAnalyticsError(data.error); return }
+        setAnalyticsData(data.daily)
+        setAnalyticsSummary(data.summary)
+      })
+      .catch(() => setAnalyticsError("Không thể tải dữ liệu"))
+      .finally(() => setAnalyticsLoading(false))
+  }, [])
 
   const statValues = [
     { value: stats.totalPosts, sub: `${stats.publishedPosts} đã đăng · ${draftPosts} nháp` },
@@ -176,6 +208,82 @@ export default function DashboardOverview({ stats, postsByMonth, commentsByMonth
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </div>
+
+      {/* ── Analytics ──────────────────────────────────────────── */}
+      <div className="rounded-xl border bg-card p-5">
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <p className="text-sm font-semibold">Người dùng truy cập</p>
+            <p className="text-xs text-muted-foreground">30 ngày gần nhất (Google Analytics)</p>
+          </div>
+          {analyticsSummary && (
+            <div className="flex gap-6 text-right">
+              <div>
+                <p className="text-xl font-bold">{analyticsSummary.users.toLocaleString("vi-VN")}</p>
+                <p className="text-xs text-muted-foreground">Users</p>
+              </div>
+              <div>
+                <p className="text-xl font-bold">{analyticsSummary.sessions.toLocaleString("vi-VN")}</p>
+                <p className="text-xs text-muted-foreground">Sessions</p>
+              </div>
+              <div>
+                <p className="text-xl font-bold">{analyticsSummary.pageviews.toLocaleString("vi-VN")}</p>
+                <p className="text-xs text-muted-foreground">Pageviews</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {analyticsLoading && (
+          <div className="h-[220px] flex items-center justify-center text-sm text-muted-foreground">
+            Đang tải...
+          </div>
+        )}
+        {analyticsError && (
+          <div className="h-[220px] flex items-center justify-center text-sm text-destructive">
+            {analyticsError}
+          </div>
+        )}
+        {!analyticsLoading && !analyticsError && (
+          <ResponsiveContainer width="100%" height={220}>
+            <LineChart data={analyticsData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                axisLine={false}
+                tickLine={false}
+                interval={4}
+              />
+              <YAxis
+                allowDecimals={false}
+                tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: "hsl(var(--border))" }} />
+              <Line
+                type="monotone"
+                dataKey="users"
+                name="Users"
+                stroke="#10b981"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="sessions"
+                name="Sessions"
+                stroke="#6366f1"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
     </div>
