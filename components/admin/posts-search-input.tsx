@@ -9,8 +9,13 @@ function Inner({ defaultValue = "" }: { defaultValue?: string }) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [value, setValue] = React.useState(defaultValue)
+  const isMounted = React.useRef(false)
 
   React.useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true
+      return
+    }
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString())
       if (value.trim()) {

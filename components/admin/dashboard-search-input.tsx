@@ -9,8 +9,13 @@ function Inner({ placeholder, paramKey = "q" }: { placeholder?: string; paramKey
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [value, setValue] = React.useState(searchParams.get(paramKey) ?? "")
+  const isMounted = React.useRef(false)
 
   React.useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true
+      return
+    }
     const timer = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString())
       if (value.trim()) {

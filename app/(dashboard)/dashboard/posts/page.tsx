@@ -13,6 +13,7 @@ import { DashboardPagination } from "@/components/admin/dashboard-pagination"
 import { PostsImportExport } from "@/components/admin/posts-import-export"
 import { PostsSearchInput } from "@/components/admin/posts-search-input"
 
+export const dynamic = "force-dynamic"
 export const metadata = { title: "Bài viết" }
 
 const PAGE_SIZE = 6
