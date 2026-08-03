@@ -214,7 +214,6 @@ function StandardTemplate({ category, image, posts, banner, bookingProps, useSlu
       </PageEntrance>
 
       <div className="container px-4 sm:px-6 py-10 lg:py-14">
-        {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
           <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
@@ -229,6 +228,7 @@ function StandardTemplate({ category, image, posts, banner, bookingProps, useSlu
             <p className="text-sm text-muted-foreground">Danh mục này chưa có bài viết nào được đăng.</p>
           </FadeUp>
         )}
+        {banner && <FadeUp className="mt-10"><BannerDisplay banner={banner} /></FadeUp>}
       </div>
       <BookingCtaSection {...bookingProps} />
     </div>
@@ -269,7 +269,6 @@ function HeroTemplate({ category, image, posts, banner, bookingProps, useSlugs }
       </div>
 
       <div className="container px-4 sm:px-6 py-10 lg:py-14 pb-20 lg:pb-28">
-        {banner && <FadeUp className="mb-10"><BannerDisplay banner={banner} /></FadeUp>}
         {posts.length ? (
           <StaggerContainer className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
             {posts.map((post: any) => (
@@ -284,6 +283,7 @@ function HeroTemplate({ category, image, posts, banner, bookingProps, useSlugs }
             <p className="text-sm text-muted-foreground">Danh mục này chưa có bài viết nào được đăng.</p>
           </FadeUp>
         )}
+        {banner && <FadeUp className="mt-10"><BannerDisplay banner={banner} /></FadeUp>}
       </div>
       <BookingCtaSection {...bookingProps} />
     </div>
