@@ -11,7 +11,7 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Tài liệu",
       href: "/dashboard/docs",
-      icon: "page",
+      icon: "docs",
     },
     {
       title: "Bài viết",
@@ -31,42 +31,42 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Đặt lịch",
       href: "/dashboard/dat-lich",
-      icon: "clock",
+      icon: "calendar",
     },
     {
       title: "Danh mục",
       href: "/dashboard/categories",
-      icon: "page",
+      icon: "category",
     },
     {
       title: "Tags",
       href: "/dashboard/tags",
-      icon: "page",
+      icon: "tag",
     },
     {
       title: "Thực đơn",
       href: "/dashboard/thuc-don",
-      icon: "page",
+      icon: "menu",
     },
     {
       title: "Trang tĩnh",
       href: "/dashboard/pages",
-      icon: "page",
+      icon: "staticPage",
     },
     {
       title: "Menu",
       href: "/dashboard/menu",
-      icon: "page",
+      icon: "navMenu",
     },
     {
       title: "Bình luận",
       href: "/dashboard/comments",
-      icon: "page",
+      icon: "comment",
     },
     {
       title: "Subscribers",
       href: "/dashboard/subscribers",
-      icon: "page",
+      icon: "users",
     },
     {
       title: "Người dùng",
@@ -76,22 +76,22 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Về chúng tôi",
       href: "/dashboard/about",
-      icon: "page",
+      icon: "about",
     },
     {
       title: "Liên hệ",
       href: "/dashboard/lien-he",
-      icon: "page",
+      icon: "contact",
     },
     {
       title: "Giao diện",
       href: "/dashboard/giao-dien",
-      icon: "settings",
+      icon: "palette",
     },
     {
       title: "Import / Export",
       href: "/dashboard/import-export",
-      icon: "laptop",
+      icon: "importExport",
     },
     {
       title: "Cài đặt",
@@ -101,7 +101,7 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Chặn IP",
       href: "/dashboard/ip-block",
-      icon: "settings",
+      icon: "ipBlock",
       adminOnly: true,
     },
   ],
