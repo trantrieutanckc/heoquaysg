@@ -3,8 +3,14 @@ import { NextResponse } from "next/server"
 import { getCurrentUser } from "@/lib/session"
 
 function getClient() {
+  const filePath = process.env.GOOGLE_SERVICE_ACCOUNT_FILE
+  if (filePath) {
+    const fs = require("fs")
+    const credentials = JSON.parse(fs.readFileSync(filePath, "utf8"))
+    return new BetaAnalyticsDataClient({ credentials })
+  }
   const raw = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
-  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON not set")
+  if (!raw) throw new Error("GOOGLE_SERVICE_ACCOUNT_FILE or GOOGLE_SERVICE_ACCOUNT_JSON not set")
   const decoded = Buffer.from(raw, "base64").toString("utf8")
   const credentials = JSON.parse(decoded)
   return new BetaAnalyticsDataClient({ credentials })
