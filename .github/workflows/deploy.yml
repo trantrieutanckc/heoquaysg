@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Deploy
 
 on:
   push:
@@ -8,35 +8,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          port: ${{ secrets.VPS_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            set -e
-            mkdir -p ~/uploads
             cd ~/app
-            git checkout -- package-lock.json
-            git pull origin main
-            npm install --legacy-peer-deps
-            npx prisma db push --accept-data-loss
-            rm -rf .next
+            git pull
+            npm install --production=false
             npm run build
-            grep -v "^UPLOAD_DIR=" ~/app/.env > /tmp/.env.tmp && mv /tmp/.env.tmp ~/app/.env
-            echo "UPLOAD_DIR=/home/heoquaybinhtan/app/public/images/uploads" >> ~/app/.env
-            pm2 restart 0
-            rsync -a --update ~/app/public/images/ ~/public_html/images/
-
-            # Setup cron job auto-publish (chỉ thêm 1 lần, idempotent)
-            mkdir -p ~/logs
-            CRON_SECRET=$(grep -E '^CRON_SECRET=' ~/app/.env.local 2>/dev/null | head -1 | cut -d= -f2- | tr -d '"' | tr -d "'")
-            if [ -z "$CRON_SECRET" ]; then
-              CRON_SECRET=$(grep -E '^CRON_SECRET=' ~/app/.env 2>/dev/null | head -1 | cut -d= -f2- | tr -d '"' | tr -d "'")
-            fi
-            if [ -n "$CRON_SECRET" ] && ! crontab -l 2>/dev/null | grep -q "api/cron/publish"; then
-              (crontab -l 2>/dev/null; echo "0 2 * * * curl -sf -H \"Authorization: Bearer $CRON_SECRET\" http://localhost:3000/api/cron/publish >> ~/logs/cron-publish.log 2>&1") | crontab -
-              echo "Cron job installed."
-            fi
+            pm2 reload ecosystem.config.js --update-env
