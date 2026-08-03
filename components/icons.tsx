@@ -2,7 +2,7 @@ import {
   AlertTriangle,
   ArrowRight,
   ArrowUpDown,
-  Ban,
+
   Bell,
   BookOpen,
   Calendar,
@@ -84,7 +84,7 @@ export const Icons = {
   palette: Palette,
   importExport: ArrowUpDown,
   ipBlock: Shield,
-  ban: Ban,
+
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
