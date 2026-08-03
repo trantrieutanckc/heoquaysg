@@ -379,7 +379,7 @@ Tất cả text hiển thị trên website đều chỉnh được trong dashboa
 
 Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** để upload từ máy tính:
 - Định dạng: JPG, PNG, WebP — tối đa 5MB
-- Ảnh lưu trên server tại thư mục \`/public/images/uploads/\`
+- Ảnh lưu trên server tại thư mục \`/home/heoquaybinhtan/public_html/images/uploads/\`
 - Để trống → dùng ảnh mặc định (thường là Ảnh Hero Banner từ Cài đặt)
 
 ## Robots.txt (kiểm soát Google)
