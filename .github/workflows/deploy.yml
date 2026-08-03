@@ -18,6 +18,6 @@ jobs:
           script: |
             cd ~/app
             git pull
-            npm install --production=false
+            npm install --legacy-peer-deps
             npm run build
             pm2 reload ecosystem.config.js --update-env
