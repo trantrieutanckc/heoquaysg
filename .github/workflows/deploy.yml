@@ -8,7 +8,37 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to server
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_URL: https://heoquaybinhtan.com
+          NEXTAUTH_URL: https://heoquaybinhtan.com
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Upload build to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ".next,public,package.json,package-lock.json,prisma,next.config.mjs"
+          target: "~/app"
+
+      - name: Restart pm2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -17,9 +47,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/app
-            git pull
-            npm install --legacy-peer-deps
-            npm run build
+            npm install --legacy-peer-deps --production
             fuser -k 3000/tcp || true
-            pm2 delete all 2>/dev/null || true
-            pm2 start npm --name "heoquaybinhtan" -- start
+            pm2 restart 0 || pm2 start npm --name "heoquaybinhtan" -- start
