@@ -1,4 +1,3 @@
-import { Nunito } from "next/font/google"
 import { cache, Suspense } from "react"
 
 import "@/styles/globals.css"
@@ -20,11 +19,6 @@ const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
   return (config?.data ?? {}) as Record<string, string>
 })
 
-const fontHeading = Nunito({
-  subsets: ["latin", "vietnamese"],
-  variable: "--font-heading",
-  weight: ["300", "400", "500", "600"],
-})
 
 interface RootLayoutProps {
   children: React.ReactNode
@@ -85,12 +79,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="vi" suppressHydrationWarning>
-      <head />
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
+      </head>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontHeading.variable
-        )}
+        className="min-h-screen bg-background font-sans antialiased"
+        style={{ "--font-heading": "'Nunito', sans-serif" } as React.CSSProperties}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextTopLoader color="hsl(22 82% 40%)" height={3} showSpinner={false} />
