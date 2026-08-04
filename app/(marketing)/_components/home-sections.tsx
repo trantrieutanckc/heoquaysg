@@ -135,7 +135,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
 
 interface FeaturedPost {
   id: string; slug?: string | null; title: string; createdAt: Date; image: unknown; content: unknown
-  avgRating: number | null; ratingCount: number
+  avgRating: number | null; ratingCount: number; seoDescription?: string | null
   author: { name: string | null; image: string | null } | null
   categories: { category: { name: string; slug: string } }[]
 }
@@ -146,7 +146,7 @@ interface FeaturedSectionProps {
 
 export function FeaturedSection({ post, bgStyle, label, title, useSlugs = false }: FeaturedSectionProps) {
   const image = img(post.image)
-  const excerpt = getExcerpt(post.content)
+  const excerpt = (post.seoDescription || getExcerpt(post.content, 160))?.replace(/\n+/g, " ").trim()
 
   return (
     <section className="py-14 lg:py-20 relative overflow-hidden" style={{ backgroundColor: "#1c1917", ...bgStyle }}>

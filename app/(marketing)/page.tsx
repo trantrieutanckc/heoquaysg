@@ -61,7 +61,7 @@ const POST_SELECT = {
 export default async function IndexPage() {
   const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
   const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
-  const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "8") || 8)
+  const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "6") || 6)
   const useSlugs = cfg.useSlugs === "true"
 
   const [featuredPost, posts, categories, dishGroups] = await Promise.all([
@@ -76,7 +76,7 @@ export default async function IndexPage() {
       },
       select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: homePostsCount,
+      take: homePostsCount + 1,
     }),
     db.category.findMany({
       where: { published: true },
