@@ -28,6 +28,9 @@ jobs:
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - name: Remove cache before upload
+        run: rm -rf .next/cache
+
       - name: Upload build to server
         uses: appleboy/scp-action@v0.1.7
         with:
