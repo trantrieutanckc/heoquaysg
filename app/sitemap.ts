@@ -1,8 +1,9 @@
 import { MetadataRoute } from "next"
 import { db } from "@/lib/db"
+import { siteConfig } from "@/config/site"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "")
+  const baseUrl = siteConfig.url.replace(/\/$/, "")
 
   const [posts, categories, tags, pages] = await Promise.all([
     db.post.findMany({

@@ -90,6 +90,14 @@ const authMiddleware = withAuth(
 
 // ── Combined middleware ───────────────────────────────────────────────────────
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
+  const host = req.headers.get("host") ?? ""
+  if (host.startsWith("www.")) {
+    const url = req.nextUrl.clone()
+    url.host = host.replace(/^www\./, "")
+    url.protocol = "https:"
+    return NextResponse.redirect(url, 301)
+  }
+
   const { pathname } = req.nextUrl
 
   // Rate-limit credentials login endpoint

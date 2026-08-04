@@ -1,6 +1,6 @@
 import { SiteConfig } from "types"
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL?.replace("http://localhost:3000", "https://heoquaybinhtan.com") || "https://heoquaybinhtan.com"
+const baseUrl = "https://heoquaybinhtan.com"
 
 export const siteConfig: SiteConfig = {
   name: "Heo Quay Bình Tân",
