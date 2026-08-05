@@ -6,6 +6,7 @@ module.exports = {
       args: "start",
       cwd: "/home/heoquaybinhtan/app",
       instances: 1,
+      exec_mode: "fork",
       autorestart: true,
       watch: false,
       restart_delay: 3000,
