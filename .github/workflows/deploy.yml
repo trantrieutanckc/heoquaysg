@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".next,public,package.json,package-lock.json,prisma,next.config.mjs,ecosystem.config.js"
+          source: ".next,public,package.json,package-lock.json,prisma,next.config.mjs,ecosystem.config.js,start.sh"
           target: "~/app"
 
       - name: Restart pm2
@@ -50,8 +50,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ~/app && npm install --legacy-peer-deps --omit=dev
+            chmod +x ~/app/start.sh
             pm2 delete heoquaybinhtan || true
-            sleep 2
+            pkill -f "node.*next" 2>/dev/null || true
+            sleep 3
             fuser -k 3000/tcp 2>/dev/null || true
-            sleep 5
+            sleep 2
             pm2 start ~/app/ecosystem.config.js --update-env && pm2 save
