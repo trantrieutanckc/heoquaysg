@@ -157,17 +157,29 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
 
   async function handleWriteHtaccess() {
     setWritingHtaccess(true)
-    const res = await fetch("/api/htaccess", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: data.htaccessContent ?? "" }),
-    })
-    setWritingHtaccess(false)
-    if (res.ok) {
-      toast({ variant: "success", description: "Đã ghi .htaccess lên server." })
-    } else {
-      const body = await res.json().catch(() => ({}))
-      toast({ description: body.error ?? "Có lỗi khi ghi file.", variant: "destructive" })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15000)
+    try {
+      const res = await fetch("/api/htaccess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: data.htaccessContent ?? "" }),
+        signal: controller.signal,
+      })
+      if (res.ok) {
+        toast({ variant: "success", description: "Đã ghi .htaccess lên server." })
+      } else {
+        const body = await res.json().catch(() => ({}))
+        toast({ description: body.error ?? "Có lỗi khi ghi file.", variant: "destructive" })
+      }
+    } catch (err) {
+      const msg = err instanceof Error && err.name === "AbortError"
+        ? "Timeout sau 15 giây — thử lại."
+        : "Lỗi kết nối khi ghi file."
+      toast({ description: msg, variant: "destructive" })
+    } finally {
+      clearTimeout(timeout)
+      setWritingHtaccess(false)
     }
   }
 
