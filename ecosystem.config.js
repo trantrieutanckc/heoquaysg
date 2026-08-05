@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: "heoquaybinhtan",
-      script: "start.sh",
-      interpreter: "/bin/bash",
+      script: "node_modules/.bin/next",
+      args: "start",
       cwd: "/home/heoquaybinhtan/app",
       instances: 1,
       exec_mode: "fork",
