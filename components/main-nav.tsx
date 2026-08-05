@@ -52,18 +52,20 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
   return (
     <div className="flex items-center gap-4 md:gap-6">
       {/* Logo + site name */}
-      <Link href="/" className="absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 flex items-center gap-2.5 shrink-0" onClick={(e) => { if (pathname === "/") { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) } }}>
-        {logoUrl && (
-          <img
-            src={logoUrl}
-            alt={siteName ?? "Logo"}
-            className="h-14 w-auto object-contain"
-          />
-        )}
-        <span className="hidden xl:block font-heading font-bold text-base leading-tight">
-          {siteName ?? "Heo Quay Bình Tân"}
-        </span>
-      </Link>
+      {pathname === "/" ? (
+        <button
+          className="absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 flex items-center gap-2.5 shrink-0"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          {logoUrl && <img src={logoUrl} alt={siteName ?? "Logo"} className="h-14 w-auto object-contain" />}
+          <span className="hidden xl:block font-heading font-bold text-base leading-tight">{siteName ?? "Heo Quay Bình Tân"}</span>
+        </button>
+      ) : (
+        <Link href="/" className="absolute left-1/2 -translate-x-1/2 xl:static xl:translate-x-0 flex items-center gap-2.5 shrink-0">
+          {logoUrl && <img src={logoUrl} alt={siteName ?? "Logo"} className="h-14 w-auto object-contain" />}
+          <span className="hidden xl:block font-heading font-bold text-base leading-tight">{siteName ?? "Heo Quay Bình Tân"}</span>
+        </Link>
+      )}
 
       {/* Desktop nav */}
       {items?.length ? (
