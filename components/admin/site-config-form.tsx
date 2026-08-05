@@ -118,6 +118,8 @@ export interface SiteConfigData {
   homeMapBgImage?: string
   // Thực đơn homepage
   homeDishGroupNames?: string  // tên nhóm cách nhau bằng "|", vd: "Heo Quay|Heo Sữa Quay"
+  // Server
+  htaccessContent?: string
 }
 
 interface SiteConfigFormProps {
@@ -146,10 +148,27 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
   const router = useRouter()
   const [data, setData] = React.useState<SiteConfigData>(initial)
   const [saving, setSaving] = React.useState(false)
+  const [writingHtaccess, setWritingHtaccess] = React.useState(false)
 
   function set(key: keyof SiteConfigData) {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setData((prev) => ({ ...prev, [key]: e.target.value }))
+  }
+
+  async function handleWriteHtaccess() {
+    setWritingHtaccess(true)
+    const res = await fetch("/api/htaccess", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: data.htaccessContent ?? "" }),
+    })
+    setWritingHtaccess(false)
+    if (res.ok) {
+      toast({ variant: "success", description: "Đã ghi .htaccess lên server." })
+    } else {
+      const body = await res.json().catch(() => ({}))
+      toast({ description: body.error ?? "Có lỗi khi ghi file.", variant: "destructive" })
+    }
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -382,6 +401,47 @@ export function SiteConfigForm({ initial }: SiteConfigFormProps) {
             unit="bài / trang"
           />
         </Field>
+      </Section>
+
+      <Section title="Server — .htaccess">
+        <p className="text-xs text-muted-foreground">
+          Chỉnh nội dung file <code className="bg-muted px-1 rounded">.htaccess</code> rồi nhấn{" "}
+          <strong>Ghi file lên server</strong>. Path ghi được cấu hình qua biến môi trường{" "}
+          <code className="bg-muted px-1 rounded">HTACCESS_PATH</code> trên VPS.
+        </p>
+        <Field label="Nội dung .htaccess" id="htaccessContent">
+          <Textarea
+            id="htaccessContent"
+            value={data.htaccessContent ?? ""}
+            onChange={(e) => setData((prev) => ({ ...prev, htaccessContent: e.target.value }))}
+            placeholder={`# Redirect HTTP → HTTPS\nRewriteEngine On\nRewriteCond %{HTTPS} off\nRewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]\n\n# Redirect www → non-www\nRewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]\nRewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]`}
+            className="font-mono text-xs min-h-[180px] resize-y"
+          />
+          <div className="flex items-center gap-2 mt-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                setData((prev) => ({
+                  ...prev,
+                  htaccessContent:
+                    "# Redirect HTTP → HTTPS\nRewriteEngine On\nRewriteCond %{HTTPS} off\nRewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]\n\n# Redirect www → non-www\nRewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]\nRewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]",
+                }))
+              }
+            >
+              Dùng preset HTTPS
+            </Button>
+          </div>
+        </Field>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={writingHtaccess}
+          onClick={handleWriteHtaccess}
+        >
+          {writingHtaccess ? "Đang ghi..." : "Ghi file lên server"}
+        </Button>
       </Section>
 
       <Button type="submit" disabled={saving}>

@@ -28,6 +28,7 @@ const postPatchSchema = z.object({
   ctaBtn2Label: z.string().nullable().optional(),
   ctaBtn2Url: z.string().nullable().optional(),
   slug: z.string().nullable().optional(),
+  createdAt: z.string().datetime().optional(),
 })
 
 export async function PATCH(
@@ -89,6 +90,7 @@ export async function PATCH(
         }),
         // Khi publish thủ công thì xoá lịch đã đặt
         ...(body.published !== undefined && { scheduledAt: null }),
+        ...(body.createdAt !== undefined && { createdAt: new Date(body.createdAt) }),
         ...(body.categoryIds !== undefined && {
           categories: {
             deleteMany: {},

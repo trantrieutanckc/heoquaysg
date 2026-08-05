@@ -33,6 +33,7 @@ import { EditorTemplateSection } from "./template-section"
 import { EditorBannerSection } from "./banner-section"
 import { EditorSeoSection } from "./seo-section"
 import { EditorCtaSection } from "./cta-section"
+import { EditorPublishDateSection } from "./publish-date-section"
 
 interface Category {
   id: string
@@ -58,6 +59,7 @@ interface EditorProps {
     banner?: unknown
     relatedPostIds?: unknown
     scheduledAt?: Date | string | null
+    createdAt?: Date | string | null
     bookable?: boolean
     ctaEnabled?: boolean
     ctaTitle?: string | null
@@ -98,6 +100,11 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
   // Schedule
   const initScheduled = post.scheduledAt ? new Date(post.scheduledAt) : undefined
   const [scheduledAt, setScheduledAt] = React.useState<Date | undefined>(initScheduled)
+
+  // Ngày tạo bài
+  const [createdAt, setCreatedAt] = React.useState<Date | undefined>(
+    post.createdAt ? new Date(post.createdAt) : undefined
+  )
   const [scheduleOpen, setScheduleOpen] = React.useState(false)
   const [scheduleDate, setScheduleDate] = React.useState<Date | undefined>(initScheduled)
   const [scheduleTime, setScheduleTime] = React.useState(
@@ -282,6 +289,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           ctaImage: ctaImage.trim() || null,
           ctaBtn2Label: ctaBtn2Label.trim() || null,
           ctaBtn2Url: ctaBtn2Url.trim() || null,
+          ...(createdAt && { createdAt: createdAt.toISOString() }),
         }),
       })
       if (!res?.ok) {
@@ -490,6 +498,10 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
             onTypeChange={setBannerType}
             onSlidesChange={setBannerSlides}
             onSave={handleBannerSave}
+          />
+          <EditorPublishDateSection
+            createdAt={createdAt}
+            onChange={setCreatedAt}
           />
           <EditorSeoSection
             seoTitle={seoTitle}

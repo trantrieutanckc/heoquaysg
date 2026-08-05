@@ -66,6 +66,12 @@ Chọn văn bản rồi nhấn icon trên toolbar để định dạng:
 - Chọn ngày và giờ muốn đăng
 - Bài sẽ tự động publish vào giờ đó (cron chạy mỗi giờ)
 
+## Ngày tạo bài (tùy chỉnh)
+- Mở accordion **"Ngày tạo bài"** trong editor
+- Nhấn **"Thay đổi"** → chọn ngày + giờ → **"Xác nhận"**
+- Nhấn **"Lưu"** như thường để áp dụng
+- Dùng khi cần back-date bài viết (ví dụ: nhập lại bài cũ đúng ngày gốc)
+
 ## Lưu ý
 - Bài chưa publish **không hiện** trên trang công khai
 - Dùng **"Nổi bật"** (Featured) để ghim bài lên khu vực đặc biệt trang chủ
@@ -386,6 +392,13 @@ Tất cả trường ảnh trong dashboard đều có nút **"Chọn ảnh"** đ
 - Mặc định: Google **được phép** index toàn bộ trang công khai
 - Không cần thay đổi gì nếu muốn Google tìm thấy website
 - Nếu cần chặn trang nào đó: vào Cài đặt → Robots.txt → thêm dòng \`Disallow: /đường-dẫn/\`
+
+## .htaccess editor (chuyển hướng HTTP → HTTPS)
+- Vào **Dashboard → Cài đặt** → kéo xuống section **"Server — .htaccess"**
+- Nhấn **"Dùng preset HTTPS"** để tự điền rule redirect chuẩn
+- Nhấn **"Lưu cấu hình"** để lưu nội dung vào DB
+- Nhấn **"Ghi file lên server"** để ghi file \`.htaccess\` ra ổ đĩa
+- Yêu cầu: biến môi trường \`HTACCESS_PATH\` phải được khai báo trong \`.env\` trên VPS (ví dụ: \`HTACCESS_PATH=/home/heoquaybinhtan/public_html/.htaccess\`)
 
 ## Sitemap
 - Tự động tạo tại: **https://heoquaybinhtan.com/sitemap.xml**
