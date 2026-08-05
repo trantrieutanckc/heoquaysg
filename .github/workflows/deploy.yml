@@ -51,7 +51,7 @@ jobs:
           script: |
             cd /home/heoquaybinhtan/app && npm install --legacy-peer-deps
             chmod +x /home/heoquaybinhtan/app/start.sh
-            pm2 delete heoquaybinhtan 2>/dev/null || true
+            pm2 kill 2>/dev/null || true
             fuser -k 3000/tcp 2>/dev/null || true
-            sleep 5
+            sleep 3
             pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save
