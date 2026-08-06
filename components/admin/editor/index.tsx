@@ -245,6 +245,19 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
     }
   }
 
+  async function handleCreatedAtSave(date: Date) {
+    const res = await fetch(`/api/posts/${post.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ createdAt: date.toISOString() }),
+    })
+    if (res.ok) {
+      toast({ variant: "success", description: `Đã lưu ngày: ${format(date, "HH:mm dd/MM/yyyy")}` })
+    } else {
+      toast({ title: "Lỗi", description: "Không thể lưu ngày tạo bài.", variant: "destructive" })
+    }
+  }
+
   async function handleBannerSave() {
     setSavingBanner(true)
     try {
@@ -502,6 +515,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
           <EditorPublishDateSection
             createdAt={createdAt}
             onChange={setCreatedAt}
+            onSave={handleCreatedAtSave}
           />
           <EditorSeoSection
             seoTitle={seoTitle}

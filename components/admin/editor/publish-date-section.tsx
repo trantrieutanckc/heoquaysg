@@ -13,20 +13,28 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 interface Props {
   createdAt: Date | undefined
   onChange: (date: Date) => void
+  onSave: (date: Date) => Promise<void>
 }
 
-export function EditorPublishDateSection({ createdAt, onChange }: Props) {
+export function EditorPublishDateSection({ createdAt, onChange, onSave }: Props) {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(createdAt)
   const [time, setTime] = React.useState(createdAt ? format(createdAt, "HH:mm") : "08:00")
+  const [isSaving, setIsSaving] = React.useState(false)
 
-  function handleConfirm() {
+  async function handleConfirm() {
     if (!date) return
     const [h, m] = time.split(":").map(Number)
     const dt = new Date(date)
     dt.setHours(h, m, 0, 0)
     onChange(dt)
     setOpen(false)
+    setIsSaving(true)
+    try {
+      await onSave(dt)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const displayDate = createdAt
@@ -73,10 +81,10 @@ export function EditorPublishDateSection({ createdAt, onChange }: Props) {
                     type="button"
                     size="sm"
                     className="w-full"
-                    disabled={!date}
+                    disabled={!date || isSaving}
                     onClick={handleConfirm}
                   >
-                    Xác nhận
+                    {isSaving ? "Đang lưu..." : "Xác nhận"}
                   </Button>
                 </div>
               </PopoverContent>
