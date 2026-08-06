@@ -328,7 +328,7 @@ export function Editor({ post, categories, postCategoryIds, allPosts, tags: init
         <div className="container flex h-14 items-center justify-between px-4 gap-4">
           <button
             type="button"
-            onClick={() => router.push("/dashboard/posts")}
+            onClick={() => router.back()}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group"
           >
             <span className="relative inline-flex items-center gap-1">
