@@ -98,7 +98,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
 
       <div className="relative z-10 w-full">
         <div className="container px-4 sm:px-6 py-32 flex flex-col items-center text-center text-white">
-          <FadeUp className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center">
             <div className="flex items-center justify-center gap-3 mb-5">
               <div className="h-px w-12 bg-orange-300/60" />
               <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.3em] text-orange-200">{siteName}</p>
@@ -124,7 +124,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
                 </a>
               )}
             </div>
-          </FadeUp>
+          </div>
         </div>
       </div>
     </section>

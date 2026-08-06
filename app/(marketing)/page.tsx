@@ -126,6 +126,7 @@ export default async function IndexPage() {
 
   return (
     <div className="min-h-screen">
+      <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <HeroSection
         heroImage={heroImage}

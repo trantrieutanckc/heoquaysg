@@ -1,9 +1,10 @@
 import { cache, Suspense } from "react"
+import { Nunito } from "next/font/google"
+import NextTopLoader from "nextjs-toploader"
 
 import "@/styles/globals.css"
 import { siteConfig } from "@/config/site"
 import { absoluteUrl, cn, ogUrl } from "@/lib/utils"
-import NextTopLoader from "nextjs-toploader"
 import { NavigationLoader } from "@/components/navigation-loader"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@/components/analytics"
@@ -12,6 +13,13 @@ import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { db } from "@/lib/db"
 import { faviconMetadata } from "@/lib/favicon"
+
+const nunito = Nunito({
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-heading",
+  display: "swap",
+})
 
 // Deduplicate DB call — cả generateMetadata và RootLayout đều dùng chung 1 query/request
 const getSiteConfigData = cache(async (): Promise<Record<string, string>> => {
@@ -79,14 +87,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang="vi" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet" />
-      </head>
       <body
-        className="min-h-screen bg-background font-sans antialiased"
-        style={{ "--font-heading": "'Nunito', sans-serif" } as React.CSSProperties}
+        className={cn("min-h-screen bg-background font-sans antialiased", nunito.variable)}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextTopLoader color="hsl(22 82% 40%)" height={3} showSpinner={false} />
