@@ -70,6 +70,7 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "contentlayer/generated": new URL("./lib/contentlayer-mock.mjs", import.meta.url).pathname,
+      "supports-color": false,
     }
     return config
   },
