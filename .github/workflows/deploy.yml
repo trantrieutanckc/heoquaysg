@@ -49,9 +49,15 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /home/heoquaybinhtan/app && npm install --legacy-peer-deps
-            chmod +x /home/heoquaybinhtan/app/start.sh
-            pm2 kill 2>/dev/null || true
-            fuser -k 3000/tcp 2>/dev/null || true
-            sleep 3
-            pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save
+            cd /home/heoquaybinhtan/app
+            npm install --legacy-peer-deps
+            chmod +x start.sh
+            chmod 644 ecosystem.config.js
+            if pm2 describe heoquaybinhtan > /dev/null 2>&1; then
+              pm2 restart heoquaybinhtan --update-env
+            else
+              fuser -k 3000/tcp 2>/dev/null || true
+              sleep 2
+              pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env
+            fi
+            pm2 save

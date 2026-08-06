@@ -174,7 +174,7 @@ RefreshToken, Account (OAuth)
 ## Deploy
 ```
 push GitHub → GitHub Actions build → SCP upload .next lên server
-→ SSH: npm install → chmod +x start.sh → pm2 delete → fuser -k 3000 → sleep 5 → pm2 start ecosystem.config.js
+→ SSH: npm install → chmod +x start.sh → pm2 restart (nếu đang chạy) hoặc pm2 start ecosystem.config.js
 ```
 
 **ecosystem.config.js**: fork mode, script `start.sh`, port 3000, restart_delay 3s, kill_timeout 10s, max_memory 500MB
@@ -183,53 +183,62 @@ push GitHub → GitHub Actions build → SCP upload .next lên server
 
 ## Server stability — vấn đề thường gặp & cách xử lý
 
+### ⚠️ BUG SSS — Root cause site down mỗi 5 phút (đã fix 05/08/2026)
+
+**Triệu chứng:** Site down đều đặn mỗi ~5 phút, không có lỗi rõ ràng trong log, PM2 tự restart liên tục.
+
+**Root cause:** Trong crontab có dòng:
+```
+*/5 * * * * pkill -f "jest-worker/processChild.js" 2>/dev/null; true
+```
+Dòng này được thêm vào với mục đích "kill zombie jest-worker để tránh memory leak", nhưng **`jest-worker/processChild.js` chính là worker process của Next.js production** — không phải Jest test runner.  
+→ Mỗi 5 phút, crontab tự kill toàn bộ worker render của Next.js → site crash silent, PM2 restart, lại bị kill sau 5 phút tiếp.
+
+**Fix:** Xóa dòng đó khỏi crontab. **Không bao giờ thêm lại.**
+
+---
+
+### Crontab hiện tại (đã dọn sạch)
+
+```
+0 2 * * * curl -sf -H "Authorization: Bearer ea1c9563596bbf20aabe2c266c654b07f0" https://heoquaybinhtan.com/api/cron/publish
+@reboot sleep 30 && pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save
+```
+
+- `0 2 *`: auto publish bài lên lịch lúc 2:00 sáng
+- `@reboot`: tự start sau khi server reboot
+
+---
+
 ### Triệu chứng: Site down, curl localhost:3000 không phản hồi
 
-**Nguyên nhân phổ biến nhất:** `EADDRINUSE` — zombie process từ lần start trước còn giữ port 3000.  
-Lỗi nằm trong **error log**, không phải stdout: `~/.pm2/logs/heoquaybinhtan-error-0.log`  
-PM2 vẫn hiện `online` dù thực ra app fail bind port.
+**Nguyên nhân phổ biến:** `EADDRINUSE` — zombie process giữ port 3000.  
+Lỗi nằm trong **error log**: `~/.pm2/logs/heoquaybinhtan-error-0.log`  
+PM2 vẫn hiện `online` dù thực ra app fail.
 
 **3 bước khi bị down:**
 
-**Bước 1** — Xem lỗi gì:
+**Bước 1** — Xem lỗi:
 ```bash
 pm2 logs heoquaybinhtan --err --lines 20 --nostream
 ```
 
 **Bước 2** — Kill sạch và restart:
 ```bash
-pm2 delete all 2>/dev/null; pkill -f "node.*next" 2>/dev/null; sleep 3; fuser -k 3000/tcp 2>/dev/null; sleep 2; pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save
+pm2 kill 2>/dev/null; pkill -f "node.*next" 2>/dev/null; sleep 3; fuser -k 3000/tcp 2>/dev/null; sleep 2; pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save
 ```
 
-**Bước 3** — Xác nhận site lên:
+**Bước 3** — Xác nhận:
 ```bash
 pm2 status && curl -I http://localhost:3000
 ```
-Chờ ~20 giây cho Next.js load xong. Thấy `HTTP/1.1 200 OK` là ổn.
-
-**Tại sao không bị lại:** `start.sh` tự động kill zombie + port 3000 mỗi lần PM2 start/restart.
-
----
-
-### Crontab bảo vệ (đã cài trên server user heoquaybinhtan)
-
-```
-@reboot sleep 15 && pm2 resurrect
-*/2 * * * * curl -sf http://localhost:3000 > /dev/null 2>&1 || (pm2 delete all 2>/dev/null; fuser -k 3000/tcp 2>/dev/null; sleep 2; pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env && pm2 save)
-*/5 * * * * pm2 list > /dev/null 2>&1 || pm2 start /home/heoquaybinhtan/app/ecosystem.config.js
-*/5 * * * * pkill -f "jest-worker/processChild.js" 2>/dev/null; true
-```
-
-- `@reboot`: tự lên sau server reboot
-- `*/2`: watchdog check site mỗi 2 phút, down thì clean restart
-- `*/5` (pm2 list): check PM2 daemon còn sống không
-- `*/5` (jest-worker): kill zombie jest-worker để tránh memory leak
+Chờ ~20 giây. Thấy `HTTP/1.1 200 OK` là ổn.
 
 ---
 
 ### Lưu ý quan trọng
 
 - **Không có sudo** → không dùng được `pm2 startup` (systemd)
-- **Error log** nằm tại `~/.pm2/logs/heoquaybinhtan-error-0.log` — xem khi debug
-- **start.sh** phải có quyền execute: `chmod +x /home/heoquaybinhtan/app/start.sh`
-- **Deploy xong site sẽ down ~20 giây** trong lúc Next.js khởi động — bình thường, không cần làm gì
+- **start.sh** tự kill zombie + clear port 3000 mỗi lần PM2 start/restart — không cần làm thủ công
+- **Error log:** `~/.pm2/logs/heoquaybinhtan-error-0.log`
+- **Deploy:** dùng `pm2 restart heoquaybinhtan --update-env` để ít downtime hơn; chỉ `pm2 kill` + `pm2 start` khi lần đầu hoặc process bị lỗi nặng

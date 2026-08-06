@@ -62,22 +62,21 @@ export function MobileNav({ items, children, onClose, logoUrl, siteName }: Mobil
 
         {/* Nav links */}
         <nav className="flex-1 overflow-y-auto py-2">
-          {items.map((item, index) => (
-            <Link
-              key={index}
-              href={item.disabled ? "#" : item.href}
-              onClick={onClose}
-              className={cn(
-                "flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors border-l-[3px]",
-                isActive(item.href)
-                  ? "border-primary text-primary bg-primary/5"
-                  : "border-transparent text-foreground hover:bg-muted hover:text-foreground",
-                item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
-              )}
-            >
-              {item.title}
-            </Link>
-          ))}
+          {items.map((item, index) => {
+            const active = isActive(item.href)
+            const cls = cn(
+              "flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors border-l-[3px]",
+              active
+                ? "border-primary text-primary bg-primary/5 cursor-default"
+                : "border-transparent text-foreground hover:bg-muted hover:text-foreground",
+              item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
+            )
+            return active || item.disabled ? (
+              <span key={index} className={cls}>{item.title}</span>
+            ) : (
+              <Link key={index} href={item.href} onClick={onClose} className={cls}>{item.title}</Link>
+            )
+          })}
         </nav>
 
         <div className="border-t p-4 flex flex-col gap-2">

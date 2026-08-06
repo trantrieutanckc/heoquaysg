@@ -197,7 +197,7 @@ export function FeaturedSection({ post, bgStyle, label, title, useSlugs = false 
                 <StarDisplay rating={post.avgRating} size="md" showNumber count={post.ratingCount} />
               )}
               <div>
-                <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors rounded-full shadow-lg shadow-primary/30">
+                <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors rounded-full shadow-lg shadow-primary/30 whitespace-nowrap">
                   Xem chi tiết <ArrowRightSm />
                 </span>
               </div>
@@ -418,7 +418,7 @@ export function LatestPostsSection({ posts, bgStyle, label, title, maxShow = 6, 
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 sm:line-clamp-2">{excerpt}</p>
                       )}
                     </div>
-                    <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit rounded-full shadow-sm shadow-primary/20">
+                    <span className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2 text-xs font-bold uppercase tracking-wider group-hover:bg-primary/90 transition-colors w-fit rounded-full shadow-sm shadow-primary/20 whitespace-nowrap">
                       Xem chi tiết <ArrowRightSm />
                     </span>
                   </div>

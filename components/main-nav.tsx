@@ -73,22 +73,22 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
           "hidden xl:flex items-center gap-1",
           centered && "absolute left-1/2 -translate-x-1/2"
         )}>
-          {visibleItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.disabled ? "#" : item.href}
-              className={cn(
-                "relative px-3 py-1.5 text-sm font-medium whitespace-nowrap",
-                "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
-                isActive(item.href, pathname)
-                  ? "text-primary font-semibold after:w-full"
-                  : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full",
-                item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
-              )}
-            >
-              {item.title}
-            </Link>
-          ))}
+          {visibleItems.map((item, index) => {
+            const active = isActive(item.href, pathname)
+            const cls = cn(
+              "relative px-3 py-1.5 text-sm font-medium whitespace-nowrap",
+              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:transition-[width] after:duration-500",
+              active
+                ? "text-primary font-semibold after:w-full cursor-default"
+                : "text-muted-foreground hover:text-foreground after:w-0 hover:after:w-full",
+              item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
+            )
+            return active || item.disabled ? (
+              <span key={index} className={cls}>{item.title}</span>
+            ) : (
+              <Link key={index} href={item.href} className={cls}>{item.title}</Link>
+            )
+          })}
 
           {/* Overflow dropdown */}
           {hasOverflow && (
@@ -113,22 +113,21 @@ export function MainNav({ items, children, logoUrl, siteName, centered }: MainNa
 
               {showMore && (
                 <div className="absolute left-0 top-full mt-1.5 w-44 border bg-background shadow-lg overflow-hidden z-50 animate-in fade-in-0 zoom-in-95 duration-100">
-                  {overflowItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      href={item.disabled ? "#" : item.href}
-                      onClick={() => setShowMore(false)}
-                      className={cn(
-                        "flex items-center px-4 py-2.5 text-sm transition-colors border-l-2",
-                        isActive(item.href, pathname)
-                          ? "border-primary bg-muted text-foreground font-medium"
-                          : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
-                        item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
-                      )}
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
+                  {overflowItems.map((item, index) => {
+                    const active = isActive(item.href, pathname)
+                    const cls = cn(
+                      "flex items-center px-4 py-2.5 text-sm transition-colors border-l-2",
+                      active
+                        ? "border-primary bg-muted text-foreground font-medium cursor-default"
+                        : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
+                      item.disabled && "cursor-not-allowed opacity-50 pointer-events-none"
+                    )
+                    return active || item.disabled ? (
+                      <span key={index} className={cls}>{item.title}</span>
+                    ) : (
+                      <Link key={index} href={item.href} onClick={() => setShowMore(false)} className={cls}>{item.title}</Link>
+                    )
+                  })}
                 </div>
               )}
             </div>
