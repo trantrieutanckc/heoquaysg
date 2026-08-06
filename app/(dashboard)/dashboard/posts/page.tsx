@@ -12,6 +12,7 @@ import { DashboardShell } from "@/components/admin/shell"
 import { DashboardPagination } from "@/components/admin/dashboard-pagination"
 import { PostsImportExport } from "@/components/admin/posts-import-export"
 import { PostsSearchInput } from "@/components/admin/posts-search-input"
+import { PostsCategoryFilter } from "@/components/admin/posts-category-filter"
 
 export const dynamic = "force-dynamic"
 export const metadata = { title: "Bài viết" }
@@ -21,7 +22,7 @@ const PAGE_SIZE = 6
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams: { page?: string; q?: string }
+  searchParams: { page?: string; q?: string; cat?: string }
 }) {
   const user = await getCurrentUser()
   if (!user) redirect(authOptions?.pages?.signIn || "/login")
@@ -29,9 +30,11 @@ export default async function PostsPage({
   const canCreate = isEditor(user.role)
   const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1)
   const q = searchParams.q?.trim() ?? ""
+  const cat = searchParams.cat?.trim() ?? ""
   const postWhere = {
     ...(isAdmin(user.role) ? {} : { authorId: user.id }),
     ...(q ? { title: { contains: q } } : {}),
+    ...(cat ? { categories: { some: { categoryId: cat } } } : {}),
   }
 
   const [total, posts, allCategories] = await Promise.all([
@@ -72,6 +75,7 @@ export default async function PostsPage({
       >
         <div className="flex items-center gap-2">
           <PostsSearchInput defaultValue={q} />
+          <PostsCategoryFilter categories={allCategories} defaultValue={cat} />
           {canCreate && <PostsImportExport />}
           {canCreate && <PostCreateButton />}
         </div>
@@ -84,7 +88,10 @@ export default async function PostsPage({
             currentPage={page}
             totalPages={totalPages}
             basePath="/dashboard/posts"
-            extraParams={q ? { q } : undefined}
+            extraParams={{
+              ...(q ? { q } : {}),
+              ...(cat ? { cat } : {}),
+            }}
           />
         </>
       ) : (
