@@ -1,4 +1,4 @@
-export const revalidate = 60
+export const dynamic = "force-dynamic"
 
 import { db as metaDb } from "@/lib/db"
 import { siteConfig } from "@/config/site"
