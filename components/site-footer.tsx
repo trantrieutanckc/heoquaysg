@@ -104,6 +104,7 @@ export function SiteFooter({
                 { href: "/thuc-don", label: "Thực đơn" },
                 { href: "/about", label: "Giới thiệu" },
                 { href: "/lien-he", label: "Liên hệ" },
+                { href: "/chinh-sach", label: "Chính sách" },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <Link
@@ -174,7 +175,10 @@ export function SiteFooter({
 
         <div className="mt-10 pt-6 border-t border-stone-800 flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-stone-500">
-            © {new Date().getFullYear()} {name}. Bảo lưu mọi quyền.
+            © {new Date().getFullYear()} {name}. Bảo lưu mọi quyền.{" "}
+            <Link href="/chinh-sach" className="hover:text-stone-300 transition-colors underline underline-offset-2">
+              Chính sách
+            </Link>
           </p>
           <ModeToggle />
         </div>
