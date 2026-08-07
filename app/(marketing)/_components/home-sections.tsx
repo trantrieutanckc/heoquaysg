@@ -79,7 +79,7 @@ export function HeroSection({ heroImage, siteName, siteTagline, siteDescription,
   return (
     <section className="relative w-full overflow-hidden flex items-center" style={{ minHeight: "80vh" }}>
       {heroImage ? (
-        <Image src={heroImage} alt="Hero background" fill sizes="100vw" className="object-cover" priority placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
+        <Image src={heroImage} alt="Hero background" fill sizes="100vw" className="object-cover" priority quality={60} placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
       ) : (
         <Image
           src="/heo-quay-img.png"
