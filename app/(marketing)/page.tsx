@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+export const revalidate = 60
 
 import { db as metaDb } from "@/lib/db"
 import { siteConfig } from "@/config/site"
@@ -59,12 +59,8 @@ const POST_SELECT = {
 } as const
 
 export default async function IndexPage() {
-  const siteConfigRow = await db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null)
-  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
-  const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "6") || 6)
-  const useSlugs = cfg.useSlugs === "true"
-
-  const [featuredPost, posts, categories, dishGroups] = await Promise.all([
+  const [siteConfigRow, featuredPost, postsRaw, categories, dishGroups] = await Promise.all([
+    db.siteConfig.findUnique({ where: { id: "default" } }).catch(() => null),
     db.post.findFirst({
       where: { published: true, featured: true },
       select: POST_SELECT,
@@ -76,7 +72,7 @@ export default async function IndexPage() {
       },
       select: POST_SELECT,
       orderBy: { createdAt: "desc" },
-      take: homePostsCount + 1,
+      take: 7,
     }),
     db.category.findMany({
       where: { published: true },
@@ -89,6 +85,10 @@ export default async function IndexPage() {
       include: { dishes: { orderBy: { order: "asc" } } },
     }),
   ])
+  const cfg = (siteConfigRow?.data ?? {}) as Record<string, string>
+  const homePostsCount = Math.max(2, parseInt(cfg.homePostsCount ?? "6") || 6)
+  const useSlugs = cfg.useSlugs === "true"
+  const posts = postsRaw.slice(0, homePostsCount + 1)
   const aboutContentHtml = tiptapToHtml(cfg.homeAboutContent)
   const heroImage = cfg.heroImage?.trim() || "/images/shop/heo-quay-khay-1.jpg"
   const siteName = cfg.siteName?.trim() || "Heo Quay Bình Tân"
