@@ -170,7 +170,7 @@ export function FeaturedSection({ post, bgStyle, label, title, useSlugs = false 
           >
             <div className="relative aspect-[4/3] md:aspect-auto overflow-hidden bg-muted min-h-[240px]">
               {image?.url ? (
-                <Image src={image.url} alt={image.alt ?? post.title} fill priority sizes="(max-width: 768px) 100vw, 48vw" className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
+                <Image src={image.url} alt={image.alt ?? post.title} fill sizes="(max-width: 768px) 100vw, 48vw" className="object-cover transition-transform duration-700 group-hover:scale-105" placeholder="blur" blurDataURL={BLUR_PLACEHOLDER} />
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-200 to-amber-100" />
               )}

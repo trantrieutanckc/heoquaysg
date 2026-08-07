@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic"
+export const revalidate = 60
 
 import { db as metaDb } from "@/lib/db"
 import { siteConfig } from "@/config/site"
@@ -126,7 +126,6 @@ export default async function IndexPage() {
 
   return (
     <div className="min-h-screen">
-      <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <HeroSection
         heroImage={heroImage}

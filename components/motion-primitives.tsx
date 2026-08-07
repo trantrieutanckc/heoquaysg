@@ -1,6 +1,6 @@
 "use client"
 
-import { LazyMotion, domAnimation, m, type Variants } from "framer-motion"
+import { m, type Variants } from "framer-motion"
 
 const staggerVariants: Variants = {
   hidden: {},
@@ -27,16 +27,14 @@ export function PageEntrance({
   delay?: number
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </m.div>
   )
 }
 
@@ -50,17 +48,15 @@ export function FadeUp({
   delay?: number
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </m.div>
   )
 }
 
@@ -72,17 +68,15 @@ export function SlideInLeft({
   className?: string
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial={{ opacity: 0, x: -18 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial={{ opacity: 0, x: -18 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </m.div>
   )
 }
 
@@ -94,17 +88,15 @@ export function SlideInRight({
   className?: string
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial={{ opacity: 0, x: 18 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial={{ opacity: 0, x: 18 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </m.div>
   )
 }
 
@@ -116,17 +108,15 @@ export function StaggerContainer({
   className?: string
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={staggerVariants}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      variants={staggerVariants}
+    >
+      {children}
+    </m.div>
   )
 }
 
@@ -160,16 +150,14 @@ export function ScaleIn({
   delay?: number
 }) {
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        className={className}
-        initial={{ opacity: 0, scale: 0.92 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </m.div>
-    </LazyMotion>
+    <m.div
+      className={className}
+      initial={{ opacity: 0, scale: 0.92 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </m.div>
   )
 }

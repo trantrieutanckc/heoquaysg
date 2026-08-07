@@ -12,6 +12,7 @@ import { SearchButton } from "@/components/search-button"
 import { getCurrentUser } from "@/lib/session"
 import { UserAccountNav } from "@/components/user-account-nav"
 import { ComingSoonPopup } from "@/components/coming-soon-popup"
+import { MotionProvider } from "@/components/motion-provider"
 
 interface MarketingLayoutProps {
   children: React.ReactNode
@@ -181,7 +182,9 @@ export default async function MarketingLayout({ children }: MarketingLayoutProps
           </nav>
         </div>
       </header>
-      <main className="flex-1">{children}</main>
+      <MotionProvider>
+        <main className="flex-1">{children}</main>
+      </MotionProvider>
 
 <SiteFooter
         siteName={cfg.siteName?.trim()}
