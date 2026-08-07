@@ -31,6 +31,17 @@ jobs:
       - name: Remove cache before upload
         run: rm -rf .next/cache
 
+      - name: Backup image cache on server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mkdir -p /tmp/next-image-cache
+            cp -r /home/heoquaybinhtan/app/.next/cache/images/. /tmp/next-image-cache/ 2>/dev/null || true
+
       - name: Upload build to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -41,7 +52,7 @@ jobs:
           source: ".next,public,package.json,package-lock.json,prisma,next.config.mjs,ecosystem.config.js,start.sh"
           target: "~/app"
 
-      - name: Restart pm2
+      - name: Restore image cache, restart pm2, warm cache
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -49,6 +60,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            mkdir -p /home/heoquaybinhtan/app/.next/cache/images
+            cp -r /tmp/next-image-cache/. /home/heoquaybinhtan/app/.next/cache/images/ 2>/dev/null || true
             cd /home/heoquaybinhtan/app
             npm install --legacy-peer-deps
             chmod +x start.sh
@@ -61,3 +74,5 @@ jobs:
               pm2 start /home/heoquaybinhtan/app/ecosystem.config.js --update-env
             fi
             pm2 save
+            sleep 20
+            curl -sf https://heoquaybinhtan.com/ -o /dev/null && echo "Cache warmed"
