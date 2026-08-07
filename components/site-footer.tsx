@@ -4,6 +4,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 import { NewsletterForm } from "@/components/newsletter-form"
+import { FooterNavLink } from "@/components/footer-nav-link"
 
 interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   siteName?: string
@@ -107,12 +108,7 @@ export function SiteFooter({
                 { href: "/chinh-sach", label: "Chính sách" },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link
-                    href={href}
-                    className="relative hover:text-stone-100 transition-colors after:absolute after:-bottom-[2px] after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-primary after:w-0 after:transition-[width] after:duration-500 hover:after:w-full"
-                  >
-                    {label}
-                  </Link>
+                  <FooterNavLink href={href} label={label} />
                 </li>
               ))}
             </ul>
@@ -176,9 +172,7 @@ export function SiteFooter({
         <div className="mt-10 pt-6 border-t border-stone-800 flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-stone-500">
             © {new Date().getFullYear()} {name}. Bảo lưu mọi quyền.{" "}
-            <Link href="/chinh-sach" className="hover:text-stone-300 transition-colors underline underline-offset-2">
-              Chính sách
-            </Link>
+            <FooterNavLink href="/chinh-sach" label="Chính sách" />
           </p>
           <ModeToggle />
         </div>
